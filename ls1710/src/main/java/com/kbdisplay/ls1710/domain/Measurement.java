@@ -18,6 +18,8 @@ public class Measurement implements Serializable {
 	private Equipment equipment;
 	private DateOfMeasurement dateOfMeasurement;
 	private DateOfMeasurement dateOfSecondMeasurement;
+	// TODO ввести вместо даты второй проверки номер версии
+	//private Sring version (1.1, 1.2, 2.1 ... 5.3 ... );
 	private List<Spectrum> spectrums;
 	private User user;
 
