@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kbdisplay.ls1710.domain.Model;
+import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.repository.ModelRepository;
 import com.kbdisplay.ls1710.service.data.ModelService;
 import com.google.common.collect.Lists;
@@ -21,21 +21,21 @@ public class ModelServiceImpl implements ModelService {
 	private ModelRepository modelRepository;
 
 	@Transactional(readOnly = true)
-	public List<Model> findAll() {
+	public List<ModelOfEquipment> findAll() {
 		return Lists.newArrayList(modelRepository.findAll());
 	}
 
 	@Transactional(readOnly = true)
-	public Model findById(Long id) {
+	public ModelOfEquipment findById(Long id) {
 		return modelRepository.findOne(id);
 	}
 
 	@Transactional(readOnly = true)
-	public Model findByModelName(String modelName) {
+	public ModelOfEquipment findByModelName(String modelName) {
 		return modelRepository.findByModelName(modelName);
 	}
 
-	public Model save(Model model) {
+	public ModelOfEquipment save(ModelOfEquipment model) {
 
 		return modelRepository.save(model);
 	}

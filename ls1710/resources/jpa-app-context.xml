@@ -8,5 +8,9 @@
     <import resource="classpath:datasource-tx-jpa.xml"/>
     
     <context:component-scan base-package="com.kbdisplay.ls1710.service.data.jpa"/>
-
+    
+    <context:component-scan base-package="com.kbdisplay.ls1710.service.dataJournal.edit.jpa"/>
+    
+    <context:component-scan base-package="com.kbdisplay.ls1710.service.file.jpa"/>
+     
 </beans>

@@ -27,7 +27,7 @@ import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Harmonic;
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
-import com.kbdisplay.ls1710.domain.Model;
+import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.Spectrum;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
@@ -148,7 +148,7 @@ public class MeasurementsUpdaterServiceImpl implements
 				} else {
 
 					// ищем модель, если ее нет, то создаем ее и папку к ней
-					Model model = getModel(modelName);
+					ModelOfEquipment model = getModel(modelName);
 
 					// ищем изделие в базе данных, если не найдено, то создаем
 					// новое
@@ -346,7 +346,7 @@ public class MeasurementsUpdaterServiceImpl implements
 			String screenResolutionsName, String description, String user) {
 
 		// ищем модель, если ее нет, то создаем ее и папку к ней
-		Model model = getModel(modelName);
+		ModelOfEquipment model = getModel(modelName);
 
 		// ищем изделие в базе данных, если не найдено, то создаем новое
 		Equipment equipment = getEquipments(model, serialNumber);
@@ -383,8 +383,8 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	// получаем модель из БД, если ее там нет то пробуем создать
-	private Model getModel(String modelName) {
-		Model model = findModel(modelName);
+	private ModelOfEquipment getModel(String modelName) {
+		ModelOfEquipment model = findModel(modelName);
 		if (model == null) {
 			logger.info("Trying create new models");
 			try {
@@ -397,9 +397,9 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	// поиск модели изделия в базе
-	private Model findModel(String modelName) {
+	private ModelOfEquipment findModel(String modelName) {
 		modelName = modelName.trim();
-		Model model = modelService.findByModelName(modelName);
+		ModelOfEquipment model = modelService.findByModelName(modelName);
 		if (model != null) {
 			logger.info("Model found in the database. Id: " + model.getIdModel());
 		}
@@ -407,9 +407,9 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	// создание новой модели в базе
-	private Model createNewModel(String modelName) {
+	private ModelOfEquipment createNewModel(String modelName) {
 		modelName = modelName.trim();
-		Model model = new Model();
+		ModelOfEquipment model = new ModelOfEquipment();
 		model.setModelName(modelName);
 		model = modelService.save(model);
 
@@ -430,7 +430,7 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	// получаем изделие из БД, если его там нет то пробуем создать
-	private Equipment getEquipments(Model model, String serialNumber) {
+	private Equipment getEquipments(ModelOfEquipment model, String serialNumber) {
 		Equipment equipment = new Equipment();
 		equipment.setModel(model);
 		equipment.setSerialNumber(serialNumber);

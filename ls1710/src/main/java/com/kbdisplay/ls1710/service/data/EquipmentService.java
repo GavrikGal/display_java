@@ -3,7 +3,7 @@ package com.kbdisplay.ls1710.service.data;
 import java.util.List;
 
 import com.kbdisplay.ls1710.domain.Equipment;
-import com.kbdisplay.ls1710.domain.Model;
+import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 
 public interface EquipmentService {
 
@@ -11,7 +11,7 @@ public interface EquipmentService {
 
 	public Equipment findById(Long id);
 
-	public Equipment findBySerialNumberAndModel(String serialNumber, Model model);
+	public Equipment findBySerialNumberAndModel(String serialNumber, ModelOfEquipment model);
 
 	public Equipment save(Equipment equipment);
 	

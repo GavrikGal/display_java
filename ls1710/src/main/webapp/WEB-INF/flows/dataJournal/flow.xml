@@ -5,7 +5,10 @@
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 	<view-state id="start" view="list.xhtml">
-		
+		<on-entry>
+			<evaluate expression="measurementsController.newMeasurementListBean()"
+				result = "viewScope.measurementListBean" />
+		</on-entry>
 	</view-state>
 	
 	<end-state id="finish" />

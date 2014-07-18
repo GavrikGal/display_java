@@ -13,7 +13,7 @@ public class Equipment implements Serializable {
 	private static final long	serialVersionUID	= 7277923833960735466L;
 
 	private Long				idEquipment;
-	private Model				model;
+	private ModelOfEquipment				model;
 	private String				serialNumber;
 	private Set<Measurement>	measurements		= new HashSet<Measurement>();
 
@@ -34,11 +34,11 @@ public class Equipment implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "Model")
-	public Model getModel() {
+	public ModelOfEquipment getModel() {
 		return model;
 	}
 
-	public void setModel(Model model) {
+	public void setModel(ModelOfEquipment model) {
 		this.model = model;
 	}
 

@@ -12,7 +12,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "models")
-public class Model implements Serializable {
+public class ModelOfEquipment implements Serializable {
 
 	private static final long	serialVersionUID	= 7092054057261196283L;
 	private Long				idModel;

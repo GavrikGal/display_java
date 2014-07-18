@@ -2,16 +2,16 @@ package com.kbdisplay.ls1710.service.data;
 
 import java.util.List;
 
-import com.kbdisplay.ls1710.domain.Model;
+import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 
 public interface ModelService {
 
-	public List<Model> findAll();
+	public List<ModelOfEquipment> findAll();
 
-	public Model findById(Long id);
+	public ModelOfEquipment findById(Long id);
 
-	public Model findByModelName(String modelName);
+	public ModelOfEquipment findByModelName(String modelName);
 
-	public Model save(Model model);
+	public ModelOfEquipment save(ModelOfEquipment model);
 
 }

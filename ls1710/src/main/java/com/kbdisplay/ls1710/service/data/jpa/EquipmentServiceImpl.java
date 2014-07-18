@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kbdisplay.ls1710.domain.Equipment;
-import com.kbdisplay.ls1710.domain.Model;
+import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.repository.EquipmentRepository;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
 import com.google.common.collect.Lists;
@@ -32,7 +32,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Transactional(readOnly = true)
-	public Equipment findBySerialNumberAndModel(String serialNumber, Model model) {
+	public Equipment findBySerialNumberAndModel(String serialNumber, ModelOfEquipment model) {
 		return equipmentRepository.findBySerialNumberAndModel(serialNumber,
 				model);
 	}

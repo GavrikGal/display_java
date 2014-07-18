@@ -12,7 +12,7 @@ public class Norm implements Serializable {
 	private static final long	serialVersionUID	= 9089008554064871620L;
 	private Long				idNorms;
 	private String				ShortNorms;
-	private Set<Model> 		models;
+	private Set<ModelOfEquipment> 		models;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +40,11 @@ public class Norm implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "norms_of_model", joinColumns = @JoinColumn(name = "Norms"), inverseJoinColumns = @JoinColumn(name = "Model"))
-	public Set<Model> getModels() {
+	public Set<ModelOfEquipment> getModels() {
 		return models;
 	}
 
-	public void setModels(Set<Model> models) {
+	public void setModels(Set<ModelOfEquipment> models) {
 		this.models = models;
 	}
 	

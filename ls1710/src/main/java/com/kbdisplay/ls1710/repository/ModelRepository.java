@@ -2,10 +2,10 @@ package com.kbdisplay.ls1710.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.kbdisplay.ls1710.domain.Model;
+import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 
-public interface ModelRepository extends CrudRepository<Model, Long> {
+public interface ModelRepository extends CrudRepository<ModelOfEquipment, Long> {
 	
-	public Model findByModelName (String modelName);
+	public ModelOfEquipment findByModelName (String modelName);
 
 }
