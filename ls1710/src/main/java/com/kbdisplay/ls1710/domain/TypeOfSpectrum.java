@@ -14,7 +14,7 @@ public class TypeOfSpectrum implements Serializable {
 	private String						idType;
 	private Set<SpectrumParameter>	spectrumsParameters	= new HashSet<SpectrumParameter>();
 
-	@OneToMany(mappedBy = "type", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "typeOfSpectrum", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<SpectrumParameter> getSpectrumsParameters() {
 		return this.spectrumsParameters;
 	}

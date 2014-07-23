@@ -12,10 +12,10 @@ public class ScreenResolution implements Serializable {
 
 	private static final long			serialVersionUID	= 8281839097726999031L;
 	private Long						idResolution;
-	private String						resolution;
+	private String						screenResolution;
 	private Set<SpectrumParameter>	spectrumsParameters	= new HashSet<SpectrumParameter>();
 
-	@OneToMany(mappedBy = "resolution", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "screenResolution", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<SpectrumParameter> getSpectrumsParameters() {
 		return this.spectrumsParameters;
 	}
@@ -41,15 +41,15 @@ public class ScreenResolution implements Serializable {
 
 	@Column(name = "Resolution")
 	public String getResolution() {
-		return resolution;
+		return screenResolution;
 	}
 
 	public void setResolution(String resolution) {
-		this.resolution = resolution;
+		this.screenResolution = resolution;
 	}
 
 	public String toString() {
-		return resolution;
+		return screenResolution;
 	}
 
 }

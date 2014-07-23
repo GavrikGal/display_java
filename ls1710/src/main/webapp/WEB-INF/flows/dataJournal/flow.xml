@@ -6,8 +6,10 @@
 
 	<view-state id="start" view="list.xhtml">
 		<on-entry>
-			<evaluate expression="measurementsController.newMeasurementListBean()"
-				result = "viewScope.measurementListBean" />
+			<evaluate
+				expression="measurementController.newMeasurementListBean()"
+				result="viewScope.measurementListBean"
+				result-type="com.kbdisplay.ls1710.web.view.MeasurementListBean" />
 		</on-entry>
 	</view-state>
 	

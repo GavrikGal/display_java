@@ -295,7 +295,7 @@ public class MeasurementsUpdaterServiceImpl implements
 					measurement = getMeasurements(equipment);
 					System.out.println("New Measurement with ID - " + measurement.getIdMeasurements()+ ":");
 					
-					System.out.println("     Date of meas -" + measurement.getDateOfMeasurement().getDateString());
+					//System.out.println("     Date of meas -" + measurement.getDateOfMeasurement().getDateString());
 					System.out.println("     Id model -" + measurement.getEquipment().getModel().getIdModel());
 					System.out.println("     model name - " + measurement.getEquipment().getModel().getModelName());
 					System.out.println("     serial Number - " + measurement.getEquipment().getSerialNumber());
@@ -307,8 +307,8 @@ public class MeasurementsUpdaterServiceImpl implements
 						System.out.println("        spectrum parameters:");
 						System.out.println("            spectrum parameters ID -" + spectrums.getSpectrumParameters().getIdSpectrumParameters());
 						System.out.println("            Measurands -" + spectrums.getSpectrumParameters().getMeasurand().getIdMeasurands());
-						System.out.println("            type - " + spectrums.getSpectrumParameters().getType().getIdType());
-						System.out.println("            Resolution - " + spectrums.getSpectrumParameters().getResolution().getResolution());
+						System.out.println("            type - " + spectrums.getSpectrumParameters().getTypeOfSpectrum().getIdType());
+						System.out.println("            Resolution - " + spectrums.getSpectrumParameters().getScreenResolution().getResolution());
 						System.out.println("        Harmonics:");
 						for (Harmonic harmonics : spectrums.getHarmonics()) {
 							
@@ -523,8 +523,8 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		SpectrumParameter spectrumParameter = new SpectrumParameter();
 		spectrumParameter.setMeasurand(measurand);
-		spectrumParameter.setResolution(screenResolution);
-		spectrumParameter.setType(typeOfSpectrum);
+		spectrumParameter.setScreenResolution(screenResolution);
+		spectrumParameter.setTypeOfSpectrum(typeOfSpectrum);
 		spectrumParameter.setSpectrums(new HashSet<Spectrum>());
 
 		spectrumParameter = spectrumParameterService

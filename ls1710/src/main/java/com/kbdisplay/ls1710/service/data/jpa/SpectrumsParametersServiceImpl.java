@@ -40,14 +40,14 @@ public class SpectrumsParametersServiceImpl implements SpectrumParameterService 
 												 * , PurposeOfMeasurement
 												 * purposeOfMeasurement
 												 */) {
-		return spectrumParameterRepository.findByMeasurandAndTypeAndResolution(measurand,
+		return spectrumParameterRepository.findByMeasurandAndTypeOfSpectrumAndScreenResolution(measurand,
 				typeOfSpectrum, screenResolution/* , purposeOfMeasurement */);
 	}
 
 	public SpectrumParameter save(SpectrumParameter spectrumParameter) {
 		SpectrumParameter checkingParameter = spectrumParameterRepository
-				.findByMeasurandAndTypeAndResolution(spectrumParameter.getMeasurand(),
-						spectrumParameter.getType(), spectrumParameter.getResolution());
+				.findByMeasurandAndTypeOfSpectrumAndScreenResolution(spectrumParameter.getMeasurand(),
+						spectrumParameter.getTypeOfSpectrum(), spectrumParameter.getScreenResolution());
 		if (checkingParameter == null) {
 			return spectrumParameterRepository.save(spectrumParameter);
 		} else {

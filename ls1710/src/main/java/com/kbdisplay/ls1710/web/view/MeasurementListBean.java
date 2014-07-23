@@ -3,8 +3,18 @@ package com.kbdisplay.ls1710.web.view;
 import java.io.Serializable;
 import java.util.List;
 
-import com.kbdisplay.ls1710.domain.Measurement;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.kbdisplay.ls1710.domain.Measurement;
+import com.kbdisplay.ls1710.service.data.MeasurementService;
+//import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+
+@ManagedBean(name="measurementListBean")
+@ViewScoped
 public class MeasurementListBean implements Serializable{
 	
 	/**
@@ -15,7 +25,27 @@ public class MeasurementListBean implements Serializable{
 	private List<Measurement> measurements;
 	
 	private Measurement selecedMeasurement;
+	
+//	@Autowired
+//	private MeasurementService measurementService; 
+	
+	//private ModelOfEquipment modelOfEquipment;
 
+	
+	
+//	public ModelOfEquipment getModelOfEquipment() {
+//		return modelOfEquipment;
+//	}
+//
+//	public void setModelOfEquipment(ModelOfEquipment modelOfEquipment) {
+//		this.modelOfEquipment = modelOfEquipment;
+//	}
+
+//	@PostConstruct
+//    public void init() {
+//        measurements = measurementService.findAll();
+//    }
+	
 	public List<Measurement> getMeasurements() {
 		return measurements;
 	}
@@ -32,6 +62,10 @@ public class MeasurementListBean implements Serializable{
 		this.selecedMeasurement = selecedMeasurement;
 	}
 	
+	public void deleteMeasurement() {
+        measurements.remove(selecedMeasurement);
+        selecedMeasurement = null;
+    }
 	
 
 }

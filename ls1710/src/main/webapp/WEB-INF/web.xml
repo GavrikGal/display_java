@@ -10,6 +10,8 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	
+	
 	<!-- JSF 2 -->
 	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
@@ -25,6 +27,13 @@
 		<param-value>1</param-value>
 		<!-- в производственной версии должно быть -1, чтобы скомпилированные шаблоны не проверялись-->
 	</context-param>
+	
+	<context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>bootstrap</param-value>
+    </context-param>
+	
+	
 	
 	<!-- Нужен для того, чтобы реализация JSF могла быть инициализирована; 
 		"не" используется во время выполнения -->
@@ -52,7 +61,7 @@
 
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/app/*</url-pattern>
 	</servlet-mapping>
 	
 

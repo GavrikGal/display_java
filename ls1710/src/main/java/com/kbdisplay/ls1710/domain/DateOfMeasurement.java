@@ -51,7 +51,7 @@ public class DateOfMeasurement implements Serializable {
 	}
 
 	@Column(name = "Date")
-	@Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(iso = ISO.DATE)
 	public DateTime getDate() {
 		return date;
@@ -61,15 +61,15 @@ public class DateOfMeasurement implements Serializable {
 		this.date = date;
 	}
 
-	@Transient
-	public String getDateString() {
-		String dateString = "";
-		if (date != null) {
-			dateString = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.yyyy").print(
-					date);
-		}
-		return dateString;
-	}
+//	@Transient
+//	public String getDateString() {
+//		String dateString = "";
+//		if (date != null) {
+//			dateString = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.yyyy").print(
+//					date);
+//		}
+//		return dateString;
+//	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

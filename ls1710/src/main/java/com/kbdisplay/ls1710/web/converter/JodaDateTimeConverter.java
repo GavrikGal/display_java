@@ -18,19 +18,39 @@ import org.joda.time.format.DateTimeFormat;
 @FacesConverter("jodaDataTimeConverter")
 public class JodaDateTimeConverter implements Converter {
 
-	private static final String PATTERN = "yyyy-MM-dd";
+	//private static final String PATTERN = "dd.MM.yyyy";
 	
+	private String pattern = "dd-MM-yyyy";
+	
+	
+	public String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+
 	@Override
 	public Object getAsObject(FacesContext ctx, UIComponent component, String value) {
-		return DateTimeFormat.forPattern(PATTERN).parseDateTime(value);
+		String pattern = (String) component.getAttributes().get("pattern");
+		if (pattern == null) {
+			pattern = this.pattern;
+		}
+		return DateTimeFormat.forPattern(pattern).parseDateTime(value);
 	}
 
 	@Override
 	public String getAsString(FacesContext ctx, UIComponent component, Object value) {
 		
+		String pattern = (String) component.getAttributes().get("pattern");
+		if (pattern == null) {
+			pattern = this.pattern;
+		}
+		
 		DateTime dateTime = (DateTime) value;
 		
-		return DateTimeFormat.forPattern(PATTERN).print(dateTime);
+		return DateTimeFormat.forPattern(pattern).print(dateTime);
 	}	
 	
 }

@@ -32,6 +32,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 
+
+
+import com.kbdisplay.ls1710.domain.DateOfMeasurement;
+import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
@@ -58,7 +62,7 @@ import com.kbdisplay.ls1710.web.view.MeasurementsView;
 import com.google.common.collect.Lists;
 
 //@RequestMapping("/measurements")
-@Component("measurementsController")
+@Component("measurementController")
 public class MeasurementsController {
 
 	final int							rowAtPage	= 30;
@@ -108,14 +112,13 @@ public class MeasurementsController {
 	// ____________________Request Mapping_________________________________
 	
 	public MeasurementListBean newMeasurementListBean() {
+		logger.info("newMeasurementListBean() execution...");
 		MeasurementListBean measurementListBean = new MeasurementListBean();
-		ModelOfEquipment modelOfEquipment = modelsService.findById(1l);
-		//List<Measurement> measurements = measurementsService.findAll();
 		
-		//measurementListBean.setMeasurements(measurements);
-		System.out.println();
-		System.out.println("Fuuuuuuuuuuuuuuuuuuuuuuu ");
-		System.out.println();
+		List<Measurement> measurements = measurementsService.findAll();
+		
+		measurementListBean.setMeasurements(measurements);
+		
 		return measurementListBean;
 	}
 
@@ -139,10 +142,10 @@ public class MeasurementsController {
 			measurementsForm.setModel(measurementsViews.get(0).getMeasurements()
 					.getEquipment().getModel().getModelName());
 			measurementsForm.setScreenResolutions(measurementsViews.get(0).getMeasurements()
-					.getSpectrums().get(0).getSpectrumParameters().getResolution()
+					.getSpectrums().get(0).getSpectrumParameters().getScreenResolution()
 					.getResolution());
 			measurementsForm.setType(measurementsViews.get(0).getMeasurements().getSpectrums()
-					.get(0).getSpectrumParameters().getType().getIdType());
+					.get(0).getSpectrumParameters().getTypeOfSpectrum().getIdType());
 
 			uiModel.addAttribute("measurementsForm", measurementsForm);
 		} else {
@@ -233,9 +236,9 @@ public class MeasurementsController {
 		measurementsForm.setMeasurand(editedMeasurement.getSpectrums().get(0)
 				.getSpectrumParameters().getMeasurand().getIdMeasurands());
 		measurementsForm.setScreenResolutions(editedMeasurement.getSpectrums().get(0)
-				.getSpectrumParameters().getResolution().getResolution());
+				.getSpectrumParameters().getScreenResolution().getResolution());
 		measurementsForm.setType(editedMeasurement.getSpectrums().get(0)
-				.getSpectrumParameters().getType().getIdType());
+				.getSpectrumParameters().getTypeOfSpectrum().getIdType());
 		measurementsForm.setDescription("");
 
 		uiModel.asMap().clear();

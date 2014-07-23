@@ -14,7 +14,7 @@ public class SpectrumParameter implements Serializable {
 	private Long					idSpectrumParameters;
 	private Measurand				measurand;
 	private TypeOfSpectrum					typeOfSpectrum;
-	private ScreenResolution		resolution;
+	private ScreenResolution		screenResolution;
 //	private PurposeOfMeasurement	purposeOfMeasurement;
 
 //	@ManyToOne
@@ -56,22 +56,22 @@ public class SpectrumParameter implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "Type")
-	public TypeOfSpectrum getType() {
+	public TypeOfSpectrum getTypeOfSpectrum() {
 		return typeOfSpectrum;
 	}
 
-	public void setType(TypeOfSpectrum type) {
+	public void setTypeOfSpectrum(TypeOfSpectrum type) {
 		this.typeOfSpectrum = type;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Resolution")
-	public ScreenResolution getResolution() {
-		return resolution;
+	public ScreenResolution getScreenResolution() {
+		return screenResolution;
 	}
 
-	public void setResolution(ScreenResolution resolution) {
-		this.resolution = resolution;
+	public void setScreenResolution(ScreenResolution resolution) {
+		this.screenResolution = resolution;
 	}
 
 	@OneToMany(mappedBy = "spectrumParameters", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -21,8 +21,8 @@ public interface SpectrumParameterRepository extends
 	// @Param("purposeOfMeasurement") PurposeOfMeasurement
 	// purposeOfMeasurement*/);
 	//
-	public SpectrumParameter findByMeasurandAndTypeAndResolution(
-			Measurand measurand, TypeOfSpectrum type,
-			ScreenResolution resolution);
+	public SpectrumParameter findByMeasurandAndTypeOfSpectrumAndScreenResolution(
+			Measurand measurand, TypeOfSpectrum typeOfSpectrum,
+			ScreenResolution screenResolution);
 
 }

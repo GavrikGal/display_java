@@ -19,6 +19,7 @@
             <Context docBase="ls1710" path="/ls1710" reloadable="true" source="org.eclipse.jst.jee.server:ls1710"/></Host>
         </Engine>
         <Connector acceptCount="100" connectionTimeout="20000" executor="tomcatThreadPool" maxKeepAliveRequests="15" port="${bio.http.port}" protocol="org.apache.coyote.http11.Http11Protocol" redirectPort="${bio.https.port}"/>
+        <Connector SSLEnabled="true" acceptCount="100" ciphers="${bio-ssl.cipher.list}" connectionTimeout="20000" executor="tomcatThreadPool" keyAlias="${bio-ssl.ssl.key.alias}" keyPass="${bio-ssl.ssl.key.password}" keystoreFile="${catalina.base}/${bio-ssl.ssl.keystore.location}" keystorePass="${bio-ssl.ssl.keystore.password}" maxKeepAliveRequests="15" port="${bio-ssl.https.port}" protocol="org.apache.coyote.http11.Http11Protocol" redirectPort="${bio-ssl.https.port}" scheme="https" secure="true"/>
     </Service>
     <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
 </Server>
