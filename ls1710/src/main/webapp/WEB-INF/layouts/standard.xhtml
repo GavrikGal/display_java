@@ -7,32 +7,44 @@
 
 <f:view contentType="text/html">
 
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>ЛС-1710</title>
-	<link rel="stylesheet" href="${request.contextPath}/styles/gavrik/internalTable.css" type="text/css" media="screen, projection" /> 
-	<link rel="stylesheet" href="${request.contextPath}/styles/blueprint/screen.css" type="text/css" media="screen, projection" /> 
-	<link rel="stylesheet" href="${request.contextPath}/styles/blueprint/print.css" type="text/css" media="print" /> 
-	<!--[if lt IE 8]>
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>ЛС-1710</title>
+		<link rel="stylesheet"
+			href="${request.contextPath}/styles/gavrik/screen.css"
+			type="text/css" media="screen, projection" />
+		<link rel="stylesheet"
+			href="${request.contextPath}/styles/blueprint/screen.css"
+			type="text/css" media="screen, projection" />
+		<link rel="stylesheet"
+			href="${request.contextPath}/styles/blueprint/print.css"
+			type="text/css" media="print" />
+		<!--[if lt IE 8]>
 		<link rel="stylesheet" href="${request.servletPath}/styles/blueprint/ie.css" type="text/css" media="screen, projection" />
 	<![endif]-->
-</h:head>
+	</h:head>
 
-<h:body>
-    <div class="container">
-		<div>
-			<h1>JSF 2, PrimeFaces, and Spring Web Flow</h1>
-			<h3 class="alt">
-				<ui:insert name="title"/>
-			</h3>
-			<hr/>
+	<h:body>
+		<div class="container">
+
+			<div class="header">
+				<ui:insert name="header">
+					<ui:include src="/WEB-INF/flows/common/header.xhtml" />
+				</ui:insert>
+			</div>
+
+			<div class="content">
+				<ui:insert name="content" />
+			</div>
+
+			<div class="footer">
+				<ui:insert name="footer">
+					<ui:include src="/WEB-INF/flows/common/footer.xhtml" />
+				</ui:insert>
+			</div>
+
 		</div>
-
-		<div>
-		    <ui:insert name="content"/>
-		</div>	
-	</div>
-</h:body>
+	</h:body>
 
 </f:view>
 </html>

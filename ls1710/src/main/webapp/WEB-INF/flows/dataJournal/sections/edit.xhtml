@@ -1,0 +1,44 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<div class="editPanel">
+		<p:panel id="editMeasurement">
+			<h:form id="editForm">
+			<p:panelGrid columns="6" >
+				<h:outputText value="Дата" />
+			    <p:outputLabel for="model" value="Модель" />
+			 
+			    <h:outputText value="Серийный номер" />
+			    <h:outputText value="Параметры" />
+			 
+			    <h:outputText value="Результаты изерений" />
+			    <h:outputText value="Испытания проводил" />
+			 
+			    <p:clock pattern="dd.MM.yyyy - HH:mm:ss" mode="server" autoSync="true"/>
+			    
+				
+		        <p:selectOneMenu id="model" value="" effect="fold" editable="true">
+		            <f:selectItem itemLabel="Select One" itemValue="" />
+		            <f:selectItems value="" />
+		        </p:selectOneMenu>
+
+
+			    <p:inputText/>
+			    <h:outputText value="4" />
+			    <h:outputText value="5" />
+			    <h:outputText value="6" />
+			</p:panelGrid>
+			</h:form>
+		</p:panel>
+
+		<p:sticky target="editMeasurement" margin="37" />
+	</div>
+
+
+
+</ui:composition>

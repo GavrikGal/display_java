@@ -4,7 +4,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-	<view-state id="start" view="list.xhtml">
+	<view-state id="start" view="dataJournal.xhtml">
+		
 		<on-entry>
 			<evaluate
 				expression="measurementController.newMeasurementListBean()"

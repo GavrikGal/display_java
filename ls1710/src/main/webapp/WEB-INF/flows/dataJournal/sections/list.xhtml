@@ -1,0 +1,168 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+	<div class="listPanel">
+		<p:panel>
+
+			<h:form id="form">
+				<p:contextMenu for="measurements">
+					<p:menuitem value="View" update="measurementDetail"
+						icon="ui-icon-search" oncomplete="PF('measurementDialog').show()" />
+					<p:menuitem value="Delete" update="measurements"
+						icon="ui-icon-close"
+						actionListener="#{measurementListBean.deleteMeasurement}" />
+				</p:contextMenu>
+
+				<p:dataTable id="measurements" var="measurement"
+					value="#{measurementListBean.measurements}"
+					rowKey="#{measurement.idMeasurements}"
+					selection="#{measurementListBean.selecedMeasurement}"
+					selectionMode="single" rowStyleClass="measurement-table-rows"
+					sortBy="#{measurement.idMeasurements}" sortOrder="descending">
+					<p:column headerText="#{msg['label_measurement_table_date']}"
+						width="70">
+						<h:outputText value="#{measurement.dateOfMeasurement.date}">
+							<f:converter converterId="jodaDataTimeConverter" />
+							<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="#{msg['label_measurement_table_model']}"
+						width="80">
+						<h:outputText value="#{measurement.equipment.model.modelName}" />
+					</p:column>
+					<p:column
+						headerText="#{msg['label_measurement_table_serial_number']}"
+						width="80">
+						<h:outputText value="#{measurement.equipment.serialNumber}" />
+					</p:column>
+					<p:column headerText="#{msg['label_measurement_table_spectrum']}">
+						<p:dataGrid var="spectrum" value="#{measurement.spectrums}"
+							columns="1" rows="2" id="spectrums" paginator="false"
+							styleClass="internalTable">
+							<p:panelGrid>
+								<p:row>
+									<p:column style="width: 140px">
+										<h:outputText
+											value="#{spectrum.spectrumParameters.measurand}
+	        											 #{spectrum.spectrumParameters.typeOfSpectrum != null ? ', ' : ''}"
+											style="font-size: small;" />
+										<h:outputText
+											value="#{spectrum.spectrumParameters.typeOfSpectrum}
+		            									 #{spectrum.spectrumParameters.screenResolution != null ? ', ' : ''}"
+											style="font-size: small;" />
+										<h:outputText
+											value="#{spectrum.spectrumParameters.screenResolution}"
+											style="font-size: small;" />
+									</p:column>
+									<p:column>
+										<ui:repeat var="harmonic" value="#{spectrum.harmonics}"
+											size="#{spectrum.harmonics.size() > 2 ? 3 : spectrum.harmonics.size()}">
+											<h:outputText
+												value="#{harmonic.frequency} - #{harmonic.amplitude}#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " />
+										</ui:repeat>
+									</p:column>
+
+								</p:row>
+							</p:panelGrid>
+						</p:dataGrid>
+					</p:column>
+					<p:column width="20" styleClass="internalTable"
+						style="border-left: 0px solid #E55 ">
+						<p:rowToggler rendered="#{measurement.spectrums.size() > 2}" />
+					</p:column>
+					<p:column
+						headerText="#{msg['label_measurement_table_second_date']}"
+						width="70">
+						<h:outputText value="#{measurement.dateOfSecondMeasurement.date}">
+							<f:converter converterId="jodaDataTimeConverter" />
+							<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="#{msg['label_measurement_table_user']}"
+						width="80">
+						<h:outputText value="#{measurement.user.firstName}" />
+					</p:column>
+
+
+
+					<p:rowExpansion styleClass="expansionTable">
+						<p:panelGrid>
+							<p:row>
+								<p:column style="width: 271px">
+
+								</p:column>
+								<p:column>
+									<p:dataGrid var="moreSpectrum" value="#{measurement.spectrums}"
+										columns="1" rows="2" id="moreSpectrums" paginator="false"
+										styleClass="internalTable" first="2">
+										<p:panelGrid>
+											<p:row>
+												<p:column style="width: 140px">
+													<h:outputText
+														value="#{moreSpectrum.spectrumParameters.measurand}
+			        											 #{moreSpectrum.spectrumParameters.typeOfSpectrum != null ? ', ' : ''}"
+														style="font-size: small;" />
+													<h:outputText
+														value="#{moreSpectrum.spectrumParameters.typeOfSpectrum}
+				            									 #{moreSpectrum.spectrumParameters.screenResolution != null ? ', ' : ''}"
+														style="font-size: small;" />
+													<h:outputText
+														value="#{moreSpectrum.spectrumParameters.screenResolution}"
+														style="font-size: small;" />
+												</p:column>
+												<p:column>
+													<ui:repeat var="harmonic" value="#{moreSpectrum.harmonics}"
+														size="#{moreSpectrum.harmonics.size() > 2 ? 3 : moreSpectrum.harmonics.size()}">
+														<h:outputText
+															value="#{harmonic.frequency} - #{harmonic.amplitude}#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " />
+													</ui:repeat>
+												</p:column>
+
+											</p:row>
+										</p:panelGrid>
+									</p:dataGrid>
+								</p:column>
+
+
+								<p:column style="width: 170px">
+
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:rowExpansion>
+				</p:dataTable>
+
+				<p:dialog header="Measurement Info" widgetVar="measurementDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+					position="50,50">
+					<p:outputPanel id="measurementDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty measurementListBean.selecedMeasurement}"
+							columnClasses="label,value">
+
+							<h:outputText value="#{msg['label_measurement_table_date']}" />
+							<h:outputText
+								value="#{measurementListBean.selecedMeasurement.dateOfMeasurement.date}" />
+
+							<h:outputText value="#{msg['label_measurement_table_model']}" />
+							<h:outputText
+								value="#{measurementListBean.selecedMeasurement.equipment.model.modelName}" />
+
+							<h:outputText
+								value="#{msg['label_measurement_table_serial_number']}" />
+							<h:outputText
+								value="#{measurementListBean.selecedMeasurement.equipment.serialNumber}" />
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+
+			</h:form>
+		</p:panel>
+	</div>
+</ui:composition>
