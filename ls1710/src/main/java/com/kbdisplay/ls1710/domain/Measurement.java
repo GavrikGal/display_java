@@ -19,7 +19,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 /**
- * <b>Объект проводимых измерений/испытаний из БД.</b>
+ * Объект проводимых измерений/испытаний из БД.
  *
  * @author Gavrik
  *

@@ -19,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
- * <b>Объект даты испытаний из БД.</b>
+ * Объект даты испытаний из БД.
  * @author Gavrik
  */
 @Entity

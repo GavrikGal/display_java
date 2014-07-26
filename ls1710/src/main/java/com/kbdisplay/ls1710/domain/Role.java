@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
- * <b>Объект ролей пользователей (юзеры, администраторы) из БД.</b>
+ * Объект ролей пользователей (юзеры, администраторы) из БД.
  *
  * @author Gavrik
  *

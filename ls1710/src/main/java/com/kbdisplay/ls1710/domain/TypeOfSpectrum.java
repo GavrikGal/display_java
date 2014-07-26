@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * <b>Объект типа измеряемого спектра (си или ирп) из БД.</b>
+ * Объект типа измеряемого спектра (си или ирп) из БД.
  *
  * @author Gavrik
  *

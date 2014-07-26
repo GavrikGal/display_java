@@ -23,7 +23,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 /**
- * <b>Объект измеренного спектра из БД.</b>
+ * Объект измеренного спектра из БД.
  *
  * @author Gavrik
  *

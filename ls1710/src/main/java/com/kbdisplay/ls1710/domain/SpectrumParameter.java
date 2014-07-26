@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * <b>Объект параметров спектра из БД.</b>
+ * Объект параметров спектра из БД.
  *
  * @author Gavrik
  *

@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * <b>Объект пользователя из БД.</b>
+ * Объект пользователя из БД.
  *
  * @author Gavrik
  *

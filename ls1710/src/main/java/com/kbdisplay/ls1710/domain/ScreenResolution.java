@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * <b>Объект разрешения экрана из БД.</b>
+ * Объект разрешения экрана из БД.
  *
  * @author Gavrik
  *

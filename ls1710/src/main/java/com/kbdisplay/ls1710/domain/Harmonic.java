@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * <b>Объект измеренных амплитуд и частот (гармоник) из БД.</b>
+ * Объект измеренных амплитуд и частот (гармоник) из БД.
  *
  * @author Gavrik
  *

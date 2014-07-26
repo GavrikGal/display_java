@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
- * <b>Объект норм, которым должно соответствовать испытуемое изделие, из БД.</b>
+ * Объект норм, которым должно соответствовать испытуемое изделие, из БД.
  *
  * @author Gavrik
  *

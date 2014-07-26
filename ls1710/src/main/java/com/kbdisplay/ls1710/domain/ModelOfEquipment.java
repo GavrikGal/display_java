@@ -25,7 +25,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 /**
- * <b>Объект модели изделия из БД.</b>
+ * Объект модели изделия из БД.
  *
  * @author Gavrik
  *

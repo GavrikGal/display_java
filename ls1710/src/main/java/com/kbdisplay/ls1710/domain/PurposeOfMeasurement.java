@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * <b>Объект цели измерений/испытаний из БД.</b>
+ * Объект цели измерений/испытаний из БД.
  *
  * @author Gavrik
  *
