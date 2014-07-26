@@ -3,57 +3,94 @@ package com.kbdisplay.ls1710.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+/**
+ * <b>Объект проводимых измерений/испытаний из БД.</b>
+ *
+ * @author Gavrik
+ *
+ */
 @Entity
 @Table(name = "measurements")
 public class Measurement implements Serializable {
 
+	/**
+	 * Серийный номер класса.
+	 */
 	private static final long serialVersionUID = -1257165263393374914L;
 
+	/**
+	 * ID измерения/испытания.
+	 */
 	private Long idMeasurements;
+	/**
+	 * ф.
+	 */
 	private Equipment equipment;
+	/**
+	 * Дата измерений.
+	 */
 	private DateOfMeasurement dateOfMeasurement;
+	/**
+	 * Дата повторных измерений.
+	 */
 	private DateOfMeasurement dateOfSecondMeasurement;
-	// TODO ������ ������ ���� ������ �������� ����� ������
-	//private Sring version (1.1, 1.2, 2.1 ... 5.3 ... );
+	// TODO Заменить дату повторного измерения на версию измерений
+	// private String version (1.1, 1.2, 2.1 ... 5.3 ... );
+	/**
+	 * Список спектров, которые включает в себя измерение.
+	 */
 	private List<Spectrum> spectrums;
+	/**
+	 * Пользователь проводивший измерения.
+	 */
 	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "Date_of_measurement")
-	public DateOfMeasurement getDateOfMeasurement() {
+	public final DateOfMeasurement getDateOfMeasurement() {
 		return dateOfMeasurement;
 	}
 
-	public void setDateOfMeasurement(DateOfMeasurement date) {
+	public final void setDateOfMeasurement(final DateOfMeasurement date) {
 		this.dateOfMeasurement = date;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Date_of_second_measurement")
-	public DateOfMeasurement getDateOfSecondMeasurement() {
+	public final DateOfMeasurement getDateOfSecondMeasurement() {
 		return dateOfSecondMeasurement;
 	}
 
-	public void setDateOfSecondMeasurement(
-			DateOfMeasurement dateOfSecondMeasurement) {
+	public final void setDateOfSecondMeasurement(
+			final DateOfMeasurement dateOfSecondMeasurement) {
 		this.dateOfSecondMeasurement = dateOfSecondMeasurement;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Measurements")
-	public Long getIdMeasurements() {
+	public final Long getIdMeasurements() {
 		return idMeasurements;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Equipment")
-	public Equipment getEquipment() {
+	public final Equipment getEquipment() {
 		return equipment;
 	}
 
@@ -61,11 +98,11 @@ public class Measurement implements Serializable {
 		return serialVersionUID;
 	}
 
-	public void setIdMeasurements(Long idMeasurements) {
+	public final void setIdMeasurements(final Long idMeasurements) {
 		this.idMeasurements = idMeasurements;
 	}
 
-	public void setEquipment(Equipment equipment) {
+	public final void setEquipment(final Equipment equipment) {
 		this.equipment = equipment;
 	}
 
@@ -84,22 +121,23 @@ public class Measurement implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "User")
-	public User getUser() {
+	public final User getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public final void setUser(final User user) {
 		this.user = user;
 	}
 
-	@OneToMany(mappedBy = "measurement", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "measurement",
+			cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("time")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	public List<Spectrum> getSpectrums() {
+	public final List<Spectrum> getSpectrums() {
 		return spectrums;
 	}
 
-	public void setSpectrums(List<Spectrum> spectrums) {
+	public final void setSpectrums(final List<Spectrum> spectrums) {
 		this.spectrums = spectrums;
 	}
 

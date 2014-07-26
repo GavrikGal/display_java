@@ -5,40 +5,82 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+/**
+ * <b>Объект модели изделия из БД.</b>
+ *
+ * @author Gavrik
+ *
+ */
 @Entity
 @Table(name = "models")
 public class ModelOfEquipment implements Serializable {
 
-	private static final long	serialVersionUID	= 7092054057261196283L;
-	private Long				idModel;
-	private String				modelName;
-	private String				description;
-	private byte[]				photo;
-	private Set<Equipment>		equipments			= new HashSet<Equipment>();
-	private List<Norm>			norms;
+	/**
+	 * Серийный номер класса.
+	 */
+	private static final long serialVersionUID = 7092054057261196283L;
+	/**
+	 * ID модели изделия.
+	 */
+	private Long idModel;
+	/**
+	 * Название модели.
+	 */
+	private String modelName;
+	/**
+	 * Описание модели изделия.
+	 */
+	private String description;
+	/**
+	 * Фото модели изделия.
+	 */
+	private byte[] photo;
+	/**
+	 * Список изделий данной модели.
+	 */
+	private Set<Equipment> equipments = new HashSet<Equipment>();
+	/**
+	 * Список норм, которым должно соответствовать эта модель изделия.
+	 */
+	private List<Norm> norms;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Model")
-	public Long getIdModel() {
+	public final Long getIdModel() {
 		return idModel;
 	}
 
-	public void setIdModel(Long idModel) {
+	public final void setIdModel(final Long idModel) {
 		this.idModel = idModel;
 	}
 
-	@OneToMany(mappedBy = "model", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Equipment> getEquipments() {
+	@OneToMany(mappedBy = "model",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	public final Set<Equipment> getEquipments() {
 		return this.equipments;
 	}
 
-	public void setEquipments(Set<Equipment> equipments) {
+	public final void setEquipments(final Set<Equipment> equipments) {
 		this.equipments = equipments;
 	}
 
@@ -46,51 +88,52 @@ public class ModelOfEquipment implements Serializable {
 		return serialVersionUID;
 	}
 
-	public String toString() {
+	@Override
+	public final String toString() {
 		return modelName;
 	}
 
 	@Column(name = "Description")
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public final void setDescription(final String description) {
 		this.description = description;
 	}
 
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
 	@Column(name = "Photo")
-	public byte[] getPhoto() {
+	public final byte[] getPhoto() {
 		return photo;
 	}
 
-	public void setPhoto(byte[] photo) {
+	public final void setPhoto(final byte[] photo) {
 		this.photo = photo;
 	}
 
 	@ManyToMany
-	@JoinTable(name = "norms_of_model", joinColumns = @JoinColumn(name = "Model"), inverseJoinColumns = @JoinColumn(name = "Norms"))
+	@JoinTable(name = "norms_of_model",
+		joinColumns = @JoinColumn(name = "Model"),
+		inverseJoinColumns = @JoinColumn(name = "Norms"))
 	@OrderBy("idNorms")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	public List<Norm> getNorms() {
+	public final List<Norm> getNorms() {
 		return norms;
 	}
 
-	public void setNorms(List<Norm> norms) {
+	public final void setNorms(final List<Norm> norms) {
 		this.norms = norms;
 	}
 
 	@Column(name = "Model_name")
-	public String getModelName() {
+	public final String getModelName() {
 		return modelName;
 	}
 
-	public void setModelName(String modelName) {
+	public final void setModelName(final String modelName) {
 		this.modelName = modelName;
 	}
-
-	
 
 }

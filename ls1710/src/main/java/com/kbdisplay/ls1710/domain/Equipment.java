@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * Объект испытуемого изделия из БД.
+ * <b>Объект испытуемого изделия из БД.</b>
  *
  * @author Gavrik
  *

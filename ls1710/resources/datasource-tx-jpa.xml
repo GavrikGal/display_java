@@ -34,12 +34,12 @@
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager" />
-    
+
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-        </property>        
+        </property>
         <property name="packagesToScan" value="com.kbdisplay.ls1710.domain"/>
         <property name="jpaProperties">
             <props>
@@ -47,15 +47,15 @@
                 <prop key="hibernate.max_fetch_depth">3</prop>
                 <prop key="hibernate.jdbc.fetch_size">50</prop>
                 <prop key="hibernate.jdbc.batch_size">10</prop>
-                <prop key="hibernate.show_sql">true</prop>              
-            </props>        
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
         </property>
-    </bean>    
-    
-    <context:annotation-config/>    
-    
+    </bean>
+
+    <context:annotation-config/>
+
     <jpa:repositories base-package="com.kbdisplay.ls1710.repository"
                       entity-manager-factory-ref="emf"
-                      transaction-manager-ref="transactionManager"/>    
+                      transaction-manager-ref="transactionManager"/>
 
 </beans>

@@ -7,88 +7,127 @@ import java.sql.Time;
 import java.util.List;
 //import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+/**
+ * <b>Объект измеренного спектра из БД.</b>
+ *
+ * @author Gavrik
+ *
+ */
 @Entity
 @Table(name = "spectrums")
 public class Spectrum implements Serializable {
 
-	private static final long	serialVersionUID	= 822452653650724060L;
+	/**
+	 * Серийный номер класса.
+	 */
+	private static final long serialVersionUID = 822452653650724060L;
 
-	private Long				idSpectrums;
-	private Measurement		measurement;
-	private SpectrumParameter	spectrumParameters;
-	private String				description;
-	private Time				time;
-	private List<Harmonic>		harmonics;
+	/**
+	 * ID измеренного спектра.
+	 */
+	private Long idSpectrums;
+	/**
+	 * измеренный спектр.
+	 */
+	private Measurement measurement;
+	/**
+	 * Параметры спектра (измеряемая величина, разрешение, тип измерений и
+	 * т.д.).
+	 */
+	private SpectrumParameter spectrumParameters;
+	/**
+	 * Описание измеренного спектра, либо комментарии к измеренному спектру
+	 * (типа: соотв. и т.д.).
+	 */
+	private String description;
+	/**
+	 * Время измерения спектра.
+	 */
+	private Time time;
+	/**
+	 * Список спектральных составляющих - гармоник спектра.
+	 */
+	private List<Harmonic> harmonics;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	@OneToMany(mappedBy = "spectrum", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "spectrum",
+			cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("frequency")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	public List<Harmonic> getHarmonics() {
+	public final List<Harmonic> getHarmonics() {
 		return this.harmonics;
 	}
 
-	public void setHarmonics(List<Harmonic> harmonics) {
+	public final void setHarmonics(final List<Harmonic> harmonics) {
 		this.harmonics = harmonics;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Spectrums")
-	public Long getIdSpectrums() {
+	public final Long getIdSpectrums() {
 		return idSpectrums;
 	}
 
-	public void setIdSpectrums(Long idSpectrums) {
+	public final void setIdSpectrums(final Long idSpectrums) {
 		this.idSpectrums = idSpectrums;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Measurements")
-	public Measurement getMeasurement() {
+	public final Measurement getMeasurement() {
 		return measurement;
 	}
 
-	public void setMeasurement(Measurement measurement) {
+	public final void setMeasurement(final Measurement measurement) {
 		this.measurement = measurement;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Spectrum_parameters")
-	public SpectrumParameter getSpectrumParameters() {
+	public final SpectrumParameter getSpectrumParameters() {
 		return spectrumParameters;
 	}
 
-	public void setSpectrumParameters(SpectrumParameter spectrumParameters) {
+	public final void setSpectrumParameters(
+			final SpectrumParameter spectrumParameters) {
 		this.spectrumParameters = spectrumParameters;
 	}
 
 	@Column(name = "Time")
-	public Time getTime() {
+	public final Time getTime() {
 		return time;
 	}
 
-	public void setTime(Time time) {
+	public final void setTime(final Time time) {
 		this.time = time;
 	}
 
 	@Column(name = "Description")
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public final void setDescription(final String description) {
 		this.description = description;
 	}
 
-	
-	
 }

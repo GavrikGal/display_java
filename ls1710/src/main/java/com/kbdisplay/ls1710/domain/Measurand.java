@@ -4,22 +4,48 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+/**
+ * <b>Объект измеряемой физической величины (напряженность, напряжение, ток) из
+ * БД.</b>
+ *
+ * @author Gavrik
+ *
+ */
 @Entity
 @Table(name = "measurands")
 public class Measurand implements Serializable {
 
-	private static final long			serialVersionUID	= 4305595715434295082L;
-	private String						idMeasurands;
-	private Set<SpectrumParameter>	spectrumsParameters	= new HashSet<SpectrumParameter>();
+	/**
+	 * Серийный номер класса.
+	 */
+	private static final long serialVersionUID = 4305595715434295082L;
+	/**
+	 * ID измеряемой физической величины. В качестве ID используется название
+	 * измеряемой величины.
+	 */
+	private String idMeasurands;
+	/**
+	 * Список параметров спектров, в которых используется данная физическая
+	 * величина.
+	 */
+	private Set<SpectrumParameter> spectrumsParameters =
+			new HashSet<SpectrumParameter>();
 
-	@OneToMany(mappedBy = "measurand", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<SpectrumParameter> getSpectrumsParameters() {
+	@OneToMany(mappedBy = "measurand",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	public final Set<SpectrumParameter> getSpectrumsParameters() {
 		return this.spectrumsParameters;
 	}
 
-	public void setSpectrumsParameters(Set<SpectrumParameter> spectrumsParameters) {
+	public final void setSpectrumsParameters(
+			final Set<SpectrumParameter> spectrumsParameters) {
 		this.spectrumsParameters = spectrumsParameters;
 	}
 
@@ -29,15 +55,16 @@ public class Measurand implements Serializable {
 
 	@Id
 	@Column(name = "id_Measurand")
-	public String getIdMeasurands() {
+	public final String getIdMeasurands() {
 		return idMeasurands;
 	}
 
-	public void setIdMeasurands(String idMeasurands) {
+	public final void setIdMeasurands(final String idMeasurands) {
 		this.idMeasurands = idMeasurands;
 	}
 
-	public String toString() {
+	@Override
+	public final String toString() {
 		return idMeasurands;
 	}
 }

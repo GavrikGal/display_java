@@ -6,59 +6,103 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+/**
+ * <b>Объект пользователя из БД.</b>
+ *
+ * @author Gavrik
+ *
+ */
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
 
-	private static final long	serialVersionUID	= 7925769595205799558L;
+	/**
+	 * Серийный номер класса.
+	 */
+	private static final long serialVersionUID = 7925769595205799558L;
 
-	private Long				idUser;
-	private String				FirstName;
-	private String				LastName;
-	private String				FatherName;
-	private String				UserName;
-	private String				Password;
-	private Set<Measurement>	measurements		= new HashSet<Measurement>();
-	private Set<Role>			roles;
+	/**
+	 * ID пользователя.
+	 */
+	private Long idUser;
+	/**
+	 * Фамилия пользователя.
+	 */
+	private String firstName;
+	/**
+	 * имя пользователя.
+	 */
+	private String lastName;
+	/**
+	 * Отчество пользователя.
+	 */
+	private String fatherName;
+	/**
+	 * Логин пользователя для входа в систему.
+	 */
+	private String userName;
+	/**
+	 * Пароль для входа в систему.
+	 */
+	private String password;
+	/**
+	 * Список измерений, которые проводил пользователь.
+	 */
+	private Set<Measurement> measurements = new HashSet<Measurement>();
+	/**
+	 * Список привилегий пользователя (юзер, админ и т.д.).
+	 */
+	private Set<Role> roles;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_User")
-	public Long getIdUser() {
+	public final Long getIdUser() {
 		return idUser;
 	}
 
-	public void setIdUser(Long idUsers) {
+	public final void setIdUser(final Long idUsers) {
 		this.idUser = idUsers;
 	}
 
 	@Column(name = "First_name")
-	public String getFirstName() {
-		return FirstName;
+	public final String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
-		FirstName = firstName;
+	public final void setFirstName(final String firstName) {
+		this.firstName = firstName;
 	}
 
 	@Column(name = "Last_name")
-	public String getLastName() {
-		return LastName;
+	public final String getLastName() {
+		return lastName;
 	}
 
-	public void setLastName(String lastName) {
-		LastName = lastName;
+	public final void setLastName(final String lastName) {
+		this.lastName = lastName;
 	}
 
 	@Column(name = "Father_name")
-	public String getFatherName() {
-		return FatherName;
+	public final String getFatherName() {
+		return fatherName;
 	}
 
-	public void setFatherName(String fatherName) {
-		FatherName = fatherName;
+	public final void setFatherName(final String fatherName) {
+		this.fatherName = fatherName;
 	}
 
 	public static long getSerialversionuid() {
@@ -68,45 +112,48 @@ public class User implements Serializable {
 	// @ManyToMany
 	// @JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name
 	// = "User"), inverseJoinColumns = @JoinColumn(name = "Measurement"))
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Measurement> getMeasurements() {
+	@OneToMany(mappedBy = "user",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	public final Set<Measurement> getMeasurements() {
 		return this.measurements;
 	}
 
-	public void setMeasurements(Set<Measurement> measurements) {
+	public final void setMeasurements(final Set<Measurement> measurements) {
 		this.measurements = measurements;
 	}
 
 	@Transient
-	public List<Measurement> getMeasurementsAsList() {
+	public final List<Measurement> getMeasurementsAsList() {
 		return new ArrayList<Measurement>(measurements);
 	}
 
 	@Column(name = "User_name")
-	public String getUserName() {
-		return UserName;
+	public final String getUserName() {
+		return userName;
 	}
 
-	public void setUserName(String userName) {
-		UserName = userName;
+	public final void setUserName(final String userName) {
+		this.userName = userName;
 	}
 
 	@Column(name = "Password")
-	public String getPassword() {
-		return Password;
+	public final String getPassword() {
+		return password;
 	}
 
-	public void setPassword(String password) {
-		Password = password;
+	public final void setPassword(final String password) {
+		this.password = password;
 	}
 
 	@ManyToMany
-	@JoinTable(name = "users_role", joinColumns = @JoinColumn(name = "user"), inverseJoinColumns = @JoinColumn(name = "role"))
-	public Set<Role> getRoles() {
+	@JoinTable(name = "users_role",
+		joinColumns = @JoinColumn(name = "user"),
+		inverseJoinColumns = @JoinColumn(name = "role"))
+	public final Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<Role> roles) {
+	public final void setRoles(final Set<Role> roles) {
 		this.roles = roles;
 	}
 

@@ -19,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
- * Объект из БД хранящий дату измерения.
+ * <b>РћР±СЉРµРєС‚ РґР°С‚С‹ РёСЃРїС‹С‚Р°РЅРёР№ РёР· Р‘Р”.</b>
  * @author Gavrik
  */
 @Entity
@@ -27,74 +27,47 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class DateOfMeasurement implements Serializable {
 
 	/**
-	 * Просто серийный номер.
+	 * РЎРµСЂРёР№РЅС‹Р№ РЅРѕРјРµСЂ РєР»Р°СЃСЃР°.
 	 */
 	private static final long serialVersionUID = -544910450691585253L;
 	/**
-	 * ID даты в БД.
+	 * ID РґР°С‚С‹ РёСЃРїС‹С‚Р°РЅРёР№.
 	 */
 	private Long idDate;
 	/**
-	 * Дата измерений.
+	 * Р”Р°С‚Р° РёСЃРїС‹С‚Р°РЅРёР№.
 	 */
 	private DateTime date;
 	/**
-	 * Список измерений с соответствующей датой.
+	 * РЎРїРёСЃРѕРє РёР·РјРµСЂРµРЅРёР№, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёС… РґР°С‚Рµ РёСЃРїС‹С‚Р°РЅРёР№.
 	 */
 	private Set<Measurement> measurements = new HashSet<Measurement>();
 	/**
-	 * Список повторных измерений.
+	 * РЎРїРёСЃРѕРє РёР·РјРµСЂРµРЅРёР№, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёС… РґР°С‚Рµ РїРѕРІС‚РѕСЂРЅС‹С… РёСЃРїС‹С‚Р°РЅРёР№.
 	 */
 	private Set<Measurement> secondMeasurements = new HashSet<Measurement>();
 
-	/**
-	 * Получение списка повторных измерений соответствующих дате.
-	 *
-	 * @return Список повторных измерений
-	 */
 	@OneToMany(mappedBy = "dateOfSecondMeasurement",
 			cascade = CascadeType.ALL, orphanRemoval = true)
 	public final Set<Measurement> getSecondMeasurements() {
 		return secondMeasurements;
 	}
 
-	/**
-	 * Установка списка повторных измерения.
-	 *
-	 * @param secondMeasurements
-	 *            - список повторных измерений
-	 */
 	public final void setSecondMeasurements(
 			final Set<Measurement> secondMeasurements) {
 		this.secondMeasurements = secondMeasurements;
 	}
 
-	/**
-	 * Связь поля измерений, соответствующих дате, в БД с объектами.
-	 *
-	 * @return список измерений соответствующих дате
-	 */
 	@OneToMany(mappedBy = "dateOfMeasurement",
 			cascade = CascadeType.ALL, orphanRemoval = true)
 	public final Set<Measurement> getMeasurements() {
 		return measurements;
 	}
 
-	/**
-	 * Установка списка измерений, соответствующих дате.
-	 *
-	 * @param measurements
-	 *            - список измерений
-	 */
 	public final void setMeasurements(final Set<Measurement> measurements) {
 		this.measurements = measurements;
 	}
 
-	/**
-	 * Получение ID даты измерений.
-	 *
-	 * @return ID даты измерений
-	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Date_of_measurement")
@@ -102,21 +75,10 @@ public class DateOfMeasurement implements Serializable {
 		return idDate;
 	}
 
-	/**
-	 * Установка ID даты измерений.
-	 *
-	 * @param idDate
-	 *            - дата измерений
-	 */
 	public final void setIdDate(final Long idDate) {
 		this.idDate = idDate;
 	}
 
-	/**
-	 * Получение даты измерений.
-	 *
-	 * @return дата измерений
-	 */
 	@Column(name = "Date")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(iso = ISO.DATE)
@@ -124,12 +86,6 @@ public class DateOfMeasurement implements Serializable {
 		return date;
 	}
 
-	/**
-	 * Установка даты измерений.
-	 *
-	 * @param date
-	 *            - дата измерений
-	 */
 	public final void setDate(final DateTime date) {
 		this.date = date;
 	}
@@ -145,11 +101,6 @@ public class DateOfMeasurement implements Serializable {
 	// return dateString;
 	// }
 
-	/**
-	 * Получение серийника класса.
-	 *
-	 * @return серийник класса
-	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

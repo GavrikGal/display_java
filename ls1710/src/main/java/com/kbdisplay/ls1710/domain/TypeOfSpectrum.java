@@ -4,22 +4,46 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+/**
+ * <b>Объект типа измеряемого спектра (си или ирп) из БД.</b>
+ *
+ * @author Gavrik
+ *
+ */
 @Entity
 @Table(name = "types")
 public class TypeOfSpectrum implements Serializable {
 
-	private static final long			serialVersionUID	= -1529433046273888216L;
-	private String						idType;
-	private Set<SpectrumParameter>	spectrumsParameters	= new HashSet<SpectrumParameter>();
+	/**
+	 * Серийный номер класса.
+	 */
+	private static final long serialVersionUID = -1529433046273888216L;
 
-	@OneToMany(mappedBy = "typeOfSpectrum", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<SpectrumParameter> getSpectrumsParameters() {
+	/**
+	 * ID типа измеряемого спектра. В качестве ID выступает само название типа.
+	 */
+	private String idType;
+	/**
+	 * Список параметров спектра, в которых используется данный тип спектра.
+	 */
+	private Set<SpectrumParameter> spectrumsParameters =
+			new HashSet<SpectrumParameter>();
+
+	@OneToMany(mappedBy = "typeOfSpectrum",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	public final Set<SpectrumParameter> getSpectrumsParameters() {
 		return this.spectrumsParameters;
 	}
 
-	public void setSpectrumsParameters(Set<SpectrumParameter> spectrumsParameters) {
+	public final void setSpectrumsParameters(
+			final Set<SpectrumParameter> spectrumsParameters) {
 		this.spectrumsParameters = spectrumsParameters;
 	}
 
@@ -29,15 +53,16 @@ public class TypeOfSpectrum implements Serializable {
 
 	@Id
 	@Column(name = "id_Type")
-	public String getIdType() {
+	public final String getIdType() {
 		return idType;
 	}
 
-	public void setIdType(String idType) {
+	public final void setIdType(final String idType) {
 		this.idType = idType;
 	}
 
-	public String toString() {
+	@Override
+	public final String toString() {
 		return idType;
 	}
 
