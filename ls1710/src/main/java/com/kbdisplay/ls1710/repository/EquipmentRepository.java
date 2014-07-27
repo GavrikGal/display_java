@@ -1,18 +1,26 @@
 package com.kbdisplay.ls1710.repository;
 
-//import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-//import org.springframework.data.repository.query.Param;
-
-
 
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 
+/**
+ * интерфейс испытуемого изделия для доступа к данным из БД.
+ *
+ * @author Gavrik
+ *
+ */
 public interface EquipmentRepository extends CrudRepository<Equipment, Long> {
 
-	//@Query("select e from Equipments e where e.model = :models and e.serialNumber = :serialNumber")
-	public Equipment findBySerialNumberAndModel(/*@Param("serialNumber") */String serialNumber,
-			/*@Param("models")*/ ModelOfEquipment model);
+	/**
+	 * поиск испытуемого изделия по серийному номеру и модели.
+	 *
+	 * @param serialNumber серийный номер изделия
+	 * @param model модель изделия
+	 * @return найденное испытуемое изделие либо null
+	 */
+	Equipment findBySerialNumberAndModel(String serialNumber,
+			ModelOfEquipment model);
 
 }

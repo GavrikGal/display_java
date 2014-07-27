@@ -8,20 +8,25 @@ import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 
+/**
+ * интерфейс параметров спектра для доступа к данным из БД.
+ *
+ * @author Gavrik
+ *
+ */
 public interface SpectrumParameterRepository extends
 		CrudRepository<SpectrumParameter, Long> {
 
-	// @Query("select e from Equipments e where e.model = :models and e.serialNumber = :serialNumber")
-	// @Query("select s from SpectrumsParameters s where s.measurand = :measurand and s.type = :type and s.resolution = :resolution")//
-	// and s.purposeOfMeasurement = :purposeOfMeasurement")
-	// public SpectrumsParameters findWithDetail(@Param("measurand") Measurands
-	// measurands,
-	// @Param("type") Types types,
-	// @Param("resolution") ScreenResolutions screenResolutions/*,
-	// @Param("purposeOfMeasurement") PurposeOfMeasurement
-	// purposeOfMeasurement*/);
-	//
-	public SpectrumParameter findByMeasurandAndTypeOfSpectrumAndScreenResolution(
+	/**
+	 * поиск параметров спектра в БД по измеряемой величине (е, u, i), типу
+	 * измеряемого спектра (си или ирп), и разрешению экрана (800х600).
+	 *
+	 * @param measurand измеряемая величина (e, u, i)
+	 * @param typeOfSpectrum тип измеряемого спектра (си или ирп)
+	 * @param screenResolution разрешение экрана (800х600, 1024х768 и т.д.)
+	 * @return объект найденных параметров спектра или null
+	 */
+	SpectrumParameter findByMeasurandAndTypeOfSpectrumAndScreenResolution(
 			Measurand measurand, TypeOfSpectrum typeOfSpectrum,
 			ScreenResolution screenResolution);
 
