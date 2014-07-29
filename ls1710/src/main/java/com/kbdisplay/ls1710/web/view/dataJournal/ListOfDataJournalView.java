@@ -9,6 +9,7 @@ import javax.faces.bean.ViewScoped;
 
 import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.DateOfMeasurement;
+import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.Spectrum;
 import com.kbdisplay.ls1710.web.view.dataJournal.component.MeasurementForView;
@@ -39,8 +40,6 @@ public class ListOfDataJournalView implements Serializable {
 	 */
 	private MeasurementForView selectedMeasurementForView;
 
-
-	// DateOfMeasurement currentMeasurementDate;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -92,7 +91,7 @@ public class ListOfDataJournalView implements Serializable {
 	public final void addMeasurement(final Measurement measurement,
 			final Long id) {
 
-		// проверка версии измерения
+		/* проверка версии измерения */
 		Version versionMeas = new Version(measurement.getVersion());
 		int secondParamOfVersion = versionMeas.getPart(1);
 		if (secondParamOfVersion == 0) {
@@ -103,135 +102,39 @@ public class ListOfDataJournalView implements Serializable {
 			 * отдельная строка данных. поэтому добавляем измерение в список
 			 * измерений
 			 */
-			// TODO сделать функцию добавления
 			MeasurementForView measurementsForView = new MeasurementForView();
 
 			measurementsForView.setId(id);
-
 			measurementsForView.setFirstDateOfMeasurement(measurement
 					.getDateOfMeasurement());
-
 			measurementsForView.setEquipment(measurement.getEquipment());
-
-			List<Measurement> listOfMeasurementsForEquip =
-					Lists.newArrayList(measurement.getEquipment()
-							.getMeasurements());
-			List<Measurement> removingMeasurements =
-					new ArrayList<Measurement>();
-			int firstParamOfVersion = versionMeas.getPart(0);
-			for (Measurement measurementEquip : listOfMeasurementsForEquip) {
-				/*
-				 * проверяем версию измерения, измерения должны быть одного
-				 * цикла, т.е. оставляем только измерения, первая цифра которого
-				 * в версии соответсвует версии обрабатываемого измерения
-				 */
-				Version versionEq = new Version(measurementEquip.getVersion());
-				int firstParamOfVersionEq = versionEq.getPart(0);
-				if (firstParamOfVersionEq != firstParamOfVersion) {
-					removingMeasurements.add(measurementEquip);
-				}
-			}
-			listOfMeasurementsForEquip.removeAll(removingMeasurements);
-			measurementsForView.setMeasurements(listOfMeasurementsForEquip);
-
 			measurementsForView.setUser(measurement.getUser());
+
 			/*
-			 * Установка актуальных спектров
+			 * установка измерений связанных одним циклом. номер цикла - это
+			 * номер первого элемента в версии измерений.
 			 */
-			List<Spectrum> currentSpectrums =
-					measurementsForView.getLastSpectrums();
-			for (Measurement measurement2 : listOfMeasurementsForEquip) {
-				List<Spectrum> spectrums = measurement2.getSpectrums();
+			List<Measurement> linkedMeasurements =
+					getLinkedMeasurements(versionMeas, measurement);
+			measurementsForView.setMeasurements(linkedMeasurements);
 
-				if (currentSpectrums.isEmpty()) {
-					currentSpectrums = spectrums;
-				} else {
-					for (Spectrum spectrum : spectrums) {
-						int found = 0;
+			/* установка актуальных спектров из цикла измерений */
+			List<Spectrum> lastSpectrums =
+					getActualSpectrums(measurementsForView.getMeasurements());
+			measurementsForView.setLastSpectrums(lastSpectrums);
 
-						for (Spectrum currentSpectrum : currentSpectrums) {
-							if (spectrum.getSpectrumParameters() == currentSpectrum
-									.getSpectrumParameters()) {
-								if (currentSpectrum.getDateTime().isBefore(
-										spectrum.getDateTime())) {
-									currentSpectrums.remove(currentSpectrum);
-									currentSpectrums.add(spectrum);
-									found = 1;
-									break;
-								}
-								found = 1;
-							}
-						}
-						if (found == 0) {
-							currentSpectrums.add(spectrum);
-						}
-					}
-				}
+			/* установка даты последнего измерения из цикла */
+			DateOfMeasurement lastDateOfMeasurement =
+					getLastDateOfMeasurement(measurementsForView
+							.getMeasurements());
+			measurementsForView.setLastDateOfMeasurement(lastDateOfMeasurement);
 
-			}
-			measurementsForView.setLastSpectrums(currentSpectrums);
-
-			// установка даты последнего измерения
-			if (measurementsForView.getMeasurements().size() > 1) {
-				List<Measurement> measurements =
-						measurementsForView.getMeasurements();
-				DateOfMeasurement lastDateOfMeasurement =
-						measurementsForView.getFirstDateOfMeasurement();
-				for (Measurement measurement2 : measurements) {
-					DateOfMeasurement checkingDate =
-							measurement2.getDateOfMeasurement();
-					if (lastDateOfMeasurement.getDate().isBefore(
-							checkingDate.getDate())) {
-						lastDateOfMeasurement = checkingDate;
-					}
-				}
-				measurementsForView
-						.setLastDateOfMeasurement(lastDateOfMeasurement);
-
-			}
-
+			/*
+			 * добавление подготовленного для отображения измерения к списку
+			 * всех подготовленных измерений.
+			 */
 			measurementForViews.add(measurementsForView);
 		}
-
-		// if (measurementForViews.isEmpty()) {
-		// currentMeasurementDate = measurement.getDateOfMeasurement();
-		// measurementsForView
-		// .setFirstDateOfMeasurement(currentMeasurementDate);
-		//
-		// }
-
-		// if (measurementsForView.getLastSpectrums().isEmpty()) {
-		// measurementsForView.setLastSpectrums(measurement.getSpectrums());
-		// }
-		//
-		// if (measurementsForView.getMeasurements().isEmpty()) {
-		// measurementsForView.getMeasurements().add(measurement);
-		// measurementsForView.setId(measurement.getIdMeasurements());
-		// measurementsForView.setEquipment(measurement.getEquipment());
-		// measurementsForView.setUser(measurement.getUser());
-		// }
-
-		// measurementsForView.setMeasurements(measurement);
-		// if (measurement.getDateOfSecondMeasurement() != null) {
-		// measurementsForView.setDateOfSecondMeasurement(measurement
-		// .getDateOfSecondMeasurement().getDate());
-		// }
-
-		// if (currentMeasurementDate.getDate().isBefore(
-		// measurement.getDateOfMeasurement().getDate())) {
-		// currentMeasurementDate = measurement.getDateOfMeasurement();
-		// measurementsForView
-		// .setFirstDateOfMeasurement(currentMeasurementDate);
-		// measurementsForView.setModelName(currentModelName);
-		// }
-
-		// if (currentModelName != measurement.getEquipment().getModel()
-		// .getModelName()) {
-		// currentModelName = measurement.getEquipment().getModel()
-		// .getModelName();
-		// measurementsForView.setModelName(currentModelName);
-		// }
-
 	}
 
 	/**
@@ -240,6 +143,128 @@ public class ListOfDataJournalView implements Serializable {
 	public final void deleteMeasurement() {
 		measurementForViews.remove(selectedMeasurementForView);
 		selectedMeasurementForView = null;
+	}
+
+	/**
+	 * метод позволяет получить только измерения, связанные с текущим циклом
+	 * (версией) измерений.
+	 *
+	 * Из всех измерений, которые проводились с изделием, выбираются только те
+	 * измерения версии которых входят в один цикл измерений.
+	 *
+	 * @param version
+	 *            версия цикла-измерения
+	 * @param measurement
+	 *            измерение, к которому ищем связанные измерения
+	 * @return список измерений, связанных с указанным циклом измерений
+	 */
+	private List<Measurement> getLinkedMeasurements(final Version version,
+			final Measurement measurement) {
+		Equipment equipment = measurement.getEquipment();
+		List<Measurement> listOfMeasurementsForEquip =
+				Lists.newArrayList(equipment.getMeasurements());
+		List<Measurement> removingMeasurements = new ArrayList<Measurement>();
+		int firstParamOfVersion = version.getPart(0);
+		for (Measurement measurementEquip : listOfMeasurementsForEquip) {
+			/*
+			 * проверяем версию измерения, измерения должны быть одного цикла,
+			 * т.е. оставляем только измерения, первая цифра которого в версии
+			 * соответсвует версии обрабатываемого измерения
+			 */
+			Version versionEq = new Version(measurementEquip.getVersion());
+			int firstParamOfVersionEq = versionEq.getPart(0);
+			if (firstParamOfVersionEq != firstParamOfVersion) {
+				/*
+				 * измерения не относящиеся к текущему циклу измерений заносятся
+				 * в список удаляемых измерений
+				 */
+				removingMeasurements.add(measurementEquip);
+			}
+		}
+		listOfMeasurementsForEquip.removeAll(removingMeasurements);
+		return listOfMeasurementsForEquip;
+	}
+
+	/**
+	 * выбор актуальных спектров из цикла измерений.
+	 *
+	 * в списке связанных одним циклом измерений выбираются спектры, чтобы
+	 * представить максимально большее число спектров с различными параметрами.
+	 * Из спектров с одинаковыми параметрами выбираются те, которые были
+	 * измерены позже, т.е. являются более актуальными.
+	 *
+	 * @param measurements
+	 *            список связанных одним циклом измерений
+	 * @return актуальные спектры из цикла измерений
+	 */
+	private List<Spectrum> getActualSpectrums(
+			final List<Measurement> measurements) {
+		List<Spectrum> currentSpectrums = new ArrayList<Spectrum>();
+		for (Measurement measurement : measurements) {
+			List<Spectrum> spectrums = measurement.getSpectrums();
+
+			if (currentSpectrums.isEmpty()) {
+				currentSpectrums = spectrums;
+			} else {
+				/*
+				 * поиск и замена более старых спектров на новые. в качестве
+				 * критерия используется дата создания спектра, т.е. спектр с
+				 * более поздней датой актуальнее.
+				 */
+				for (Spectrum spectrum : spectrums) {
+					int found = 0;
+					for (Spectrum currentSpectrum : currentSpectrums) {
+						if (spectrum.getSpectrumParameters() == currentSpectrum
+								.getSpectrumParameters()) {
+							if (currentSpectrum.getDateTime().isBefore(
+									spectrum.getDateTime())) {
+								currentSpectrums.remove(currentSpectrum);
+								currentSpectrums.add(spectrum);
+								found = 1;
+								break;
+							}
+							found = 1;
+						}
+					}
+					if (found == 0) {
+						currentSpectrums.add(spectrum);
+					}
+				}
+			}
+		}
+		return currentSpectrums;
+	}
+
+	/**
+	 * выбор даты последнего измерения из цикла измерений.
+	 *
+	 * если цикл состоит из одного измерения, то это значит, что последующие
+	 * измерения не проводились. в этом случае возвращается значение null.
+	 *
+	 * @param measurements
+	 *            цикл связанных измерений
+	 * @return дата последнего из цикла измерения
+	 */
+	private DateOfMeasurement getLastDateOfMeasurement(
+			final List<Measurement> measurements) {
+		if (measurements.size() > 1) {
+			DateOfMeasurement lastDateOfMeasurement = null;
+
+			for (Measurement measurement : measurements) {
+				DateOfMeasurement checkingDate =
+						measurement.getDateOfMeasurement();
+				if (lastDateOfMeasurement == null) {
+					lastDateOfMeasurement = checkingDate;
+					continue;
+				}
+				if (lastDateOfMeasurement.getDate().isBefore(
+						checkingDate.getDate())) {
+					lastDateOfMeasurement = checkingDate;
+				}
+			}
+			return lastDateOfMeasurement;
+		}
+		return null;
 	}
 
 }
