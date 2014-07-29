@@ -72,51 +72,51 @@ public class SpectrumParameter implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Spectrum_parameters")
-	public final Long getIdSpectrumParameters() {
+	public Long getIdSpectrumParameters() {
 		return idSpectrumParameters;
 	}
 
-	public final void setIdSpectrumParameters(final Long idSpectrumParameters) {
+	public void setIdSpectrumParameters(final Long idSpectrumParameters) {
 		this.idSpectrumParameters = idSpectrumParameters;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Measurand")
-	public final Measurand getMeasurand() {
+	public Measurand getMeasurand() {
 		return measurand;
 	}
 
-	public final void setMeasurand(final Measurand measurand) {
+	public void setMeasurand(final Measurand measurand) {
 		this.measurand = measurand;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Type")
-	public final TypeOfSpectrum getTypeOfSpectrum() {
+	public TypeOfSpectrum getTypeOfSpectrum() {
 		return typeOfSpectrum;
 	}
 
-	public final void setTypeOfSpectrum(final TypeOfSpectrum type) {
+	public void setTypeOfSpectrum(final TypeOfSpectrum type) {
 		this.typeOfSpectrum = type;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Resolution")
-	public final ScreenResolution getScreenResolution() {
+	public ScreenResolution getScreenResolution() {
 		return screenResolution;
 	}
 
-	public final void setScreenResolution(final ScreenResolution resolution) {
+	public void setScreenResolution(final ScreenResolution resolution) {
 		this.screenResolution = resolution;
 	}
 
 	@OneToMany(mappedBy = "spectrumParameters",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	public final Set<Spectrum> getSpectrums() {
+	public Set<Spectrum> getSpectrums() {
 		return this.spectrums;
 	}
 
-	public final void setSpectrums(final Set<Spectrum> spectrums) {
+	public void setSpectrums(final Set<Spectrum> spectrums) {
 		this.spectrums = spectrums;
 	}
 

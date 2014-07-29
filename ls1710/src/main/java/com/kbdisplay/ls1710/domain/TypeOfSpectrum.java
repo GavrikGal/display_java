@@ -38,11 +38,11 @@ public class TypeOfSpectrum implements Serializable {
 
 	@OneToMany(mappedBy = "typeOfSpectrum",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	public final Set<SpectrumParameter> getSpectrumsParameters() {
+	public Set<SpectrumParameter> getSpectrumsParameters() {
 		return this.spectrumsParameters;
 	}
 
-	public final void setSpectrumsParameters(
+	public void setSpectrumsParameters(
 			final Set<SpectrumParameter> spectrumsParameters) {
 		this.spectrumsParameters = spectrumsParameters;
 	}
@@ -53,16 +53,16 @@ public class TypeOfSpectrum implements Serializable {
 
 	@Id
 	@Column(name = "id_Type")
-	public final String getIdType() {
+	public String getIdType() {
 		return idType;
 	}
 
-	public final void setIdType(final String idType) {
+	public void setIdType(final String idType) {
 		this.idType = idType;
 	}
 
 	@Override
-	public final String toString() {
+	public String toString() {
 		return idType;
 	}
 

@@ -43,11 +43,11 @@ public class ScreenResolution implements Serializable {
 
 	@OneToMany(mappedBy = "screenResolution",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	public final Set<SpectrumParameter> getSpectrumsParameters() {
+	public Set<SpectrumParameter> getSpectrumsParameters() {
 		return this.spectrumsParameters;
 	}
 
-	public final void setSpectrumsParameters(
+	public void setSpectrumsParameters(
 			final Set<SpectrumParameter> spectrumsParameters) {
 		this.spectrumsParameters = spectrumsParameters;
 	}
@@ -59,25 +59,25 @@ public class ScreenResolution implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Resolution")
-	public final Long getIdResolution() {
+	public Long getIdResolution() {
 		return idResolution;
 	}
 
-	public final void setIdResolution(final Long idResolution) {
+	public void setIdResolution(final Long idResolution) {
 		this.idResolution = idResolution;
 	}
 
 	@Column(name = "Resolution")
-	public final String getResolution() {
+	public String getResolution() {
 		return screenResolution;
 	}
 
-	public final void setResolution(final String resolution) {
+	public void setResolution(final String resolution) {
 		this.screenResolution = resolution;
 	}
 
 	@Override
-	public final String toString() {
+	public String toString() {
 		return screenResolution;
 	}
 

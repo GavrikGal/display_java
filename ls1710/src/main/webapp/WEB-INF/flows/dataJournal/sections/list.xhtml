@@ -11,38 +11,38 @@
 		<p:panel>
 
 			<h:form id="form">
-				<p:contextMenu for="measurements">
+				<p:contextMenu for="measurementForViews">
 					<p:menuitem value="View" update="measurementDetail"
 						icon="ui-icon-search" oncomplete="PF('measurementDialog').show()" />
-					<p:menuitem value="Delete" update="measurements"
+					<p:menuitem value="Delete" update="measurementForViews"
 						icon="ui-icon-close"
-						actionListener="#{measurementListBean.deleteMeasurement}" />
+						actionListener="#{listOfDataJournalView.deleteMeasurement}" />
 				</p:contextMenu>
 
-				<p:dataTable id="measurements" var="measurement"
-					value="#{measurementListBean.measurements}"
-					rowKey="#{measurement.idMeasurements}"
-					selection="#{measurementListBean.selecedMeasurement}"
+				<p:dataTable id="measurementForViews" var="measurementForView"
+					value="#{listOfDataJournalView.measurementForViews}"
+					rowKey="#{measurementForView.id}"
+					selection="#{listOfDataJournalView.selectedMeasurementForView}"
 					selectionMode="single" rowStyleClass="measurement-table-rows"
-					sortBy="#{measurement.idMeasurements}" sortOrder="descending">
+					sortBy="#{measurementForView.id}" sortOrder="descending">
 					<p:column headerText="#{msg['label_measurement_table_date']}"
 						width="70">
-						<h:outputText value="#{measurement.dateOfMeasurement.date}">
+						<h:outputText value="#{measurementForView.firstDateOfMeasurement.date}">
 							<f:converter converterId="jodaDataTimeConverter" />
 							<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
 						</h:outputText>
 					</p:column>
 					<p:column headerText="#{msg['label_measurement_table_model']}"
 						width="80">
-						<h:outputText value="#{measurement.equipment.model.modelName}" />
+						<h:outputText value="#{measurementForView.equipment.model.modelName}" />
 					</p:column>
 					<p:column
 						headerText="#{msg['label_measurement_table_serial_number']}"
 						width="80">
-						<h:outputText value="#{measurement.equipment.serialNumber}" />
+						<h:outputText value="#{measurementForView.equipment.serialNumber}" />
 					</p:column>
 					<p:column headerText="#{msg['label_measurement_table_spectrum']}">
-						<p:dataGrid var="spectrum" value="#{measurement.spectrums}"
+						<p:dataGrid var="spectrum" value="#{measurementForView.lastSpectrums}"
 							columns="1" rows="2" id="spectrums" paginator="false"
 							styleClass="internalTable">
 							<p:panelGrid>
@@ -66,6 +66,7 @@
 											<h:outputText
 												value="#{harmonic.frequency} - #{harmonic.amplitude}#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " />
 										</ui:repeat>
+										#{spectrum.description}
 									</p:column>
 
 								</p:row>
@@ -74,19 +75,19 @@
 					</p:column>
 					<p:column width="20" styleClass="internalTable"
 						style="border-left: 0px solid #E55 ">
-						<p:rowToggler rendered="#{measurement.spectrums.size() > 2}" />
+						<p:rowToggler rendered="#{measurementForView.lastSpectrums.size() > 2}" />
 					</p:column>
 					<p:column
 						headerText="#{msg['label_measurement_table_second_date']}"
 						width="70">
-						<h:outputText value="#{measurement.dateOfSecondMeasurement.date}">
+						<h:outputText value="#{measurementForView.lastDateOfMeasurement.date}">
 							<f:converter converterId="jodaDataTimeConverter" />
 							<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
 						</h:outputText>
 					</p:column>
 					<p:column headerText="#{msg['label_measurement_table_user']}"
 						width="80">
-						<h:outputText value="#{measurement.user.firstName}" />
+						<h:outputText value="#{measurementForView.user.firstName}" />
 					</p:column>
 
 
@@ -98,7 +99,7 @@
 
 								</p:column>
 								<p:column>
-									<p:dataGrid var="moreSpectrum" value="#{measurement.spectrums}"
+									<p:dataGrid var="moreSpectrum" value="#{measurementForView.lastSpectrums}"
 										columns="1" rows="2" id="moreSpectrums" paginator="false"
 										styleClass="internalTable" first="2">
 										<p:panelGrid>
@@ -122,6 +123,7 @@
 														<h:outputText
 															value="#{harmonic.frequency} - #{harmonic.amplitude}#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " />
 													</ui:repeat>
+													#{moreSpectrum.description}
 												</p:column>
 
 											</p:row>
@@ -143,21 +145,21 @@
 					position="50,50">
 					<p:outputPanel id="measurementDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
-							rendered="#{not empty measurementListBean.selecedMeasurement}"
+							rendered="#{not empty listOfDataJournalView.selectedMeasurementForView}"
 							columnClasses="label,value">
 
 							<h:outputText value="#{msg['label_measurement_table_date']}" />
 							<h:outputText
-								value="#{measurementListBean.selecedMeasurement.dateOfMeasurement.date}" />
+								value="#{listOfDataJournalView.selectedMeasurementForView.firstDateOfMeasurement.date}" />
 
 							<h:outputText value="#{msg['label_measurement_table_model']}" />
 							<h:outputText
-								value="#{measurementListBean.selecedMeasurement.equipment.model.modelName}" />
+								value="#{listOfDataJournalView.selectedMeasurementForView.equipment.model.modelName}" />
 
 							<h:outputText
 								value="#{msg['label_measurement_table_serial_number']}" />
 							<h:outputText
-								value="#{measurementListBean.selecedMeasurement.equipment.serialNumber}" />
+								value="#{listOfDataJournalView.selectedMeasurementForView.equipment.serialNumber}" />
 						</p:panelGrid>
 					</p:outputPanel>
 				</p:dialog>

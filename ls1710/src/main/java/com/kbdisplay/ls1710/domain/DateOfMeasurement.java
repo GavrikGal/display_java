@@ -20,6 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
  * Объект даты испытаний из БД.
+ *
  * @author Gavrik
  */
 @Entity
@@ -47,48 +48,57 @@ public class DateOfMeasurement implements Serializable {
 	 */
 	private Set<Measurement> secondMeasurements = new HashSet<Measurement>();
 
-	@OneToMany(mappedBy = "dateOfSecondMeasurement",
-			cascade = CascadeType.ALL, orphanRemoval = true)
-	public final Set<Measurement> getSecondMeasurements() {
+
+	@OneToMany(mappedBy = "dateOfSecondMeasurement", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	public Set<Measurement> getSecondMeasurements() {
 		return secondMeasurements;
 	}
 
-	public final void setSecondMeasurements(
-			final Set<Measurement> secondMeasurements) {
+
+	public void
+			setSecondMeasurements(final Set<Measurement> secondMeasurements) {
 		this.secondMeasurements = secondMeasurements;
 	}
 
-	@OneToMany(mappedBy = "dateOfMeasurement",
-			cascade = CascadeType.ALL, orphanRemoval = true)
-	public final Set<Measurement> getMeasurements() {
+
+	@OneToMany(mappedBy = "dateOfMeasurement", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	public Set<Measurement> getMeasurements() {
 		return measurements;
 	}
 
-	public final void setMeasurements(final Set<Measurement> measurements) {
+
+	public void setMeasurements(final Set<Measurement> measurements) {
 		this.measurements = measurements;
 	}
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Date_of_measurement")
-	public final Long getIdDate() {
+	public Long getIdDate() {
 		return idDate;
 	}
 
-	public final void setIdDate(final Long idDate) {
+
+	public void setIdDate(final Long idDate) {
 		this.idDate = idDate;
 	}
+
 
 	@Column(name = "Date")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(iso = ISO.DATE)
-	public final DateTime getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 
-	public final void setDate(final DateTime date) {
+
+	public void setDate(final DateTime date) {
 		this.date = date;
 	}
+
 
 	// @Transient
 	// public String getDateString() {

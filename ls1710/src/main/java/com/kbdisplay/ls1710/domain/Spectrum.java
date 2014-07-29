@@ -1,7 +1,6 @@
 package com.kbdisplay.ls1710.domain;
 
 import java.io.Serializable;
-import java.sql.Time;
 //import java.util.ArrayList;
 //import java.util.HashSet;
 import java.util.List;
@@ -21,6 +20,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
  * Объект измеренного спектра из БД.
@@ -58,7 +61,7 @@ public class Spectrum implements Serializable {
 	/**
 	 * Время измерения спектра.
 	 */
-	private Time time;
+	private DateTime dateTime;
 	/**
 	 * Список спектральных составляющих - гармоник спектра.
 	 */
@@ -72,61 +75,75 @@ public class Spectrum implements Serializable {
 			cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("frequency")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	public final List<Harmonic> getHarmonics() {
+	public List<Harmonic> getHarmonics() {
 		return this.harmonics;
 	}
 
-	public final void setHarmonics(final List<Harmonic> harmonics) {
+	public void setHarmonics(final List<Harmonic> harmonics) {
 		this.harmonics = harmonics;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Spectrums")
-	public final Long getIdSpectrums() {
+	public Long getIdSpectrums() {
 		return idSpectrums;
 	}
 
-	public final void setIdSpectrums(final Long idSpectrums) {
+	public void setIdSpectrums(final Long idSpectrums) {
 		this.idSpectrums = idSpectrums;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Measurements")
-	public final Measurement getMeasurement() {
+	public Measurement getMeasurement() {
 		return measurement;
 	}
 
-	public final void setMeasurement(final Measurement measurement) {
+	public void setMeasurement(final Measurement measurement) {
 		this.measurement = measurement;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Spectrum_parameters")
-	public final SpectrumParameter getSpectrumParameters() {
+	public SpectrumParameter getSpectrumParameters() {
 		return spectrumParameters;
 	}
 
-	public final void setSpectrumParameters(
+	public void setSpectrumParameters(
 			final SpectrumParameter spectrumParameters) {
 		this.spectrumParameters = spectrumParameters;
 	}
 
-	@Column(name = "Time")
-	public final Time getTime() {
-		return time;
+
+
+	@Column(name = "DateTime")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@DateTimeFormat(iso = ISO.DATE)
+	public DateTime getDateTime() {
+		return dateTime;
 	}
 
-	public final void setTime(final Time time) {
-		this.time = time;
+	public void setDateTime(final DateTime dateTime) {
+		this.dateTime = dateTime;
 	}
+
+
+//	@Column(name = "Time")
+//	public Time getTime() {
+//		return time;
+//	}
+//
+//	public void setTime(final Time time) {
+//		this.time = time;
+//	}
 
 	@Column(name = "Description")
-	public final String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public final void setDescription(final String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 

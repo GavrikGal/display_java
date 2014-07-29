@@ -35,21 +35,21 @@ public class PurposeOfMeasurement implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Purpose_of_measurement")
-	public final Long getIdPurposeOfMeasurement() {
+	public Long getIdPurposeOfMeasurement() {
 		return idPurposeOfMeasurement;
 	}
 
-	public final void setIdPurposeOfMeasurement(
+	public void setIdPurposeOfMeasurement(
 			final Long idPurposeOfMeasurement) {
 		this.idPurposeOfMeasurement = idPurposeOfMeasurement;
 	}
 
 	@Column(name = "Purpose")
-	public final String getPurpose() {
+	public String getPurpose() {
 		return purpose;
 	}
 
-	public final void setPurpose(final String purpose) {
+	public void setPurpose(final String purpose) {
 		this.purpose = purpose;
 	}
 

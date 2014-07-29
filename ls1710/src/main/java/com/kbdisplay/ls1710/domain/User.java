@@ -70,38 +70,38 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_User")
-	public final Long getIdUser() {
+	public Long getIdUser() {
 		return idUser;
 	}
 
-	public final void setIdUser(final Long idUsers) {
+	public void setIdUser(final Long idUsers) {
 		this.idUser = idUsers;
 	}
 
 	@Column(name = "First_name")
-	public final String getFirstName() {
+	public String getFirstName() {
 		return firstName;
 	}
 
-	public final void setFirstName(final String firstName) {
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
 	@Column(name = "Last_name")
-	public final String getLastName() {
+	public String getLastName() {
 		return lastName;
 	}
 
-	public final void setLastName(final String lastName) {
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
 	@Column(name = "Father_name")
-	public final String getFatherName() {
+	public String getFatherName() {
 		return fatherName;
 	}
 
-	public final void setFatherName(final String fatherName) {
+	public void setFatherName(final String fatherName) {
 		this.fatherName = fatherName;
 	}
 
@@ -114,34 +114,34 @@ public class User implements Serializable {
 	// = "User"), inverseJoinColumns = @JoinColumn(name = "Measurement"))
 	@OneToMany(mappedBy = "user",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	public final Set<Measurement> getMeasurements() {
+	public Set<Measurement> getMeasurements() {
 		return this.measurements;
 	}
 
-	public final void setMeasurements(final Set<Measurement> measurements) {
+	public void setMeasurements(final Set<Measurement> measurements) {
 		this.measurements = measurements;
 	}
 
 	@Transient
-	public final List<Measurement> getMeasurementsAsList() {
+	public List<Measurement> getMeasurementsAsList() {
 		return new ArrayList<Measurement>(measurements);
 	}
 
 	@Column(name = "User_name")
-	public final String getUserName() {
+	public String getUserName() {
 		return userName;
 	}
 
-	public final void setUserName(final String userName) {
+	public void setUserName(final String userName) {
 		this.userName = userName;
 	}
 
 	@Column(name = "Password")
-	public final String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	public final void setPassword(final String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
@@ -149,11 +149,11 @@ public class User implements Serializable {
 	@JoinTable(name = "users_role",
 		joinColumns = @JoinColumn(name = "user"),
 		inverseJoinColumns = @JoinColumn(name = "role"))
-	public final Set<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public final void setRoles(final Set<Role> roles) {
+	public void setRoles(final Set<Role> roles) {
 		this.roles = roles;
 	}
 

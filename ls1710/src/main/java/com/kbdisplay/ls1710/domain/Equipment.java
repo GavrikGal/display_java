@@ -7,12 +7,14 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -47,6 +49,7 @@ public class Equipment implements Serializable {
 	 */
 	private Set<Measurement> measurements = new HashSet<Measurement>();
 
+
 	/**
 	 * Получение серийного номера класса.
 	 *
@@ -56,6 +59,7 @@ public class Equipment implements Serializable {
 		return serialVersionUID;
 	}
 
+
 	/**
 	 * Получение ID изделия.
 	 *
@@ -64,9 +68,10 @@ public class Equipment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Equipment")
-	public final Long getIdEquipment() {
+	public Long getIdEquipment() {
 		return idEquipment;
 	}
+
 
 	/**
 	 * Установка ID изделия.
@@ -74,9 +79,10 @@ public class Equipment implements Serializable {
 	 * @param idEquipment
 	 *            ID изделия
 	 */
-	public final void setIdEquipment(final Long idEquipment) {
+	public void setIdEquipment(final Long idEquipment) {
 		this.idEquipment = idEquipment;
 	}
+
 
 	/**
 	 * Получение модели изделия.
@@ -85,9 +91,10 @@ public class Equipment implements Serializable {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "Model")
-	public final ModelOfEquipment getModel() {
+	public ModelOfEquipment getModel() {
 		return model;
 	}
+
 
 	/**
 	 * Установка модели изделия.
@@ -95,9 +102,10 @@ public class Equipment implements Serializable {
 	 * @param model
 	 *            модель изделия
 	 */
-	public final void setModel(final ModelOfEquipment model) {
+	public void setModel(final ModelOfEquipment model) {
 		this.model = model;
 	}
+
 
 	/**
 	 * Получение серийного номера изделия.
@@ -105,9 +113,10 @@ public class Equipment implements Serializable {
 	 * @return серийный номер изделия
 	 */
 	@Column(name = "Serial_number")
-	public final String getSerialNumber() {
+	public String getSerialNumber() {
 		return serialNumber;
 	}
+
 
 	/**
 	 * Установка серийного номера изделия.
@@ -115,20 +124,26 @@ public class Equipment implements Serializable {
 	 * @param serialNumber
 	 *            серийный номер изделия
 	 */
-	public final void setSerialNumber(final String serialNumber) {
+	public void setSerialNumber(final String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
+
 
 	/**
 	 * Получение списка измерений, соответствующих изделию.
 	 *
+	 * тут fetch позволяет получить список данных из БД. без него будет ошибка
+	 * Lazy-что-то там...
+	 *
 	 * @return список измерений модели
 	 */
-	@OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	public final Set<Measurement> getMeasurements() {
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "equipment",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("version")
+	public Set<Measurement> getMeasurements() {
 		return this.measurements;
 	}
+
 
 	/**
 	 * Установка списка измерений, соответствующих изделию.
@@ -136,7 +151,7 @@ public class Equipment implements Serializable {
 	 * @param measurements
 	 *            список измерений модели
 	 */
-	public final void setMeasurements(final Set<Measurement> measurements) {
+	public void setMeasurements(final Set<Measurement> measurements) {
 		this.measurements = measurements;
 	}
 

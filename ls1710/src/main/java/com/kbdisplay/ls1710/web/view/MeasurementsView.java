@@ -4,6 +4,12 @@ import org.joda.time.DateTime;
 
 import com.kbdisplay.ls1710.domain.Measurement;
 
+/**
+ * @deprecated
+ * @author Gavrik
+ *
+ */
+@Deprecated
 public class MeasurementsView {
 
 	private Measurement	measurements;

@@ -53,57 +53,57 @@ public class Harmonic implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Harmonics")
-	public final Long getIdHarmonics() {
+	public Long getIdHarmonics() {
 		return idHarmonics;
 	}
 
-	public final void setIdHarmonics(final Long idHarmonics) {
+	public void setIdHarmonics(final Long idHarmonics) {
 		this.idHarmonics = idHarmonics;
 	}
 
 	@Column(name = "Frequency")
-	public final Double getFrequency() {
+	public Double getFrequency() {
 		return frequency;
 	}
 
-	public final void setFrequency(final Double frequency) {
+	public void setFrequency(final Double frequency) {
 		this.frequency = frequency;
 	}
 
 	@Column(name = "ReceiverBandwidth")
-	public final Double getReceiverBandwidth() {
+	public Double getReceiverBandwidth() {
 		return receiverBandwidth;
 	}
 
-	public final void setReceiverBandwidth(final Double receiverBandwidth) {
+	public void setReceiverBandwidth(final Double receiverBandwidth) {
 		this.receiverBandwidth = receiverBandwidth;
 	}
 
 	@Column(name = "Amplitude")
-	public final Double getAmplitude() {
+	public Double getAmplitude() {
 		return amplitude;
 	}
 
-	public final void setAmplitude(final Double amplitude) {
+	public void setAmplitude(final Double amplitude) {
 		this.amplitude = amplitude;
 	}
 
 	@Column(name = "Noise")
-	public final Double getNoise() {
+	public Double getNoise() {
 		return noise;
 	}
 
-	public final void setNoise(final Double noise) {
+	public void setNoise(final Double noise) {
 		this.noise = noise;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Spectrum")
-	public final Spectrum getSpectrum() {
+	public Spectrum getSpectrum() {
 		return spectrum;
 	}
 
-	public final void setSpectrum(final Spectrum spectrum) {
+	public void setSpectrum(final Spectrum spectrum) {
 		this.spectrum = spectrum;
 	}
 

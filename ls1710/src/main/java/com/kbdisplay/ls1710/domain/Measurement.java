@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,6 +53,21 @@ public class Measurement implements Serializable {
 	// TODO Заменить дату повторного измерения на версию измерений
 	// private String version (1.1, 1.2, 2.1 ... 5.3 ... );
 	/**
+	 * версия измерения.
+	 * первое измерение изделия имеет версию 1.0, последующие
+	 * измерения этого изделия, входящие в один цикл измерений, номеруются по
+	 * порядку после точки, типа 1.1, 1.2... 1.5. следующий цикл измерений
+	 * должен увеличить цифру перед точкой, а цифпу после точки установить в
+	 * ноль. Таким образом если изделие проверяется повторно как на ПСИ
+	 * испытаниях, то измерения получат номер версии х.1 или выше. Если
+	 * требуется измерить изделие повторно на ПИ и периодических испытаниях, то
+	 * номер версии будет 2.0, 3.0 или выше. Также если испытания имеют
+	 * экспериментальный характер, то версии испытаний номируются после точки,
+	 * при этом сохранится логическая последовательность (цепочка)
+	 * испытаний/измерений.
+	 */
+	private String version;
+	/**
 	 * Список спектров, которые включает в себя измерение.
 	 */
 	private List<Spectrum> spectrums;
@@ -62,21 +78,21 @@ public class Measurement implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "Date_of_measurement")
-	public final DateOfMeasurement getDateOfMeasurement() {
+	public DateOfMeasurement getDateOfMeasurement() {
 		return dateOfMeasurement;
 	}
 
-	public final void setDateOfMeasurement(final DateOfMeasurement date) {
+	public void setDateOfMeasurement(final DateOfMeasurement date) {
 		this.dateOfMeasurement = date;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Date_of_second_measurement")
-	public final DateOfMeasurement getDateOfSecondMeasurement() {
+	public DateOfMeasurement getDateOfSecondMeasurement() {
 		return dateOfSecondMeasurement;
 	}
 
-	public final void setDateOfSecondMeasurement(
+	public void setDateOfSecondMeasurement(
 			final DateOfMeasurement dateOfSecondMeasurement) {
 		this.dateOfSecondMeasurement = dateOfSecondMeasurement;
 	}
@@ -84,25 +100,21 @@ public class Measurement implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Measurements")
-	public final Long getIdMeasurements() {
+	public Long getIdMeasurements() {
 		return idMeasurements;
+	}
+
+	public void setIdMeasurements(final Long idMeasurements) {
+		this.idMeasurements = idMeasurements;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "Equipment")
-	public final Equipment getEquipment() {
+	public Equipment getEquipment() {
 		return equipment;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public final void setIdMeasurements(final Long idMeasurements) {
-		this.idMeasurements = idMeasurements;
-	}
-
-	public final void setEquipment(final Equipment equipment) {
+	public void setEquipment(final Equipment equipment) {
 		this.equipment = equipment;
 	}
 
@@ -121,24 +133,37 @@ public class Measurement implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "User")
-	public final User getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public final void setUser(final User user) {
+	public void setUser(final User user) {
 		this.user = user;
 	}
 
-	@OneToMany(mappedBy = "measurement",
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "measurement",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy("time")
+	@OrderBy("dateTime")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	public final List<Spectrum> getSpectrums() {
+	public List<Spectrum> getSpectrums() {
 		return spectrums;
 	}
 
-	public final void setSpectrums(final List<Spectrum> spectrums) {
+	public void setSpectrums(final List<Spectrum> spectrums) {
 		this.spectrums = spectrums;
 	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(final String version) {
+		this.version = version;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 
 }

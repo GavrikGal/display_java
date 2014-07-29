@@ -8,9 +8,8 @@
 		
 		<on-entry>
 			<evaluate
-				expression="measurementController.newMeasurementListBean()"
-				result="viewScope.measurementListBean"
-				result-type="com.kbdisplay.ls1710.web.view.MeasurementListBean" />
+				expression="dataJournalController.newListOfDataJournalView()"
+				result="viewScope.listOfDataJournalView" />
 		</on-entry>
 	</view-state>
 	

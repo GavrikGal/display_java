@@ -43,20 +43,20 @@ public class Norm implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Norms")
-	public final Long getIdNorms() {
+	public Long getIdNorms() {
 		return idNorms;
 	}
 
-	public final void setIdNorms(final Long idNorms) {
+	public void setIdNorms(final Long idNorms) {
 		this.idNorms = idNorms;
 	}
 
 	@Column(name = "Short_norms")
-	public final String getShortNorms() {
+	public String getShortNorms() {
 		return shortNorms;
 	}
 
-	public final void setShortNorms(final String shortNorms) {
+	public void setShortNorms(final String shortNorms) {
 		this.shortNorms = shortNorms;
 	}
 
@@ -68,11 +68,11 @@ public class Norm implements Serializable {
 	@JoinTable(name = "norms_of_model",
 		joinColumns = @JoinColumn(name = "Norms"),
 		inverseJoinColumns = @JoinColumn(name = "Model"))
-	public final Set<ModelOfEquipment> getModels() {
+	public Set<ModelOfEquipment> getModels() {
 		return models;
 	}
 
-	public final void setModels(final Set<ModelOfEquipment> models) {
+	public void setModels(final Set<ModelOfEquipment> models) {
 		this.models = models;
 	}
 

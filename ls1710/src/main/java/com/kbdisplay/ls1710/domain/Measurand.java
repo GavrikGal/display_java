@@ -40,11 +40,11 @@ public class Measurand implements Serializable {
 
 	@OneToMany(mappedBy = "measurand",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	public final Set<SpectrumParameter> getSpectrumsParameters() {
+	public Set<SpectrumParameter> getSpectrumsParameters() {
 		return this.spectrumsParameters;
 	}
 
-	public final void setSpectrumsParameters(
+	public void setSpectrumsParameters(
 			final Set<SpectrumParameter> spectrumsParameters) {
 		this.spectrumsParameters = spectrumsParameters;
 	}
@@ -55,16 +55,16 @@ public class Measurand implements Serializable {
 
 	@Id
 	@Column(name = "id_Measurand")
-	public final String getIdMeasurands() {
+	public String getIdMeasurands() {
 		return idMeasurands;
 	}
 
-	public final void setIdMeasurands(final String idMeasurands) {
+	public void setIdMeasurands(final String idMeasurands) {
 		this.idMeasurands = idMeasurands;
 	}
 
 	@Override
-	public final String toString() {
+	public String toString() {
 		return idMeasurands;
 	}
 }

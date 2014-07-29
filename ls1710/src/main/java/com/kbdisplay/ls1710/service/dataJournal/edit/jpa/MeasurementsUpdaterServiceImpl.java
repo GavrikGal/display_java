@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,10 +32,8 @@ import com.kbdisplay.ls1710.domain.Spectrum;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 import com.kbdisplay.ls1710.domain.User;
-import com.kbdisplay.ls1710.service.parcer.DescriptionForParsing;
 import com.kbdisplay.ls1710.service.data.DateOfMeasurementService;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
-import com.kbdisplay.ls1710.service.file.FileFinderService;
 import com.kbdisplay.ls1710.service.data.HarmonicService;
 import com.kbdisplay.ls1710.service.data.MeasurandService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
@@ -47,6 +44,8 @@ import com.kbdisplay.ls1710.service.data.SpectrumService;
 import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
 import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
+import com.kbdisplay.ls1710.service.file.FileFinderService;
+import com.kbdisplay.ls1710.service.parcer.DescriptionForParsing;
 
 @Service("measurementsUpdaterService")
 @Transactional
@@ -56,12 +55,12 @@ public class MeasurementsUpdaterServiceImpl implements
 	final Logger logger = LoggerFactory
 			.getLogger(MeasurementsUpdaterServiceImpl.class);
 
-	// TODO заменить константы на значения прочитанные из файла настроек
-	final String frequencyCellName = "Частота, МГц";
-	final String amplitudeCellName = "Ес+п, дБмкВ/м";
-	final String noiseCellName = "Еп, дБмкВ/м";
-	final String receiverBandwidthCellName = "ПП, кГц";
-	final String rootPathName = "D:\\Данные";
+	// TODO пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	final String frequencyCellName = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ";
+	final String amplitudeCellName = "пїЅпїЅ+пїЅ, пїЅпїЅпїЅпїЅпїЅ/пїЅ";
+	final String noiseCellName = "пїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ/пїЅ";
+	final String receiverBandwidthCellName = "пїЅпїЅ, пїЅпїЅпїЅ";
+	final String rootPathName = "D:\\пїЅпїЅпїЅпїЅпїЅпїЅ";
 
 	@Autowired
 	private DateOfMeasurementService dateOfMeasurementService;
@@ -96,19 +95,20 @@ public class MeasurementsUpdaterServiceImpl implements
 	@Autowired
 	private FileFinderService fileFinder;
 
+	@Override
 	public void updateFromFolder() {
 		try {
 
-			// String rootPath = "D:\\Данные";
+			// String rootPath = "D:\\пїЅпїЅпїЅпїЅпїЅпїЅ";
 
 			final Double deviationFrequency = 0.02;
 			List<File> fileList = fileFinder.findFiles(rootPathName,
-					"[\\w[а-яА-Я]]+\\.(docx|doc)");
+					"[\\w[пїЅ-пїЅпїЅ-пїЅ]]+\\.(docx|doc)");
 
 			for (File file : fileList) {
 
-				// получение данных из путей каталогов
-				// получение типа измерения и разрешения
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				File typeMeasurementsFolder = new File(file.getParent());
 				String[] typeAndResolutions = typeMeasurementsFolder.getName()
 						.split(" ");
@@ -116,24 +116,24 @@ public class MeasurementsUpdaterServiceImpl implements
 				String screenResolutionsNameOrType = typeAndResolutions[1];
 				String typeName;
 				String screenResolutionsName;
-				if (screenResolutionsNameOrType != "ИРП") {
-					typeName = "СИ";
+				if (screenResolutionsNameOrType != "пїЅпїЅпїЅ") {
+					typeName = "пїЅпїЅ";
 					screenResolutionsName = screenResolutionsNameOrType;
 				} else {
-					typeName = "ИРП";
+					typeName = "пїЅпїЅпїЅ";
 					screenResolutionsName = "";
 				}
 				System.out.println("Measurand: " + measurandName);
 				System.out.println("Resolution: " + screenResolutionsName);
 				System.out.println("Type: " + typeName);
 
-				// получение модели изделия
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				File modelMeasurementsFilder = new File(
 						typeMeasurementsFolder.getParent());
 				String modelName = modelMeasurementsFilder.getName();
 				System.out.println("model: " + modelName);
 
-				// получение серийного номера
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 				String fileName = file.getName();
 				fileName = fileName.trim();
 				String serialNumber = fileName.substring(0,
@@ -147,25 +147,25 @@ public class MeasurementsUpdaterServiceImpl implements
 					throw new FileFormatException();
 				} else {
 
-					// ищем модель, если ее нет, то создаем ее и папку к ней
+					// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ
 					ModelOfEquipment model = getModel(modelName);
 
-					// ищем изделие в базе данных, если не найдено, то создаем
-					// новое
+					// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+					// пїЅпїЅпїЅпїЅпїЅ
 					Equipment equipment = getEquipments(model, serialNumber);
 
-					// ищем текущее измерение в БД либо создаем новое
+					// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 					Measurement measurement = getMeasurements(equipment);
 
-					// пробуем получить параметры спектра из БД, или создаем их
+					// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
 					SpectrumParameter spectrumParameter = getSpectrumsParameters(
 							measurandName, typeName, screenResolutionsName);
 
-					// ищем спектр в БД, или создаем новый
+					// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 					Spectrum spectrum = getSpectrums(measurement,
 							spectrumParameter);
 
-					
+
 
 					// Measurements newMeasurements = new Measurements();
 
@@ -209,20 +209,20 @@ public class MeasurementsUpdaterServiceImpl implements
 						}
 
 						if (frequencyCellNumber == -1) {
-							System.out.println("Не найдено колонки частоты");
+							System.out.println("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 							break;
 						}
 						if (receiverBandwidthCellNumber == -1) {
 							System.out
-									.println("Не найдено колонки полосы пропускания");
+									.println("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 							break;
 						}
 						if (amplitudeCellNumber == -1) {
-							System.out.println("Не найдено колонки амплитуды");
+							System.out.println("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 							break;
 						}
 						if (noiseCellNumber == -1) {
-							System.out.println("Не найдено колонки шума");
+							System.out.println("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 							break;
 						}
 
@@ -239,9 +239,9 @@ public class MeasurementsUpdaterServiceImpl implements
 //							System.out.print(cells.get(noiseCellNumber)
 //									.getText());
 //							System.out.println();
-							
+
 							Double frequency,receiverBandwidth, amplitude, noise;
-							
+
 							frequency = Double.parseDouble(cells.get(
 									frequencyCellNumber).getText());
 							receiverBandwidth = Double
@@ -253,9 +253,9 @@ public class MeasurementsUpdaterServiceImpl implements
 							noise = Double.parseDouble(cells.get(
 									noiseCellNumber).getText());
 
-							// Добавить в спектр гармоики из описания. Парсит
-							// описание на наличие
-							// гармоник, возвращает часть описания без гармоник
+							// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ
+							// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+							// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 							Harmonic newHarmonics = new Harmonic();
 							List<Harmonic> oldHarmonics = spectrum.getHarmonics();
@@ -280,21 +280,21 @@ public class MeasurementsUpdaterServiceImpl implements
 									harmonicService.save(newHarmonics);
 									spectrum.getHarmonics().add(newHarmonics);
 								}
-								
-								
+
+
 							}
-							
+
 							//spectrum.getHarmonics().add(newHarmonics);
-							
+
 						}
 						//measurement.getSpectrums().add(spectrum);
 						System.out.println("new spectrum if : " + spectrum.getIdSpectrums());
 					}
-					
-					
+
+
 					measurement = getMeasurements(equipment);
 					System.out.println("New Measurement with ID - " + measurement.getIdMeasurements()+ ":");
-					
+
 					//System.out.println("     Date of meas -" + measurement.getDateOfMeasurement().getDateString());
 					System.out.println("     Id model -" + measurement.getEquipment().getModel().getIdModel());
 					System.out.println("     model name - " + measurement.getEquipment().getModel().getModelName());
@@ -311,20 +311,20 @@ public class MeasurementsUpdaterServiceImpl implements
 						System.out.println("            Resolution - " + spectrums.getSpectrumParameters().getScreenResolution().getResolution());
 						System.out.println("        Harmonics:");
 						for (Harmonic harmonics : spectrums.getHarmonics()) {
-							
+
 							System.out.print("            " + harmonics.getIdHarmonics());
 							System.out.print("\t" + harmonics.getFrequency());
 							System.out.print("\t" + harmonics.getReceiverBandwidth());
 							System.out.print("\t" + harmonics.getAmplitude());
 							System.out.print("\t" + harmonics.getNoise());
 							System.out.println("            For spectrum with Id: " + harmonics.getSpectrum().getIdSpectrums());
-							
+
 						}
-						
+
 					}
-					
-					
-					// Добавляем описание
+
+
+					// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 					//setDescription(spectrum, newDescription);
 				}
 
@@ -341,38 +341,39 @@ public class MeasurementsUpdaterServiceImpl implements
 		}
 	}
 
+	@Override
 	public Measurement saveMeasurements(String modelName, String serialNumber,
 			String measurandName, String typeName,
 			String screenResolutionsName, String description, String user) {
 
-		// ищем модель, если ее нет, то создаем ее и папку к ней
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ
 		ModelOfEquipment model = getModel(modelName);
 
-		// ищем изделие в базе данных, если не найдено, то создаем новое
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		Equipment equipment = getEquipments(model, serialNumber);
 
-		// ищем текущее измерение в БД либо создаем новое
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		Measurement measurement = getMeasurements(equipment);
 
-		// пробуем получить параметры спектра из БД, или создаем их
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
 		SpectrumParameter spectrumParameter = getSpectrumsParameters(
 				measurandName, typeName, screenResolutionsName);
 
-		// ищем спектр в БД, или создаем новый
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		Spectrum spectrum = getSpectrums(measurement, spectrumParameter);
 
-		// Добавить в спектр гармоики из описания. Парсит описание на наличие
-		// гармоник, возвращает часть описания без гармоник
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		String newDescription = setHarmonicsFromDescription(spectrum,
 				description);
 
-		// Добавляем описание
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		setDescription(spectrum, newDescription);
 
 		return measurement;
 	}
 
-	// получение текущей даты из БД либо создание новой записи в БД
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ
 	private DateOfMeasurement getCurrentDateOfMeasurement() {
 		DateTime currentDate = new DateTime();
 		DateOfMeasurement currentDateOfMeasurement = new DateOfMeasurement();
@@ -382,7 +383,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		return currentDateOfMeasurement;
 	}
 
-	// получаем модель из БД, если ее там нет то пробуем создать
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	private ModelOfEquipment getModel(String modelName) {
 		ModelOfEquipment model = findModel(modelName);
 		if (model == null) {
@@ -396,7 +397,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		return model;
 	}
 
-	// поиск модели изделия в базе
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 	private ModelOfEquipment findModel(String modelName) {
 		modelName = modelName.trim();
 		ModelOfEquipment model = modelService.findByModelName(modelName);
@@ -406,14 +407,14 @@ public class MeasurementsUpdaterServiceImpl implements
 		return model;
 	}
 
-	// создание новой модели в базе
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 	private ModelOfEquipment createNewModel(String modelName) {
 		modelName = modelName.trim();
 		ModelOfEquipment model = new ModelOfEquipment();
 		model.setModelName(modelName);
 		model = modelService.save(model);
 
-		// проверяем наличие папки модели, если не найдем то пробуем ее создать
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		try {
 			List<File> searchModelFolder = fileFinder.findDirectories(
 					rootPathName, modelName);
@@ -429,7 +430,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		return model;
 	}
 
-	// получаем изделие из БД, если его там нет то пробуем создать
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	private Equipment getEquipments(ModelOfEquipment model, String serialNumber) {
 		Equipment equipment = new Equipment();
 		equipment.setModel(model);
@@ -441,8 +442,8 @@ public class MeasurementsUpdaterServiceImpl implements
 		return equipment;
 	}
 
-	// Получение экземпляпа измерений для текущего изделия и текущей даты
-	// измеренения
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	private Measurement getMeasurements(Equipment equipment) {
 
 		DateOfMeasurement currentDateOfMeasurement = getCurrentDateOfMeasurement();
@@ -501,24 +502,24 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		if (measurement.getIdMeasurements() == null) {
 			System.out
-					.println("Хьюстон. У нас проблемы. IdMeasurements == null");
+					.println("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. IdMeasurements == null");
 		}
 		return measurement;
 	}
 
-	// получаем параметры спектра из БД или создаем новые
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	private SpectrumParameter getSpectrumsParameters(String measurandName,
 			String typeName, String screenResolutionName) {
 		Measurand measurand = measurandService.findById(measurandName);
 		if (measurand == null) {
-			logger.error("Не найден параметр: measurand = " + measurandName
-					+ ". Добавте его в БД");
+			logger.error("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: measurand = " + measurandName
+					+ ". пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅ");
 		}
 		ScreenResolution screenResolution = getScreenResolutions(screenResolutionName);
 		TypeOfSpectrum typeOfSpectrum = typesOfSpectrumService.findById(typeName);
 		if (typeOfSpectrum == null) {
-			logger.error("Не найден параметр: type = " + typeName
-					+ ". Добавте его в БД");
+			logger.error("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: type = " + typeName
+					+ ". пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅ");
 		}
 
 		SpectrumParameter spectrumParameter = new SpectrumParameter();
@@ -532,7 +533,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		return spectrumParameter;
 	}
 
-	// получение разрешения экрана, если его нет
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ
 	private ScreenResolution getScreenResolutions(String screenResolutionsName) {
 		screenResolutionsName = screenResolutionsName.trim();
 		ScreenResolution screenResolution = screenResolutionService
@@ -547,7 +548,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		return screenResolution;
 	}
 
-	// получаем спект из БД или создаем новый
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	private Spectrum getSpectrums(Measurement measurement,
 			SpectrumParameter spectrumParameter) {
 
@@ -562,17 +563,17 @@ public class MeasurementsUpdaterServiceImpl implements
 			spectrum.setHarmonics(new ArrayList<Harmonic>());
 		}
 		DateTime currentDate = new DateTime();
-		spectrum.setTime(new Time(currentDate.getMillis()));
+		spectrum.setDateTime(currentDate);
 
 		spectrum = spectrumService.save(spectrum);
 		if (measurement.getSpectrums().isEmpty()) {
 			measurement.getSpectrums().add(spectrum);
-			
+
 		}
 		return spectrum;
 	}
 
-	// Парсим описание на наличие гармоник и устанавливаем их в спектр
+	// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	private String setHarmonicsFromDescription(Spectrum spectrum,
 			String description) {
 
@@ -581,7 +582,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		final Double deviationFrequency = 0.02;
 
 		Double frequency, receiverBandwidth, amplitude, noise;
-		
+
 		receiverBandwidth = 30.0;
 
 		while (!newDescription.isString()) {
@@ -620,7 +621,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		return description;
 	}
 
-	// Проверяем описание в спектре и если надо, то добавляем новое
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	private void setDescription(Spectrum spectrum, String description) {
 		if (description != null) {
 			if (spectrum.getDescription() == null) {

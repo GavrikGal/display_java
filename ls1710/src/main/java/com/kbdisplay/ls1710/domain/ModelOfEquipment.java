@@ -66,21 +66,21 @@ public class ModelOfEquipment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Model")
-	public final Long getIdModel() {
+	public Long getIdModel() {
 		return idModel;
 	}
 
-	public final void setIdModel(final Long idModel) {
+	public void setIdModel(final Long idModel) {
 		this.idModel = idModel;
 	}
 
 	@OneToMany(mappedBy = "model",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	public final Set<Equipment> getEquipments() {
+	public Set<Equipment> getEquipments() {
 		return this.equipments;
 	}
 
-	public final void setEquipments(final Set<Equipment> equipments) {
+	public void setEquipments(final Set<Equipment> equipments) {
 		this.equipments = equipments;
 	}
 
@@ -94,22 +94,22 @@ public class ModelOfEquipment implements Serializable {
 	}
 
 	@Column(name = "Description")
-	public final String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public final void setDescription(final String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
 	@Column(name = "Photo")
-	public final byte[] getPhoto() {
+	public byte[] getPhoto() {
 		return photo;
 	}
 
-	public final void setPhoto(final byte[] photo) {
+	public void setPhoto(final byte[] photo) {
 		this.photo = photo;
 	}
 
@@ -119,20 +119,20 @@ public class ModelOfEquipment implements Serializable {
 		inverseJoinColumns = @JoinColumn(name = "Norms"))
 	@OrderBy("idNorms")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	public final List<Norm> getNorms() {
+	public List<Norm> getNorms() {
 		return norms;
 	}
 
-	public final void setNorms(final List<Norm> norms) {
+	public void setNorms(final List<Norm> norms) {
 		this.norms = norms;
 	}
 
 	@Column(name = "Model_name")
-	public final String getModelName() {
+	public String getModelName() {
 		return modelName;
 	}
 
-	public final void setModelName(final String modelName) {
+	public void setModelName(final String modelName) {
 		this.modelName = modelName;
 	}
 

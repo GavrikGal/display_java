@@ -42,20 +42,20 @@ public class Role implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Role")
-	public final Long getIdRoles() {
+	public Long getIdRoles() {
 		return idRoles;
 	}
 
-	public final void setIdRoles(final Long idRoles) {
+	public void setIdRoles(final Long idRoles) {
 		this.idRoles = idRoles;
 	}
 
 	@Column(name = "Role")
-	public final String getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public final void setRole(final String role) {
+	public void setRole(final String role) {
 		this.role = role;
 	}
 
@@ -67,11 +67,11 @@ public class Role implements Serializable {
 	@JoinTable(name = "users_role",
 		joinColumns = @JoinColumn(name = "role"),
 		inverseJoinColumns = @JoinColumn(name = "user"))
-	public final Set<User> getUsers() {
+	public Set<User> getUsers() {
 		return users;
 	}
 
-	public final void setUsers(final Set<User> users) {
+	public void setUsers(final Set<User> users) {
 		this.users = users;
 	}
 

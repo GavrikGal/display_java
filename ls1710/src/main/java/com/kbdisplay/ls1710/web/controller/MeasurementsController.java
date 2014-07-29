@@ -5,14 +5,7 @@ package com.kbdisplay.ls1710.web.controller;
 //import java.util.Locale;
 import java.util.List;
 
-//import javax.servlet.http.HttpServletRequest;
-//import javax.validation.Valid;
-
-//import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 //import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.PageRequest;
 //import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,8 +45,19 @@ import com.kbdisplay.ls1710.service.data.MeasurementService;
 import com.kbdisplay.ls1710.web.view.MeasurementListBean;
 //import com.kbdisplay.ls1710.web.view.MeasurementsView;
 //import com.google.common.collect.Lists;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.validation.Valid;
+//import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //@RequestMapping("/measurements")
+/**
+ * @deprecated
+ * @author Gavrik
+ *
+ */
+@Deprecated
 @Component("measurementController")
 public class MeasurementsController {
 
@@ -62,12 +66,12 @@ public class MeasurementsController {
 	private final Logger logger = LoggerFactory
 			.getLogger(MeasurementsController.class);
 
-	
+
 	/**
-	 * А тут что бляd Все нормально тут sad.
-	 * 
+	 * пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅd пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ sad.
+	 *
 	 * @author Gavrik
-	 * 
+	 *
 	 * @version 1.0
 	 */
 	@Autowired

@@ -7,15 +7,23 @@ import org.joda.time.DateTime;
 
 import com.kbdisplay.ls1710.domain.Measurement;
 
+/**
+ * НЕ ИСПОЛЬЗОВАТЬ, БУДЕТ УДАЛЕН!
+ *
+ * @deprecated весь класс
+ * @author Gavrik
+ *
+ */
+@Deprecated
 public class ListOfMeasurementsViews {
 
 	private List<MeasurementsView>	measurementsViews	= new ArrayList<MeasurementsView>();
-	
+
 	private String currentModelName = null;
 	private DateTime currentMeasurementDate = null;
-	
+
 	public ListOfMeasurementsViews() {
-		
+
 	}
 
 	public ListOfMeasurementsViews(List<Measurement> measurements) {
@@ -24,7 +32,7 @@ public class ListOfMeasurementsViews {
 			addMeasurement(measurement);
 		}
 	}
-	
+
 	public void addMeasurement(Measurement measurement) {
 		MeasurementsView measurementsView = new MeasurementsView();
 
