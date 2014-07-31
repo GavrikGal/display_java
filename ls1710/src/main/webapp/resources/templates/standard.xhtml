@@ -10,9 +10,9 @@
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>ЛС-1710</title>
-		<link rel="stylesheet"
+	<!-- 	<link rel="stylesheet"
 			href="${request.contextPath}/styles/gavrik/screen.css"
-			type="text/css" media="screen, projection" />
+			type="text/css" media="screen, projection" /> -->
 	<!-- 	<link rel="stylesheet"
 			href="${request.contextPath}/styles/blueprint/screen.css"
 			type="text/css" media="screen, projection" />
@@ -25,11 +25,12 @@
 	</h:head>
 
 	<h:body>
+		<h:outputStylesheet library="styles/gavrik" name="screen.css" target="body"/>
 		<div class="container">
 
 			<div class="header">
 				<ui:insert name="header">
-					<ui:include src="/WEB-INF/flows/common/header.xhtml" />
+					<ui:include src="/resources/views/common/header.xhtml" />
 				</ui:insert>
 			</div>
 
@@ -39,7 +40,7 @@
 
 			<div class="footer">
 				<ui:insert name="footer">
-					<ui:include src="/WEB-INF/flows/common/footer.xhtml" />
+					<ui:include src="/resources/views/common/footer.xhtml" />
 				</ui:insert>
 			</div>
 
