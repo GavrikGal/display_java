@@ -3,6 +3,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:composite="http://java.sun.com/jsf/composite">
 
 
@@ -32,7 +33,7 @@
 				</p:column>
 				<p:column>
 					<ui:repeat var="harmonic" value="#{cc.attrs.spectrum.harmonics}"
-						size="#{cc.attrs.spectrum.harmonics.size() > 2 ? 3 : cc.attrs.spectrum.harmonics.size()}">
+						size="#{fn:length(cc.attrs.spectrum.harmonics) > 2 ? 3 : fn:length(cc.attrs.spectrum.harmonics)}">
 						<h:outputText
 							value="#{harmonic.frequency} - #{harmonic.amplitude}#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " />
 					</ui:repeat>

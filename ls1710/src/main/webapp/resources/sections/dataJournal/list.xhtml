@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:component="http://java.sun.com/jsf/composite/components/dataJournal">
 
 
@@ -25,23 +26,46 @@
 					rowKey="#{measurementForView.id}"
 					selection="#{listOfDataJournalView.selectedMeasurementForView}"
 					selectionMode="single" rowStyleClass="measurement-table-rows"
-					sortBy="#{measurementForView.id}" sortOrder="descending">
-					<p:column headerText="#{msg['label_measurement_table_date']}"
-						width="70">
+					sortBy="#{measurementForView.id}" sortOrder="descending"
+					widgetVar="measurementForViewsTable" emptyMessage="#{msg['label_measurement_table_empty']}" 
+					filteredValue="#{listOfDataJournalView.filteredMeasurementForViews}">
+					<p:column width="70"
+						filterBy="#{measurementForView.firstDateOfMeasurement.date}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{msg['label_measurement_table_date']}"/>
+						</f:facet>
+						<f:facet name="filter">
+							<p:inputText onkeyup="PF('measurementForViewsTable').filter()" style="width: 70px;margin-top:3px;"/>
+						</f:facet>
 						<h:outputText
 							value="#{measurementForView.firstDateOfMeasurement.date}">
 							<f:converter converterId="jodaDataTimeConverter" />
 							<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
 						</h:outputText>
 					</p:column>
-					<p:column headerText="#{msg['label_measurement_table_model']}"
-						width="80">
+					<p:column width="80" 
+						filterBy="#{measurementForView.equipment.model.modelName}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{msg['label_measurement_table_model']}"/>
+						</f:facet>
+						<f:facet name="filter">
+							<p:inputText onkeyup="PF('measurementForViewsTable').filter()" style="width: 80px;margin-top:3px;"/>
+						</f:facet>
 						<h:outputText
 							value="#{measurementForView.equipment.model.modelName}" />
 					</p:column>
 					<p:column
-						headerText="#{msg['label_measurement_table_serial_number']}"
-						width="80">
+						width="100"
+						filterBy="#{measurementForView.equipment.serialNumber}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{msg['label_measurement_table_serial_number']}"/>
+						</f:facet>
+						<f:facet name="filter">
+							<p:inputText onkeyup="PF('measurementForViewsTable').filter()" style="width: 100px;margin-top:3px;"/>
+						</f:facet>
 						<h:outputText value="#{measurementForView.equipment.serialNumber}" />
 					</p:column>
 					<p:column headerText="#{msg['label_measurement_table_spectrum']}">
@@ -55,11 +79,18 @@
 					<p:column width="20" styleClass="internalTable"
 						style="border-left: 0px solid #E55 ">
 						<p:rowToggler
-							rendered="#{measurementForView.lastSpectrums.size() > 2}" />
+							rendered="#{fn:length(measurementForView.lastSpectrums) > 2}" />
 					</p:column>
 					<p:column
-						headerText="#{msg['label_measurement_table_second_date']}"
-						width="70">
+						width="70"
+						filterBy="#{measurementForView.lastDateOfMeasurement.date}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{msg['label_measurement_table_second_date']}"/>
+						</f:facet>
+						<f:facet name="filter">
+							<p:inputText onkeyup="PF('measurementForViewsTable').filter()" style="width: 70px;margin-top:3px;"/>
+						</f:facet>
 						<h:outputText
 							value="#{measurementForView.lastDateOfMeasurement.date}">
 							<f:converter converterId="jodaDataTimeConverter" />
@@ -76,7 +107,7 @@
 					<p:rowExpansion styleClass="expansionTable">
 						<p:panelGrid>
 							<p:row>
-								<p:column style="width: 271px">
+								<p:column style="width: 291px">
 
 								</p:column>
 								<p:column>
@@ -134,7 +165,7 @@
 						</p:panelGrid>
 						<p:dataGrid var="selectedMeasurement"
 							value="#{listOfDataJournalView.selectedMeasurementForView.measurements}"
-							columns="#{listOfDataJournalView.selectedMeasurementForView.measurements.size()}"
+							columns="#{fn:length(listOfDataJournalView.selectedMeasurementForView.measurements)}"
 							id="selectedMeasurements">
 							<p:panel styleClass="selectedMeasurementPanel">
 								<f:facet name="header">
@@ -147,7 +178,7 @@
 								</f:facet>
 								<p:dataGrid var="selectedSpectrum"
 									value="#{selectedMeasurement.spectrums}"
-									columns="#{selectedMeasurement.spectrums.size()}" rows="2"
+									columns="#{fn:length(selectedMeasurement.spectrums)}" rows="2"
 									id="selectedSpectrums" paginator="false"
 									styleClass="selectedSpectrums">
 									<p:panelGrid columns="1">

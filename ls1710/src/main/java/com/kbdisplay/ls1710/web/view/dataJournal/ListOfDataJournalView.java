@@ -36,6 +36,10 @@ public class ListOfDataJournalView implements Serializable {
 	 */
 	private List<MeasurementForView> measurementForViews;
 	/**
+	 * список отфильтрованных из общего представления измерений.
+	 */
+	private List<MeasurementForView> filteredMeasurementForViews;
+	/**
 	 * выделеная строка данных об измерениях.
 	 */
 	private MeasurementForView selectedMeasurementForView;
@@ -52,6 +56,15 @@ public class ListOfDataJournalView implements Serializable {
 	public final void setMeasurementForViews(
 			final List<MeasurementForView> measurementForViews) {
 		this.measurementForViews = measurementForViews;
+	}
+
+	public List<MeasurementForView> getFilteredMeasurementForViews() {
+		return filteredMeasurementForViews;
+	}
+
+	public void setFilteredMeasurementForViews(
+			final List<MeasurementForView> filteredMeasurementForViews) {
+		this.filteredMeasurementForViews = filteredMeasurementForViews;
 	}
 
 	public final MeasurementForView getSelectedMeasurementForView() {
