@@ -3,7 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:component="http://java.sun.com/jsf/composite/components">
 
 
 
@@ -47,32 +48,8 @@
 						<p:dataGrid var="spectrum"
 							value="#{measurementForView.lastSpectrums}" columns="1" rows="2"
 							id="spectrums" paginator="false" styleClass="internalTable">
-							<p:panelGrid>
-								<p:row>
-									<p:column style="width: 140px">
-										<h:outputText
-											value="#{spectrum.spectrumParameters.measurand}
-	        											 #{spectrum.spectrumParameters.typeOfSpectrum != null ? ', ' : ''}"
-											style="font-size: small;" />
-										<h:outputText
-											value="#{spectrum.spectrumParameters.typeOfSpectrum}
-		            									 #{spectrum.spectrumParameters.screenResolution != null ? ', ' : ''}"
-											style="font-size: small;" />
-										<h:outputText
-											value="#{spectrum.spectrumParameters.screenResolution}"
-											style="font-size: small;" />
-									</p:column>
-									<p:column>
-										<ui:repeat var="harmonic" value="#{spectrum.harmonics}"
-											size="#{spectrum.harmonics.size() > 2 ? 3 : spectrum.harmonics.size()}">
-											<h:outputText
-												value="#{harmonic.frequency} - #{harmonic.amplitude}#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " />
-										</ui:repeat>
-										#{spectrum.description}
-									</p:column>
-
-								</p:row>
-							</p:panelGrid>
+							<component:spectrumRow spectrum="#{spectrum}"
+								widthFirstColumn="140px" />
 						</p:dataGrid>
 					</p:column>
 					<p:column width="20" styleClass="internalTable"
@@ -107,32 +84,8 @@
 										value="#{measurementForView.lastSpectrums}" columns="1"
 										rows="2" id="moreSpectrums" paginator="false"
 										styleClass="internalTable" first="2">
-										<p:panelGrid>
-											<p:row>
-												<p:column style="width: 140px">
-													<h:outputText
-														value="#{moreSpectrum.spectrumParameters.measurand}
-			        											 #{moreSpectrum.spectrumParameters.typeOfSpectrum != null ? ', ' : ''}"
-														style="font-size: small;" />
-													<h:outputText
-														value="#{moreSpectrum.spectrumParameters.typeOfSpectrum}
-				            									 #{moreSpectrum.spectrumParameters.screenResolution != null ? ', ' : ''}"
-														style="font-size: small;" />
-													<h:outputText
-														value="#{moreSpectrum.spectrumParameters.screenResolution}"
-														style="font-size: small;" />
-												</p:column>
-												<p:column>
-													<ui:repeat var="harmonic" value="#{moreSpectrum.harmonics}"
-														size="#{moreSpectrum.harmonics.size() > 2 ? 3 : moreSpectrum.harmonics.size()}">
-														<h:outputText
-															value="#{harmonic.frequency} - #{harmonic.amplitude}#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " />
-													</ui:repeat>
-													#{moreSpectrum.description}
-												</p:column>
-
-											</p:row>
-										</p:panelGrid>
+										<component:spectrumRow spectrum="#{moreSpectrum}"
+											widthFirstColumn="140px"/>
 									</p:dataGrid>
 								</p:column>
 
@@ -145,27 +98,31 @@
 					</p:rowExpansion>
 				</p:dataTable>
 
-				<p:dialog header="#{msg['label_measurement_table_detail_header']}" widgetVar="measurementDialog"
-					modal="true" showEffect="fade" hideEffect="fade" resizable="false"
-					position="top" dynamic="true"
+				<p:dialog header="#{msg['label_measurement_table_detail_header']}"
+					widgetVar="measurementDialog" modal="true" showEffect="fade"
+					hideEffect="fade" resizable="false" position="top" dynamic="true"
 					id="measurementDetailDialog">
-					<p:outputPanel id="measurementDetail" style="text-align:center;" styleClass="measurementDetailPanel" >
+					<p:outputPanel id="measurementDetail" style="text-align:center;"
+						styleClass="measurementDetailPanel">
 						<p:panelGrid columns="2" id="selectedMeasurementCommonInfo">
 
 							<h:outputText value="#{msg['label_measurement_table_date']}" />
 							<h:outputText
-								value="#{listOfDataJournalView.selectedMeasurementForView.firstDateOfMeasurement.date}" >
-									<f:converter converterId="jodaDataTimeConverter" />
-									<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
+								value="#{listOfDataJournalView.selectedMeasurementForView.firstDateOfMeasurement.date}">
+								<f:converter converterId="jodaDataTimeConverter" />
+								<f:attribute name="pattern"
+									value="#{msg['date_format_pattern']}" />
 							</h:outputText>
-							
-							<h:outputText value="#{msg['label_measurement_table_second_date']}" />
+
 							<h:outputText
-								value="#{listOfDataJournalView.selectedMeasurementForView.lastDateOfMeasurement.date}" >
-									<f:converter converterId="jodaDataTimeConverter" />
-									<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
+								value="#{msg['label_measurement_table_second_date']}" />
+							<h:outputText
+								value="#{listOfDataJournalView.selectedMeasurementForView.lastDateOfMeasurement.date}">
+								<f:converter converterId="jodaDataTimeConverter" />
+								<f:attribute name="pattern"
+									value="#{msg['date_format_pattern']}" />
 							</h:outputText>
-							
+
 							<h:outputText value="#{msg['label_measurement_table_model']}" />
 							<h:outputText
 								value="#{listOfDataJournalView.selectedMeasurementForView.equipment.model.modelName}" />
@@ -177,17 +134,22 @@
 						</p:panelGrid>
 						<p:dataGrid var="selectedMeasurement"
 							value="#{listOfDataJournalView.selectedMeasurementForView.measurements}"
-							columns="#{listOfDataJournalView.selectedMeasurementForView.measurements.size()}" id="selectedMeasurements">
+							columns="#{listOfDataJournalView.selectedMeasurementForView.measurements.size()}"
+							id="selectedMeasurements">
 							<p:panel styleClass="selectedMeasurementPanel">
 								<f:facet name="header">
-									<h:outputText value="#{selectedMeasurement.dateOfMeasurement.date}">
+									<h:outputText
+										value="#{selectedMeasurement.dateOfMeasurement.date}">
 										<f:converter converterId="jodaDataTimeConverter" />
-										<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
+										<f:attribute name="pattern"
+											value="#{msg['date_format_pattern']}" />
 									</h:outputText>
 								</f:facet>
 								<p:dataGrid var="selectedSpectrum"
 									value="#{selectedMeasurement.spectrums}"
-									columns="#{selectedMeasurement.spectrums.size()}" rows="2" id="selectedSpectrums" paginator="false" styleClass="selectedSpectrums">
+									columns="#{selectedMeasurement.spectrums.size()}" rows="2"
+									id="selectedSpectrums" paginator="false"
+									styleClass="selectedSpectrums">
 									<p:panelGrid columns="1">
 										<p:row>
 											<p:column>
@@ -202,29 +164,29 @@
 												<h:outputText
 													value="#{selectedSpectrum.spectrumParameters.screenResolution}"
 													style="font-size: small;" />
-	
-											</p:column>	
-	
+
+											</p:column>
+
 										</p:row>
 										<p:row rendered="#{not empty selectedSpectrum.harmonics}">
 											<p:column>
 												<p:dataTable var="harmonic"
-														value="#{selectedSpectrum.harmonics}">
-														<p:column headerText="F">
-															<h:outputText value="#{harmonic.frequency}" />
-														</p:column>
-														<p:column headerText="Ec">
-															<h:outputText value="#{harmonic.amplitude}" />
-														</p:column>
-														<p:column headerText="Eш">
-															<h:outputText value="#{harmonic.noise}" />
-														</p:column>
-													</p:dataTable>
+													value="#{selectedSpectrum.harmonics}">
+													<p:column headerText="F">
+														<h:outputText value="#{harmonic.frequency}" />
+													</p:column>
+													<p:column headerText="Ec">
+														<h:outputText value="#{harmonic.amplitude}" />
+													</p:column>
+													<p:column headerText="Eш">
+														<h:outputText value="#{harmonic.noise}" />
+													</p:column>
+												</p:dataTable>
 											</p:column>
 										</p:row>
 										<p:row rendered="#{not empty selectedSpectrum.description}">
 											<p:column>
-												<h:outputText value="#{selectedSpectrum.description}"/>
+												<h:outputText value="#{selectedSpectrum.description}" />
 											</p:column>
 										</p:row>
 									</p:panelGrid>

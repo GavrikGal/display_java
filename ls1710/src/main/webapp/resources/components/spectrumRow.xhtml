@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+	<!--  INTERFACE -->
+  <composite:interface>
+    <composite:attribute name="spectrum" type="com.kbdisplay.ls1710.domain.Spectrum"/>
+    <composite:attribute name="widthFirstColumn" />        
+  </composite:interface>
+
+  <!--  IMPLEMENTATION -->          
+    <composite:implementation>
+    <h:form>
+    	<p:panelGrid>
+			<p:row>
+				<p:column style="width: #{cc.attrs.widthFirstColumn}">
+					<h:outputText
+						value="#{cc.attrs.spectrum.spectrumParameters.measurand}
+    											 #{cc.attrs.spectrum.spectrumParameters.typeOfSpectrum != null ? ', ' : ''}"
+						style="font-size: small;" />
+					<h:outputText
+						value="#{cc.attrs.spectrum.spectrumParameters.typeOfSpectrum}
+         									 #{cc.attrs.spectrum.spectrumParameters.screenResolution != null ? ', ' : ''}"
+						style="font-size: small;" />
+					<h:outputText
+						value="#{cc.attrs.spectrum.spectrumParameters.screenResolution}"
+						style="font-size: small;" />
+				</p:column>
+				<p:column>
+					<ui:repeat var="harmonic" value="#{cc.attrs.spectrum.harmonics}"
+						size="#{cc.attrs.spectrum.harmonics.size() > 2 ? 3 : cc.attrs.spectrum.harmonics.size()}">
+						<h:outputText
+							value="#{harmonic.frequency} - #{harmonic.amplitude}#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " />
+					</ui:repeat>
+					#{spectrum.description}
+				</p:column>
+
+			</p:row>
+		</p:panelGrid>
+    </h:form>
+  </composite:implementation>
+
+
+
+</html>
