@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import org.joda.time.DateTime;
 
@@ -55,15 +56,18 @@ public class EditFormDataJournalView implements Serializable {
 	 * определяет начало нового цикла измерений или продолжение старого.
 	 */
 	private Version version;
+	/**
+	 * описание измерения.
+	 *
+	 * сюда записываются данные пользователем, затем они парсятся и заносятся в
+	 * БД.
+	 */
+	private String description;
 
 	/**
 	 * список доступных моделей изделий.
 	 */
 	private List<ModelOfEquipment> modelOfEquipments;
-	/**
-	 * используемая модель.
-	 */
-	private ModelOfEquipment modelOfEquipment;
 
 
 	// @ManagedProperty(value="#{modelService}")
@@ -141,6 +145,14 @@ public class EditFormDataJournalView implements Serializable {
 		this.version = version;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(final String description) {
+		this.description = description;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -154,15 +166,6 @@ public class EditFormDataJournalView implements Serializable {
 		this.modelOfEquipments = modelOfEquipments;
 	}
 
-	public ModelOfEquipment getModelOfEquipment() {
-		return modelOfEquipment;
-	}
-
-
-	public void setModelOfEquipment(ModelOfEquipment modelOfEquipment) {
-		this.modelOfEquipment = modelOfEquipment;
-	}
-
 	// public ModelService getModelService() {
 	// return modelService;
 	// }
@@ -170,5 +173,13 @@ public class EditFormDataJournalView implements Serializable {
 	// public void setModelService(final ModelService modelService) {
 	// this.modelService = modelService;
 	// }
+
+	public void save(final ActionEvent actionEvent)  {
+
+		System.out.println("        HopM    ");
+		System.out.println(equipment.getSerialNumber());
+		System.out.println(description);
+		description = null;
+	}
 
 }

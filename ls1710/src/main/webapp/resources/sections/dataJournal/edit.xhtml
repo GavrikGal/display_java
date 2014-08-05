@@ -10,19 +10,19 @@
 		<p:panel id="editMeasurement" styleClass="editMeasurementPanel">
 			<h:form id="editForm">
 			<p:panelGrid columns="6">
-				<h:outputText value="Дата" />
+				<h:outputText for="currentDate" value="Дата" />
 			    <p:outputLabel for="model" value="Модель" />
 			 
-			    <h:outputText value="Серийный номер" />
+			    <h:outputText for="serialNumber" value="Серийный номер" />
 			    <h:outputText value="Параметры" />
 			 
-			    <h:outputText value="Результаты измерений" />
-			    <h:outputText value="Испытания проводил" />
+			    <h:outputText for="description" value="Результаты измерений" />
+			    <h:outputText value="" />
 			 
-			    <p:clock pattern="dd.MM.yyyy - HH:mm:ss" mode="server" autoSync="true"/>
+			    <p:clock pattern="dd.MM.yyyy - HH:mm:ss" mode="server" autoSync="true" id="currentDate"/>
 			    
-				<p:selectOneMenu id="model" value="#{editFormDJView.modelOfEquipment}" converter="modelConverter" panelStyle="width:180px"
-		                         effect="fade" var="m" style="width:160px" filter="true" filterMatchMode="contains" editable="true">
+				<p:selectOneMenu id="model" value="#{editFormDJView.equipment.model}" converter="modelConverter" panelStyle="width:180px"
+		                         effect="fade" var="m" style="width:160px" filter="true" filterMatchMode="contains" editable="true" >
 		            <f:selectItems value="#{editFormDJView.modelOfEquipments}" var="model" itemLabel="#{model.modelName}" itemValue="#{model}" />
 		 
 		            <p:column>
@@ -33,10 +33,10 @@
 
 
 
-			    <p:inputText/>
+			    <p:inputText id="serialNumber" placeholder="xxxxxx" value="#{editFormDJView.equipment.serialNumber}" size="10"/>
 			    <h:outputText value="4" />
-			    <h:outputText value="5" />
-			    <h:outputText value="6" />
+			    <p:inputTextarea id="description" rows="2" cols="50" value="#{editFormDJView.description}" placeholder="32.5 - 35 / 16; соотв."/>
+			    <p:commandButton value="Сохранить" id="save" update="@this" actionListener="#{editFormDJView.save}" />
 			</p:panelGrid>
 			</h:form>
 		</p:panel>

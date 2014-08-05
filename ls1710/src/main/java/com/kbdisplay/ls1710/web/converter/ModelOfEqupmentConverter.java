@@ -15,7 +15,12 @@ public class ModelOfEqupmentConverter implements Converter {
 	public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
             ModelService service = (ModelService) fc.getExternalContext().getApplicationMap().get("modelService");
-            return service.findAll().get(Integer.parseInt(value));
+            if (service != null) {
+            	return service.findAll().get(Integer.parseInt(value));
+            } else {
+            	System.out.println("  fucking servise");
+            	return null;
+            }
         }
         else {
             return null;
