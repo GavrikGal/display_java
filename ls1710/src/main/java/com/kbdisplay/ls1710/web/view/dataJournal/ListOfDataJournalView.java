@@ -7,6 +7,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.joda.time.DateTime;
+
 import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.DateOfMeasurement;
 import com.kbdisplay.ls1710.domain.Equipment;
@@ -16,9 +18,13 @@ import com.kbdisplay.ls1710.web.view.dataJournal.component.MeasurementForView;
 import com.kbdisplay.ls1710.web.view.dataJournal.component.Version;
 
 /**
- * представление для обработки списка данных об измерениях. для обработки перед
+ * представление списка данных об измерениях. для обработки перед
  * выводом измерений на вэб-страницу.
  *
+ * @author Gavrik
+ *
+ */
+/**
  * @author Gavrik
  *
  */
@@ -50,7 +56,7 @@ public class ListOfDataJournalView implements Serializable {
 	}
 
 	public final List<MeasurementForView> getMeasurementForViews() {
-		return measurementForViews;
+		return setVisibleFields(measurementForViews);
 	}
 
 	public final void setMeasurementForViews(
@@ -59,7 +65,7 @@ public class ListOfDataJournalView implements Serializable {
 	}
 
 	public List<MeasurementForView> getFilteredMeasurementForViews() {
-		return filteredMeasurementForViews;
+		return setVisibleFields(filteredMeasurementForViews);
 	}
 
 	public void setFilteredMeasurementForViews(
@@ -280,4 +286,126 @@ public class ListOfDataJournalView implements Serializable {
 		return null;
 	}
 
+	/**
+	 * делает неотображаемыми повторяющиеся элементы даты и модели.
+	 *
+	 * запускать после сортировки данных.
+	 *
+	 * @param measurementForViews
+	 *            список отсортированных измерений
+	 * @return список измерений, с убранными повторяющимися датами и моделями.
+	 */
+	private List<MeasurementForView> setVisibleFields(
+			final List<MeasurementForView> measurementForViews) {
+
+		if (measurementForViews == null) {
+			return measurementForViews;
+		}
+
+		if (measurementForViews.isEmpty()) {
+			return measurementForViews;
+		}
+
+		DateTime currentDate = null;
+		DateTime preDate = null;
+		String currentModelName = "";
+		String preModelName = "";
+
+		MeasurementForView currentMeasForView = null;
+		MeasurementForView preMeasForView = null;
+
+		/*
+		 * идут ли измерения в списке по возрастанию или же убыванию.
+		 */
+		boolean isIncrease = isIncrease(measurementForViews);
+
+		for (int i = 0; i < measurementForViews.size(); i++) {
+
+			currentMeasForView = measurementForViews.get(i);
+			currentDate =
+					currentMeasForView.getFirstDateOfMeasurement().getDate();
+			currentModelName =
+					currentMeasForView.getEquipment().getModel().getModelName();
+
+			currentMeasForView.setEnableFirstDate(true);
+			currentMeasForView.setEnableModelName(true);
+
+			if (i > 0) {
+				preMeasForView = measurementForViews.get(i - 1);
+				preDate = preMeasForView.getFirstDateOfMeasurement().getDate();
+				preModelName =
+						preMeasForView.getEquipment().getModel().getModelName();
+			} else {
+				preMeasForView = currentMeasForView;
+				continue;
+			}
+
+			if (preModelName == currentModelName) {
+				if (isIncrease) {
+					preMeasForView.setEnableModelName(false);
+				} else {
+					currentMeasForView.setEnableModelName(false);
+				}
+			}
+
+			if (preDate == currentDate) {
+				if (isIncrease) {
+					preMeasForView.setEnableFirstDate(false);
+				} else {
+					currentMeasForView.setEnableFirstDate(false);
+				}
+			}
+
+			if (preDate != currentDate) {
+				if (isIncrease) {
+					preMeasForView.setEnableModelName(true);
+				} else {
+					currentMeasForView.setEnableModelName(true);
+				}
+			}
+
+		}
+
+		return measurementForViews;
+	}
+
+	/**
+	 * предворительная проверка, идут ли измерения в списке по возрастанию или
+	 * же убыванию.
+	 *
+	 * @param list
+	 *            список проверяемых измерений
+	 * @return true если значения в списке идут по возрастанию, false - если по
+	 *         убыванию
+	 */
+	private boolean isIncrease(final List<MeasurementForView> list) {
+		if (list == null) {
+			return false;
+		}
+		if (list.isEmpty()) {
+			return false;
+		}
+		boolean isIncrease = false;
+		MeasurementForView firstMeas = list.get(0);
+		MeasurementForView currentMeas;
+		for (MeasurementForView measurementForView : measurementForViews) {
+			currentMeas = measurementForView;
+			DateTime firstDate =
+					firstMeas.getFirstDateOfMeasurement().getDate();
+			DateTime currentDate =
+					currentMeas.getFirstDateOfMeasurement().getDate();
+			if (firstDate.isEqual(currentDate)) {
+				continue;
+			}
+			if (firstDate.isBefore(currentDate)) {
+				isIncrease = true;
+				break;
+			}
+			if (firstDate.isAfter(currentDate)) {
+				isIncrease = false;
+				break;
+			}
+		}
+		return isIncrease;
+	}
 }

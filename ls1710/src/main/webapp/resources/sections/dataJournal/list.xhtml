@@ -8,228 +8,35 @@
 	xmlns:component="http://java.sun.com/jsf/composite/components/dataJournal">
 
 
-
 	<div class="listPanel">
 		<p:panel>
-
 			<h:form id="form">
-				<p:contextMenu for="measurementForViews">
-					<p:menuitem value="View" update="measurementDetail"
-						icon="ui-icon-search" oncomplete="PF('measurementDialog').show()" />
-					<p:menuitem value="Delete" update="measurementForViews"
-						icon="ui-icon-close"
-						actionListener="#{listOfDataJournalView.deleteMeasurement}" />
-				</p:contextMenu>
-
-				<p:dataTable id="measurementForViews" var="measurementForView"
-					value="#{listOfDataJournalView.measurementForViews}"
-					rowKey="#{measurementForView.id}"
-					selection="#{listOfDataJournalView.selectedMeasurementForView}"
-					selectionMode="single" rowStyleClass="measurement-table-rows"
-					sortBy="#{measurementForView.id}" sortOrder="descending"
-					widgetVar="measurementForViewsTable" emptyMessage="#{msg['label_measurement_table_empty']}" 
-					filteredValue="#{listOfDataJournalView.filteredMeasurementForViews}">
-					<p:column width="70"
-						filterBy="#{measurementForView.firstDateOfMeasurement.date}"
-						filterMatchMode="contains">
-						<f:facet name="header">
-							<h:outputText value="#{msg['label_measurement_table_date']}"/>
-						</f:facet>
-						<f:facet name="filter">
-							<p:inputText onkeyup="PF('measurementForViewsTable').filter()" style="width: 70px;margin-top:3px;"/>
-						</f:facet>
-						<h:outputText
-							value="#{measurementForView.firstDateOfMeasurement.date}">
-							<f:converter converterId="jodaDataTimeConverter" />
-							<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
-						</h:outputText>
-					</p:column>
-					<p:column width="80" 
-						filterBy="#{measurementForView.equipment.model.modelName}"
-						filterMatchMode="contains">
-						<f:facet name="header">
-							<h:outputText value="#{msg['label_measurement_table_model']}"/>
-						</f:facet>
-						<f:facet name="filter">
-							<p:inputText onkeyup="PF('measurementForViewsTable').filter()" style="width: 80px;margin-top:3px;"/>
-						</f:facet>
-						<h:outputText
-							value="#{measurementForView.equipment.model.modelName}" />
-					</p:column>
-					<p:column
-						width="100"
-						filterBy="#{measurementForView.equipment.serialNumber}"
-						filterMatchMode="contains">
-						<f:facet name="header">
-							<h:outputText value="#{msg['label_measurement_table_serial_number']}"/>
-						</f:facet>
-						<f:facet name="filter">
-							<p:inputText onkeyup="PF('measurementForViewsTable').filter()" style="width: 100px;margin-top:3px;"/>
-						</f:facet>
-						<h:outputText value="#{measurementForView.equipment.serialNumber}" />
-					</p:column>
-					<p:column headerText="#{msg['label_measurement_table_spectrum']}">
-						<p:dataGrid var="spectrum"
-							value="#{measurementForView.lastSpectrums}" columns="1" rows="2"
-							id="spectrums" paginator="false" styleClass="internalTable">
-							<component:spectrumRow spectrum="#{spectrum}"
-								widthFirstColumn="140px" />
-						</p:dataGrid>
-					</p:column>
-					<p:column width="20" styleClass="internalTable"
-						style="border-left: 0px solid #E55 ">
-						<p:rowToggler
-							rendered="#{fn:length(measurementForView.lastSpectrums) > 2}" />
-					</p:column>
-					<p:column
-						width="70"
-						filterBy="#{measurementForView.lastDateOfMeasurement.date}"
-						filterMatchMode="contains">
-						<f:facet name="header">
-							<h:outputText value="#{msg['label_measurement_table_second_date']}"/>
-						</f:facet>
-						<f:facet name="filter">
-							<p:inputText onkeyup="PF('measurementForViewsTable').filter()" style="width: 70px;margin-top:3px;"/>
-						</f:facet>
-						<h:outputText
-							value="#{measurementForView.lastDateOfMeasurement.date}">
-							<f:converter converterId="jodaDataTimeConverter" />
-							<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
-						</h:outputText>
-					</p:column>
-					<p:column headerText="#{msg['label_measurement_table_user']}"
-						width="80">
-						<h:outputText value="#{measurementForView.user.firstName}" />
-					</p:column>
+				<!-- контекстное меню. 
+				подключаем секцию с контекстным меню таблицы данных об измерениях, 
+				эта и подключаемая страница связаны через атрибуты 
+				update="measurementForViews", update="measurementForViews" 
+				контекстного меню и widgetVar="measurementDialog" диалогового 
+				окна и id="measurementForViews" таблицы данных  -->
+				<ui:include
+					src="/resources/sections/dataJournal/measurementContextMenu.xhtml" />
 
 
-
-					<p:rowExpansion styleClass="expansionTable">
-						<p:panelGrid>
-							<p:row>
-								<p:column style="width: 291px">
-
-								</p:column>
-								<p:column>
-									<p:dataGrid var="moreSpectrum"
-										value="#{measurementForView.lastSpectrums}" columns="1"
-										rows="2" id="moreSpectrums" paginator="false"
-										styleClass="internalTable" first="2">
-										<component:spectrumRow spectrum="#{moreSpectrum}"
-											widthFirstColumn="140px"/>
-									</p:dataGrid>
-								</p:column>
+				<!-- таблица данных с измерениями. 
+				подключаем секцию с таблицей данных об измерениях, 
+				эта и подключаемая страница связаны через атрибут 
+				update="measurementForViews" контекстного меню и
+				id="measurementForViews" таблицы данных -->
+				<ui:include
+					src="/resources/sections/dataJournal/measurementDataTable.xhtml" />
 
 
-								<p:column style="width: 170px">
-
-								</p:column>
-							</p:row>
-						</p:panelGrid>
-					</p:rowExpansion>
-				</p:dataTable>
-
-				<p:dialog header="#{msg['label_measurement_table_detail_header']}"
-					widgetVar="measurementDialog" modal="true" showEffect="fade"
-					hideEffect="fade" resizable="false" position="top" dynamic="true"
-					id="measurementDetailDialog">
-					<p:outputPanel id="measurementDetail" style="text-align:center;"
-						styleClass="measurementDetailPanel">
-						<p:panelGrid columns="2" id="selectedMeasurementCommonInfo">
-
-							<h:outputText value="#{msg['label_measurement_table_date']}" />
-							<h:outputText
-								value="#{listOfDataJournalView.selectedMeasurementForView.firstDateOfMeasurement.date}">
-								<f:converter converterId="jodaDataTimeConverter" />
-								<f:attribute name="pattern"
-									value="#{msg['date_format_pattern']}" />
-							</h:outputText>
-
-							<h:outputText
-								value="#{msg['label_measurement_table_second_date']}" />
-							<h:outputText
-								value="#{listOfDataJournalView.selectedMeasurementForView.lastDateOfMeasurement.date}">
-								<f:converter converterId="jodaDataTimeConverter" />
-								<f:attribute name="pattern"
-									value="#{msg['date_format_pattern']}" />
-							</h:outputText>
-
-							<h:outputText value="#{msg['label_measurement_table_model']}" />
-							<h:outputText
-								value="#{listOfDataJournalView.selectedMeasurementForView.equipment.model.modelName}" />
-
-							<h:outputText
-								value="#{msg['label_measurement_table_serial_number']}" />
-							<h:outputText
-								value="#{listOfDataJournalView.selectedMeasurementForView.equipment.serialNumber}" />
-						</p:panelGrid>
-						<p:dataGrid var="selectedMeasurement"
-							value="#{listOfDataJournalView.selectedMeasurementForView.measurements}"
-							columns="#{fn:length(listOfDataJournalView.selectedMeasurementForView.measurements)}"
-							id="selectedMeasurements">
-							<p:panel styleClass="selectedMeasurementPanel">
-								<f:facet name="header">
-									<h:outputText
-										value="#{selectedMeasurement.dateOfMeasurement.date}">
-										<f:converter converterId="jodaDataTimeConverter" />
-										<f:attribute name="pattern"
-											value="#{msg['date_format_pattern']}" />
-									</h:outputText>
-								</f:facet>
-								<p:dataGrid var="selectedSpectrum"
-									value="#{selectedMeasurement.spectrums}"
-									columns="#{fn:length(selectedMeasurement.spectrums)}" rows="2"
-									id="selectedSpectrums" paginator="false"
-									styleClass="selectedSpectrums">
-									<p:panelGrid columns="1">
-										<p:row>
-											<p:column>
-												<h:outputText
-													value="#{selectedSpectrum.spectrumParameters.measurand}
-			        											 #{selectedSpectrum.spectrumParameters.typeOfSpectrum != null ? ', ' : ''}"
-													style="font-size: small;" />
-												<h:outputText
-													value="#{selectedSpectrum.spectrumParameters.typeOfSpectrum}
-				            									 #{selectedSpectrum.spectrumParameters.screenResolution != null ? ', ' : ''}"
-													style="font-size: small;" />
-												<h:outputText
-													value="#{selectedSpectrum.spectrumParameters.screenResolution}"
-													style="font-size: small;" />
-
-											</p:column>
-
-										</p:row>
-										<p:row rendered="#{not empty selectedSpectrum.harmonics}">
-											<p:column>
-												<p:dataTable var="harmonic"
-													value="#{selectedSpectrum.harmonics}">
-													<p:column headerText="F">
-														<h:outputText value="#{harmonic.frequency}" />
-													</p:column>
-													<p:column headerText="Ec">
-														<h:outputText value="#{harmonic.amplitude}" />
-													</p:column>
-													<p:column headerText="Eш">
-														<h:outputText value="#{harmonic.noise}" />
-													</p:column>
-												</p:dataTable>
-											</p:column>
-										</p:row>
-										<p:row rendered="#{not empty selectedSpectrum.description}">
-											<p:column>
-												<h:outputText value="#{selectedSpectrum.description}" />
-											</p:column>
-										</p:row>
-									</p:panelGrid>
-								</p:dataGrid>
-							</p:panel>
-						</p:dataGrid>
-
-
-					</p:outputPanel>
-
-				</p:dialog>
-
+				<!-- диалоговое окно детальной информации об измерении. 
+				подключаем секцию с диалоговым окном деталей цикла 
+				измерений, эта и подключаемая страница связаны через атрибут 
+				update="measurementDetail" контекстного меню и
+				widgetVar="measurementDialog" диалогового окна -->
+				<ui:include
+					src="/resources/sections/dataJournal/measurementDetailDialog.xhtml" />
 			</h:form>
 		</p:panel>
 	</div>

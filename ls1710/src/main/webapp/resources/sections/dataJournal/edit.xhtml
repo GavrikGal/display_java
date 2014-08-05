@@ -9,23 +9,28 @@
 	<div class="editPanel">
 		<p:panel id="editMeasurement" styleClass="editMeasurementPanel">
 			<h:form id="editForm">
-			<p:panelGrid columns="6" >
+			<p:panelGrid columns="6">
 				<h:outputText value="Дата" />
 			    <p:outputLabel for="model" value="Модель" />
 			 
 			    <h:outputText value="Серийный номер" />
 			    <h:outputText value="Параметры" />
 			 
-			    <h:outputText value="Результаты изерений" />
+			    <h:outputText value="Результаты измерений" />
 			    <h:outputText value="Испытания проводил" />
 			 
 			    <p:clock pattern="dd.MM.yyyy - HH:mm:ss" mode="server" autoSync="true"/>
 			    
-				
-		        <p:selectOneMenu id="model" value="" effect="fold" editable="true">
-		            <f:selectItem itemLabel="Select One" itemValue="" />
-		            <f:selectItems value="" />
+				<p:selectOneMenu id="model" value="#{editFormDJView.modelOfEquipment}" converter="modelConverter" panelStyle="width:180px"
+		                         effect="fade" var="m" style="width:160px" filter="true" filterMatchMode="contains" editable="true">
+		            <f:selectItems value="#{editFormDJView.modelOfEquipments}" var="model" itemLabel="#{model.modelName}" itemValue="#{model}" />
+		 
+		            <p:column>
+		                <h:outputText value="#{m.modelName}" />
+		            </p:column>
 		        </p:selectOneMenu>
+				
+
 
 
 			    <p:inputText/>

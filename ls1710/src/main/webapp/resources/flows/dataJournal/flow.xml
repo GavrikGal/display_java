@@ -10,6 +10,9 @@
 			<evaluate
 				expression="dataJournalController.newListOfDataJournalView()"
 				result="viewScope.listOfDataJournalView" />
+			<evaluate
+				expression="dataJournalController.newEditFormDataJournalView()"
+				result="viewScope.editFormDJView" />
 		</on-entry>
 	</view-state>
 	

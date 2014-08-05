@@ -33,6 +33,10 @@ public class MeasurementForView implements Serializable {
 	 */
 	private DateOfMeasurement firstDateOfMeasurement;
 	/**
+	 * включить/выключить отображение даты первого измерения.
+	 */
+	private boolean enableFirstDate;
+	/**
 	 * дата последнего измерения.
 	 */
 	private DateOfMeasurement lastDateOfMeasurement;
@@ -40,6 +44,10 @@ public class MeasurementForView implements Serializable {
 	 * испытуемое изделие.
 	 */
 	private Equipment equipment;
+	/**
+	 * включить/выключить отображение модели изделия.
+	 */
+	private boolean enableModelName;
 	/**
 	 * последние результирующие спектры измеренных частот и амплитуд.
 	 *
@@ -125,6 +133,22 @@ public class MeasurementForView implements Serializable {
 
 	public final void setUser(final User user) {
 		this.user = user;
+	}
+
+	public boolean isEnableFirstDate() {
+		return enableFirstDate;
+	}
+
+	public void setEnableFirstDate(final boolean enableFirstDate) {
+		this.enableFirstDate = enableFirstDate;
+	}
+
+	public boolean isEnableModelName() {
+		return enableModelName;
+	}
+
+	public void setEnableModelName(final boolean enableModelName) {
+		this.enableModelName = enableModelName;
 	}
 
 	public static long getSerialversionuid() {
