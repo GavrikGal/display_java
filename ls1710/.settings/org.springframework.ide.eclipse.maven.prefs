@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-org.springframework.ide.eclipse.maven.maven.automatically.update=true
+org.springframework.ide.eclipse.maven.maven.automatically.update=false
