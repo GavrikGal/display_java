@@ -13,7 +13,12 @@
         <resource-bundle>
             <base-name>MessageResources</base-name>
             <var>msg</var>
-       </resource-bundle>        
+       </resource-bundle> 
 	</application>
+	<managed-bean>
+		<managed-bean-name>modelService</managed-bean-name>
+		<managed-bean-class>com.kbdisplay.ls1710.service.data.jpa.ModelServiceImpl</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
 
 </faces-config>

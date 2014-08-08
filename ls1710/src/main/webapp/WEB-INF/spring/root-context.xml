@@ -18,5 +18,7 @@
     <context:component-scan base-package="com.kbdisplay.ls1710.web.controller"/>
     
     <context:component-scan base-package="com.kbdisplay.ls1710.web.view"/>
+    
+    <context:component-scan base-package="com.kbdisplay.ls1710.web.view.dataJournal.component"/>
 		
 </beans>

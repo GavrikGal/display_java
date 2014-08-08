@@ -48,7 +48,9 @@ public class Measurement implements Serializable {
 	private DateOfMeasurement dateOfMeasurement;
 	/**
 	 * Дата повторных измерений.
+	 * @deprecated будет заменена версией измерений.
 	 */
+	@Deprecated
 	private DateOfMeasurement dateOfSecondMeasurement;
 	// TODO Заменить дату повторного измерения на версию измерений
 	// private String version (1.1, 1.2, 2.1 ... 5.3 ... );

@@ -30,7 +30,7 @@ public class ScreenResolution implements Serializable {
 	/**
 	 * ID разрешения экрана.
 	 */
-	private Long idResolution;
+	private Long id;
 	/**
 	 * Разрешение экрана.
 	 */
@@ -59,20 +59,20 @@ public class ScreenResolution implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Resolution")
-	public Long getIdResolution() {
-		return idResolution;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdResolution(final Long idResolution) {
-		this.idResolution = idResolution;
+	public void setId(final Long idResolution) {
+		this.id = idResolution;
 	}
 
 	@Column(name = "Resolution")
-	public String getResolution() {
+	public String getScreenResolution() {
 		return screenResolution;
 	}
 
-	public void setResolution(final String resolution) {
+	public void setScreenResolution(final String resolution) {
 		this.screenResolution = resolution;
 	}
 

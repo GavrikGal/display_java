@@ -7,30 +7,30 @@ import javax.faces.convert.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kbdisplay.ls1710.domain.ModelOfEquipment;
-import com.kbdisplay.ls1710.service.data.ModelService;
+import com.kbdisplay.ls1710.domain.ScreenResolution;
+import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
 
 /**
- * конвертирует строку с названием модели в модель изделия.
+ * конвертирует строку в разрешение экрана.
  *
  * @author Gavrik
  *
  */
-@Component("modelConverter")
-public class ModelOfEqupmentConverter implements Converter {
+@Component("screenResolutionConverter")
+public class ScreenResolutionConverter implements Converter {
 
 	/**
-	 * сервис получения модели из БД.
+	 * сервис получения разрешения экрана из БД.
 	 */
 	@Autowired
-	private ModelService modelService;
+	private ScreenResolutionService screenResolutionService;
 
 
 	@Override
 	public Object getAsObject(final FacesContext fc, final UIComponent uic,
 			final String value) {
 		if (value != null && value.trim().length() > 0) {
-			return modelService.findByModelName(value.toString());
+			return screenResolutionService.findByResolution(value.toString());
 		} else {
 			return null;
 		}
@@ -40,7 +40,7 @@ public class ModelOfEqupmentConverter implements Converter {
 	public String getAsString(final FacesContext fc, final UIComponent uic,
 			final Object object) {
 		if (object != null) {
-			return String.valueOf(((ModelOfEquipment) object).getModelName());
+			return String.valueOf(((ScreenResolution) object).getScreenResolution());
 		} else {
 			return null;
 		}

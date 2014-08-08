@@ -2,8 +2,6 @@ package com.kbdisplay.ls1710.service.data.jpa;
 
 import java.util.List;
 
-import javax.faces.bean.SessionScoped;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -17,7 +15,6 @@ import com.kbdisplay.ls1710.service.data.ModelService;
 @Service("modelService")
 @Repository
 @Transactional
-@SessionScoped
 public class ModelServiceImpl implements ModelService {
 
 	@Autowired

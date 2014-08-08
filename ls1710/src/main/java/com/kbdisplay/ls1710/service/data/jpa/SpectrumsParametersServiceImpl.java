@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.Measurand;
 //import com.gmail.gal.gavrik.display.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
@@ -14,7 +15,6 @@ import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 import com.kbdisplay.ls1710.repository.SpectrumParameterRepository;
 import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
-import com.google.common.collect.Lists;
 
 @Service("spectrumParameterService")
 @Repository
@@ -24,16 +24,19 @@ public class SpectrumsParametersServiceImpl implements SpectrumParameterService 
 	@Autowired
 	private SpectrumParameterRepository	spectrumParameterRepository;
 
+	@Override
 	@Transactional(readOnly = true)
 	public List<SpectrumParameter> findAll() {
 		return Lists.newArrayList(spectrumParameterRepository.findAll());
 	}
 
+	@Override
 	@Transactional(readOnly = true)
 	public SpectrumParameter findById(Long id) {
 		return spectrumParameterRepository.findOne(id);
 	}
 
+	@Override
 	@Transactional(readOnly = true)
 	public SpectrumParameter findWithDetail(Measurand measurand, TypeOfSpectrum typeOfSpectrum,
 			ScreenResolution screenResolution/*
@@ -44,6 +47,7 @@ public class SpectrumsParametersServiceImpl implements SpectrumParameterService 
 				typeOfSpectrum, screenResolution/* , purposeOfMeasurement */);
 	}
 
+	@Override
 	public SpectrumParameter save(SpectrumParameter spectrumParameter) {
 		SpectrumParameter checkingParameter = spectrumParameterRepository
 				.findByMeasurandAndTypeOfSpectrumAndScreenResolution(spectrumParameter.getMeasurand(),

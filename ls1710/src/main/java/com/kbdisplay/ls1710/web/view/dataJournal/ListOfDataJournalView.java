@@ -109,7 +109,6 @@ public class ListOfDataJournalView implements Serializable {
 	 */
 	public final void addMeasurement(final Measurement measurement,
 			final Long id) {
-
 		/* проверка версии измерения */
 		Version versionMeas = new Version(measurement.getVersion());
 		int secondParamOfVersion = versionMeas.getPart(1);
@@ -147,7 +146,6 @@ public class ListOfDataJournalView implements Serializable {
 					getLastDateOfMeasurement(measurementsForView
 							.getMeasurements());
 			measurementsForView.setLastDateOfMeasurement(lastDateOfMeasurement);
-
 			/*
 			 * добавление подготовленного для отображения измерения к списку
 			 * всех подготовленных измерений.
@@ -329,7 +327,6 @@ public class ListOfDataJournalView implements Serializable {
 
 			currentMeasForView.setEnableFirstDate(true);
 			currentMeasForView.setEnableModelName(true);
-
 			if (i > 0) {
 				preMeasForView = measurementForViews.get(i - 1);
 				preDate = preMeasForView.getFirstDateOfMeasurement().getDate();
@@ -339,7 +336,6 @@ public class ListOfDataJournalView implements Serializable {
 				preMeasForView = currentMeasForView;
 				continue;
 			}
-
 			if (preModelName == currentModelName) {
 				if (isIncrease) {
 					preMeasForView.setEnableModelName(false);

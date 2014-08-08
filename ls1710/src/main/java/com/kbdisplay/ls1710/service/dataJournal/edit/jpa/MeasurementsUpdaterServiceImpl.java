@@ -308,7 +308,7 @@ public class MeasurementsUpdaterServiceImpl implements
 						System.out.println("            spectrum parameters ID -" + spectrums.getSpectrumParameters().getIdSpectrumParameters());
 						System.out.println("            Measurands -" + spectrums.getSpectrumParameters().getMeasurand().getIdMeasurands());
 						System.out.println("            type - " + spectrums.getSpectrumParameters().getTypeOfSpectrum().getIdType());
-						System.out.println("            Resolution - " + spectrums.getSpectrumParameters().getScreenResolution().getResolution());
+						System.out.println("            Resolution - " + spectrums.getSpectrumParameters().getScreenResolution().getScreenResolution());
 						System.out.println("        Harmonics:");
 						for (Harmonic harmonics : spectrums.getHarmonics()) {
 
@@ -540,7 +540,7 @@ public class MeasurementsUpdaterServiceImpl implements
 				.findByResolution(screenResolutionsName);
 		if (screenResolution == null) {
 			screenResolution = new ScreenResolution();
-			screenResolution.setResolution(screenResolutionsName);
+			screenResolution.setScreenResolution(screenResolutionsName);
 			screenResolution
 					.setSpectrumsParameters(new HashSet<SpectrumParameter>());
 			screenResolution = screenResolutionService.save(screenResolution);

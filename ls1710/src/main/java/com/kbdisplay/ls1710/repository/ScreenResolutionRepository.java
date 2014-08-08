@@ -16,10 +16,10 @@ public interface ScreenResolutionRepository extends
 	/**
 	 * поиск разрешения экрана в БД по названию разрешения.
 	 *
-	 * @param resolution
+	 * @param screenResolution
 	 *            название разрешения (типа 800х600)
 	 * @return объект разрешения экрана или null
 	 */
-	ScreenResolution findByResolution(String resolution);
+	ScreenResolution findByScreenResolution(String screenResolution);
 
 }

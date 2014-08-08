@@ -3,15 +3,16 @@ package com.kbdisplay.ls1710.web.view.dataJournal;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
-
 import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
 
 import com.kbdisplay.ls1710.domain.Equipment;
+import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.Spectrum;
+import com.kbdisplay.ls1710.domain.SpectrumParameter;
+import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 import com.kbdisplay.ls1710.domain.User;
 import com.kbdisplay.ls1710.web.view.dataJournal.component.Version;
 
@@ -21,8 +22,7 @@ import com.kbdisplay.ls1710.web.view.dataJournal.component.Version;
  * @author Gavrik
  *
  */
-@ManagedBean(name = "editFormDataJournalView")
-@ViewScoped
+@Component("editFormDataJournalView")
 public class EditFormDataJournalView implements Serializable {
 
 	/**
@@ -47,6 +47,12 @@ public class EditFormDataJournalView implements Serializable {
 	 */
 	private Spectrum spectrum;
 	/**
+	 * параметры измеренного спектра.
+	 *
+	 * такие как измеряемая величина, разрешение экрана, тип измерений и т.д.
+	 */
+	private SpectrumParameter spectrumParameter;
+	/**
 	 * пользователь, проводивший измерения.
 	 */
 	private User user;
@@ -68,43 +74,40 @@ public class EditFormDataJournalView implements Serializable {
 	 * список доступных моделей изделий.
 	 */
 	private List<ModelOfEquipment> modelOfEquipments;
-
-
-	// @ManagedProperty(value="#{modelService}")
-	// private ModelService modelService;
+	/**
+	 * список доступных измеряемых физических величин.
+	 */
+	private List<Measurand> measurands;
+	/**
+	 * список доступных разрешений экрана.
+	 */
+	private List<ScreenResolution> screenResolutions;
+	/**
+	 * список доступных типов спектра.
+	 */
+	private List<TypeOfSpectrum> typeOfSpectrums;
 
 	/**
 	 * конструктор по умолчанию.
 	 */
 	public EditFormDataJournalView() {
 
-		// modelOfEquipments = new ArrayList<ModelOfEquipment>();
 		equipment = new Equipment();
 		spectrum = new Spectrum();
+		spectrumParameter = new SpectrumParameter();
+
+
+
 		user = null;
 		version = null;
 	}
 
-	// @PostConstruct
-	// public void init() {
-	// try {
-	// List<ModelOfEquipment> models = modelService.findAll();
-	// if (models != null) {
-	// System.out.println("models is good:");
-	// for (ModelOfEquipment modelOfEquipment : models) {
-	// System.out
-	// .println("  - " + modelOfEquipment.getModelName());
-	// }
-	// modelOfEquipments = models;
-	// } else {
-	// System.out.println("Bce o4eHb nJloxo (((");
-	// }
-	// } catch (Exception e) {
-	// System.out.println("Bce ewe xy}l{e");
-	// e.printStackTrace();
-	// }
-	// }
 
+
+
+	/*
+	 * геттеры и сеттеры.
+	 */
 	public DateTime getDateTime() {
 		return dateTime;
 	}
@@ -129,6 +132,14 @@ public class EditFormDataJournalView implements Serializable {
 		this.spectrum = spectrum;
 	}
 
+	public SpectrumParameter getSpectrumParameter() {
+		return spectrumParameter;
+	}
+
+	public void setSpectrumParameter(final SpectrumParameter spectrParameter) {
+		this.spectrumParameter = spectrParameter;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -146,7 +157,7 @@ public class EditFormDataJournalView implements Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(final String description) {
@@ -166,20 +177,31 @@ public class EditFormDataJournalView implements Serializable {
 		this.modelOfEquipments = modelOfEquipments;
 	}
 
-	// public ModelService getModelService() {
-	// return modelService;
-	// }
-	//
-	// public void setModelService(final ModelService modelService) {
-	// this.modelService = modelService;
-	// }
-
-	public void save(final ActionEvent actionEvent)  {
-
-		System.out.println("        HopM    ");
-		System.out.println(equipment.getSerialNumber());
-		System.out.println(description);
-		description = null;
+	public List<Measurand> getMeasurands() {
+		return measurands;
 	}
+
+	public void setMeasurands(final List<Measurand> measurands) {
+		this.measurands = measurands;
+	}
+
+	public List<ScreenResolution> getScreenResolutions() {
+		return screenResolutions;
+	}
+
+	public void setScreenResolutions(
+			final List<ScreenResolution> screenResolutions) {
+		this.screenResolutions = screenResolutions;
+	}
+
+	public List<TypeOfSpectrum> getTypeOfSpectrums() {
+		return typeOfSpectrums;
+	}
+
+	public void setTypeOfSpectrums(final List<TypeOfSpectrum> typeOfSpectrums) {
+		this.typeOfSpectrums = typeOfSpectrums;
+	}
+
+
 
 }

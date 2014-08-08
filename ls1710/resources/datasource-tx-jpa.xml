@@ -30,7 +30,7 @@
     <context:property-placeholder location="classpath:jdbc.properties" />
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="emf"/>
+        <property name="entityManagerFactory" ref="emf" />
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager" />

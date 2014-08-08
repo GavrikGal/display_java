@@ -7,30 +7,30 @@ import javax.faces.convert.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kbdisplay.ls1710.domain.ModelOfEquipment;
-import com.kbdisplay.ls1710.service.data.ModelService;
+import com.kbdisplay.ls1710.domain.Measurand;
+import com.kbdisplay.ls1710.service.data.MeasurandService;
 
 /**
- * конвертирует строку с названием модели в модель изделия.
+ * конвертирует строку с в измеряемую величину.
  *
  * @author Gavrik
  *
  */
-@Component("modelConverter")
-public class ModelOfEqupmentConverter implements Converter {
+@Component("measurandConverter")
+public class MeasurandConverter implements Converter {
 
 	/**
-	 * сервис получения модели из БД.
+	 * сервис получения измеряемой величины из БД.
 	 */
 	@Autowired
-	private ModelService modelService;
+	private MeasurandService measurandService;
 
 
 	@Override
 	public Object getAsObject(final FacesContext fc, final UIComponent uic,
 			final String value) {
 		if (value != null && value.trim().length() > 0) {
-			return modelService.findByModelName(value.toString());
+			return measurandService.findById(value.toString());
 		} else {
 			return null;
 		}
@@ -40,7 +40,7 @@ public class ModelOfEqupmentConverter implements Converter {
 	public String getAsString(final FacesContext fc, final UIComponent uic,
 			final Object object) {
 		if (object != null) {
-			return String.valueOf(((ModelOfEquipment) object).getModelName());
+			return String.valueOf(((Measurand) object).getIdMeasurands());
 		} else {
 			return null;
 		}
