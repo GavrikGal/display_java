@@ -36,7 +36,7 @@ public class DateOfMeasurementServiceImpl implements DateOfMeasurementService {
 		return dateOfMeasurementRepository.findByDate(date);
 	}
 
-	public DateOfMeasurement save(DateOfMeasurement dateOfMeasurement) {
+	public DateOfMeasurement update(DateOfMeasurement dateOfMeasurement) {
 		if (dateOfMeasurement != null) {
 			DateOfMeasurement checkingDateOfMeasurement = dateOfMeasurementRepository
 					.findByDate(dateOfMeasurement.getDate());

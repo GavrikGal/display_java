@@ -13,7 +13,7 @@ public interface EquipmentService {
 
 	public Equipment findBySerialNumberAndModel(String serialNumber, ModelOfEquipment model);
 
-	public Equipment save(Equipment equipment);
+	public Equipment update(Equipment equipment);
 	
 	public void delete(Equipment equipment);
 

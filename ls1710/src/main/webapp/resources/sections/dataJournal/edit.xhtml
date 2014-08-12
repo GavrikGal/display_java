@@ -65,7 +65,7 @@
 						placeholder="32.5 - 35 / 16; соотв." />
 					<f:facet name="footer">
 					<p:commandButton value="Сохранить" id="save" update="editForm:description editForm:spectrumParameters :form:measurementForViews"
-							action="#{dataJournalController.save(editFormDJView)}" immediate="false" type="submit" style="margin-left:1000px; ">
+							action="#{dataJournalController.save(editFormDJView, listOfDataJournalView)}" immediate="false" type="submit" style="margin-left:1000px; " >
 							 <p:resetInput target="description" />
 					</p:commandButton>
 					</f:facet>

@@ -2,11 +2,13 @@ package com.kbdisplay.ls1710.web.controller;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
@@ -19,6 +21,7 @@ import com.kbdisplay.ls1710.service.data.ModelService;
 import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
 import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
 import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
+import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
 import com.kbdisplay.ls1710.web.view.dataJournal.EditFormDataJournalView;
 import com.kbdisplay.ls1710.web.view.dataJournal.ListOfDataJournalView;
 
@@ -69,6 +72,8 @@ public class DataJournalController {
 
 	@Autowired
 	private SpectrumParameterService spectrumParameterService;
+	@Autowired
+	private MeasurementsUpdaterService updaterService;
 
 
 	/**
@@ -113,18 +118,30 @@ public class DataJournalController {
 		return editFormDataJournalView;
 	}
 
-	public void save(EditFormDataJournalView editFormDJView) {
+	public void save(EditFormDataJournalView editFormDJView, ListOfDataJournalView listOfDataJournalView) {
 
 		SpectrumParameter parameter = editFormDJView.getSpectrumParameter();
 		System.out.println("1. sp id:" + parameter.getIdSpectrumParameters());
 		parameter = spectrumParameterService.save(parameter);
 		System.out.println("2. sp id:" + parameter.getIdSpectrumParameters());
 
-		System.out
-				.println("model id: " + editFormDJView.getEquipment().getModel().getIdModel());
+		System.out.println("model id: "
+				+ editFormDJView.getEquipment().getModel().getIdModel());
 		System.out.println("description: " + editFormDJView.getDescription());
+		DateTime date = new DateTime();
+		Measurement measurement = updaterService.saveMeasurements(date,
+				editFormDJView.getEquipment(), editFormDJView.getSpectrum(),
+				parameter,
+				editFormDJView.getUser(), editFormDJView.getVersion(),
+				editFormDJView.getDescription());
+		List<Measurement> measurements = measurementsService.findAll();
+		listOfDataJournalView
+				.setMeasurementForViewsFromMeasurements(measurements);
+		Equipment newEquipment = new Equipment();
+		newEquipment.setModel(editFormDJView.getEquipment().getModel());
+		newEquipment.setSerialNumber(editFormDJView.getEquipment().getSerialNumber());
+		editFormDJView.setEquipment(newEquipment);
 		editFormDJView.setDescription(null);
 	}
-
 
 }

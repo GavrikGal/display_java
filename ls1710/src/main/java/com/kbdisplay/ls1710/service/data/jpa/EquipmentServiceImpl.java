@@ -37,7 +37,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 				model);
 	}
 
-	public Equipment save(Equipment equipment) {
+	public Equipment update(Equipment equipment) {
 		Equipment checkingEquipment = equipmentRepository
 				.findBySerialNumberAndModel(equipment.getSerialNumber(),
 						equipment.getModel());

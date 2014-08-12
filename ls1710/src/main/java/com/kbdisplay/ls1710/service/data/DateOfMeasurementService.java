@@ -14,6 +14,6 @@ public interface DateOfMeasurementService {
 
 	public DateOfMeasurement findByDate(DateTime date);
 
-	public DateOfMeasurement save(DateOfMeasurement dateOfMeasurement);
+	public DateOfMeasurement update(DateOfMeasurement dateOfMeasurement);
 
 }

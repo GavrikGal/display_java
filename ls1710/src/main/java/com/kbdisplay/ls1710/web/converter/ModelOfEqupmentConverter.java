@@ -30,7 +30,14 @@ public class ModelOfEqupmentConverter implements Converter {
 	public Object getAsObject(final FacesContext fc, final UIComponent uic,
 			final String value) {
 		if (value != null && value.trim().length() > 0) {
-			return modelService.findByModelName(value.toString());
+			ModelOfEquipment model =
+					modelService.findByModelName(value.toString());
+			if (model == null) {
+				model = new ModelOfEquipment();
+				model.setModelName(value.toString());
+				model = modelService.save(model);
+			}
+			return model;
 		} else {
 			return null;
 		}
