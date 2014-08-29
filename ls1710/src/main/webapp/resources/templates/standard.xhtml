@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
 
 <f:view contentType="text/html">
 
@@ -26,15 +27,18 @@
 
 	<h:body>
 		<h:outputStylesheet library="styles/gavrik" name="screen.css" target="body"/>
-		<!-- <h:outputScript library="scripts" name="gavrik.js" target="body" /> -->
+		<!-- <h:outputScript library="scripts" name="utils.js" target="body" /> -->
 		<div class="container">
+			
 
 			<div class="header">
 				<ui:insert name="header">
 					<ui:include src="/resources/views/common/header.xhtml" />
 				</ui:insert>
 			</div>
-
+			<h:form id="messages">
+				<p:growl id="message" showDetail="true" sticky="false" life="5000" />
+			</h:form>
 			<div class="content">
 				<ui:insert name="content" />
 			</div>

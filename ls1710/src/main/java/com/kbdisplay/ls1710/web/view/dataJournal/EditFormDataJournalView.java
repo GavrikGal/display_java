@@ -3,17 +3,13 @@ package com.kbdisplay.ls1710.web.view.dataJournal;
 import java.io.Serializable;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
-import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
-import com.kbdisplay.ls1710.domain.Spectrum;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
-import com.kbdisplay.ls1710.domain.User;
 import com.kbdisplay.ls1710.web.view.dataJournal.component.Version;
 
 /**
@@ -31,31 +27,19 @@ public class EditFormDataJournalView implements Serializable {
 	private static final long serialVersionUID = 141495139686315409L;
 
 	/**
-	 * поле даты измерений.
+	 * модель испытуемого изделия.
 	 */
-	private DateTime dateTime;
+	private ModelOfEquipment model;
 	/**
-	 * испытуемое изделие.
-	 *
-	 * в форме используются название модели и серийный номер изделия, которые
-	 * содержит объект изделия.
+	 * серийный номер испытуемого изделия.
 	 */
-	private Equipment equipment;
-	/**
-	 * измеренный спектры, и параметры спектра, такие как разрешение, измеряемая
-	 * величина и т.д.
-	 */
-	private Spectrum spectrum;
+	private String serialNumber;
 	/**
 	 * параметры измеренного спектра.
 	 *
 	 * такие как измеряемая величина, разрешение экрана, тип измерений и т.д.
 	 */
 	private SpectrumParameter spectrumParameter;
-	/**
-	 * пользователь, проводивший измерения.
-	 */
-	private User user;
 	/**
 	 * версия измерений.
 	 *
@@ -69,6 +53,14 @@ public class EditFormDataJournalView implements Serializable {
 	 * БД.
 	 */
 	private String description;
+	/**
+	 * являются ли испытания повторными.
+	 */
+	private boolean repeated;
+	/**
+	 * отображать ли диалог добавления новой модели.
+	 */
+	private boolean showNewModelDialog;
 
 	/**
 	 * список доступных моделей изделий.
@@ -87,65 +79,43 @@ public class EditFormDataJournalView implements Serializable {
 	 */
 	private List<TypeOfSpectrum> typeOfSpectrums;
 
+
 	/**
 	 * конструктор по умолчанию.
 	 */
 	public EditFormDataJournalView() {
-
-		equipment = new Equipment();
-		spectrum = new Spectrum();
+		model = null;
 		spectrumParameter = new SpectrumParameter();
-
-
-
-		user = null;
+		repeated = false;
+		showNewModelDialog = false;
 		version = null;
 	}
-
-
-
 
 	/*
 	 * геттеры и сеттеры.
 	 */
-	public DateTime getDateTime() {
-		return dateTime;
-	}
-
-	public void setDateTime(final DateTime dateTime) {
-		this.dateTime = dateTime;
-	}
-
-	public Equipment getEquipment() {
-		return equipment;
-	}
-
-	public void setEquipment(final Equipment equipment) {
-		this.equipment = equipment;
-	}
-
-	public Spectrum getSpectrum() {
-		return spectrum;
-	}
-
-	public void setSpectrum(final Spectrum spectrum) {
-		this.spectrum = spectrum;
-	}
-
 	public SpectrumParameter getSpectrumParameter() {
 		return spectrumParameter;
 	}
 
+	public ModelOfEquipment getModel() {
+		return model;
+	}
+
+	public void setModel(final ModelOfEquipment model) {
+		this.model = model;
+	}
+
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(final String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
 	public void setSpectrumParameter(final SpectrumParameter spectrParameter) {
 		this.spectrumParameter = spectrParameter;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(final User user) {
-		this.user = user;
 	}
 
 	public Version getVersion() {
@@ -162,6 +132,22 @@ public class EditFormDataJournalView implements Serializable {
 
 	public void setDescription(final String description) {
 		this.description = description;
+	}
+
+	public boolean isRepeated() {
+		return repeated;
+	}
+
+	public void setRepeated(final boolean repeated) {
+		this.repeated = repeated;
+	}
+
+	public boolean isShowNewModelDialog() {
+		return showNewModelDialog;
+	}
+
+	public void setShowNewModelDialog(final boolean showNewModelDialog) {
+		this.showNewModelDialog = showNewModelDialog;
 	}
 
 	public static long getSerialversionuid() {
@@ -201,7 +187,5 @@ public class EditFormDataJournalView implements Serializable {
 	public void setTypeOfSpectrums(final List<TypeOfSpectrum> typeOfSpectrums) {
 		this.typeOfSpectrums = typeOfSpectrums;
 	}
-
-
 
 }

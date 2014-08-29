@@ -191,6 +191,16 @@ caption {background:#eee;}
 	border: 0px solid #EEE !important;
 }
 
+#editForm\:newModelDilog {
+	margin-top: 100px !important;
+	z-index: 1010 !important;
+}
+
+
+.ui-icon-addPhoto{
+	/* background-image: url(icons/addPhoto.png); */
+   background-image: url("#{resource['styles/gavrik/icons/addPhoto.png']}") !important; 
+}
 
 
 /* .measurementDetailColumn {

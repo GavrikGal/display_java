@@ -4,22 +4,32 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-	<view-state id="start" view="/resources/views/dataJournal/dataJournal.xhtml">
-		
+	<view-state id="start"
+		view="/resources/views/dataJournal/dataJournal.xhtml">
+
 		<on-entry>
-			<evaluate
-				expression="dataJournalController.newListOfDataJournalView()"
+			<evaluate expression="dataJournalController.newListOfDataJournalView()"
 				result="viewScope.listOfDataJournalView" />
-			<evaluate
-				expression="dataJournalController.newEditFormDataJournalView()"
+			<evaluate expression="dataJournalController.newEditFormDataJournalView()"
 				result="viewScope.editFormDJView" />
 		</on-entry>
+		<transition on="addModel" to="addModel-step-1">
+			<evaluate expression="dataJournalController.newModelBean(editFormDJView.model)"
+				result="flowScope.modelBean" >
+				<attribute name="model" value="editFormDJView.model"/>
+			</evaluate>
+		</transition>
 	</view-state>
-	
+	<view-state id="addModel-step-1"
+		view="/resources/views/dataJournal/addModel-step-1.xhtml">
+		<transition on="back" to="start"/>
+		<transition on="next" to="addModel-step-1" />
+	</view-state>
+
 	<end-state id="finish" />
-	
+
 	<global-transitions>
-		<transition on="exit" to="start" />
+		<transition on="cancel" to="start" />
 	</global-transitions>
 
 </flow>

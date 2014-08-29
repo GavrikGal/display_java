@@ -9,68 +9,173 @@
 	<div class="editPanel">
 		<p:panel id="editMeasurement" styleClass="editMeasurementPanel">
 			<h:form id="editForm">
-				<p:log/>
-				<p:panelGrid columns="5" style="width: 100%;">
-					<p:outputLabel for="currentDate" value="#{msg['label_measurement_table_date']}" />
-					<p:outputLabel for="model" value="#{msg['label_measurement_table_model']}" />
+				<!-- <p:log /> -->
 
-					<p:outputLabel for="serialNumber" value="#{msg['label_measurement_table_serial_number']}" />
-					<p:outputLabel value="#{msg['label_measurement_table_spectrum_parameter']}" />
 
-					<p:outputLabel for="description" value="#{msg['label_measurement_table_spectrum']}" />
 
-					<p:clock pattern="dd.MM.yyyy - HH:mm:ss" mode="server"
-						autoSync="true" id="currentDate" />
-
-					<p:selectOneMenu id="model"
-						value="#{editFormDJView.equipment.model}"
-						converter="#{modelConverter}" panelStyle="width:180px"
-						effect="fade" var="m" style="width:120px" filter="true"
-						filterMatchMode="contains" editable="true">
-						<f:selectItems value="#{editFormDJView.modelOfEquipments}"
-							var="model" itemLabel="#{model.modelName}" itemValue="#{model}" />
-
-						<p:column>
-							<h:outputText value="#{m.modelName}" />
+				<p:panelGrid style="width: 100%;">
+					<p:row>
+						<p:column colspan="1">
+							<p:outputLabel for="currentDate"
+								value="#{msg['label_measurement_table_date']}" />
 						</p:column>
-					</p:selectOneMenu>
+						<p:column colspan="1">
+							<p:outputLabel for="model"
+								value="#{msg['label_measurement_table_model']}" />
+						</p:column>
+						<p:column colspan="1">
+							<p:outputLabel for="serialNumber"
+								value="#{msg['label_measurement_table_serial_number']}" />
+						</p:column>
+						<p:column colspan="2">
+							<p:outputLabel
+								value="#{msg['label_measurement_table_spectrum_parameter']}" />
+						</p:column>
+						<p:column colspan="1">
+							<p:outputLabel for="description"
+								value="#{msg['label_measurement_table_spectrum']}" />
+						</p:column>
 
-					<p:inputText id="serialNumber" placeholder="xxxxxx"
-						value="#{editFormDJView.equipment.serialNumber}" size="10" />
-					<p:panelGrid id="spectrumParameters" columns="3" >
-						<p:selectOneMenu id="measurand"
-							value="#{editFormDJView.spectrumParameter.measurand}"
-							editable="true" converter="#{measurandConverter}">
-							<f:selectItems value="#{editFormDJView.measurands}"
-								var="measurand" itemLabel="#{measurand.idMeasurands}"
-								itemValue="#{measurand}" />
-						</p:selectOneMenu>
-						<p:selectOneMenu id="type"
-							value="#{editFormDJView.spectrumParameter.typeOfSpectrum}"
-							editable="true" converter="#{typeOfSpectrumConverter}">
-							<f:selectItems value="#{editFormDJView.typeOfSpectrums}"
-								var="typeOfSpectrum" itemLabel="#{typeOfSpectrum.idType}"
-								itemValue="#{typeOfSpectrum}" />
-						</p:selectOneMenu>
-						<p:selectOneMenu id="screenResolution"
-							value="#{editFormDJView.spectrumParameter.screenResolution}"
-							editable="true" converter="#{screenResolutionConverter}">
-							<f:selectItems value="#{editFormDJView.screenResolutions}"
-								var="screenResolution" itemLabel="#{screenResolution.screenResolution}"
-								itemValue="#{screenResolution}" />
-						</p:selectOneMenu>
-					</p:panelGrid>
-					<p:inputTextarea id="description" rows="2" cols="50"
-						value="#{editFormDJView.description}"
-						placeholder="32.5 - 35 / 16; соотв." />
-					<f:facet name="footer">
-					<p:commandButton value="Сохранить" id="save" update="editForm:description editForm:spectrumParameters :form:measurementForViews"
-							action="#{dataJournalController.save(editFormDJView, listOfDataJournalView)}" immediate="false" type="submit" style="margin-left:1000px; " >
-							 <p:resetInput target="description" />
-					</p:commandButton>
-					</f:facet>
+					</p:row>
+					<p:row>
+						<p:column colspan="1" style="width:200px">
+							<p:clock pattern="dd.MM.yyyy - HH:mm:ss" mode="server"
+								autoSync="true" id="currentDate"/>
+						</p:column>
+						<p:column colspan="1">
+							<p:selectOneMenu id="model" value="#{editFormDJView.model}"
+								converter="#{modelConverter}" panelStyle="width:180px"
+								effect="fade" var="m" style="width:120px" filter="true"
+								filterMatchMode="contains" editable="true">
+								<f:selectItems value="#{editFormDJView.modelOfEquipments}"
+									var="model" itemLabel="#{model.modelName}" itemValue="#{model}" />
+
+								<p:column>
+									<h:outputText value="#{m.modelName}" />
+								</p:column>
+								<p:ajax event="change" update="repeated"
+									listener="#{dataJournalController.checkOnRepeatedMeasurement(editFormDJView)}" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column colspan="1">
+							<p:inputText id="serialNumber" placeholder="xxxxxx"
+								value="#{editFormDJView.serialNumber}" size="10">
+								<p:ajax event="change" update="repeated"
+									listener="#{dataJournalController.checkOnRepeatedMeasurement(editFormDJView)}" />
+							</p:inputText>
+						</p:column>
+						<p:column colspan="2">
+							<p:panelGrid id="spectrumParameters" columns="3">
+								<p:selectOneMenu id="measurand"
+									value="#{editFormDJView.spectrumParameter.measurand}"
+									editable="true" converter="#{measurandConverter}">
+									<f:selectItems value="#{editFormDJView.measurands}"
+										var="measurand" itemLabel="#{measurand.idMeasurands}"
+										itemValue="#{measurand}" />
+
+								</p:selectOneMenu>
+								<p:selectOneMenu id="type"
+									value="#{editFormDJView.spectrumParameter.typeOfSpectrum}"
+									editable="true" converter="#{typeOfSpectrumConverter}">
+									<f:selectItems value="#{editFormDJView.typeOfSpectrums}"
+										var="typeOfSpectrum" itemLabel="#{typeOfSpectrum.idType}"
+										itemValue="#{typeOfSpectrum}" />
+								</p:selectOneMenu>
+								<p:selectOneMenu id="screenResolution"
+									value="#{editFormDJView.spectrumParameter.screenResolution}"
+									editable="true" converter="#{screenResolutionConverter}">
+									<f:selectItems value="#{editFormDJView.screenResolutions}"
+										var="screenResolution"
+										itemLabel="#{screenResolution.screenResolution}"
+										itemValue="#{screenResolution}" />
+								</p:selectOneMenu>
+							</p:panelGrid>
+						</p:column>
+						<p:column colspan="1">
+							<p:inputTextarea id="description" rows="2" cols="45"
+								value="#{editFormDJView.description}"
+								placeholder="32.5 - 35 / 16; соотв." />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="6">
+							<p:panel id="otherParameters" widgetVar="otherParametersWV"
+								toggleable="true" collapsed="true" style="border: 0px;"
+								toggleSpeed="150">
+								<p:panelGrid columns="4" style="width:100%;">
+
+									<p:outputLabel
+										value="#{msg['label_measurement_table_receiver_bandwidth']}" />
+									<p:inputText value="30" />
+									<p:outputLabel
+										value="#{msg['label_measurement_table_distance']}" />
+									<p:inputText value="0.5" />
+									<p:outputLabel
+										value="#{msg['label_measurement_table_purpose_of_measurement']}" />
+									<p:selectOneMenu>
+										<f:selectItem itemLabel="ПИ/ПСИ" itemValue="1" />
+										<f:selectItem itemLabel="Периодические" itemValue="2" />
+										<f:selectItem itemLabel="Типовые" itemValue="3" />
+										<f:selectItem itemLabel="На соответрствие" itemValue="4" />
+										<f:selectItem itemLabel="Экспериментальные" itemValue="5" />
+									</p:selectOneMenu>
+									<p:outputLabel
+										value="#{msg['label_measurement_table_testing_equpment']}" />
+									<p:commandButton
+										value="#{msg['label_measurement_table_go_to_testing_equpment']}" />
+								</p:panelGrid>
+							</p:panel>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="3">
+							<p:commandButton
+								value="#{msg['label_measurement_other_parameters']}"
+								onclick="PF('otherParametersWV').toggle()" type="button" />
+						</p:column>
+						<p:column colspan="1">
+							<p:outputLabel for="repeated"
+								value="#{msg['label_measurement_retesting']}" />
+						</p:column>
+						<p:column colspan="1">
+							<p:selectBooleanCheckbox value="#{editFormDJView.repeated}"
+								id="repeated" widgetVar="repeated" />
+						</p:column>
+						<p:column colspan="1">
+							<p:commandButton value="#{msg['label_measurement_save']}"
+								id="save" widgetVar="saveButton"
+								update="editForm:description editForm:spectrumParameters :form:measurementForViews :messages:message newModelDilog"
+								action="#{dataJournalController.save(editFormDJView, listOfDataJournalView)}"
+								immediate="false" type="submit">
+								<p:resetInput target="description" />
+							</p:commandButton>
+						</p:column>
+					</p:row>
 				</p:panelGrid>
-				
+				<p:dialog id="newModelDilog" widgetVar="newModelDilogWV"
+					header="Изделие не найдено"
+					visible="#{editFormDJView.showNewModelDialog}" modal="true"
+					position="top" resizable="false" >
+					<p:panelGrid>
+						<p:row>
+							<p:column colspan="2">
+								<p:outputLabel
+									value="Вы хотите добавить новое изделие в базу данных?" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:commandButton value="Нет"
+									onclick="PF('newModelDilogWV').hide()" />
+							</p:column>
+							<p:column>
+								<p:commandButton value="Да"
+									onclick="PF('newModelDilogWV').hide()" action="addModel"/>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:dialog>
+
 			</h:form>
 		</p:panel>
 

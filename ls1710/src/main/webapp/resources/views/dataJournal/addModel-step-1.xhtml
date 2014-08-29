@@ -1,0 +1,73 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/resources/templates/standard.xhtml">
+
+
+
+	<ui:define name="content">
+		<p:panel style="margin-top:50px; margin-bottom: 50px;">
+			<h:form id="addModelForm">
+
+				<h3 align="center">Добавление нового изделия</h3>
+
+				<p:panelGrid columns="2" style="margin: auto;">
+					<p:outputLabel value="название изделия" />
+					<p:inputText />
+					<p:outputLabel value="Модель изделия" />
+					<p:inputText value="#{modelBean.model.modelName}" />
+					<p:outputLabel value="Описание изделия" />
+					<p:inputTextarea value="#{modelBean.model.description}" />
+				</p:panelGrid>
+
+
+				<p:dataGrid value="#{modelBean.photoNames}" var="photoName"
+					id="addModelImages" emptyMessage="Добавте фотографии изделия">
+					<p:graphicImage value="#{photoBean.photo}" width="360px">
+						<f:param name="photoName" value="#{photoName}" />
+					</p:graphicImage>
+					<p:commandButton icon="ui-icon-close"
+						action="#{modelBean.removePhoto(photoName)}"
+						update="addModelImages">
+
+					</p:commandButton>
+				</p:dataGrid>
+
+				<p:commandButton icon="ui-icon-image"
+					onclick="PF('addPhotoDialogWV').show()" value="Добавить фотографии">
+				</p:commandButton>
+
+
+				<p:toolbar>
+					<p:toolbarGroup id="left" align="left">
+						<p:commandButton value="Назад" action="back" />
+						<p:commandButton value="Отмена" action="cancel" />
+					</p:toolbarGroup>
+					<p:toolbarGroup id="right" align="right">
+						<p:commandButton value="Далее" action="next" />
+					</p:toolbarGroup>
+				</p:toolbar>
+				<p:dialog id="addPhotoDialog" visible="false" modal="true"
+					widgetVar="addPhotoDialogWV" width="900" position="top"
+					header="Выберите фотографии для добавления">
+					<p:fileUpload fileUploadListener="#{modelBean.fileUploadListener}"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+						invalidFileMessage="Не тот формат файла" multiple="true" />
+
+					<p:commandButton value="Нет"
+						onclick="PF('addPhotoDialogWV').hide()"
+						action="#{modelBean.clearNewPhoto}" />
+					<p:commandButton value="Да" onclick="PF('addPhotoDialogWV').hide()"
+						action="#{modelBean.addNewPhoto}" update="addModelImages" />
+
+				</p:dialog>
+
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+
+</ui:composition>

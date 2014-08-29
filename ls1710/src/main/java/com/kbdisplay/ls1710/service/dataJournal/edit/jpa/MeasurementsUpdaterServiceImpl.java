@@ -413,19 +413,19 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	@Override
-	public Measurement saveMeasurements(DateTime dateTime, Equipment equipment,
-			Spectrum spectrum, SpectrumParameter spectrumParameter, User user,
+	public Measurement saveMeasurements(ModelOfEquipment modelOfEquipment,
+			String serialNumber, SpectrumParameter spectrumParameter,
 			Version version, String description) {
 
-		System.out.println("tyT bug");
 		/*
 		 * получение даты измерений.
 		 */
-		DateOfMeasurement date = new DateOfMeasurement();
-		date.setDate(dateTime.withTime(0, 0, 0, 0));
-		date = dateOfMeasurementService.update(date);
-		System.out.println("uJlu TyT bug");
+		DateOfMeasurement currentDate = getCurrentDateOfMeasurement();
+
 		// сохраняем или получаем испытуемое оборудование
+		Equipment equipment = new Equipment();
+		equipment.setModel(modelOfEquipment);
+		equipment.setSerialNumber(serialNumber);
 		equipment = equipmentService.update(equipment);
 
 		List<Measurement> measurements =
@@ -446,14 +446,13 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		Measurement measurement = new Measurement();
 
-		measurement.setDateOfMeasurement(date);
+		measurement.setDateOfMeasurement(currentDate);
 		measurement.setEquipment(equipment);
 		measurement.setVersion(version.getVersion());
 		User newUser = userService.findById(1L);
 		measurement.setUser(newUser);
 		measurement.setSpectrums(new ArrayList<Spectrum>());
 		measurement = measurementService.save(measurement);
-
 
 		// ������� �������� ��������� ������� �� ��, ��� ������� ��
 		// SpectrumParameter spectrumParameter =

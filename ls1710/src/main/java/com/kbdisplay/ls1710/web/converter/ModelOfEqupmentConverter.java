@@ -35,7 +35,9 @@ public class ModelOfEqupmentConverter implements Converter {
 			if (model == null) {
 				model = new ModelOfEquipment();
 				model.setModelName(value.toString());
-				model = modelService.save(model);
+//				model = new ModelOfEquipment();
+//				model.setModelName(value.toString());
+//				model = modelService.save(model);
 			}
 			return model;
 		} else {
