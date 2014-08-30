@@ -6,13 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 
 /**
@@ -34,13 +35,13 @@ public class ModelBean implements Serializable {
 	 */
 	private ModelOfEquipment model;
 
-	private List<String> photoNames;
-	private List<String> newPhotoNames;
+	private Set<String> photoNames;
+	private Set<String> newPhotoNames;
 
 
 	public ModelBean() {
-		photoNames = new ArrayList<String>();
-		newPhotoNames = new ArrayList<String>();
+		photoNames = new HashSet<String>();
+		newPhotoNames = new HashSet<String>();
 	}
 
 	public void fileUploadListener(final FileUploadEvent e) {
@@ -49,8 +50,8 @@ public class ModelBean implements Serializable {
 
 		try {
 			InputStream stream = e.getFile().getInputstream();
-			String imageFormat = FilenameUtils.getExtension(e.getFile().getFileName());
-			String imageName = FilenameUtils.getBaseName(e.getFile().getFileName());
+//			String imageFormat = FilenameUtils.getExtension(e.getFile().getFileName());
+//			String imageName = FilenameUtils.getBaseName(e.getFile().getFileName());
 			File imageTempFile = new File("c:\\webapp\\upload\\" + e.getFile().getFileName());
 			// TODO добавить файл настроек и брать путь для сохранения файла из него
 
@@ -92,12 +93,16 @@ public class ModelBean implements Serializable {
 		}
 	}
 
-	public void removePhoto(String photoName) {
+	public void removePhoto(final String photoName) {
 		photoNames.remove(photoName);
 		removeFile(photoName);
 	}
 
-	private void removeFile(String fileName) {
+	public int photoCount() {
+		return photoNames.size();
+	}
+
+	private void removeFile(final String fileName) {
 		File removingFile = new File("c:\\webapp\\upload\\" + fileName);
 		removingFile.delete();
 	}
@@ -114,10 +119,10 @@ public class ModelBean implements Serializable {
 	}
 
 	public List<String> getPhotoNames() {
-		return photoNames;
+		return Lists.newArrayList(photoNames);
 	}
 
-	public void setPhotoNames(final List<String> photoNames) {
+	public void setPhotoNames(final Set<String> photoNames) {
 		this.photoNames = photoNames;
 	}
 

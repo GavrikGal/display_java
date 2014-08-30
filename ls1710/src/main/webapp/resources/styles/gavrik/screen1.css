@@ -197,9 +197,66 @@ caption {background:#eee;}
 }
 
 
-.ui-icon-addPhoto{
-	/* background-image: url(icons/addPhoto.png); */
+/* .ui-icon-addPhoto{
+	background-image: url(icons/addPhoto.png);
    background-image: url("#{resource['styles/gavrik/icons/addPhoto.png']}") !important; 
+} */
+
+
+
+/* .ui-dataGrid-addModel-photos td {
+	margin: auto;
+	padding: 0px;
+} */
+
+.ui-dataGrid-addModel-photos td{
+	text-align: center;
+	vertical-align: bottom;
+	padding: 0px;
+}
+
+.ui-panel-addPhoto-photo {
+	display: inline-block;
+	border: 0px solid #E33 !important;
+	margin: auto;
+}
+
+.ui-panel-addPhoto-photo div {
+	padding: 0px !important;
+}
+
+
+.ui-div-addModel-photo {
+    position: relative;
+}
+.ui-div-addModel-photo:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    content: '';
+    -moz-box-shadow:    inset 0px 0px 100px rgba(0,0,0,1);
+    -webkit-box-shadow: inset 0px 0px 100px rgba(0,0,0,1);
+    box-shadow:         inset 0px 0px 100px rgba(0,0,0,1);
+}
+
+.ui-image-addModel-photo {
+	display: block;
+	margin:auto;
+}
+
+.ui-button-addModel-deletePhoto {
+	display:inline;
+	position: relative	 !important;
+	bottom: 35px;
+	margin-bottom: -35px;
+	z-index: 100;
+}
+
+.ui-button-addModel-addPhoto {
+	display: block;
+	margin: auto !important;
 }
 
 

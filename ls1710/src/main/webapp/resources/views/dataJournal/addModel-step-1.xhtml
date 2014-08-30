@@ -25,20 +25,30 @@
 
 
 				<p:dataGrid value="#{modelBean.photoNames}" var="photoName"
-					id="addModelImages" emptyMessage="Добавте фотографии изделия">
-					<p:graphicImage value="#{photoBean.photo}" width="360px">
-						<f:param name="photoName" value="#{photoName}" />
-					</p:graphicImage>
-					<p:commandButton icon="ui-icon-close"
-						action="#{modelBean.removePhoto(photoName)}"
-						update="addModelImages">
+					id="addModelImages" emptyMessage="Добавте фотографии изделия"
+					styleClass="ui-dataGrid-addModel-photos" columns="#{modelBean.photoCount() > 5 ? 5 : modelBean.photoCount()}">
 
-					</p:commandButton>
+					<p:panel styleClass="ui-panel-addPhoto-photo">
+						<div class="ui-div-addModel-photo">
+							<p:graphicImage value="#{photoBean.photo}"
+								width="#{modelBean.photoCount() > 5 ? 1080/5: 1080/modelBean.photoCount()}px"
+								styleClass="ui-image-addModel-photo">
+								<f:param name="photoName" value="#{photoName}" />
+							</p:graphicImage>
+						</div>
+						<p:commandButton icon="ui-icon-close"
+							action="#{modelBean.removePhoto(photoName)}"
+							update="addModelImages"
+							styleClass="ui-button-addModel-deletePhoto"
+							widgetVar="removeModelPhotoButton"
+							style="left: #{modelBean.photoCount() > 5 ? (1080/(5*2))-21 : (1080/(modelBean.photoCount()*2)-21)}px;" />
+					</p:panel>
 				</p:dataGrid>
 
 				<p:commandButton icon="ui-icon-image"
-					onclick="PF('addPhotoDialogWV').show()" value="Добавить фотографии">
-				</p:commandButton>
+					onclick="PF('addPhotoDialogWV').show()" value="Добавить фотографии"
+					styleClass="ui-button-addModel-addPhoto" />
+
 
 
 				<p:toolbar>
@@ -50,12 +60,14 @@
 						<p:commandButton value="Далее" action="next" />
 					</p:toolbarGroup>
 				</p:toolbar>
+
 				<p:dialog id="addPhotoDialog" visible="false" modal="true"
 					widgetVar="addPhotoDialogWV" width="900" position="top"
 					header="Выберите фотографии для добавления">
 					<p:fileUpload fileUploadListener="#{modelBean.fileUploadListener}"
 						allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-						invalidFileMessage="Не тот формат файла" multiple="true" />
+						invalidFileMessage="Не тот формат файла" multiple="true"
+						cancelLabel="Отмена" uploadLabel="Загрузить" label="Добавить" />
 
 					<p:commandButton value="Нет"
 						onclick="PF('addPhotoDialogWV').hide()"
