@@ -20,15 +20,15 @@
 			<p:row>
 				<p:column style="width: #{cc.attrs.widthFirstColumn}">
 					<h:outputText
-						value="#{cc.attrs.spectrum.spectrumParameters.measurand}
-    											 #{cc.attrs.spectrum.spectrumParameters.typeOfSpectrum != null ? ', ' : ''}"
+						value="#{cc.attrs.spectrum.parameter.measurand}
+    											 #{cc.attrs.spectrum.parameter.typeOfSpectrum != null ? ', ' : ''}"
 						style="font-size: small;" />
 					<h:outputText
-						value="#{cc.attrs.spectrum.spectrumParameters.typeOfSpectrum}
-         									 #{cc.attrs.spectrum.spectrumParameters.screenResolution != null ? ', ' : ''}"
+						value="#{cc.attrs.spectrum.parameter.typeOfSpectrum}
+         									 #{cc.attrs.spectrum.parameter.screenResolution != null ? ', ' : ''}"
 						style="font-size: small;" />
 					<h:outputText
-						value="#{cc.attrs.spectrum.spectrumParameters.screenResolution}"
+						value="#{cc.attrs.spectrum.parameter.screenResolution}"
 						style="font-size: small;" />
 				</p:column>
 				<p:column>

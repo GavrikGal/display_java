@@ -32,7 +32,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  *
  */
 @Entity
-@Table(name = "spectrums")
+@Table(name = "spectrum")
 public class Spectrum implements Serializable {
 
 	/**
@@ -43,25 +43,35 @@ public class Spectrum implements Serializable {
 	/**
 	 * ID измеренного спектра.
 	 */
-	private Long idSpectrums;
+	private Long id;
+
 	/**
 	 * измеренный спектр.
 	 */
 	private Measurement measurement;
+
 	/**
 	 * Параметры спектра (измеряемая величина, разрешение, тип измерений и
 	 * т.д.).
 	 */
-	private SpectrumParameter spectrumParameters;
+	private SpectrumParameter parameter;
+
+	/**
+	 * версия спектра.
+	 */
+	private int	version;
+
 	/**
 	 * Описание измеренного спектра, либо комментарии к измеренному спектру
 	 * (типа: соотв. и т.д.).
 	 */
 	private String description;
+
 	/**
 	 * Время измерения спектра.
 	 */
-	private DateTime dateTime;
+	private DateTime date;
+
 	/**
 	 * Список спектральных составляющих - гармоник спектра.
 	 */
@@ -85,17 +95,17 @@ public class Spectrum implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Spectrums")
-	public Long getIdSpectrums() {
-		return idSpectrums;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdSpectrums(final Long idSpectrums) {
-		this.idSpectrums = idSpectrums;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Measurements")
+	@JoinColumn(name = "measurement_id")
 	public Measurement getMeasurement() {
 		return measurement;
 	}
@@ -105,27 +115,34 @@ public class Spectrum implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Spectrum_parameters")
-	public SpectrumParameter getSpectrumParameters() {
-		return spectrumParameters;
+	@JoinColumn(name = "parameter_id")
+	public SpectrumParameter getParameter() {
+		return parameter;
 	}
 
-	public void setSpectrumParameters(
-			final SpectrumParameter spectrumParameters) {
-		this.spectrumParameters = spectrumParameters;
+	public void setParameter(
+			final SpectrumParameter parameter) {
+		this.parameter = parameter;
 	}
 
+	@Column(name = "version")
+	public int getVersion() {
+		return version;
+	}
 
+	public void setVersion(final int version) {
+		this.version = version;
+	}
 
-	@Column(name = "DateTime")
+	@Column(name = "date")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(iso = ISO.DATE)
-	public DateTime getDateTime() {
-		return dateTime;
+	public DateTime getDate() {
+		return date;
 	}
 
-	public void setDateTime(final DateTime dateTime) {
-		this.dateTime = dateTime;
+	public void setDate(final DateTime date) {
+		this.date = date;
 	}
 
 
@@ -138,7 +155,7 @@ public class Spectrum implements Serializable {
 //		this.time = time;
 //	}
 
-	@Column(name = "Description")
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}

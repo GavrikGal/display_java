@@ -26,7 +26,7 @@ import org.hibernate.annotations.LazyCollectionOption;
  *
  */
 @Entity
-@Table(name = "measurements")
+@Table(name = "measurement")
 public class Measurement implements Serializable {
 
 	/**
@@ -37,81 +37,68 @@ public class Measurement implements Serializable {
 	/**
 	 * ID измерения/испытания.
 	 */
-	private Long idMeasurements;
+	private Long id;
+
 	/**
-	 * ф.
+	 * испытуемое оборудование.
 	 */
 	private Equipment equipment;
+
 	/**
 	 * Дата измерений.
 	 */
-	private DateOfMeasurement dateOfMeasurement;
-	/**
-	 * Дата повторных измерений.
-	 * @deprecated будет заменена версией измерений.
-	 */
-	@Deprecated
-	private DateOfMeasurement dateOfSecondMeasurement;
-	// TODO Заменить дату повторного измерения на версию измерений
-	// private String version (1.1, 1.2, 2.1 ... 5.3 ... );
+	private DateOfMeasurement date;
+
 	/**
 	 * версия измерения.
-	 * первое измерение изделия имеет версию 1.0, последующие
-	 * измерения этого изделия, входящие в один цикл измерений, номеруются по
-	 * порядку после точки, типа 1.1, 1.2... 1.5. следующий цикл измерений
-	 * должен увеличить цифру перед точкой, а цифпу после точки установить в
-	 * ноль. Таким образом если изделие проверяется повторно как на ПСИ
-	 * испытаниях, то измерения получат номер версии х.1 или выше. Если
-	 * требуется измерить изделие повторно на ПИ и периодических испытаниях, то
-	 * номер версии будет 2.0, 3.0 или выше. Также если испытания имеют
-	 * экспериментальный характер, то версии испытаний номируются после точки,
-	 * при этом сохранится логическая последовательность (цепочка)
-	 * испытаний/измерений.
 	 */
-	private String version;
+	private int version;
+
 	/**
-	 * Список спектров, которые включает в себя измерение.
+	 * цель измерений (пи/пси/типовые/периодические).
 	 */
-	private List<Spectrum> spectrums;
+	private PurposeOfMeasurement purpose;
+
 	/**
 	 * Пользователь проводивший измерения.
 	 */
 	private User user;
 
+	/**
+	 * требования(нормы) для измерения.
+	 */
+	private Norm norm;
+
+	// TODO заменить на результаты испытаний
+	/**
+	 * Список спектров, которые включает в себя измерение.
+	 */
+	private List<Spectrum> spectrums;
+
+
 	@ManyToOne
-	@JoinColumn(name = "Date_of_measurement")
-	public DateOfMeasurement getDateOfMeasurement() {
-		return dateOfMeasurement;
+	@JoinColumn(name = "date_id")
+	public DateOfMeasurement getDate() {
+		return date;
 	}
 
-	public void setDateOfMeasurement(final DateOfMeasurement date) {
-		this.dateOfMeasurement = date;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "Date_of_second_measurement")
-	public DateOfMeasurement getDateOfSecondMeasurement() {
-		return dateOfSecondMeasurement;
-	}
-
-	public void setDateOfSecondMeasurement(
-			final DateOfMeasurement dateOfSecondMeasurement) {
-		this.dateOfSecondMeasurement = dateOfSecondMeasurement;
+	public void setDate(final DateOfMeasurement date) {
+		this.date = date;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Measurements")
-	public Long getIdMeasurements() {
-		return idMeasurements;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdMeasurements(final Long idMeasurements) {
-		this.idMeasurements = idMeasurements;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Equipment")
+	@JoinColumn(name = "equipment_id")
 	public Equipment getEquipment() {
 		return equipment;
 	}
@@ -134,7 +121,7 @@ public class Measurement implements Serializable {
 	// }
 
 	@ManyToOne
-	@JoinColumn(name = "User")
+	@JoinColumn(name = "user_id")
 	public User getUser() {
 		return user;
 	}
@@ -145,7 +132,7 @@ public class Measurement implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "measurement",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy("dateTime")
+	@OrderBy("date")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Spectrum> getSpectrums() {
 		return spectrums;
@@ -155,17 +142,36 @@ public class Measurement implements Serializable {
 		this.spectrums = spectrums;
 	}
 
-	public String getVersion() {
+	public int getVersion() {
 		return version;
 	}
 
-	public void setVersion(final String version) {
+	public void setVersion(final int version) {
 		this.version = version;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "purpose_id")
+	public PurposeOfMeasurement getPurpose() {
+		return purpose;
+	}
+
+	public void setPurpose(final PurposeOfMeasurement purpose) {
+		this.purpose = purpose;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "norm_id")
+	public Norm getNorm() {
+		return norm;
+	}
+
+	public void setNorm(final Norm norm) {
+		this.norm = norm;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 
 }

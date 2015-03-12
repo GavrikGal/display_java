@@ -13,4 +13,12 @@ import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 public interface TypeOfSpectrumRepository extends
 		CrudRepository<TypeOfSpectrum, String> {
 
+	/**
+	 * поиск типа спектра по его названию в БД по названию изделия.
+	 *
+	 * @param name
+	 *            название типа спектра
+	 * @return найденная тип спектра или null
+	 */
+	TypeOfSpectrum findByName(String name);
 }

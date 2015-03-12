@@ -48,20 +48,18 @@
 								effect="fade" var="m" style="width:120px" filter="true"
 								filterMatchMode="contains" editable="true">
 								<f:selectItems value="#{editFormDJView.modelOfEquipments}"
-									var="model" itemLabel="#{model.modelName}" itemValue="#{model}" />
+									var="model" itemLabel="#{model.name}" itemValue="#{model}" />
 
 								<p:column>
-									<h:outputText value="#{m.modelName}" />
+									<h:outputText value="#{m.name}" />
 								</p:column>
-								<p:ajax event="change" update="repeated"
-									listener="#{dataJournalController.checkOnRepeatedMeasurement(editFormDJView)}" />
+
 							</p:selectOneMenu>
 						</p:column>
 						<p:column colspan="1">
 							<p:inputText id="serialNumber" placeholder="xxxxxx"
 								value="#{editFormDJView.serialNumber}" size="10">
-								<p:ajax event="change" update="repeated"
-									listener="#{dataJournalController.checkOnRepeatedMeasurement(editFormDJView)}" />
+
 							</p:inputText>
 						</p:column>
 						<p:column colspan="2">
@@ -70,7 +68,7 @@
 									value="#{editFormDJView.spectrumParameter.measurand}"
 									editable="true" converter="#{measurandConverter}">
 									<f:selectItems value="#{editFormDJView.measurands}"
-										var="measurand" itemLabel="#{measurand.idMeasurands}"
+										var="measurand" itemLabel="#{measurand.name}"
 										itemValue="#{measurand}" />
 
 								</p:selectOneMenu>
@@ -78,7 +76,7 @@
 									value="#{editFormDJView.spectrumParameter.typeOfSpectrum}"
 									editable="true" converter="#{typeOfSpectrumConverter}">
 									<f:selectItems value="#{editFormDJView.typeOfSpectrums}"
-										var="typeOfSpectrum" itemLabel="#{typeOfSpectrum.idType}"
+										var="typeOfSpectrum" itemLabel="#{typeOfSpectrum.name}"
 										itemValue="#{typeOfSpectrum}" />
 								</p:selectOneMenu>
 								<p:selectOneMenu id="screenResolution"
@@ -86,7 +84,7 @@
 									editable="true" converter="#{screenResolutionConverter}">
 									<f:selectItems value="#{editFormDJView.screenResolutions}"
 										var="screenResolution"
-										itemLabel="#{screenResolution.screenResolution}"
+										itemLabel="#{screenResolution.resolution}"
 										itemValue="#{screenResolution}" />
 								</p:selectOneMenu>
 							</p:panelGrid>
@@ -111,14 +109,9 @@
 										value="#{msg['label_measurement_table_distance']}" />
 									<p:inputText value="0.5" />
 									<p:outputLabel
-										value="#{msg['label_measurement_table_purpose_of_measurement']}" />
-									<p:selectOneMenu>
-										<f:selectItem itemLabel="ПИ/ПСИ" itemValue="1" />
-										<f:selectItem itemLabel="Периодические" itemValue="2" />
-										<f:selectItem itemLabel="Типовые" itemValue="3" />
-										<f:selectItem itemLabel="На соответрствие" itemValue="4" />
-										<f:selectItem itemLabel="Экспериментальные" itemValue="5" />
-									</p:selectOneMenu>
+										value="Резерв" />
+									<p:outputLabel
+										value="Резерв" />
 									<p:outputLabel
 										value="#{msg['label_measurement_table_testing_equpment']}" />
 									<p:commandButton
@@ -128,18 +121,24 @@
 						</p:column>
 					</p:row>
 					<p:row>
-						<p:column colspan="3">
+						<p:column colspan="2">
 							<p:commandButton
 								value="#{msg['label_measurement_other_parameters']}"
 								onclick="PF('otherParametersWV').toggle()" type="button" />
 						</p:column>
-						<p:column colspan="1">
-							<p:outputLabel for="repeated"
-								value="#{msg['label_measurement_retesting']}" />
+						<p:column colspan="2">
+							<p:outputLabel
+								value="#{msg['label_measurement_table_purpose_of_measurement']}" />
 						</p:column>
 						<p:column colspan="1">
-							<p:selectBooleanCheckbox value="#{editFormDJView.repeated}"
-								id="repeated" widgetVar="repeated" />
+							<p:selectOneMenu id="purposeOfMeasurement"
+								value="#{editFormDJView.purposeOfMeasurement}"
+								editable="true" converter="#{purposeOfMeasurementConverter}">
+								<f:selectItems value="#{editFormDJView.purposeOfMeasurements}"
+									var="purposeOfMeasurement"
+									itemLabel="#{purposeOfMeasurement.name}"
+									itemValue="#{purposeOfMeasurement}"/>
+							</p:selectOneMenu>
 						</p:column>
 						<p:column colspan="1">
 							<p:commandButton value="#{msg['label_measurement_save']}"
@@ -160,7 +159,7 @@
 						<p:row>
 							<p:column colspan="2">
 								<p:outputLabel
-									value="Вы хотите добавить новое изделие в базу данных?" />
+									value="Добавить новое изделие в базу данных?" />
 							</p:column>
 						</p:row>
 						<p:row>

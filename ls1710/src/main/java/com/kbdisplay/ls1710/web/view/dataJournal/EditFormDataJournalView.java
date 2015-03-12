@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
-import com.kbdisplay.ls1710.web.view.dataJournal.component.Version;
 
 /**
  * представление формы для добавления/редактирования списка измерений.
@@ -30,22 +30,31 @@ public class EditFormDataJournalView implements Serializable {
 	 * модель испытуемого изделия.
 	 */
 	private ModelOfEquipment model;
+
 	/**
 	 * серийный номер испытуемого изделия.
 	 */
 	private String serialNumber;
+
 	/**
 	 * параметры измеренного спектра.
 	 *
 	 * такие как измеряемая величина, разрешение экрана, тип измерений и т.д.
 	 */
 	private SpectrumParameter spectrumParameter;
+
+	/**
+	 * цель измерений (пи/пси/типовые/т.д.).
+	 */
+	private PurposeOfMeasurement purposeOfMeasurement;
+
 	/**
 	 * версия измерений.
 	 *
 	 * определяет начало нового цикла измерений или продолжение старого.
 	 */
-	private Version version;
+//	private Version version;
+
 	/**
 	 * описание измерения.
 	 *
@@ -53,10 +62,12 @@ public class EditFormDataJournalView implements Serializable {
 	 * БД.
 	 */
 	private String description;
+
 	/**
 	 * являются ли испытания повторными.
 	 */
 	private boolean repeated;
+
 	/**
 	 * отображать ли диалог добавления новой модели.
 	 */
@@ -66,18 +77,26 @@ public class EditFormDataJournalView implements Serializable {
 	 * список доступных моделей изделий.
 	 */
 	private List<ModelOfEquipment> modelOfEquipments;
+
 	/**
 	 * список доступных измеряемых физических величин.
 	 */
 	private List<Measurand> measurands;
+
 	/**
 	 * список доступных разрешений экрана.
 	 */
 	private List<ScreenResolution> screenResolutions;
+
 	/**
 	 * список доступных типов спектра.
 	 */
 	private List<TypeOfSpectrum> typeOfSpectrums;
+
+	/**
+	 * список доступных целей измерений.
+	 */
+	private List<PurposeOfMeasurement> purposeOfMeasurements;
 
 
 	/**
@@ -88,7 +107,7 @@ public class EditFormDataJournalView implements Serializable {
 		spectrumParameter = new SpectrumParameter();
 		repeated = false;
 		showNewModelDialog = false;
-		version = null;
+//		version = null;
 	}
 
 	/*
@@ -118,13 +137,22 @@ public class EditFormDataJournalView implements Serializable {
 		this.spectrumParameter = spectrParameter;
 	}
 
-	public Version getVersion() {
-		return version;
+	public PurposeOfMeasurement getPurposeOfMeasurement() {
+		return purposeOfMeasurement;
 	}
 
-	public void setVersion(final Version version) {
-		this.version = version;
+	public void setPurposeOfMeasurement(
+			final PurposeOfMeasurement purposeOfMeasurement) {
+		this.purposeOfMeasurement = purposeOfMeasurement;
 	}
+
+//	public Version getVersion() {
+//		return version;
+//	}
+//
+//	public void setVersion(final Version version) {
+//		this.version = version;
+//	}
 
 	public String getDescription() {
 		return this.description;
@@ -186,6 +214,15 @@ public class EditFormDataJournalView implements Serializable {
 
 	public void setTypeOfSpectrums(final List<TypeOfSpectrum> typeOfSpectrums) {
 		this.typeOfSpectrums = typeOfSpectrums;
+	}
+
+	public List<PurposeOfMeasurement> getPurposeOfMeasurements() {
+		return purposeOfMeasurements;
+	}
+
+	public void setPurposeOfMeasurements(
+			final List<PurposeOfMeasurement> purposeOfMeasurements) {
+		this.purposeOfMeasurements = purposeOfMeasurements;
 	}
 
 }

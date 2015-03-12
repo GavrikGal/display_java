@@ -18,7 +18,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "harmonics")
+@Table(name = "harmonic")
 public class Harmonic implements Serializable {
 
 	/**
@@ -28,7 +28,7 @@ public class Harmonic implements Serializable {
 	/**
 	 * ID измеренной гармоники.
 	 */
-	private Long idHarmonics;
+	private Long id;
 	/**
 	 * Частота.
 	 */
@@ -52,16 +52,16 @@ public class Harmonic implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Harmonics")
-	public Long getIdHarmonics() {
-		return idHarmonics;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdHarmonics(final Long idHarmonics) {
-		this.idHarmonics = idHarmonics;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	@Column(name = "Frequency")
+	@Column(name = "frequency")
 	public Double getFrequency() {
 		return frequency;
 	}
@@ -70,7 +70,7 @@ public class Harmonic implements Serializable {
 		this.frequency = frequency;
 	}
 
-	@Column(name = "ReceiverBandwidth")
+	@Column(name = "receiver_bandwidth")
 	public Double getReceiverBandwidth() {
 		return receiverBandwidth;
 	}
@@ -79,7 +79,7 @@ public class Harmonic implements Serializable {
 		this.receiverBandwidth = receiverBandwidth;
 	}
 
-	@Column(name = "Amplitude")
+	@Column(name = "amplitude")
 	public Double getAmplitude() {
 		return amplitude;
 	}
@@ -88,7 +88,7 @@ public class Harmonic implements Serializable {
 		this.amplitude = amplitude;
 	}
 
-	@Column(name = "Noise")
+	@Column(name = "noise")
 	public Double getNoise() {
 		return noise;
 	}
@@ -98,7 +98,7 @@ public class Harmonic implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Spectrum")
+	@JoinColumn(name = "spectrum_id")
 	public Spectrum getSpectrum() {
 		return spectrum;
 	}

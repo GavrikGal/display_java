@@ -2,8 +2,8 @@ package com.kbdisplay.ls1710.service.dataJournal.edit;
 
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
-import com.kbdisplay.ls1710.web.view.dataJournal.component.Version;
 
 public interface MeasurementsUpdaterService {
 
@@ -15,6 +15,7 @@ public interface MeasurementsUpdaterService {
 
 	public Measurement saveMeasurements(ModelOfEquipment modelOfEquipment,
 			String serialNumber, SpectrumParameter spectrumParameter,
-			Version version, String description);
+			PurposeOfMeasurement purposeOfMeasurement,
+			/* Version version, */String description);
 
 }

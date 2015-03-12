@@ -14,7 +14,7 @@ public class CustomUserDetails extends User {
 
 	public CustomUserDetails(com.kbdisplay.ls1710.domain.User user,
 			Collection<? extends GrantedAuthority> authorities) {
-		super(user.getUserName(), user.getPassword(), authorities);
+		super(user.getLogin(), user.getPassword(), authorities);
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
 		this.userDetail = user;

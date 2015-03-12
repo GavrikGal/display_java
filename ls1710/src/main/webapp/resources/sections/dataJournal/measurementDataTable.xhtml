@@ -42,7 +42,7 @@
 			</h:outputText>
 		</p:column>
 		<p:column width="80"
-			filterBy="#{measurementForView.equipment.model.modelName}"
+			filterBy="#{measurementForView.equipment.model.name}"
 			filterMatchMode="contains">
 			<f:facet name="header">
 				<h:outputText value="#{msg['label_measurement_table_model']}" />
@@ -51,7 +51,7 @@
 				<p:inputText onkeyup="PF('measurementForViewsTable').filter()"
 					style="width: 80px;margin-top:3px;" />
 			</f:facet>
-			<h:outputText value="#{measurementForView.equipment.model.modelName}"
+			<h:outputText value="#{measurementForView.equipment.model.name}"
 				rendered="#{measurementForView.enableModelName}" />
 		</p:column>
 		<p:column width="100"
@@ -98,7 +98,7 @@
 		</p:column>
 		<p:column headerText="#{msg['label_measurement_table_user']}"
 			width="80">
-			<h:outputText value="#{measurementForView.user.firstName}" />
+			<h:outputText value="#{measurementForView.user.lastName}" />
 		</p:column>
 
 

@@ -16,10 +16,10 @@ public interface ModelRepository extends
 	/**
 	 * поиск модели изделия в БД по названию изделия.
 	 *
-	 * @param modelName
+	 * @param name
 	 *            название изделия
 	 * @return найденная модель изделия или null
 	 */
-	ModelOfEquipment findByModelName(String modelName);
+	ModelOfEquipment findByName(String name);
 
 }

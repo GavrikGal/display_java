@@ -34,8 +34,8 @@ public class ScreenResolutionServiceImpl implements ScreenResolutionService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ScreenResolution findByResolution(String screenResolution) {
-		return screenResolutionRepository.findByScreenResolution(screenResolution);
+	public ScreenResolution findByResolution(String resolution) {
+		return screenResolutionRepository.findByResolution(resolution);
 	}
 
 	@Override

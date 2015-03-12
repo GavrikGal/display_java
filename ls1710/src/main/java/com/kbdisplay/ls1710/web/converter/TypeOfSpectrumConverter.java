@@ -30,7 +30,7 @@ public class TypeOfSpectrumConverter implements Converter {
 	public Object getAsObject(final FacesContext fc, final UIComponent uic,
 			final String value) {
 		if (value != null && value.trim().length() > 0) {
-			return typeOfSpectrumService.findById(value.toString());
+			return typeOfSpectrumService.findByName(value.toString());
 		} else {
 			return null;
 		}
@@ -40,7 +40,7 @@ public class TypeOfSpectrumConverter implements Converter {
 	public String getAsString(final FacesContext fc, final UIComponent uic,
 			final Object object) {
 		if (object != null) {
-			return String.valueOf(((TypeOfSpectrum) object).getIdType());
+			return String.valueOf(((TypeOfSpectrum) object).getName());
 		} else {
 			return null;
 		}

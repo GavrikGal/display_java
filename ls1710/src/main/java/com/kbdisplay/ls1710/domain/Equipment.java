@@ -24,7 +24,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "equipments")
+@Table(name = "equipment")
 public class Equipment implements Serializable {
 
 	/**
@@ -35,15 +35,18 @@ public class Equipment implements Serializable {
 	/**
 	 * ID изделия.
 	 */
-	private Long idEquipment;
+	private Long id;
+
 	/**
 	 * Модель изделия.
 	 */
 	private ModelOfEquipment model;
+
 	/**
 	 * Серийный номер изделия.
 	 */
 	private String serialNumber;
+
 	/**
 	 * Список измерений, проведенных с данным изделием.
 	 */
@@ -67,20 +70,20 @@ public class Equipment implements Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Equipment")
-	public Long getIdEquipment() {
-		return idEquipment;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
 
 	/**
 	 * Установка ID изделия.
 	 *
-	 * @param idEquipment
+	 * @param id
 	 *            ID изделия
 	 */
-	public void setIdEquipment(final Long idEquipment) {
-		this.idEquipment = idEquipment;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
 
@@ -90,7 +93,7 @@ public class Equipment implements Serializable {
 	 * @return модель изделия
 	 */
 	@ManyToOne
-	@JoinColumn(name = "Model")
+	@JoinColumn(name = "model_id")
 	public ModelOfEquipment getModel() {
 		return model;
 	}
@@ -112,7 +115,7 @@ public class Equipment implements Serializable {
 	 *
 	 * @return серийный номер изделия
 	 */
-	@Column(name = "Serial_number")
+	@Column(name = "serial_number")
 	public String getSerialNumber() {
 		return serialNumber;
 	}
@@ -139,7 +142,7 @@ public class Equipment implements Serializable {
 	 */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "equipment",
 			cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy("version")
+	@OrderBy("id")
 	public Set<Measurement> getMeasurements() {
 		return this.measurements;
 	}

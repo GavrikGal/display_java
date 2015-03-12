@@ -33,7 +33,7 @@
 
 				<h:outputText value="#{msg['label_measurement_table_model']}" />
 				<h:outputText
-					value="#{listOfDataJournalView.selectedMeasurementForView.equipment.model.modelName}" />
+					value="#{listOfDataJournalView.selectedMeasurementForView.equipment.model.name}" />
 
 				<h:outputText
 					value="#{msg['label_measurement_table_serial_number']}" />
@@ -47,7 +47,7 @@
 				<p:panel styleClass="selectedMeasurementPanel">
 					<f:facet name="header">
 						<h:outputText
-							value="#{selectedMeasurement.dateOfMeasurement.date}">
+							value="#{selectedMeasurement.date.date}">
 							<f:converter converterId="jodaDataTimeConverter" />
 							<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
 						</h:outputText>
@@ -61,15 +61,15 @@
 							<p:row>
 								<p:column>
 									<h:outputText
-										value="#{selectedSpectrum.spectrumParameters.measurand}
-        											 #{selectedSpectrum.spectrumParameters.typeOfSpectrum != null ? ', ' : ''}"
+										value="#{selectedSpectrum.parameter.measurand}
+        											 #{selectedSpectrum.parameter.typeOfSpectrum != null ? ', ' : ''}"
 										style="font-size: small;" />
 									<h:outputText
-										value="#{selectedSpectrum.spectrumParameters.typeOfSpectrum}
-	            									 #{selectedSpectrum.spectrumParameters.screenResolution != null ? ', ' : ''}"
+										value="#{selectedSpectrum.parameter.typeOfSpectrum}
+	            									 #{selectedSpectrum.parameter.screenResolution != null ? ', ' : ''}"
 										style="font-size: small;" />
 									<h:outputText
-										value="#{selectedSpectrum.spectrumParameters.screenResolution}"
+										value="#{selectedSpectrum.parameter.screenResolution}"
 										style="font-size: small;" />
 								</p:column>
 							</p:row>

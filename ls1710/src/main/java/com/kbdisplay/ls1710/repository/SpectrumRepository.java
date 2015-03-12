@@ -18,10 +18,10 @@ public interface SpectrumRepository extends CrudRepository<Spectrum, Long> {
 	 * поиск спектра по измерению и параметрам спектра.
 	 *
 	 * @param measurement измерение
-	 * @param spectrumParameters параметры спектра
+	 * @param parameter параметры спектра
 	 * @return найденный спектр или null
 	 */
-	Spectrum findByMeasurementAndSpectrumParameters(
-			Measurement measurement, SpectrumParameter spectrumParameters);
+	Spectrum findByMeasurementAndParameter(
+			Measurement measurement, SpectrumParameter parameter);
 
 }

@@ -8,7 +8,7 @@ public interface TypeOfSpectrumService {
 
 	public List<TypeOfSpectrum> findAll();
 
-	public TypeOfSpectrum findById(String id);
+	public TypeOfSpectrum findByName(String id);
 
 	public TypeOfSpectrum save(TypeOfSpectrum typeOfSpectrum);
 

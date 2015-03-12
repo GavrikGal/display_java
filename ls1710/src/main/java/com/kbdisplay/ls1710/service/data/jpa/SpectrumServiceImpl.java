@@ -33,10 +33,10 @@ public class SpectrumServiceImpl implements SpectrumService {
 	}
 
 	@Transactional(readOnly = true)
-	public Spectrum findByMeasurementAndSpectrumParameters(Measurement measurement,
-			SpectrumParameter spectrumParameter) {
-		return spectrumRepository.findByMeasurementAndSpectrumParameters(measurement,
-				spectrumParameter);
+	public Spectrum findByMeasurementAndParameter(Measurement measurement,
+			SpectrumParameter parameter) {
+		return spectrumRepository.findByMeasurementAndParameter(measurement,
+				parameter);
 	}
 
 	public Spectrum save(Spectrum spectrum) {

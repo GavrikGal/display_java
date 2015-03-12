@@ -2,7 +2,6 @@ package com.kbdisplay.ls1710.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -14,15 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * Объект модели изделия из БД.
@@ -31,51 +25,58 @@ import org.hibernate.annotations.LazyCollectionOption;
  *
  */
 @Entity
-@Table(name = "models")
+@Table(name = "model")
 public class ModelOfEquipment implements Serializable {
 
 	/**
 	 * Серийный номер класса.
 	 */
 	private static final long serialVersionUID = 7092054057261196283L;
+
 	/**
 	 * ID модели изделия.
 	 */
-	private Long idModel;
+	private Long id;
+
 	/**
 	 * Название модели.
 	 */
-	private String modelName;
+	private String name;
+
+	/**
+	 * тип модели.
+	 */
+	private ModelType modelType;
+
 	/**
 	 * Описание модели изделия.
 	 */
 	private String description;
+
 	/**
 	 * Фото модели изделия.
 	 */
 	private byte[] photo;
+
 	/**
 	 * Список изделий данной модели.
 	 */
 	private Set<Equipment> equipments = new HashSet<Equipment>();
-	/**
-	 * Список норм, которым должно соответствовать эта модель изделия.
-	 */
-	private List<Norm> norms;
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Model")
-	public Long getIdModel() {
-		return idModel;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdModel(final Long idModel) {
-		this.idModel = idModel;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	@OneToMany(mappedBy = "model",
-			cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "model", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	public Set<Equipment> getEquipments() {
 		return this.equipments;
 	}
@@ -90,10 +91,10 @@ public class ModelOfEquipment implements Serializable {
 
 	@Override
 	public final String toString() {
-		return modelName;
+		return name;
 	}
 
-	@Column(name = "Description")
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -104,7 +105,7 @@ public class ModelOfEquipment implements Serializable {
 
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
-	@Column(name = "Photo")
+	@Column(name = "photo")
 	public byte[] getPhoto() {
 		return photo;
 	}
@@ -113,27 +114,23 @@ public class ModelOfEquipment implements Serializable {
 		this.photo = photo;
 	}
 
-	@ManyToMany
-	@JoinTable(name = "norms_of_model",
-		joinColumns = @JoinColumn(name = "Model"),
-		inverseJoinColumns = @JoinColumn(name = "Norms"))
-	@OrderBy("idNorms")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	public List<Norm> getNorms() {
-		return norms;
+	@Column(name = "name")
+	public String getName() {
+		return name;
 	}
 
-	public void setNorms(final List<Norm> norms) {
-		this.norms = norms;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
-	@Column(name = "Model_name")
-	public String getModelName() {
-		return modelName;
+	@ManyToOne
+	@JoinColumn(name = "model_type_id")
+	public ModelType getModelType() {
+		return modelType;
 	}
 
-	public void setModelName(final String modelName) {
-		this.modelName = modelName;
+	public void setModelType(final ModelType modelType) {
+		this.modelType = modelType;
 	}
 
 }

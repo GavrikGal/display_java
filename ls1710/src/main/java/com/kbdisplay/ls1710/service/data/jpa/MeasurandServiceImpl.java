@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.repository.MeasurandRepository;
 import com.kbdisplay.ls1710.service.data.MeasurandService;
-import com.google.common.collect.Lists;
 
 @Service("measurandService")
 @Repository
@@ -20,14 +20,16 @@ public class MeasurandServiceImpl implements MeasurandService {
 	@Autowired
 	private MeasurandRepository measurandRepository;
 
+	@Override
 	@Transactional(readOnly = true)
 	public List<Measurand> findAll() {
 		return Lists.newArrayList(measurandRepository.findAll());
 	}
 
+	@Override
 	@Transactional(readOnly = true)
-	public Measurand findById(String id) {
-		return measurandRepository.findOne(id);
+	public Measurand findByName(String name) {
+		return measurandRepository.findByName(name);
 	}
 
 	@Override

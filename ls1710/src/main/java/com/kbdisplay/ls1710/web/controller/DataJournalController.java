@@ -5,16 +5,15 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
@@ -22,6 +21,7 @@ import com.kbdisplay.ls1710.service.data.EquipmentService;
 import com.kbdisplay.ls1710.service.data.MeasurandService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
 import com.kbdisplay.ls1710.service.data.ModelService;
+import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
 import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
 import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
 import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
@@ -83,6 +83,8 @@ public class DataJournalController {
 	private MeasurementService measurementService;
 	@Autowired
 	private EquipmentService equipmentService;
+	@Autowired
+	private PurposeOfMeasurementService purposeOfMeasurementService;
 
 
 	/**
@@ -97,7 +99,11 @@ public class DataJournalController {
 		ListOfDataJournalView listOfDataJournalView =
 				new ListOfDataJournalView();
 		List<Measurement> measurements = measurementsService.findAll();
-		lastMeasurement = measurements.get(measurements.size() - 1);
+		if (measurements.size() > 0) {
+			lastMeasurement = measurements.get(measurements.size() - 1);
+		} else {
+			lastMeasurement = null;
+		}
 		listOfDataJournalView
 				.setMeasurementForViewsFromMeasurements(measurements);
 
@@ -118,6 +124,8 @@ public class DataJournalController {
 		List<ScreenResolution> screenResolutions =
 				screenResolutionService.findAll();
 		List<TypeOfSpectrum> typeOfSpectrums = typeOfSpectrumService.findAll();
+		List<PurposeOfMeasurement> purposeOfMeasurements =
+				purposeOfMeasurementService.findAll();
 
 		EditFormDataJournalView editFormDataJournalView =
 				new EditFormDataJournalView();
@@ -125,6 +133,9 @@ public class DataJournalController {
 		editFormDataJournalView.setMeasurands(measurands);
 		editFormDataJournalView.setScreenResolutions(screenResolutions);
 		editFormDataJournalView.setTypeOfSpectrums(typeOfSpectrums);
+		editFormDataJournalView.setPurposeOfMeasurements(purposeOfMeasurements);
+		editFormDataJournalView.setPurposeOfMeasurement(purposeOfMeasurements
+				.get(0));
 
 		if (lastMeasurement != null) {
 			editFormDataJournalView.setModel(lastMeasurement.getEquipment()
@@ -132,7 +143,7 @@ public class DataJournalController {
 			SpectrumParameter lastSpectrumParameter =
 					lastMeasurement.getSpectrums()
 							.get(lastMeasurement.getSpectrums().size() - 1)
-							.getSpectrumParameters();
+							.getParameter();
 			editFormDataJournalView.getSpectrumParameter().setMeasurand(
 					lastSpectrumParameter.getMeasurand());
 			editFormDataJournalView.getSpectrumParameter().setTypeOfSpectrum(
@@ -153,7 +164,7 @@ public class DataJournalController {
 		if (editFormDJView.getModel() != null) {
 
 			ModelOfEquipment model = editFormDJView.getModel();
-			if (model.getIdModel() == null) {
+			if (model.getId() == null) {
 				editFormDJView.setShowNewModelDialog(true);
 				return;
 			}
@@ -161,11 +172,24 @@ public class DataJournalController {
 			SpectrumParameter parameter = editFormDJView.getSpectrumParameter();
 			parameter = spectrumParameterService.save(parameter);
 
+			// Version lastVersion = editFormDJView.getVersion();
+			// Version currentVersion;
+			// if (lastVersion == null) {
+			// currentVersion = new Version("1.0");
+			// } else {
+			// currentVersion = lastVersion;
+			// if (editFormDJView.isRepeated()) {
+			// currentVersion.setPart(1, currentVersion.getPart(1) + 1);
+			// } else {
+			// currentVersion.setPart(0, currentVersion.getPart(0) + 1);
+			// }
+			// }
+
 			Measurement measurement =
-					updaterService.saveMeasurements(model,
-							editFormDJView.getSerialNumber(), parameter,
-							editFormDJView.getVersion(),
-							editFormDJView.getDescription());
+					updaterService.saveMeasurements(model, editFormDJView
+							.getSerialNumber(), parameter, editFormDJView
+							.getPurposeOfMeasurement(),
+					/* currentVersion, */editFormDJView.getDescription());
 			List<Measurement> measurements = measurementsService.findAll();
 			listOfDataJournalView
 					.setMeasurementForViewsFromMeasurements(measurements);
@@ -179,7 +203,7 @@ public class DataJournalController {
 			fc.addMessage(
 					null,
 					new FacesMessage("Измерение успешно сохранено", "Изделие: "
-							+ model.getModelName() + " № "
+							+ model.getName() + " № "
 							+ editFormDJView.getSerialNumber()));
 		}
 	}
@@ -189,49 +213,53 @@ public class DataJournalController {
 	 *
 	 * @param editFormDJView
 	 *            форма редактирования данных таблицы измерений.
-	 */
-	public void checkOnRepeatedMeasurement(
-			final EditFormDataJournalView editFormDJView) {
-		ModelOfEquipment model = editFormDJView.getModel();
-		if (model != null) {
-			String serialNumber = editFormDJView.getSerialNumber();
-			if (model.getIdModel() != null && serialNumber != null) {
-				Equipment equipment =
-						equipmentService.findBySerialNumberAndModel(
-								serialNumber, model);
-				List<Measurement> measurements =
-						measurementService.findByEquipment(equipment);
-				if (!measurements.isEmpty()) {
-					DateTime currentDate = new DateTime();
-					currentDate = currentDate.withTime(0, 0, 0, 0);
-					boolean repeated = false;
-					for (Measurement measurement : measurements) {
-						DateTime date =
-								measurement.getDateOfMeasurement().getDate();
-						if (currentDate.isAfter(date)) {
-							repeated = true;
-						} else {
-							repeated = false;
-						}
-					}
-					editFormDJView.setRepeated(repeated);
-				} else {
-					editFormDJView.setRepeated(false);
-				}
-			} else {
-				editFormDJView.setRepeated(false);
-			}
-		} else {
-			editFormDJView.setRepeated(false);
-		}
-	}
-
-	/**
-	 * создает новый бин-поддержки для добавления модели в БД.
 	 *
-	 * @return бин добавления модели.
+	 * @deprecated надо убрать этот метод
 	 */
-	public ModelBean newModelBean(ModelOfEquipment model) {
+	@Deprecated
+	// public void checkOnRepeatedMeasurement(
+			// final EditFormDataJournalView editFormDJView) {
+			// ModelOfEquipment model = editFormDJView.getModel();
+			// if (model != null) {
+			// String serialNumber = editFormDJView.getSerialNumber();
+			// if (model.getIdModel() != null && serialNumber != null) {
+			// Equipment equipment =
+			// equipmentService.findBySerialNumberAndModel(
+			// serialNumber, model);
+			// List<Measurement> measurements =
+			// measurementService.findByEquipment(equipment);
+			// if (!measurements.isEmpty()) {
+			// DateTime currentDate = new DateTime();
+			// currentDate = currentDate.withTime(0, 0, 0, 0);
+			// boolean repeated = false;
+			// Version version = null;
+			// for (Measurement measurement : measurements) {
+			// DateTime date =
+			// measurement.getDateOfMeasurement().getDate();
+			// if (currentDate.isAfter(date)) {
+			// repeated = true;
+			// } else {
+			// repeated = false;
+			// }
+			// version = new Version(measurement.getVersion());
+			// }
+			// if (repeated) {
+			// editFormDJView.setPurposeOfMeasurement(editFormDJView
+			// .getPurposeOfMeasurements().get(1));
+			// }
+			// // editFormDJView.setRepeated(repeated);
+			// editFormDJView.setVersion(version);
+			// }
+			// }
+			// }
+			// }
+			/**
+			 * создает новый бин-поддержки для добавления модели в БД.
+			 *
+			 * @return бин добавления модели.
+			 */
+			public
+			ModelBean newModelBean(ModelOfEquipment model) {
 		ModelBean modelBean = new ModelBean();
 		modelBean.setModel(model);
 		return modelBean;

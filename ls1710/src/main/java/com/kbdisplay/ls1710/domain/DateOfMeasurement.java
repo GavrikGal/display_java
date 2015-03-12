@@ -24,45 +24,30 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  * @author Gavrik
  */
 @Entity
-@Table(name = "date_of_measurement")
+@Table(name = "date")
 public class DateOfMeasurement implements Serializable {
 
 	/**
 	 * Серийный номер класса.
 	 */
 	private static final long serialVersionUID = -544910450691585253L;
+
 	/**
 	 * ID даты испытаний.
 	 */
-	private Long idDate;
+	private Long id;
 	/**
 	 * Дата испытаний.
 	 */
 	private DateTime date;
+
 	/**
 	 * Список измерений, соответствующих дате испытаний.
 	 */
 	private Set<Measurement> measurements = new HashSet<Measurement>();
-	/**
-	 * Список измерений, соответствующих дате повторных испытаний.
-	 */
-	private Set<Measurement> secondMeasurements = new HashSet<Measurement>();
 
 
-	@OneToMany(mappedBy = "dateOfSecondMeasurement", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	public Set<Measurement> getSecondMeasurements() {
-		return secondMeasurements;
-	}
-
-
-	public void
-			setSecondMeasurements(final Set<Measurement> secondMeasurements) {
-		this.secondMeasurements = secondMeasurements;
-	}
-
-
-	@OneToMany(mappedBy = "dateOfMeasurement", cascade = CascadeType.ALL,
+	@OneToMany(mappedBy = "date", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	public Set<Measurement> getMeasurements() {
 		return measurements;
@@ -76,18 +61,18 @@ public class DateOfMeasurement implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Date_of_measurement")
-	public Long getIdDate() {
-		return idDate;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
 
-	public void setIdDate(final Long idDate) {
-		this.idDate = idDate;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
 
-	@Column(name = "Date")
+	@Column(name = "date")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(iso = ISO.DATE)
 	public DateTime getDate() {

@@ -12,4 +12,12 @@ import com.kbdisplay.ls1710.domain.Measurand;
  */
 public interface MeasurandRepository extends CrudRepository<Measurand, String> {
 
+	/**
+	 * поиск единицы измерений по ее названию в БД по названию изделия.
+	 *
+	 * @param name
+	 *            название единицы измерения
+	 * @return найденная единица измерения или null
+	 */
+	Measurand findByName(String name);
 }

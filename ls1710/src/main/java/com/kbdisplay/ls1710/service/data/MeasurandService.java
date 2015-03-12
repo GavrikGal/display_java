@@ -8,7 +8,7 @@ public interface MeasurandService {
 
 	public List<Measurand> findAll();
 
-	public Measurand findById(String id);
+	public Measurand findByName(String name);
 
 	public Measurand save(Measurand measurand);
 

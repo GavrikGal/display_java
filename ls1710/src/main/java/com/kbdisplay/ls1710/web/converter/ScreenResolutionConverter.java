@@ -40,7 +40,8 @@ public class ScreenResolutionConverter implements Converter {
 	public String getAsString(final FacesContext fc, final UIComponent uic,
 			final Object object) {
 		if (object != null) {
-			return String.valueOf(((ScreenResolution) object).getScreenResolution());
+			return String.valueOf(((ScreenResolution) object)
+					.getResolution());
 		} else {
 			return null;
 		}

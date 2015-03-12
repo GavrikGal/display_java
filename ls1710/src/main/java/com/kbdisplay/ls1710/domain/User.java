@@ -26,7 +26,7 @@ import javax.persistence.Transient;
  *
  */
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User implements Serializable {
 
 	/**
@@ -37,31 +37,38 @@ public class User implements Serializable {
 	/**
 	 * ID пользователя.
 	 */
-	private Long idUser;
+	private Long id;
+
 	/**
 	 * Фамилия пользователя.
 	 */
 	private String firstName;
+
 	/**
 	 * имя пользователя.
 	 */
 	private String lastName;
+
 	/**
 	 * Отчество пользователя.
 	 */
 	private String fatherName;
+
 	/**
 	 * Логин пользователя для входа в систему.
 	 */
-	private String userName;
+	private String login;
+
 	/**
 	 * Пароль для входа в систему.
 	 */
 	private String password;
+
 	/**
 	 * Список измерений, которые проводил пользователь.
 	 */
 	private Set<Measurement> measurements = new HashSet<Measurement>();
+
 	/**
 	 * Список привилегий пользователя (юзер, админ и т.д.).
 	 */
@@ -69,16 +76,16 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_User")
-	public Long getIdUser() {
-		return idUser;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdUser(final Long idUsers) {
-		this.idUser = idUsers;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	@Column(name = "First_name")
+	@Column(name = "first_name")
 	public String getFirstName() {
 		return firstName;
 	}
@@ -87,7 +94,7 @@ public class User implements Serializable {
 		this.firstName = firstName;
 	}
 
-	@Column(name = "Last_name")
+	@Column(name = "last_name")
 	public String getLastName() {
 		return lastName;
 	}
@@ -96,7 +103,7 @@ public class User implements Serializable {
 		this.lastName = lastName;
 	}
 
-	@Column(name = "Father_name")
+	@Column(name = "father_name")
 	public String getFatherName() {
 		return fatherName;
 	}
@@ -127,16 +134,16 @@ public class User implements Serializable {
 		return new ArrayList<Measurement>(measurements);
 	}
 
-	@Column(name = "User_name")
-	public String getUserName() {
-		return userName;
+	@Column(name = "login")
+	public String getLogin() {
+		return login;
 	}
 
-	public void setUserName(final String userName) {
-		this.userName = userName;
+	public void setLogin(final String login) {
+		this.login = login;
 	}
 
-	@Column(name = "Password")
+	@Column(name = "password")
 	public String getPassword() {
 		return password;
 	}
@@ -146,9 +153,9 @@ public class User implements Serializable {
 	}
 
 	@ManyToMany
-	@JoinTable(name = "users_role",
-		joinColumns = @JoinColumn(name = "user"),
-		inverseJoinColumns = @JoinColumn(name = "role"))
+	@JoinTable(name = "user_role",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "role_id"))
 	public Set<Role> getRoles() {
 		return roles;
 	}

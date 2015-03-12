@@ -34,8 +34,8 @@ public class ModelServiceImpl implements ModelService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ModelOfEquipment findByModelName(String modelName) {
-		return modelRepository.findByModelName(modelName);
+	public ModelOfEquipment findByName(String name) {
+		return modelRepository.findByName(name);
 	}
 
 	@Override

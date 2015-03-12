@@ -15,11 +15,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.Role;
 import com.kbdisplay.ls1710.repository.UserRepository;
 import com.kbdisplay.ls1710.service.data.UserService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
-import com.google.common.collect.Lists;
 
 @Service("userService")
 @Repository
@@ -29,53 +29,58 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Autowired
 	private UserRepository	userRepository;
 
+	@Override
 	@Transactional(readOnly = true)
 	public List<com.kbdisplay.ls1710.domain.User> findAll() {
 		return Lists.newArrayList(userRepository.findAll());
 	}
 
+	@Override
 	@Transactional(readOnly = true)
 	public com.kbdisplay.ls1710.domain.User findById(Long id) {
 		return userRepository.findOne(id);
 	}
 
+	@Override
 	@Transactional(readOnly = true)
 	public com.kbdisplay.ls1710.domain.User findByFirstName(String firstName) {
 		return userRepository.findByFirstName(firstName);
 	}
 
+	@Override
 	public com.kbdisplay.ls1710.domain.User save(com.kbdisplay.ls1710.domain.User user) {
 		return userRepository.save(user);
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		com.kbdisplay.ls1710.domain.User userFromDB = userRepository.findByUserName(userName);
+	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+		com.kbdisplay.ls1710.domain.User userFromDB =
+				userRepository.findByLogin(login);
 		User user;
-		
+
 		if (userFromDB != null) {
-			System.out.println("Get user. \nUserName: " + userFromDB.getUserName()
+			System.out.println("Get user. \nUserName: " + userFromDB.getLogin()
 					+ "\nPassword: " + userFromDB.getPassword()
-					+ "\nid: " + userFromDB.getIdUser()
+					+ "\nid: " + userFromDB.getId()
 					+ "\nFirstName: " + userFromDB.getFirstName()
 					+ "\nLastName:" + userFromDB.getLastName());
 			if (userFromDB.getRoles() != null) {
 				System.out.println("Roles:");
 				Collection<GrantedAuthority> userRoles = new ArrayList<GrantedAuthority>();
 				for (Role role : userFromDB.getRoles()) {
-					userRoles.add(new SimpleGrantedAuthority(role.getRole()));
-					System.out.println("     " + role.getRole());					
-				}				
+					userRoles.add(new SimpleGrantedAuthority(role.getName()));
+					System.out.println("     " + role.getName());
+				}
 				user = new CustomUserDetails(userFromDB, userRoles);
-				
+
 			} else {
-				throw new UsernameNotFoundException("У пользователя отсутствую привилегии");
+				throw new UsernameNotFoundException("пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 			}
 		} else {
-			System.out.println("Can not find user with UserName: " + userName);
-			throw new UsernameNotFoundException("В системе пока нет пользователя: " + userName);
+			System.out.println("Can not find user with UserName: " + login);
+			throw new UsernameNotFoundException("пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: " + login);
 		}
-		
+
 		return user;
 	}
 

@@ -20,21 +20,24 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "screen_resolutions")
+@Table(name = "screen_resolution")
 public class ScreenResolution implements Serializable {
 
 	/**
 	 * Серийный номер класса.
 	 */
 	private static final long serialVersionUID = 8281839097726999031L;
+
 	/**
 	 * ID разрешения экрана.
 	 */
 	private Long id;
+
 	/**
 	 * Разрешение экрана.
 	 */
-	private String screenResolution;
+	private String resolution;
+
 	/**
 	 * Список параметров спектров, использующие это разрешение.
 	 */
@@ -58,27 +61,27 @@ public class ScreenResolution implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Resolution")
+	@Column(name = "id")
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long idResolution) {
-		this.id = idResolution;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	@Column(name = "Resolution")
-	public String getScreenResolution() {
-		return screenResolution;
+	@Column(name = "resolution")
+	public String getResolution() {
+		return resolution;
 	}
 
-	public void setScreenResolution(final String resolution) {
-		this.screenResolution = resolution;
+	public void setResolution(final String resolution) {
+		this.resolution = resolution;
 	}
 
 	@Override
 	public String toString() {
-		return screenResolution;
+		return resolution;
 	}
 
 }

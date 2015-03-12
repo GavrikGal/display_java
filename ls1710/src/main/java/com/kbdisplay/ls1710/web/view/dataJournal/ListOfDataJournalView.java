@@ -15,7 +15,6 @@ import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.Spectrum;
 import com.kbdisplay.ls1710.web.view.dataJournal.component.MeasurementForView;
-import com.kbdisplay.ls1710.web.view.dataJournal.component.Version;
 
 /**
  * представление списка данных об измерениях. для обработки перед
@@ -57,6 +56,8 @@ public class ListOfDataJournalView implements Serializable {
 
 	public final List<MeasurementForView> getMeasurementForViews() {
 		return setVisibleFields(measurementForViews);
+		//TODO переложить эту часть на javascript
+		//return measurementForViews;
 	}
 
 	public final void setMeasurementForViews(
@@ -66,6 +67,8 @@ public class ListOfDataJournalView implements Serializable {
 
 	public List<MeasurementForView> getFilteredMeasurementForViews() {
 		return setVisibleFields(filteredMeasurementForViews);
+		//TODO переложить эту часть на javascript
+		//return filteredMeasurementForViews;
 	}
 
 	public void setFilteredMeasurementForViews(
@@ -110,30 +113,29 @@ public class ListOfDataJournalView implements Serializable {
 	public final void addMeasurement(final Measurement measurement,
 			final Long id) {
 		/* проверка версии измерения */
-		Version versionMeas = new Version(measurement.getVersion());
-		int secondParamOfVersion = versionMeas.getPart(1);
-		if (secondParamOfVersion == 0) {
-			/*
-			 * если второй параметр версии равен нулю, то это значит, что
-			 * текущее измерение является первым измерением из цикла всех
-			 * измерений изделия, он должен отображаться вы журнале как
-			 * отдельная строка данных. поэтому добавляем измерение в список
-			 * измерений
-			 */
+		// Version versionMeas = new Version(measurement.getVersion());
+		// int secondParamOfVersion = versionMeas.getPart(1);
+
+		/*
+		 * проверка являются ли измерения начальными в серии испытаний например
+		 * начальными являются испытания с версией = 1
+		 */
+		if (measurement.getVersion() == 1) {
+
 			MeasurementForView measurementsForView = new MeasurementForView();
 
 			measurementsForView.setId(id);
 			measurementsForView.setFirstDateOfMeasurement(measurement
-					.getDateOfMeasurement());
+					.getDate());
 			measurementsForView.setEquipment(measurement.getEquipment());
 			measurementsForView.setUser(measurement.getUser());
 
 			/*
-			 * установка измерений связанных одним циклом. номер цикла - это
-			 * номер первого элемента в версии измерений.
+			 * установка измерений связанных с данным изделием.
 			 */
-			List<Measurement> linkedMeasurements =
-					getLinkedMeasurements(versionMeas, measurement);
+			List<Measurement> linkedMeasurements = new ArrayList<Measurement>();
+			linkedMeasurements.add(measurement);
+//TODO переделать			getLinkedMeasurements(/* versionMeas, */measurement);
 			measurementsForView.setMeasurements(linkedMeasurements);
 
 			/* установка актуальных спектров из цикла измерений */
@@ -175,30 +177,32 @@ public class ListOfDataJournalView implements Serializable {
 	 *            измерение, к которому ищем связанные измерения
 	 * @return список измерений, связанных с указанным циклом измерений
 	 */
-	private List<Measurement> getLinkedMeasurements(final Version version,
-			final Measurement measurement) {
+	// TODO переделать и периименовать
+	private List<Measurement> getLinkedMeasurements(/* final Version version, */
+	final Measurement measurement) {
 		Equipment equipment = measurement.getEquipment();
 		List<Measurement> listOfMeasurementsForEquip =
 				Lists.newArrayList(equipment.getMeasurements());
-		List<Measurement> removingMeasurements = new ArrayList<Measurement>();
-		int firstParamOfVersion = version.getPart(0);
-		for (Measurement measurementEquip : listOfMeasurementsForEquip) {
-			/*
-			 * проверяем версию измерения, измерения должны быть одного цикла,
-			 * т.е. оставляем только измерения, первая цифра которого в версии
-			 * соответсвует версии обрабатываемого измерения
-			 */
-			Version versionEq = new Version(measurementEquip.getVersion());
-			int firstParamOfVersionEq = versionEq.getPart(0);
-			if (firstParamOfVersionEq != firstParamOfVersion) {
-				/*
-				 * измерения не относящиеся к текущему циклу измерений заносятся
-				 * в список удаляемых измерений
-				 */
-				removingMeasurements.add(measurementEquip);
-			}
-		}
-		listOfMeasurementsForEquip.removeAll(removingMeasurements);
+		// List<Measurement> removingMeasurements = new
+		// ArrayList<Measurement>();
+		// int firstParamOfVersion = version.getPart(0);
+		// for (Measurement measurementEquip : listOfMeasurementsForEquip) {
+		// /*
+		// * проверяем версию измерения, измерения должны быть одного цикла,
+		// * т.е. оставляем только измерения, первая цифра которого в версии
+		// * соответсвует версии обрабатываемого измерения
+		// */
+		// Version versionEq = new Version(measurementEquip.getVersion());
+		// int firstParamOfVersionEq = versionEq.getPart(0);
+		// if (firstParamOfVersionEq != firstParamOfVersion) {
+		// /*
+		// * измерения не относящиеся к текущему циклу измерений заносятся
+		// * в список удаляемых измерений
+		// */
+		// removingMeasurements.add(measurementEquip);
+		// }
+		// }
+		// listOfMeasurementsForEquip.removeAll(removingMeasurements);
 		return listOfMeasurementsForEquip;
 	}
 
@@ -231,10 +235,10 @@ public class ListOfDataJournalView implements Serializable {
 				for (Spectrum spectrum : spectrums) {
 					int found = 0;
 					for (Spectrum currentSpectrum : currentSpectrums) {
-						if (spectrum.getSpectrumParameters() == currentSpectrum
-								.getSpectrumParameters()) {
-							if (currentSpectrum.getDateTime().isBefore(
-									spectrum.getDateTime())) {
+						if (spectrum.getParameter() == currentSpectrum
+								.getParameter()) {
+							if (currentSpectrum.getDate().isBefore(
+									spectrum.getDate())) {
 								currentSpectrums.remove(currentSpectrum);
 								currentSpectrums.add(spectrum);
 								found = 1;
@@ -268,15 +272,24 @@ public class ListOfDataJournalView implements Serializable {
 			DateOfMeasurement lastDateOfMeasurement = null;
 
 			for (Measurement measurement : measurements) {
-				DateOfMeasurement checkingDate =
-						measurement.getDateOfMeasurement();
-				if (lastDateOfMeasurement == null) {
-					lastDateOfMeasurement = checkingDate;
-					continue;
-				}
-				if (lastDateOfMeasurement.getDate().isBefore(
-						checkingDate.getDate())) {
-					lastDateOfMeasurement = checkingDate;
+				/*
+				 * установка даты повторных измерений требуется только для
+				 * испытаний, которым это требуется. например после приемочных
+				 * испытаний проходят приемосдаточные испытания. проверяем что у
+				 * приемосдаточных испытаний имеются предшевствующие испытания,
+				 * и тогда устанавливаем последнюю дату этих испытаний
+				 */
+				if (measurement.getPurpose().getPrevPurpose() != null) {
+					DateOfMeasurement checkingDate =
+							measurement.getDate();
+					if (lastDateOfMeasurement == null) {
+						lastDateOfMeasurement = checkingDate;
+						continue;
+					}
+					if (lastDateOfMeasurement.getDate().isBefore(
+							checkingDate.getDate())) {
+						lastDateOfMeasurement = checkingDate;
+					}
 				}
 			}
 			return lastDateOfMeasurement;
@@ -292,7 +305,10 @@ public class ListOfDataJournalView implements Serializable {
 	 * @param measurementForViews
 	 *            список отсортированных измерений
 	 * @return список измерений, с убранными повторяющимися датами и моделями.
+	 *
+	 * @deprecated
 	 */
+	@Deprecated
 	private List<MeasurementForView> setVisibleFields(
 			final List<MeasurementForView> measurementForViews) {
 
@@ -323,7 +339,7 @@ public class ListOfDataJournalView implements Serializable {
 			currentDate =
 					currentMeasForView.getFirstDateOfMeasurement().getDate();
 			currentModelName =
-					currentMeasForView.getEquipment().getModel().getModelName();
+					currentMeasForView.getEquipment().getModel().getName();
 
 			currentMeasForView.setEnableFirstDate(true);
 			currentMeasForView.setEnableModelName(true);
@@ -331,7 +347,7 @@ public class ListOfDataJournalView implements Serializable {
 				preMeasForView = measurementForViews.get(i - 1);
 				preDate = preMeasForView.getFirstDateOfMeasurement().getDate();
 				preModelName =
-						preMeasForView.getEquipment().getModel().getModelName();
+						preMeasForView.getEquipment().getModel().getName();
 			} else {
 				preMeasForView = currentMeasForView;
 				continue;
@@ -373,7 +389,10 @@ public class ListOfDataJournalView implements Serializable {
 	 *            список проверяемых измерений
 	 * @return true если значения в списке идут по возрастанию, false - если по
 	 *         убыванию
+	 *
+	 * @deprecated
 	 */
+	@Deprecated
 	private boolean isIncrease(final List<MeasurementForView> list) {
 		if (list == null) {
 			return false;

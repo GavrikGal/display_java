@@ -23,9 +23,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	/**
 	 * поиск пользователя по логину.
 	 *
-	 * @param userName логин
+	 * @param login логин
 	 * @return найденный пользователь или null
 	 */
-	User findByUserName(String userName);
+	User findByLogin(String login);
 
 }

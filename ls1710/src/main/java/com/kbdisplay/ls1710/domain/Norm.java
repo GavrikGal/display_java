@@ -3,14 +3,13 @@ package com.kbdisplay.ls1710.domain;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -20,7 +19,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "norms")
+@Table(name = "norm")
 public class Norm implements Serializable {
 
 	/**
@@ -30,50 +29,49 @@ public class Norm implements Serializable {
 	/**
 	 * ID норм.
 	 */
-	private Long idNorms;
+	private Long id;
 	/**
 	 * Сокращенная запись норм (гр.1.1.2 либо R2=15м).
 	 */
-	private String shortNorms;
+	private String name;
 	/**
-	 * Список моделей, которым соответствуют данная норма.
+	 * Список измерений, которым соответствуют данная норма.
 	 */
-	private Set<ModelOfEquipment> models;
+	private Set<Measurement> measurements;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Norms")
-	public Long getIdNorms() {
-		return idNorms;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdNorms(final Long idNorms) {
-		this.idNorms = idNorms;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	@Column(name = "Short_norms")
-	public String getShortNorms() {
-		return shortNorms;
+	@Column(name = "name")
+	public String getName() {
+		return name;
 	}
 
-	public void setShortNorms(final String shortNorms) {
-		this.shortNorms = shortNorms;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	@ManyToMany
-	@JoinTable(name = "norms_of_model",
-		joinColumns = @JoinColumn(name = "Norms"),
-		inverseJoinColumns = @JoinColumn(name = "Model"))
-	public Set<ModelOfEquipment> getModels() {
-		return models;
+
+	@OneToMany(mappedBy = "norm", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	public Set<Measurement> getMeasurements() {
+		return measurements;
 	}
 
-	public void setModels(final Set<ModelOfEquipment> models) {
-		this.models = models;
+	public void setMeasurements(final Set<Measurement> measurements) {
+		this.measurements = measurements;
 	}
 
 }

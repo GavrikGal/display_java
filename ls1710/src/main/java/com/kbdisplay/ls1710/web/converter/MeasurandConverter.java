@@ -30,7 +30,7 @@ public class MeasurandConverter implements Converter {
 	public Object getAsObject(final FacesContext fc, final UIComponent uic,
 			final String value) {
 		if (value != null && value.trim().length() > 0) {
-			return measurandService.findById(value.toString());
+			return measurandService.findByName(value.toString());
 		} else {
 			return null;
 		}
@@ -40,7 +40,7 @@ public class MeasurandConverter implements Converter {
 	public String getAsString(final FacesContext fc, final UIComponent uic,
 			final Object object) {
 		if (object != null) {
-			return String.valueOf(((Measurand) object).getIdMeasurands());
+			return String.valueOf(((Measurand) object).getName());
 		} else {
 			return null;
 		}

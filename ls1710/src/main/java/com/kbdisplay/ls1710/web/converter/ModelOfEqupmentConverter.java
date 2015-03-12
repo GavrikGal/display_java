@@ -31,10 +31,10 @@ public class ModelOfEqupmentConverter implements Converter {
 			final String value) {
 		if (value != null && value.trim().length() > 0) {
 			ModelOfEquipment model =
-					modelService.findByModelName(value.toString());
+					modelService.findByName(value.toString());
 			if (model == null) {
 				model = new ModelOfEquipment();
-				model.setModelName(value.toString());
+				model.setName(value.toString());
 //				model = new ModelOfEquipment();
 //				model.setModelName(value.toString());
 //				model = modelService.save(model);
@@ -49,7 +49,7 @@ public class ModelOfEqupmentConverter implements Converter {
 	public String getAsString(final FacesContext fc, final UIComponent uic,
 			final Object object) {
 		if (object != null) {
-			return String.valueOf(((ModelOfEquipment) object).getModelName());
+			return String.valueOf(((ModelOfEquipment) object).getName());
 		} else {
 			return null;
 		}

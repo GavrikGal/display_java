@@ -20,20 +20,23 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "roles")
+@Table(name = "name")
 public class Role implements Serializable {
 	/**
 	 * Серийный номер класса.
 	 */
 	private static final long serialVersionUID = -684162762837065878L;
+
 	/**
 	 * ID роли.
 	 */
-	private Long idRoles;
+	private Long id;
+
 	/**
 	 * Роль.
 	 */
-	private String role;
+	private String name;
+
 	/**
 	 * Список пользователей, имеющих данную роль.
 	 */
@@ -41,22 +44,22 @@ public class Role implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Role")
-	public Long getIdRoles() {
-		return idRoles;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdRoles(final Long idRoles) {
-		this.idRoles = idRoles;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
-	@Column(name = "Role")
-	public String getRole() {
-		return role;
+	@Column(name = "role")
+	public String getName() {
+		return name;
 	}
 
-	public void setRole(final String role) {
-		this.role = role;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	public static long getSerialversionuid() {
@@ -64,9 +67,9 @@ public class Role implements Serializable {
 	}
 
 	@ManyToMany
-	@JoinTable(name = "users_role",
-		joinColumns = @JoinColumn(name = "role"),
-		inverseJoinColumns = @JoinColumn(name = "user"))
+	@JoinTable(name = "user_role",
+		joinColumns = @JoinColumn(name = "name_id"),
+		inverseJoinColumns = @JoinColumn(name = "user_id"))
 	public Set<User> getUsers() {
 		return users;
 	}

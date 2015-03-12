@@ -16,7 +16,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "purpose_of_measurement")
+@Table(name = "purpose")
 public class PurposeOfMeasurement implements Serializable {
 
 	/**
@@ -26,31 +26,60 @@ public class PurposeOfMeasurement implements Serializable {
 	/**
 	 * ID цели измерений/испытаний.
 	 */
-	private Long idPurposeOfMeasurement;
+	private Long id;
 	/**
 	 * Цель испытаний.
 	 */
-	private String purpose;
+	private String name;
+
+	/**
+	 * цель испытаний, которая будет следовать за текущими испытаниями.
+	 * например после приемочных испытаний следуют приемосдаточные испытания.
+	 */
+	private Long prevPurpose;
+
+	/**
+	 * описание цели испытаний.
+	 */
+	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Purpose_of_measurement")
-	public Long getIdPurposeOfMeasurement() {
-		return idPurposeOfMeasurement;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdPurposeOfMeasurement(
-			final Long idPurposeOfMeasurement) {
-		this.idPurposeOfMeasurement = idPurposeOfMeasurement;
+	public void setId(
+			final Long id) {
+		this.id = id;
 	}
 
-	@Column(name = "Purpose")
-	public String getPurpose() {
-		return purpose;
+	@Column(name = "name")
+	public String getName() {
+		return name;
 	}
 
-	public void setPurpose(final String purpose) {
-		this.purpose = purpose;
+	public void setName(final String name) {
+		this.name = name;
+	}
+
+	@Column(name = "prev_purpose")
+	public Long getPrevPurpose() {
+		return prevPurpose;
+	}
+
+	public void setPrevPurpose(final Long prevPurpose) {
+		this.prevPurpose = prevPurpose;
+	}
+
+	@Column(name = "description")
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
 	public static long getSerialversionuid() {

@@ -22,7 +22,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "spectrums_parameters")
+@Table(name = "spectrum_parameter")
 public class SpectrumParameter implements Serializable {
 
 	/**
@@ -33,15 +33,18 @@ public class SpectrumParameter implements Serializable {
 	/**
 	 * ID параметров спектра.
 	 */
-	private Long idSpectrumParameters;
+	private Long id;
+
 	/**
 	 * измеряемая физическая величина (Е, I, U и т.д.).
 	 */
 	private Measurand measurand;
+
 	/**
 	 * Тип спектра (си, ирп).
 	 */
 	private TypeOfSpectrum typeOfSpectrum;
+
 	/**
 	 * Разрешение экрана (800х600, 1024х768 и т.д.).
 	 */
@@ -71,17 +74,17 @@ public class SpectrumParameter implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Spectrum_parameters")
-	public Long getIdSpectrumParameters() {
-		return idSpectrumParameters;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdSpectrumParameters(final Long idSpectrumParameters) {
-		this.idSpectrumParameters = idSpectrumParameters;
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Measurand")
+	@JoinColumn(name = "measurand_id")
 	public Measurand getMeasurand() {
 		return measurand;
 	}
@@ -91,7 +94,7 @@ public class SpectrumParameter implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Type")
+	@JoinColumn(name = "type_id")
 	public TypeOfSpectrum getTypeOfSpectrum() {
 		return typeOfSpectrum;
 	}
@@ -101,7 +104,7 @@ public class SpectrumParameter implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Resolution")
+	@JoinColumn(name = "resolution_id")
 	public ScreenResolution getScreenResolution() {
 		return screenResolution;
 	}
@@ -110,7 +113,7 @@ public class SpectrumParameter implements Serializable {
 		this.screenResolution = resolution;
 	}
 
-	@OneToMany(mappedBy = "spectrumParameters",
+	@OneToMany(mappedBy = "parameter",
 			cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<Spectrum> getSpectrums() {
 		return this.spectrums;

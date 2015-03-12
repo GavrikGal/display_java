@@ -34,7 +34,7 @@ public class ModelsController {
 		ModelOfEquipment model = modelsService.findById(id);
 
 		if (model.getPhoto() != null) {
-			logger.info("Downloading photo for id: {} with size {}", model.getIdModel(),
+			logger.info("Downloading photo for id: {} with size {}", model.getId(),
 					model.getPhoto().length);
 		}
 		return model.getPhoto();

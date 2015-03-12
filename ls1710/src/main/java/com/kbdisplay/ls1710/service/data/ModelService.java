@@ -10,7 +10,7 @@ public interface ModelService {
 
 	public ModelOfEquipment findById(Long id);
 
-	public ModelOfEquipment findByModelName(String modelName);
+	public ModelOfEquipment findByName(String modelName);
 
 	public ModelOfEquipment save(ModelOfEquipment model);
 

@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,18 +21,24 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "measurands")
+@Table(name = "measurand")
 public class Measurand implements Serializable {
 
 	/**
 	 * Серийный номер класса.
 	 */
 	private static final long serialVersionUID = 4305595715434295082L;
+
 	/**
-	 * ID измеряемой физической величины. В качестве ID используется название
-	 * измеряемой величины.
+	 * ID измеряемой физической величины.
 	 */
-	private String idMeasurands;
+	private Long id;
+
+	/**
+	 * название измеряемой величины.
+	 */
+	private String name;
+
 	/**
 	 * Список параметров спектров, в которых используется данная физическая
 	 * величина.
@@ -54,17 +62,27 @@ public class Measurand implements Serializable {
 	}
 
 	@Id
-	@Column(name = "id_Measurand")
-	public String getIdMeasurands() {
-		return idMeasurands;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdMeasurands(final String idMeasurands) {
-		this.idMeasurands = idMeasurands;
+	public void setId(final Long id) {
+		this.id = id;
+	}
+
+	@Column(name = "name")
+	public String getName() {
+		return name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return idMeasurands;
+		return name;
 	}
 }

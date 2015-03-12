@@ -18,7 +18,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "types")
+@Table(name = "sp_type")
 public class TypeOfSpectrum implements Serializable {
 
 	/**
@@ -29,7 +29,13 @@ public class TypeOfSpectrum implements Serializable {
 	/**
 	 * ID типа измеряемого спектра. В качестве ID выступает само название типа.
 	 */
-	private String idType;
+	private Long id;
+
+	/**
+	 * название типа измеряемого спектра.
+	 */
+	private String name;
+
 	/**
 	 * Список параметров спектра, в которых используется данный тип спектра.
 	 */
@@ -52,18 +58,27 @@ public class TypeOfSpectrum implements Serializable {
 	}
 
 	@Id
-	@Column(name = "id_Type")
-	public String getIdType() {
-		return idType;
+	@Column(name = "id")
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdType(final String idType) {
-		this.idType = idType;
+	public void setId(final Long id) {
+		this.id = id;
+	}
+
+	@Column(name = "name")
+	public String getName() {
+		return name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return idType;
+		return name;
 	}
 
 }
