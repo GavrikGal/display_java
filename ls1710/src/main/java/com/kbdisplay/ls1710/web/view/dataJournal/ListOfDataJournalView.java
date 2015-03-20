@@ -2,7 +2,10 @@ package com.kbdisplay.ls1710.web.view.dataJournal;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -56,8 +59,8 @@ public class ListOfDataJournalView implements Serializable {
 
 	public final List<MeasurementForView> getMeasurementForViews() {
 		return setVisibleFields(measurementForViews);
-		//TODO переложить эту часть на javascript
-		//return measurementForViews;
+		// TODO переложить эту часть на javascript
+		// return measurementForViews;
 	}
 
 	public final void setMeasurementForViews(
@@ -67,8 +70,8 @@ public class ListOfDataJournalView implements Serializable {
 
 	public List<MeasurementForView> getFilteredMeasurementForViews() {
 		return setVisibleFields(filteredMeasurementForViews);
-		//TODO переложить эту часть на javascript
-		//return filteredMeasurementForViews;
+		// TODO переложить эту часть на javascript
+		// return filteredMeasurementForViews;
 	}
 
 	public void setFilteredMeasurementForViews(
@@ -120,13 +123,14 @@ public class ListOfDataJournalView implements Serializable {
 		 * проверка являются ли измерения начальными в серии испытаний например
 		 * начальными являются испытания с версией = 1
 		 */
-		if (measurement.getVersion() == 1) {
+		if (measurement.getVersion() == 1
+				&& measurement.getParentMeasurement() == null) {
 
 			MeasurementForView measurementsForView = new MeasurementForView();
 
 			measurementsForView.setId(id);
-			measurementsForView.setFirstDateOfMeasurement(measurement
-					.getDate());
+			measurementsForView
+					.setFirstDateOfMeasurement(measurement.getDate());
 			measurementsForView.setEquipment(measurement.getEquipment());
 			measurementsForView.setUser(measurement.getUser());
 
@@ -135,7 +139,8 @@ public class ListOfDataJournalView implements Serializable {
 			 */
 			List<Measurement> linkedMeasurements = new ArrayList<Measurement>();
 			linkedMeasurements.add(measurement);
-//TODO переделать			getLinkedMeasurements(/* versionMeas, */measurement);
+			// TODO переделать getLinkedMeasurements(/* versionMeas,
+			// */measurement);
 			measurementsForView.setMeasurements(linkedMeasurements);
 
 			/* установка актуальных спектров из цикла измерений */
@@ -220,40 +225,44 @@ public class ListOfDataJournalView implements Serializable {
 	 */
 	private List<Spectrum> getActualSpectrums(
 			final List<Measurement> measurements) {
-		List<Spectrum> currentSpectrums = new ArrayList<Spectrum>();
+
+		Map<Long, Spectrum> actualSpectrumAndParameter =
+				new HashMap<Long, Spectrum>();
+
 		for (Measurement measurement : measurements) {
 			List<Spectrum> spectrums = measurement.getSpectrums();
 
-			if (currentSpectrums.isEmpty()) {
-				currentSpectrums = spectrums;
-			} else {
+			if (!spectrums.isEmpty()) {
 				/*
 				 * поиск и замена более старых спектров на новые. в качестве
-				 * критерия используется дата создания спектра, т.е. спектр с
-				 * более поздней датой актуальнее.
+				 * критерия используется версия спектра, т.е. спектр с большей
+				 * версией актуальнее.
 				 */
 				for (Spectrum spectrum : spectrums) {
-					int found = 0;
-					for (Spectrum currentSpectrum : currentSpectrums) {
-						if (spectrum.getParameter() == currentSpectrum
-								.getParameter()) {
-							if (currentSpectrum.getDate().isBefore(
-									spectrum.getDate())) {
-								currentSpectrums.remove(currentSpectrum);
-								currentSpectrums.add(spectrum);
-								found = 1;
-								break;
-							}
-							found = 1;
+					Long parameterId = spectrum.getParameter().getId();
+					if (!actualSpectrumAndParameter.containsKey(parameterId)) {
+						actualSpectrumAndParameter.put(parameterId, spectrum);
+					} else {
+						int actualVersion =
+								actualSpectrumAndParameter.get(parameterId)
+										.getVersion();
+						int currentVersion = spectrum.getVersion();
+						if (actualVersion < currentVersion) {
+							actualSpectrumAndParameter.put(parameterId,
+									spectrum);
 						}
-					}
-					if (found == 0) {
-						currentSpectrums.add(spectrum);
+
 					}
 				}
 			}
 		}
-		return currentSpectrums;
+		List<Spectrum> actualSpectrums = new ArrayList<Spectrum>();
+		for (Entry<Long, Spectrum> actualSpectrum : actualSpectrumAndParameter
+				.entrySet()) {
+			actualSpectrums.add(actualSpectrum.getValue());
+		}
+
+		return actualSpectrums;
 	}
 
 	/**
@@ -280,8 +289,7 @@ public class ListOfDataJournalView implements Serializable {
 				 * и тогда устанавливаем последнюю дату этих испытаний
 				 */
 				if (measurement.getPurpose().getPrevPurpose() != null) {
-					DateOfMeasurement checkingDate =
-							measurement.getDate();
+					DateOfMeasurement checkingDate = measurement.getDate();
 					if (lastDateOfMeasurement == null) {
 						lastDateOfMeasurement = checkingDate;
 						continue;

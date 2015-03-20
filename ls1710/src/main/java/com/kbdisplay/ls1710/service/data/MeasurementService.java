@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
+import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 
 public interface MeasurementService {
 
@@ -18,6 +19,9 @@ public interface MeasurementService {
 
 	// public List<Measurements> findAllWithDetail();
 	public List<Measurement> findByEquipment(Equipment equipment);
+
+	public List<Measurement> findByEquipmentAndPurpose(Equipment equipment,
+			PurposeOfMeasurement purpose);
 
 	public Measurement save(Measurement measurement);
 

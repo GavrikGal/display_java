@@ -208,6 +208,18 @@ public class DataJournalController {
 		}
 	}
 
+	public void delete(ListOfDataJournalView listOfDataJournalView) {
+		for (Measurement measurement : listOfDataJournalView
+				.getSelectedMeasurementForView().getMeasurements()) {
+			measurementService.delete(measurement);
+		}
+
+		listOfDataJournalView.deleteMeasurement();
+
+		FacesContext fc = FacesContext.getCurrentInstance();
+		fc.addMessage(null, new FacesMessage("Измерение удалено"));
+	}
+
 	/**
 	 * проверка являются ли испытания для данного изделия повторными.
 	 *
@@ -218,7 +230,7 @@ public class DataJournalController {
 	 */
 	@Deprecated
 	// public void checkOnRepeatedMeasurement(
-			// final EditFormDataJournalView editFormDJView) {
+	// final EditFormDataJournalView editFormDJView) {
 			// ModelOfEquipment model = editFormDJView.getModel();
 			// if (model != null) {
 			// String serialNumber = editFormDJView.getSerialNumber();

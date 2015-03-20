@@ -13,9 +13,9 @@
 	<p:contextMenu for="measurementForViews">
 		<p:menuitem value="View" update="measurementDetail"
 			icon="ui-icon-search" oncomplete="PF('measurementDialog').show()" />
-		<p:menuitem value="Delete" update="measurementForViews"
+		<p:menuitem value="Delete" update="measurementForViews :messages:message"
 			icon="ui-icon-close"
-			actionListener="#{listOfDataJournalView.deleteMeasurement}" />
+			action="#{dataJournalController.delete(listOfDataJournalView)}"/>
 	</p:contextMenu>
 
 </ui:composition>

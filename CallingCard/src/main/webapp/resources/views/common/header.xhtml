@@ -1,0 +1,34 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<div class="headerContent">
+
+		<p:tabMenu activeIndex="#{param.i}">
+			<p:menuitem value="пункт 1" outcome="/ui/menu/tabMenu"
+				icon="ui-icon-star">
+				<f:param name="i" value="0" />
+			</p:menuitem>
+			<p:menuitem value="пункт 2" outcome="/ui/menu/tabMenu"
+				icon="ui-icon-document">
+				<f:param name="i" value="1" />
+			</p:menuitem>
+			<p:menuitem value="пункт 3" outcome="/ui/menu/tabMenu"
+				icon="ui-icon-search">
+				<f:param name="i" value="2" />
+			</p:menuitem>
+
+			<p:menuitem value="пункт 4" outcome="/ui/menu/tabMenu"
+				icon="ui-icon-wrench">
+				<f:param name="i" value="3" />
+			</p:menuitem>
+
+		</p:tabMenu>
+
+	</div>
+
+</ui:composition>

@@ -411,8 +411,9 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	@Override
-	public Measurement saveMeasurements(final ModelOfEquipment modelOfEquipment,
-			final String serialNumber, final SpectrumParameter parameter,
+	public Measurement saveMeasurements(
+			final ModelOfEquipment modelOfEquipment, final String serialNumber,
+			final SpectrumParameter parameter,
 			final PurposeOfMeasurement purposeOfMeasurement,
 			/* Version version, */final String description) {
 
@@ -602,6 +603,46 @@ public class MeasurementsUpdaterServiceImpl implements
 		measurement.setPurpose(purpose);
 		measurement.setUser(user);
 		measurement.setSpectrums(new ArrayList<Spectrum>());
+
+		// поиск испытаний, которые должны идти перед этой целью испытаний
+		Measurement lastPrevMeasurement = null;
+
+		if (purpose.getPrevPurpose() != null) {
+
+			PurposeOfMeasurement prevPurpose =
+					purposeService.findById(purpose.getPrevPurpose());
+
+			List<Measurement> prevMeasurements =
+					measurementService.findByEquipmentAndPurpose(equipment,
+							prevPurpose);
+
+			if (prevMeasurements != null || !prevMeasurements.isEmpty()) {
+				// поиск последнего испытания, основывается на номере версии.
+				// при этом текущему испытанию будет присвоена версия связанного
+				// с ним последнего испытания.
+
+				for (Measurement prevMeasurement : prevMeasurements) {
+					if (lastPrevMeasurement == null) {
+						lastPrevMeasurement = prevMeasurement;
+					} else {
+						if (prevMeasurement.getVersion() > lastPrevMeasurement
+								.getVersion()) {
+							lastPrevMeasurement = prevMeasurement;
+						}
+					}
+				}
+
+			} else {
+				// TODO предыдущие испытания не найдены, спросить у пользователя
+				// нужно ли создать предыдущие фэйковые испытания или, может
+				// быть, пользователь что-то напутал и хочет отменить сохранение
+			}
+		}
+
+		if (lastPrevMeasurement != null) {
+			measurement.setParentMeasurement(lastPrevMeasurement);
+		}
+
 		measurement = measurementService.save(measurement);
 
 		return measurement;

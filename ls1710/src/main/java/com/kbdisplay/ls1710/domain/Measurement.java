@@ -1,6 +1,7 @@
 package com.kbdisplay.ls1710.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -37,16 +39,23 @@ public class Measurement implements Serializable {
 	/**
 	 * ID измерения/испытания.
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 
 	/**
 	 * испытуемое оборудование.
 	 */
+	@ManyToOne
+	@JoinColumn(name = "equipment_id")
 	private Equipment equipment;
 
 	/**
 	 * Дата измерений.
 	 */
+	@ManyToOne
+	@JoinColumn(name = "date_id")
 	private DateOfMeasurement date;
 
 	/**
@@ -57,27 +66,54 @@ public class Measurement implements Serializable {
 	/**
 	 * цель измерений (пи/пси/типовые/периодические).
 	 */
+	@ManyToOne
+	@JoinColumn(name = "purpose_id")
 	private PurposeOfMeasurement purpose;
 
 	/**
 	 * Пользователь проводивший измерения.
 	 */
+	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	/**
 	 * требования(нормы) для измерения.
 	 */
+	@ManyToOne
+	@JoinColumn(name = "norm_id")
 	private Norm norm;
+
+	/**
+	 * предыдущее испытание. например перед испытаниями приемосдаточными
+	 * испытаниями идут приемочные испытания, а также перед типовыми испытаниями
+	 * могут идти приемосдаточные испытания.
+	 */
+	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	@JoinColumn(name = "parent_id")
+	private Measurement parentMeasurement;
+
+	/**
+	 * все испытания идущие после текущего испытания.
+	 * например после пи-испытания будет идти пси-испытание
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parentMeasurement",
+			cascade = CascadeType.ALL)
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	private List<Measurement> nextMeasurements = new ArrayList<Measurement>();
 
 	// TODO заменить на результаты испытаний
 	/**
 	 * Список спектров, которые включает в себя измерение.
 	 */
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "measurement",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("date")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Spectrum> spectrums;
 
 
-	@ManyToOne
-	@JoinColumn(name = "date_id")
 	public DateOfMeasurement getDate() {
 		return date;
 	}
@@ -86,9 +122,6 @@ public class Measurement implements Serializable {
 		this.date = date;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
 	public Long getId() {
 		return id;
 	}
@@ -97,8 +130,6 @@ public class Measurement implements Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "equipment_id")
 	public Equipment getEquipment() {
 		return equipment;
 	}
@@ -120,8 +151,6 @@ public class Measurement implements Serializable {
 	// return users;
 	// }
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
 	public User getUser() {
 		return user;
 	}
@@ -130,10 +159,6 @@ public class Measurement implements Serializable {
 		this.user = user;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "measurement",
-			cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy("date")
-	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Spectrum> getSpectrums() {
 		return spectrums;
 	}
@@ -150,8 +175,6 @@ public class Measurement implements Serializable {
 		this.version = version;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "purpose_id")
 	public PurposeOfMeasurement getPurpose() {
 		return purpose;
 	}
@@ -160,8 +183,6 @@ public class Measurement implements Serializable {
 		this.purpose = purpose;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "norm_id")
 	public Norm getNorm() {
 		return norm;
 	}
@@ -169,6 +190,23 @@ public class Measurement implements Serializable {
 	public void setNorm(final Norm norm) {
 		this.norm = norm;
 	}
+
+	 public Measurement getParentMeasurement() {
+	 return parentMeasurement;
+	 }
+
+	 public void setParentMeasurement(final Measurement parentMeasurement) {
+	 this.parentMeasurement = parentMeasurement;
+	 }
+
+	 public List<Measurement> getNextMeasurements() {
+	 return nextMeasurements;
+	 }
+
+	 public void setNextMeasurements(final List<Measurement> nextMeasurements)
+	 {
+	 this.nextMeasurements = nextMeasurements;
+	 }
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Визитка</title>
+	<!-- 	<link rel="stylesheet"
+			href="${request.contextPath}/styles/gavrik/screen.css"
+			type="text/css" media="screen, projection" /> -->
+	<!-- 	<link rel="stylesheet"
+			href="${request.contextPath}/styles/blueprint/screen.css"
+			type="text/css" media="screen, projection" />
+		<link rel="stylesheet"
+			href="${request.contextPath}/styles/blueprint/print.css"
+			type="text/css" media="print" /> -->
+		<!--[if lt IE 8]>
+		<link rel="stylesheet" href="${request.servletPath}/styles/blueprint/ie.css" type="text/css" media="screen, projection" />
+	<![endif]-->
+	</h:head>
+
+	<h:body>
+		<h:outputStylesheet library="styles/gavrik" name="screen1.css" target="body"/>
+		<!-- <h:outputScript library="scripts" name="utils.js" target="body" /> -->
+		<div class="container">
+			
+
+			<div class="header">
+				<ui:insert name="header">
+					<ui:include src="/resources/views/common/header.xhtml" />
+				</ui:insert>
+			</div>
+			
+			<div class="content">
+				<ui:insert name="content" />
+			</div>
+
+			<div class="footer">
+				<ui:insert name="footer">
+					<ui:include src="/resources/views/common/footer.xhtml" />
+				</ui:insert>
+			</div>
+
+		</div>
+	</h:body>
+
+</f:view>
+</html>
