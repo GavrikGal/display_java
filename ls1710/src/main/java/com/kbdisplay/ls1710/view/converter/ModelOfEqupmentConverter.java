@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.web.converter;
+package com.kbdisplay.ls1710.view.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

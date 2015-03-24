@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 //import org.springframework.web.bind.annotation.RequestMethod;
 //import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+
+
 //import com.kbdisplay.ls1710.domain.DateOfMeasurement;
 //import com.kbdisplay.ls1710.domain.Equipment;
 //import com.kbdisplay.ls1710.domain.Measurand;
@@ -39,10 +42,13 @@ import com.kbdisplay.ls1710.service.data.MeasurementService;
 //import com.kbdisplay.ls1710.service.data.SpectrumService;
 //import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 //import com.kbdisplay.ls1710.service.data.UserService;
-//import com.kbdisplay.ls1710.web.form.MeasurementsForm;
-//import com.kbdisplay.ls1710.web.form.Message;
-//import com.kbdisplay.ls1710.web.view.ListOfMeasurementsViews;
-import com.kbdisplay.ls1710.web.view.MeasurementListBean;
+//import com.kbdisplay.ls1710.view.dataJournal.web.form.MeasurementsForm;
+//import com.kbdisplay.ls1710.view.dataJournal.web.form.Message;
+//import com.kbdisplay.ls1710.view.dataJournal.web.ListOfMeasurementsViews;
+
+import com.kbdisplay.ls1710.view.dataJournal.web.MeasurementListBean;
+
+
 //import com.kbdisplay.ls1710.web.view.MeasurementsView;
 //import com.google.common.collect.Lists;
 //import javax.servlet.http.HttpServletRequest;

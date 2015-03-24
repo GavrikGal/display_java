@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.web.form;
+package com.kbdisplay.ls1710.view.dataJournal.web.form;
 
 public class Message {
 

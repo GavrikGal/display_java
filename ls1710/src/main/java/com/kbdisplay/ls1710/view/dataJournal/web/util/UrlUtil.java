@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.web.util;
+package com.kbdisplay.ls1710.view.dataJournal.web.util;
 
 import java.io.UnsupportedEncodingException;
 

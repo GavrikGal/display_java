@@ -10,20 +10,20 @@
 		<config>resources/datasource-tx-jpa.xml</config>
 		<config>resources/jpa-app-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/webflow.xml</config>
-		<config>java:com.kbdisplay.ls1710.web.view.dataJournal.EditFormDataJournalView</config>
 		<config>java:com.kbdisplay.ls1710.controller.DataJournalController</config>
 		<config>java:com.kbdisplay.ls1710.controller.MeasurementsController</config>
 		<config>java:com.kbdisplay.ls1710.controller.ModelsController</config>
+		<config>java:com.kbdisplay.ls1710.view.dataJournal.web.dataJournal.EditFormDataJournalView</config>
+		<config>java:com.kbdisplay.ls1710.view.dataJournal.web.dataJournal.component.ModelBean</config>
+		<config>java:com.kbdisplay.ls1710.view.converter.MeasurandConverter</config>
+		<config>java:com.kbdisplay.ls1710.view.converter.ScreenResolutionConverter</config>
+		<config>java:com.kbdisplay.ls1710.view.converter.TypeOfSpectrumConverter</config>
+		<config>java:com.kbdisplay.ls1710.view.converter.ModelOfEqupmentConverter</config>
+		<config>java:com.kbdisplay.ls1710.view.converter.PurposeOfMeasurementConverter</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
-		<config>java:com.kbdisplay.ls1710.web.converter.MeasurandConverter</config>
-		<config>java:com.kbdisplay.ls1710.web.converter.ScreenResolutionConverter</config>
-		<config>java:com.kbdisplay.ls1710.web.converter.TypeOfSpectrumConverter</config>
-		<config>java:com.kbdisplay.ls1710.web.view.dataJournal.component.ModelBean</config>
-		<config>java:com.kbdisplay.ls1710.web.converter.ModelOfEqupmentConverter</config>
-		<config>java:com.kbdisplay.ls1710.web.converter.PurposeOfMeasurementConverter</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

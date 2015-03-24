@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.web.converter;
+package com.kbdisplay.ls1710.view.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -7,30 +7,30 @@ import javax.faces.convert.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
-import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
+import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
+import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
 
 /**
- * конвертирует строку в тип спектра (си или ирп).
+ * конвертирует строку в цель измерения.
  *
  * @author Gavrik
  *
  */
-@Component("typeOfSpectrumConverter")
-public class TypeOfSpectrumConverter implements Converter {
+@Component("purposeOfMeasurementConverter")
+public class PurposeOfMeasurementConverter implements Converter {
 
 	/**
-	 * сервис получения типа спектра из БД.
+	 * сервис получения целей измерений из БД.
 	 */
 	@Autowired
-	private TypeOfSpectrumService typeOfSpectrumService;
+	private PurposeOfMeasurementService purposeOfMeasurementService;
 
 
 	@Override
 	public Object getAsObject(final FacesContext fc, final UIComponent uic,
 			final String value) {
 		if (value != null && value.trim().length() > 0) {
-			return typeOfSpectrumService.findByName(value.toString());
+			return purposeOfMeasurementService.findByName(value.toString());
 		} else {
 			return null;
 		}
@@ -40,7 +40,7 @@ public class TypeOfSpectrumConverter implements Converter {
 	public String getAsString(final FacesContext fc, final UIComponent uic,
 			final Object object) {
 		if (object != null) {
-			return String.valueOf(((TypeOfSpectrum) object).getName());
+			return String.valueOf(((PurposeOfMeasurement) object).getName());
 		} else {
 			return null;
 		}

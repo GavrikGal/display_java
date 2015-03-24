@@ -5,4 +5,4 @@
  * @author Gavrik
  *
  */
-package com.kbdisplay.ls1710.web.view.dataJournal.component;
+package com.kbdisplay.ls1710.view.dataJournal.web.dataJournal.component;

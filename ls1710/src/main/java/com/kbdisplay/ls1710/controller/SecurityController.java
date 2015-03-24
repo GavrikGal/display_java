@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kbdisplay.ls1710.web.form.Message;
+import com.kbdisplay.ls1710.view.dataJournal.web.form.Message;
 
 @RequestMapping("/security")
 @Controller

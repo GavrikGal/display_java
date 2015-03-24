@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.web.view.dataJournal;
+package com.kbdisplay.ls1710.view.dataJournal.web.dataJournal;
 
 import java.io.Serializable;
 import java.util.List;
