@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.view.dataJournal.web.dataJournal;
+package com.kbdisplay.ls1710.view.dataJournal.web;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import com.kbdisplay.ls1710.domain.DateOfMeasurement;
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.Spectrum;
-import com.kbdisplay.ls1710.view.dataJournal.web.dataJournal.component.MeasurementForView;
+import com.kbdisplay.ls1710.view.dataJournal.web.component.MeasurementForView;
 
 /**
  * представление списка данных об измерениях. для обработки перед

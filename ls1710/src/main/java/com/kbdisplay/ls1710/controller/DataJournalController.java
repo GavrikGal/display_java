@@ -27,9 +27,9 @@ import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
 import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
 import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
-import com.kbdisplay.ls1710.view.dataJournal.web.dataJournal.EditFormDataJournalView;
-import com.kbdisplay.ls1710.view.dataJournal.web.dataJournal.ListOfDataJournalView;
-import com.kbdisplay.ls1710.view.dataJournal.web.dataJournal.component.ModelBean;
+import com.kbdisplay.ls1710.view.dataJournal.web.EditFormDataJournalView;
+import com.kbdisplay.ls1710.view.dataJournal.web.ListOfDataJournalView;
+import com.kbdisplay.ls1710.view.dataJournal.web.component.ModelBean;
 
 /**
  * контроллер отвечающий за обработку представления списка измерений.
