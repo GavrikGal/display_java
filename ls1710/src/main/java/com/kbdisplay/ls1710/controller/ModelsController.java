@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.web.controller;
+package com.kbdisplay.ls1710.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

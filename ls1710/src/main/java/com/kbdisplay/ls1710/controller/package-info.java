@@ -6,4 +6,4 @@
  * @author Gavrik
  *
  */
-package com.kbdisplay.ls1710.web.controller;
+package com.kbdisplay.ls1710.controller;

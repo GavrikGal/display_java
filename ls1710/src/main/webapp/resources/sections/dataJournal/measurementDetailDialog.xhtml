@@ -41,8 +41,8 @@
 					value="#{listOfDataJournalView.selectedMeasurementForView.equipment.serialNumber}" />
 			</p:panelGrid>
 			<p:dataGrid var="selectedMeasurement"
-				value="#{listOfDataJournalView.selectedMeasurementForView.measurements}"
-				columns="#{fn:length(listOfDataJournalView.selectedMeasurementForView.measurements)}"
+				value="#{listOfDataJournalView.selectedMeasurementForView.measurement}"
+				columns="#{fn:length(listOfDataJournalView.selectedMeasurementForView.measurement)}"
 				id="selectedMeasurements">
 				<p:panel styleClass="selectedMeasurementPanel">
 					<f:facet name="header">

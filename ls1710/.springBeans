@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[3.5.1.201404300732-RELEASE]]></pluginVersion>
+	<pluginVersion><![CDATA[3.6.3.201411271034-RELEASE]]></pluginVersion>
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -10,18 +10,20 @@
 		<config>resources/datasource-tx-jpa.xml</config>
 		<config>resources/jpa-app-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/webflow.xml</config>
-		<config>java:com.kbdisplay.ls1710.web.controller.DataJournalController</config>
-		<config>java:com.kbdisplay.ls1710.web.controller.MeasurementsController</config>
-		<config>java:com.kbdisplay.ls1710.web.controller.ModelsController</config>
 		<config>java:com.kbdisplay.ls1710.web.view.dataJournal.EditFormDataJournalView</config>
+		<config>java:com.kbdisplay.ls1710.controller.DataJournalController</config>
+		<config>java:com.kbdisplay.ls1710.controller.MeasurementsController</config>
+		<config>java:com.kbdisplay.ls1710.controller.ModelsController</config>
 	</configs>
 	<autoconfigs>
-		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
-		<config>java:com.kbdisplay.ls1710.web.converter.ScreenResolutionConverter</config>
-		<config>java:com.kbdisplay.ls1710.web.converter.ModelOfEqupmentConverter</config>
+		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
 		<config>java:com.kbdisplay.ls1710.web.converter.MeasurandConverter</config>
+		<config>java:com.kbdisplay.ls1710.web.converter.ScreenResolutionConverter</config>
 		<config>java:com.kbdisplay.ls1710.web.converter.TypeOfSpectrumConverter</config>
+		<config>java:com.kbdisplay.ls1710.web.view.dataJournal.component.ModelBean</config>
+		<config>java:com.kbdisplay.ls1710.web.converter.ModelOfEqupmentConverter</config>
+		<config>java:com.kbdisplay.ls1710.web.converter.PurposeOfMeasurementConverter</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

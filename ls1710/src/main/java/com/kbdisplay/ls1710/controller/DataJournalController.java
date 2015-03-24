@@ -1,7 +1,8 @@
-package com.kbdisplay.ls1710.web.controller;
+package com.kbdisplay.ls1710.controller;
 
 import java.util.List;
 
+import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -105,7 +106,7 @@ public class DataJournalController {
 			lastMeasurement = null;
 		}
 		listOfDataJournalView
-				.setMeasurementForViewsFromMeasurements(measurements);
+				.createMeasurementDataTable(measurements);
 
 		return listOfDataJournalView;
 	}
@@ -191,7 +192,7 @@ public class DataJournalController {
 					/* currentVersion, */editFormDJView.getDescription());
 			List<Measurement> measurements = measurementsService.findAll();
 			listOfDataJournalView
-					.setMeasurementForViewsFromMeasurements(measurements);
+					.createMeasurementDataTable(measurements);
 			// Equipment newEquipment = new Equipment();
 			// newEquipment.setModel(editFormDJView.getEquipment().getModel());
 			// newEquipment.setSerialNumber(editFormDJView.getEquipment()
@@ -216,6 +217,14 @@ public class DataJournalController {
 		listOfDataJournalView.deleteMeasurement();
 
 		FacesContext fc = FacesContext.getCurrentInstance();
+
+
+
+		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+
+		ListOfDataJournalView list = (ListOfDataJournalView) FacesContext.getCurrentInstance().getApplication()
+			    .getELResolver().getValue(elContext, null, "listOfDataJournalView");
+
 		fc.addMessage(null, new FacesMessage("Измерение удалено"));
 	}
 

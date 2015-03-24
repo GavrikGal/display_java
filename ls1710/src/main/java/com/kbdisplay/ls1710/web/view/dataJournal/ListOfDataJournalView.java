@@ -94,7 +94,7 @@ public class ListOfDataJournalView implements Serializable {
 	 * @param measurements
 	 *            список измерений из БД
 	 */
-	public final void setMeasurementForViewsFromMeasurements(
+	public final void createMeasurementDataTable(
 			final List<Measurement> measurements) {
 		measurementForViews = new ArrayList<MeasurementForView>();
 
