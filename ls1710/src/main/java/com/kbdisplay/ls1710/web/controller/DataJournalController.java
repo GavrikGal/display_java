@@ -160,7 +160,6 @@ public class DataJournalController {
 	public void save(final EditFormDataJournalView editFormDJView,
 			final ListOfDataJournalView listOfDataJournalView) {
 
-		FacesContext fc = FacesContext.getCurrentInstance();
 		if (editFormDJView.getModel() != null) {
 
 			ModelOfEquipment model = editFormDJView.getModel();
@@ -185,10 +184,10 @@ public class DataJournalController {
 			// }
 			// }
 
-			Measurement measurement =
-					updaterService.saveMeasurements(model, editFormDJView
-							.getSerialNumber(), parameter, editFormDJView
-							.getPurposeOfMeasurement(),
+			// Measurement measurement =
+			updaterService.saveMeasurements(model,
+					editFormDJView.getSerialNumber(), parameter,
+					editFormDJView.getPurposeOfMeasurement(),
 					/* currentVersion, */editFormDJView.getDescription());
 			List<Measurement> measurements = measurementsService.findAll();
 			listOfDataJournalView
@@ -200,6 +199,7 @@ public class DataJournalController {
 			// editFormDJView.setEquipment(newEquipment);
 			editFormDJView.setDescription(null);
 
+			FacesContext fc = FacesContext.getCurrentInstance();
 			fc.addMessage(
 					null,
 					new FacesMessage("Измерение успешно сохранено", "Изделие: "
@@ -209,10 +209,9 @@ public class DataJournalController {
 	}
 
 	public void delete(ListOfDataJournalView listOfDataJournalView) {
-		for (Measurement measurement : listOfDataJournalView
-				.getSelectedMeasurementForView().getMeasurements()) {
-			measurementService.delete(measurement);
-		}
+
+		measurementService.delete(listOfDataJournalView
+				.getSelectedMeasurementForView().getMeasurement());
 
 		listOfDataJournalView.deleteMeasurement();
 
@@ -231,8 +230,8 @@ public class DataJournalController {
 	@Deprecated
 	// public void checkOnRepeatedMeasurement(
 	// final EditFormDataJournalView editFormDJView) {
-			// ModelOfEquipment model = editFormDJView.getModel();
-			// if (model != null) {
+	// ModelOfEquipment model = editFormDJView.getModel();
+	// if (model != null) {
 			// String serialNumber = editFormDJView.getSerialNumber();
 			// if (model.getIdModel() != null && serialNumber != null) {
 			// Equipment equipment =

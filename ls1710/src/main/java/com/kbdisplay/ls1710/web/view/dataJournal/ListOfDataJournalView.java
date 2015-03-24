@@ -123,8 +123,7 @@ public class ListOfDataJournalView implements Serializable {
 		 * проверка являются ли измерения начальными в серии испытаний например
 		 * начальными являются испытания с версией = 1
 		 */
-		if (measurement.getVersion() == 1
-				&& measurement.getParentMeasurement() == null) {
+		if (measurement.getParentMeasurement() == null) {
 
 			MeasurementForView measurementsForView = new MeasurementForView();
 
@@ -137,21 +136,22 @@ public class ListOfDataJournalView implements Serializable {
 			/*
 			 * установка измерений связанных с данным изделием.
 			 */
-			List<Measurement> linkedMeasurements = new ArrayList<Measurement>();
-			linkedMeasurements.add(measurement);
+			// List<Measurement> linkedMeasurements = new
+			// ArrayList<Measurement>();
+			// linkedMeasurements.add(measurement);
 			// TODO переделать getLinkedMeasurements(/* versionMeas,
 			// */measurement);
-			measurementsForView.setMeasurements(linkedMeasurements);
+			measurementsForView.setMeasurement(measurement);
 
 			/* установка актуальных спектров из цикла измерений */
 			List<Spectrum> lastSpectrums =
-					getActualSpectrums(measurementsForView.getMeasurements());
+					getActualSpectrums(measurementsForView.getMeasurement());
 			measurementsForView.setLastSpectrums(lastSpectrums);
 
 			/* установка даты последнего измерения из цикла */
 			DateOfMeasurement lastDateOfMeasurement =
 					getLastDateOfMeasurement(measurementsForView
-							.getMeasurements());
+							.getMeasurement());
 			measurementsForView.setLastDateOfMeasurement(lastDateOfMeasurement);
 			/*
 			 * добавление подготовленного для отображения измерения к списку
@@ -223,13 +223,54 @@ public class ListOfDataJournalView implements Serializable {
 	 *            список связанных одним циклом измерений
 	 * @return актуальные спектры из цикла измерений
 	 */
-	private List<Spectrum> getActualSpectrums(
-			final List<Measurement> measurements) {
+	private List<Spectrum> getActualSpectrums(final Measurement measurement) {
 
 		Map<Long, Spectrum> actualSpectrumAndParameter =
-				new HashMap<Long, Spectrum>();
+				getActualSpectrumAndParameter(new HashMap<Long, Spectrum>(),
+						measurement);
+		// new HashMap<Long, Spectrum>();
+		//
+		// for (Measurement measurement : measurements) {
+		// List<Spectrum> spectrums = measurement.getSpectrums();
+		//
+		// if (!spectrums.isEmpty()) {
+		// /*
+		// * поиск и замена более старых спектров на новые. в качестве
+		// * критерия используется версия спектра, т.е. спектр с большей
+		// * версией актуальнее.
+		// */
+		// for (Spectrum spectrum : spectrums) {
+		// Long parameterId = spectrum.getParameter().getId();
+		// if (!actualSpectrumAndParameter.containsKey(parameterId)) {
+		// actualSpectrumAndParameter.put(parameterId, spectrum);
+		// } else {
+		// int actualVersion =
+		// actualSpectrumAndParameter.get(parameterId)
+		// .getVersion();
+		// int currentVersion = spectrum.getVersion();
+		// if (actualVersion < currentVersion) {
+		// actualSpectrumAndParameter.put(parameterId,
+		// spectrum);
+		// }
+		//
+		// }
+		// }
+		// }
+		// }
+		List<Spectrum> actualSpectrums = new ArrayList<Spectrum>();
+		for (Entry<Long, Spectrum> actualSpectrum : actualSpectrumAndParameter
+				.entrySet()) {
+			actualSpectrums.add(actualSpectrum.getValue());
+		}
 
-		for (Measurement measurement : measurements) {
+		return actualSpectrums;
+	}
+
+	private Map<Long, Spectrum> getActualSpectrumAndParameter(
+			Map<Long, Spectrum> prevActual, Measurement measurement) {
+		Map<Long, Spectrum> actualMap = new HashMap<Long, Spectrum>();
+		if (measurement != null) {
+
 			List<Spectrum> spectrums = measurement.getSpectrums();
 
 			if (!spectrums.isEmpty()) {
@@ -240,29 +281,37 @@ public class ListOfDataJournalView implements Serializable {
 				 */
 				for (Spectrum spectrum : spectrums) {
 					Long parameterId = spectrum.getParameter().getId();
-					if (!actualSpectrumAndParameter.containsKey(parameterId)) {
-						actualSpectrumAndParameter.put(parameterId, spectrum);
+					if (!actualMap.containsKey(parameterId)) {
+						actualMap.put(parameterId, spectrum);
 					} else {
 						int actualVersion =
-								actualSpectrumAndParameter.get(parameterId)
-										.getVersion();
+								actualMap.get(parameterId).getVersion();
 						int currentVersion = spectrum.getVersion();
 						if (actualVersion < currentVersion) {
-							actualSpectrumAndParameter.put(parameterId,
-									spectrum);
+							actualMap.put(parameterId, spectrum);
 						}
 
 					}
 				}
+
+				for (Entry<Long, Spectrum> actualSpectrum : actualMap
+						.entrySet()) {
+					prevActual.put(actualSpectrum.getKey(),
+							actualSpectrum.getValue());
+				}
+
+				actualMap = prevActual;
+
+			}
+			Measurement nextMeasurement = measurement.getNextMeasurement();
+			if (nextMeasurement != null) {
+				actualMap =
+						getActualSpectrumAndParameter(prevActual,
+								nextMeasurement);
 			}
 		}
-		List<Spectrum> actualSpectrums = new ArrayList<Spectrum>();
-		for (Entry<Long, Spectrum> actualSpectrum : actualSpectrumAndParameter
-				.entrySet()) {
-			actualSpectrums.add(actualSpectrum.getValue());
-		}
 
-		return actualSpectrums;
+		return actualMap;
 	}
 
 	/**
@@ -276,31 +325,41 @@ public class ListOfDataJournalView implements Serializable {
 	 * @return дата последнего из цикла измерения
 	 */
 	private DateOfMeasurement getLastDateOfMeasurement(
-			final List<Measurement> measurements) {
-		if (measurements.size() > 1) {
-			DateOfMeasurement lastDateOfMeasurement = null;
-
-			for (Measurement measurement : measurements) {
-				/*
-				 * установка даты повторных измерений требуется только для
-				 * испытаний, которым это требуется. например после приемочных
-				 * испытаний проходят приемосдаточные испытания. проверяем что у
-				 * приемосдаточных испытаний имеются предшевствующие испытания,
-				 * и тогда устанавливаем последнюю дату этих испытаний
-				 */
-				if (measurement.getPurpose().getPrevPurpose() != null) {
-					DateOfMeasurement checkingDate = measurement.getDate();
-					if (lastDateOfMeasurement == null) {
-						lastDateOfMeasurement = checkingDate;
-						continue;
-					}
-					if (lastDateOfMeasurement.getDate().isBefore(
-							checkingDate.getDate())) {
-						lastDateOfMeasurement = checkingDate;
-					}
-				}
+			final Measurement measurement) {
+		Measurement lastMeasurement = null;
+		if (measurement.getNextMeasurement() != null) {
+			lastMeasurement = measurement;
+			while (lastMeasurement.getNextMeasurement() != null)
+			{
+				lastMeasurement = lastMeasurement.getNextMeasurement();
 			}
-			return lastDateOfMeasurement;
+
+			return lastMeasurement.getDate();
+//		if (measurements.size() > 1) {
+//			DateOfMeasurement lastDateOfMeasurement = null;
+//
+//			for (Measurement measurement : measurements) {
+//				/*
+//				 * установка даты повторных измерений требуется только для
+//				 * испытаний, которым это требуется. например после приемочных
+//				 * испытаний проходят приемосдаточные испытания. проверяем что у
+//				 * приемосдаточных испытаний имеются предшевствующие испытания,
+//				 * и тогда устанавливаем последнюю дату этих испытаний
+//				 */
+//				if (measurement.getPurpose().getPrevPurpose() != null) {
+//					DateOfMeasurement checkingDate = measurement.getDate();
+//					if (lastDateOfMeasurement == null) {
+//						lastDateOfMeasurement = checkingDate;
+//						continue;
+//					}
+//					if (lastDateOfMeasurement.getDate().isBefore(
+//							checkingDate.getDate())) {
+//						lastDateOfMeasurement = checkingDate;
+//					}
+//				}
+//			}
+//			return lastDateOfMeasurement;
+//		}
 		}
 		return null;
 	}

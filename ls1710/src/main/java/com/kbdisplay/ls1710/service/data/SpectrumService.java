@@ -12,7 +12,7 @@ public interface SpectrumService {
 
 	public Spectrum findById(Long id);
 
-	public Spectrum findByMeasurementAndParameter(Measurement measurement,
+	public List <Spectrum> findByMeasurementAndParameter(Measurement measurement,
 			SpectrumParameter spectrumParameter);
 
 	public Spectrum save(Spectrum spectrum);

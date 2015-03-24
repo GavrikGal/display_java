@@ -1,7 +1,6 @@
 package com.kbdisplay.ls1710.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,10 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -84,24 +83,32 @@ public class Measurement implements Serializable {
 	@JoinColumn(name = "norm_id")
 	private Norm norm;
 
-	/**
-	 * предыдущее испытание. например перед испытаниями приемосдаточными
-	 * испытаниями идут приемочные испытания, а также перед типовыми испытаниями
-	 * могут идти приемосдаточные испытания.
-	 */
-	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+//	/**
+//	 * предыдущее испытание. например перед испытаниями приемосдаточными
+//	 * испытаниями идут приемочные испытания, а также перед типовыми испытаниями
+//	 * могут идти приемосдаточные испытания.
+//	 */
+//	@ManyToOne
+//	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+//	@JoinColumn(name = "parent_id")
+//	private Measurement parentMeasurement;
+//
+//	/**
+//	 * все испытания идущие после текущего испытания.
+//	 * например после пи-испытания будет идти пси-испытание
+//	 */
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parentMeasurement",
+//			cascade = CascadeType.ALL)
+//	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+//	private List<Measurement> nextMeasurements = new ArrayList<Measurement>();
+
+	@OneToOne
 	@JoinColumn(name = "parent_id")
 	private Measurement parentMeasurement;
 
-	/**
-	 * все испытания идущие после текущего испытания.
-	 * например после пи-испытания будет идти пси-испытание
-	 */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parentMeasurement",
-			cascade = CascadeType.ALL)
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-	private List<Measurement> nextMeasurements = new ArrayList<Measurement>();
+	@OneToOne(mappedBy="parentMeasurement")
+	private Measurement nextMeasurement;
+
 
 	// TODO заменить на результаты испытаний
 	/**
@@ -199,14 +206,24 @@ public class Measurement implements Serializable {
 	 this.parentMeasurement = parentMeasurement;
 	 }
 
-	 public List<Measurement> getNextMeasurements() {
-	 return nextMeasurements;
-	 }
 
-	 public void setNextMeasurements(final List<Measurement> nextMeasurements)
-	 {
-	 this.nextMeasurements = nextMeasurements;
-	 }
+
+//	 public List<Measurement> getNextMeasurements() {
+//	 return nextMeasurements;
+//	 }
+//
+//	 public void setNextMeasurements(final List<Measurement> nextMeasurements)
+//	 {
+//	 this.nextMeasurements = nextMeasurements;
+//	 }
+
+	public Measurement getNextMeasurement() {
+		return nextMeasurement;
+	}
+
+	public void setNextMeasurement(Measurement nextMeasurement) {
+		this.nextMeasurement = nextMeasurement;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

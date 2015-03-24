@@ -62,7 +62,7 @@ public class MeasurementForView implements Serializable {
 	 * входить новые измерения одного и того же изделия, например когда изделие
 	 * второй раз приходит на пи.
 	 */
-	private List<Measurement> measurements;
+	private Measurement measurement;
 	/**
 	 * пользователь, проводивший измерения.
 	 */
@@ -74,7 +74,6 @@ public class MeasurementForView implements Serializable {
 	 */
 	public MeasurementForView() {
 		lastSpectrums = new ArrayList<Spectrum>();
-		measurements = new ArrayList<Measurement>();
 	}
 
 	public final Long getId() {
@@ -119,12 +118,12 @@ public class MeasurementForView implements Serializable {
 		this.lastSpectrums = lastSpectrums;
 	}
 
-	public final List<Measurement> getMeasurements() {
-		return measurements;
+	public final Measurement getMeasurement() {
+		return measurement;
 	}
 
-	public final void setMeasurements(final List<Measurement> measurements) {
-		this.measurements = measurements;
+	public final void setMeasurement(final Measurement measurement) {
+		this.measurement = measurement;
 	}
 
 	public final User getUser() {

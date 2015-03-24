@@ -479,7 +479,7 @@ public class MeasurementsUpdaterServiceImpl implements
 				 * же параметрами спектра.
 				 */
 
-				Spectrum spectrum =
+				List<Spectrum> spectrums =
 						spectrumService.findByMeasurementAndParameter(
 								measurement, parameter);
 
@@ -488,7 +488,7 @@ public class MeasurementsUpdaterServiceImpl implements
 				 * испытанию новый спектр, используя в качестве версии спектра
 				 * версию испытаний
 				 */
-				if (spectrum == null) {
+				if (spectrums == null || spectrums.isEmpty()) {
 					measurement.setUser(user);
 					measurement =
 							saveSpectrum(measurement, parameter, description,
@@ -505,7 +505,21 @@ public class MeasurementsUpdaterServiceImpl implements
 					if (true) { // TODO если пользователь хочет продолжить
 								// старые испытания
 
-						measurement.setVersion(measurement.getVersion() + 1);
+						// находим последний спектр с данными параметрами и
+						// сравниваем его версию с версией измерений, если это
+						// старый сектр с версией ниже чем версия измерений, то
+						// сохраняем новый спектр с версией текущих измереий,
+						// если версии равны, то увеличиваем версию измереий
+						int lastVersion = 0;
+						for (Spectrum spectrum : spectrums) {
+							if (spectrum.getVersion() > lastVersion) {
+								lastVersion = spectrum.getVersion();
+							}
+						}
+
+						if (measurement.getVersion() == lastVersion) {
+							measurement.setVersion(measurement.getVersion() + 1);
+						}
 						measurement.setUser(user);
 
 						measurement =
@@ -866,24 +880,24 @@ public class MeasurementsUpdaterServiceImpl implements
 	private Spectrum getSpectrums(Measurement measurement,
 			SpectrumParameter spectrumParameter) {
 
-		Spectrum spectrum =
-				spectrumService.findByMeasurementAndParameter(measurement,
-						spectrumParameter);
-
-		if (spectrum == null) {
-			spectrum = new Spectrum();
-			spectrum.setMeasurement(measurement);
-			spectrum.setParameter(spectrumParameter);
-			spectrum.setHarmonics(new ArrayList<Harmonic>());
-		}
-		DateTime currentDate = new DateTime();
-		spectrum.setDate(currentDate);
-
-		spectrum = spectrumService.save(spectrum);
-		if (measurement.getSpectrums().isEmpty()) {
-			measurement.getSpectrums().add(spectrum);
-
-		}
+		Spectrum spectrum = null;
+		// spectrumService.findByMeasurementAndParameter(measurement,
+		// spectrumParameter);
+		//
+		// if (spectrum == null) {
+		// spectrum = new Spectrum();
+		// spectrum.setMeasurement(measurement);
+		// spectrum.setParameter(spectrumParameter);
+		// spectrum.setHarmonics(new ArrayList<Harmonic>());
+		// }
+		// DateTime currentDate = new DateTime();
+		// spectrum.setDate(currentDate);
+		//
+		// spectrum = spectrumService.save(spectrum);
+		// if (measurement.getSpectrums().isEmpty()) {
+		// measurement.getSpectrums().add(spectrum);
+		//
+		// }
 		return spectrum;
 	}
 
