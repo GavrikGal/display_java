@@ -8,8 +8,8 @@
 		view="/resources/views/dataJournal/dataJournal.xhtml">
 
 		<on-entry>
-			<evaluate expression="dataJournalController.newListOfDataJournalView()"
-				result="viewScope.listOfDataJournalView" />
+			<evaluate expression="dataJournalController.newDataJournalTable()"
+				result="viewScope.dataJournalTable" />
 			<evaluate expression="dataJournalController.newEditFormDataJournalView()"
 				result="viewScope.editFormDJView" />
 		</on-entry>

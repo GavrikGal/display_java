@@ -27,8 +27,9 @@ import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
 import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
 import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
+import com.kbdisplay.ls1710.view.dataJournal.DataTable;
 import com.kbdisplay.ls1710.view.dataJournal.web.EditFormDataJournalView;
-import com.kbdisplay.ls1710.view.dataJournal.web.ListOfDataJournalView;
+import com.kbdisplay.ls1710.view.dataJournal.web.DataJournalTable;
 import com.kbdisplay.ls1710.view.dataJournal.web.component.ModelBean;
 
 /**
@@ -93,22 +94,20 @@ public class DataJournalController {
 	 *
 	 * @return список измерений
 	 */
-	public final ListOfDataJournalView newListOfDataJournalView() {
+	public final DataTable newDataJournalTable() {
 
 		logger.info("Creating new list of measurement for data Journal");
 
-		ListOfDataJournalView listOfDataJournalView =
-				new ListOfDataJournalView();
+		DataTable dataTable = new DataJournalTable();
 		List<Measurement> measurements = measurementsService.findAll();
 		if (measurements.size() > 0) {
 			lastMeasurement = measurements.get(measurements.size() - 1);
 		} else {
 			lastMeasurement = null;
 		}
-		listOfDataJournalView
-				.createMeasurementDataTable(measurements);
+		dataTable.init(measurements);
 
-		return listOfDataJournalView;
+		return dataTable;
 	}
 
 	/**
@@ -159,7 +158,7 @@ public class DataJournalController {
 	}
 
 	public void save(final EditFormDataJournalView editFormDJView,
-			final ListOfDataJournalView listOfDataJournalView) {
+			final DataTable dataTable) {
 
 		if (editFormDJView.getModel() != null) {
 
@@ -191,8 +190,7 @@ public class DataJournalController {
 					editFormDJView.getPurposeOfMeasurement(),
 					/* currentVersion, */editFormDJView.getDescription());
 			List<Measurement> measurements = measurementsService.findAll();
-			listOfDataJournalView
-					.createMeasurementDataTable(measurements);
+			dataTable.init(measurements);
 			// Equipment newEquipment = new Equipment();
 			// newEquipment.setModel(editFormDJView.getEquipment().getModel());
 			// newEquipment.setSerialNumber(editFormDJView.getEquipment()
@@ -209,21 +207,19 @@ public class DataJournalController {
 		}
 	}
 
-	public void delete(ListOfDataJournalView listOfDataJournalView) {
-
-		measurementService.delete(listOfDataJournalView
-				.getSelectedMeasurementForView().getMeasurement());
-
-		listOfDataJournalView.deleteMeasurement();
+	// TODO заменить на метод с аргументом selectedRow
+	public void delete(DataTable dataTable1) {
 
 		FacesContext fc = FacesContext.getCurrentInstance();
-
-
-
 		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
-		ListOfDataJournalView list = (ListOfDataJournalView) FacesContext.getCurrentInstance().getApplication()
-			    .getELResolver().getValue(elContext, null, "listOfDataJournalView");
+		DataTable dataTable =
+				(DataTable) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "listOfDataJournalView");
+
+		measurementService.delete(dataTable.getSelected().getMeasurement());
+
+		dataTable.deleteSelected();
 
 		fc.addMessage(null, new FacesMessage("Измерение удалено"));
 	}
@@ -236,50 +232,50 @@ public class DataJournalController {
 	 *
 	 * @deprecated надо убрать этот метод
 	 */
-	@Deprecated
+	// @Deprecated
 	// public void checkOnRepeatedMeasurement(
 	// final EditFormDataJournalView editFormDJView) {
 	// ModelOfEquipment model = editFormDJView.getModel();
 	// if (model != null) {
-			// String serialNumber = editFormDJView.getSerialNumber();
-			// if (model.getIdModel() != null && serialNumber != null) {
-			// Equipment equipment =
-			// equipmentService.findBySerialNumberAndModel(
-			// serialNumber, model);
-			// List<Measurement> measurements =
-			// measurementService.findByEquipment(equipment);
-			// if (!measurements.isEmpty()) {
-			// DateTime currentDate = new DateTime();
-			// currentDate = currentDate.withTime(0, 0, 0, 0);
-			// boolean repeated = false;
-			// Version version = null;
-			// for (Measurement measurement : measurements) {
-			// DateTime date =
-			// measurement.getDateOfMeasurement().getDate();
-			// if (currentDate.isAfter(date)) {
-			// repeated = true;
-			// } else {
-			// repeated = false;
-			// }
-			// version = new Version(measurement.getVersion());
-			// }
-			// if (repeated) {
-			// editFormDJView.setPurposeOfMeasurement(editFormDJView
-			// .getPurposeOfMeasurements().get(1));
-			// }
-			// // editFormDJView.setRepeated(repeated);
-			// editFormDJView.setVersion(version);
-			// }
-			// }
-			// }
-			// }
-			/**
-			 * создает новый бин-поддержки для добавления модели в БД.
-			 *
-			 * @return бин добавления модели.
-			 */
-			public
-			ModelBean newModelBean(ModelOfEquipment model) {
+	// String serialNumber = editFormDJView.getSerialNumber();
+	// if (model.getIdModel() != null && serialNumber != null) {
+	// Equipment equipment =
+	// equipmentService.findBySerialNumberAndModel(
+	// serialNumber, model);
+	// List<Measurement> measurements =
+	// measurementService.findByEquipment(equipment);
+	// if (!measurements.isEmpty()) {
+	// DateTime currentDate = new DateTime();
+	// currentDate = currentDate.withTime(0, 0, 0, 0);
+	// boolean repeated = false;
+	// Version version = null;
+	// for (Measurement measurement : measurements) {
+	// DateTime date =
+	// measurement.getDateOfMeasurement().getDate();
+	// if (currentDate.isAfter(date)) {
+	// repeated = true;
+	// } else {
+	// repeated = false;
+	// }
+	// version = new Version(measurement.getVersion());
+	// }
+	// if (repeated) {
+	// editFormDJView.setPurposeOfMeasurement(editFormDJView
+	// .getPurposeOfMeasurements().get(1));
+	// }
+	// // editFormDJView.setRepeated(repeated);
+	// editFormDJView.setVersion(version);
+	// }
+	// }
+	// }
+	// }
+
+	/**
+	 * создает новый бин-поддержки для добавления модели в БД.
+	 *
+	 * @return бин добавления модели.
+	 */
+	public ModelBean newModelBean(final ModelOfEquipment model) {
 		ModelBean modelBean = new ModelBean();
 		modelBean.setModel(model);
 		return modelBean;

@@ -8,68 +8,68 @@
 	xmlns:component="http://java.sun.com/jsf/composite/components/dataJournal">
 
 
-	
+
 	<!-- таблица данных с измерениями. 
 	подключаем секцию с таблицей данных об измерениях, 
 	эта и подключаемая страница связаны через атрибут 
-	update="measurementForViews" контекстного меню и
-	id="measurementForViews" таблицы данных -->
-	<p:dataTable id="measurementForViews" var="measurementForView"
-		value="#{listOfDataJournalView.measurementForViews}"
-		rowKey="#{measurementForView.id}"
-		selection="#{listOfDataJournalView.selectedMeasurementForView}"
+	update="dataTable" контекстного меню и
+	id="dataTable" таблицы данных -->
+	<p:dataTable id="dataTable" var="row"
+		value="#{dataJournalTable.rows}"
+		rowKey="#{row.id}"
+		selection="#{dataJournalTable.selected}"
 		selectionMode="single" rowStyleClass="measurement-table-rows"
-		sortBy="#{measurementForView.id}" sortOrder="descending"
-		widgetVar="measurementForViewsTable"
+		sortBy="#{row.id}" sortOrder="descending"
+		widgetVar="dataTableWidget"
 		emptyMessage="#{msg['label_measurement_table_empty']}"
-		filteredValue="#{listOfDataJournalView.filteredMeasurementForViews}"
+		filteredValue="#{dataJournalTable.filteredRows}"
 		lazy="false">
-		
+
 		<p:column width="70"
-			filterBy="#{measurementForView.firstDateOfMeasurement.date}"
+			filterBy="#{row.firstDate.date}"
 			filterMatchMode="contains">
 			<f:facet name="header">
 				<h:outputText value="#{msg['label_measurement_table_date']}" />
 			</f:facet>
 			<f:facet name="filter">
-				<p:inputText onkeyup="PF('measurementForViewsTable').filter()"
+				<p:inputText onkeyup="PF('dataTableWidget').filter()"
 					style="width: 70px;margin-top:3px;" />
 			</f:facet>
-			<h:outputText rendered="#{measurementForView.enableFirstDate}"
-				value="#{measurementForView.firstDateOfMeasurement.date}">
+			<h:outputText rendered="#{row.enableFirstDate}"
+				value="#{row.firstDate.date}">
 				<f:converter converterId="jodaDataTimeConverter" />
 				<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
 			</h:outputText>
 		</p:column>
 		<p:column width="80"
-			filterBy="#{measurementForView.equipment.model.name}"
+			filterBy="#{row.equipment.model.name}"
 			filterMatchMode="contains">
 			<f:facet name="header">
 				<h:outputText value="#{msg['label_measurement_table_model']}" />
 			</f:facet>
 			<f:facet name="filter">
-				<p:inputText onkeyup="PF('measurementForViewsTable').filter()"
+				<p:inputText onkeyup="PF('dataTableWidget').filter()"
 					style="width: 80px;margin-top:3px;" />
 			</f:facet>
-			<h:outputText value="#{measurementForView.equipment.model.name}"
-				rendered="#{measurementForView.enableModelName}" />
+			<h:outputText value="#{row.equipment.model.name}"
+				rendered="#{row.enableModelName}" />
 		</p:column>
 		<p:column width="100"
-			filterBy="#{measurementForView.equipment.serialNumber}"
+			filterBy="#{row.equipment.serialNumber}"
 			filterMatchMode="contains">
 			<f:facet name="header">
 				<h:outputText
 					value="#{msg['label_measurement_table_serial_number']}" />
 			</f:facet>
 			<f:facet name="filter">
-				<p:inputText onkeyup="PF('measurementForViewsTable').filter()"
+				<p:inputText onkeyup="PF('dataTableWidget').filter()"
 					style="width: 100px;margin-top:3px;" />
 			</f:facet>
-			<h:outputText value="#{measurementForView.equipment.serialNumber}" />
+			<h:outputText value="#{row.equipment.serialNumber}" />
 		</p:column>
 		<p:column headerText="#{msg['label_measurement_table_spectrum']}">
 			<p:dataGrid var="spectrum"
-				value="#{measurementForView.lastSpectrums}" columns="1" rows="2"
+				value="#{row.spectrums}" columns="1" rows="2"
 				id="spectrums" paginator="false" styleClass="internalTable">
 				<component:spectrumRow spectrum="#{spectrum}"
 					widthFirstColumn="140px" />
@@ -78,27 +78,27 @@
 		<p:column width="20" styleClass="internalTable"
 			style="border-left: 0px solid #E55 ">
 			<p:rowToggler
-				rendered="#{fn:length(measurementForView.lastSpectrums) > 2}" />
+				rendered="#{fn:length(row.spectrums) > 2}" />
 		</p:column>
 		<p:column width="70"
-			filterBy="#{measurementForView.lastDateOfMeasurement.date}"
+			filterBy="#{row.lastDate.date}"
 			filterMatchMode="contains">
 			<f:facet name="header">
 				<h:outputText value="#{msg['label_measurement_table_second_date']}" />
 			</f:facet>
 			<f:facet name="filter">
-				<p:inputText onkeyup="PF('measurementForViewsTable').filter()"
+				<p:inputText onkeyup="PF('dataTableWidget').filter()"
 					style="width: 70px;margin-top:3px;" />
 			</f:facet>
 			<h:outputText
-				value="#{measurementForView.lastDateOfMeasurement.date}">
+				value="#{row.lastDate.date}">
 				<f:converter converterId="jodaDataTimeConverter" />
 				<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
 			</h:outputText>
 		</p:column>
 		<p:column headerText="#{msg['label_measurement_table_user']}"
 			width="80">
-			<h:outputText value="#{measurementForView.user.lastName}" />
+			<h:outputText value="#{row.user.lastName}" />
 		</p:column>
 
 
@@ -108,7 +108,7 @@
 					<p:column style="width: 291px" />
 					<p:column>
 						<p:dataGrid var="moreSpectrum"
-							value="#{measurementForView.lastSpectrums}" columns="1" rows="2"
+							value="#{row.spectrums}" columns="1" rows="2"
 							id="moreSpectrums" paginator="false" styleClass="internalTable"
 							first="2">
 							<component:spectrumRow spectrum="#{moreSpectrum}"

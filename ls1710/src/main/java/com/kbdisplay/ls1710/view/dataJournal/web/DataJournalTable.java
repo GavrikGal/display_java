@@ -12,12 +12,12 @@ import javax.faces.bean.ViewScoped;
 
 import org.joda.time.DateTime;
 
-import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.DateOfMeasurement;
-import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.Spectrum;
-import com.kbdisplay.ls1710.view.dataJournal.web.component.MeasurementForView;
+import com.kbdisplay.ls1710.view.dataJournal.DataTable;
+import com.kbdisplay.ls1710.view.dataJournal.Row;
+import com.kbdisplay.ls1710.view.dataJournal.web.component.DataRow;
 
 /**
  * представление списка данных об измерениях. для обработки перед
@@ -30,9 +30,9 @@ import com.kbdisplay.ls1710.view.dataJournal.web.component.MeasurementForView;
  * @author Gavrik
  *
  */
-@ManagedBean(name = "listOfDataJournalView")
+@ManagedBean(name = "dataJournalTable")
 @ViewScoped
-public class ListOfDataJournalView implements Serializable {
+public class DataJournalTable implements Serializable, DataTable {
 
 	/**
 	 * серийный номер класса.
@@ -42,50 +42,65 @@ public class ListOfDataJournalView implements Serializable {
 	/**
 	 * список обработанных для вывода в вэб-страницу измерений.
 	 */
-	private List<MeasurementForView> measurementForViews;
+	private List<Row> rows;
 	/**
 	 * список отфильтрованных из общего представления измерений.
 	 */
-	private List<MeasurementForView> filteredMeasurementForViews;
+	private List<Row> filteredRows;
 	/**
 	 * выделеная строка данных об измерениях.
 	 */
-	private MeasurementForView selectedMeasurementForView;
+	private Row selected;
+
+	/**
+	 * текущий id строк в таблице данных.
+	 */
+	private Long currentId;
 
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	public final List<MeasurementForView> getMeasurementForViews() {
-		return setVisibleFields(measurementForViews);
+	/**
+	 * получение списка строк из таблицы данных измерений.
+	 *
+	 * @return - список строк.
+	 */
+	public final List<Row> getRows() {
+		for (Row row : rows) {
+		}
+		return setVisibleFields(rows);
 		// TODO переложить эту часть на javascript
-		// return measurementForViews;
+		// return rows;
 	}
 
-	public final void setMeasurementForViews(
-			final List<MeasurementForView> measurementForViews) {
-		this.measurementForViews = measurementForViews;
+	public final void setRows(final List<Row> rows) {
+		this.rows = rows;
 	}
 
-	public List<MeasurementForView> getFilteredMeasurementForViews() {
-		return setVisibleFields(filteredMeasurementForViews);
+	/**
+	 * получение списка отфильтрованных строк из таблицы измерений.
+	 *
+	 * @return - список отфильтрованных строк.
+	 */
+	public List<Row> getFilteredRows() {
+		return setVisibleFields(filteredRows);
 		// TODO переложить эту часть на javascript
-		// return filteredMeasurementForViews;
+		// return filteredRows;
 	}
 
-	public void setFilteredMeasurementForViews(
-			final List<MeasurementForView> filteredMeasurementForViews) {
-		this.filteredMeasurementForViews = filteredMeasurementForViews;
+	public void setFilteredRows(final List<Row> filteredRows) {
+		this.filteredRows = filteredRows;
 	}
 
-	public final MeasurementForView getSelectedMeasurementForView() {
-		return selectedMeasurementForView;
+	@Override
+	public final Row getSelected() {
+		return selected;
 	}
 
-	public final void setSelectedMeasurementForView(
-			final MeasurementForView selectedMeasurementForView) {
-		this.selectedMeasurementForView = selectedMeasurementForView;
+	public final void setSelected(final Row selected) {
+		this.selected = selected;
 	}
 
 	/**
@@ -94,14 +109,13 @@ public class ListOfDataJournalView implements Serializable {
 	 * @param measurements
 	 *            список измерений из БД
 	 */
-	public final void createMeasurementDataTable(
-			final List<Measurement> measurements) {
-		measurementForViews = new ArrayList<MeasurementForView>();
+	@Override
+	public final void init(final List<Measurement> measurements) {
+		rows = new ArrayList<Row>();
 
-		Long id = 0L;
+		currentId = 0L;
 		for (Measurement measurement : measurements) {
-			addMeasurement(measurement, id);
-			id++;
+			add(measurement);
 		}
 	}
 
@@ -113,102 +127,46 @@ public class ListOfDataJournalView implements Serializable {
 	 * @param id
 	 *            id измерения в списке
 	 */
-	public final void addMeasurement(final Measurement measurement,
-			final Long id) {
+	@Override
+	public final void add(final Measurement measurement) {
 		/* проверка версии измерения */
 		// Version versionMeas = new Version(measurement.getVersion());
 		// int secondParamOfVersion = versionMeas.getPart(1);
-
+		currentId++;
 		/*
 		 * проверка являются ли измерения начальными в серии испытаний например
 		 * начальными являются испытания с версией = 1
 		 */
 		if (measurement.getParentMeasurement() == null) {
 
-			MeasurementForView measurementsForView = new MeasurementForView();
+			Row row = new DataRow();
 
-			measurementsForView.setId(id);
-			measurementsForView
-					.setFirstDateOfMeasurement(measurement.getDate());
-			measurementsForView.setEquipment(measurement.getEquipment());
-			measurementsForView.setUser(measurement.getUser());
+			row.init(currentId, measurement);
 
-			/*
-			 * установка измерений связанных с данным изделием.
-			 */
-			// List<Measurement> linkedMeasurements = new
-			// ArrayList<Measurement>();
-			// linkedMeasurements.add(measurement);
-			// TODO переделать getLinkedMeasurements(/* versionMeas,
-			// */measurement);
-			measurementsForView.setMeasurement(measurement);
 
 			/* установка актуальных спектров из цикла измерений */
 			List<Spectrum> lastSpectrums =
-					getActualSpectrums(measurementsForView.getMeasurement());
-			measurementsForView.setLastSpectrums(lastSpectrums);
+					getActualSpectrums(row.getMeasurement());
+			row.setSpectrums(lastSpectrums);
 
 			/* установка даты последнего измерения из цикла */
-			DateOfMeasurement lastDateOfMeasurement =
-					getLastDateOfMeasurement(measurementsForView
-							.getMeasurement());
-			measurementsForView.setLastDateOfMeasurement(lastDateOfMeasurement);
+			DateOfMeasurement lastDate = getLastDate(row.getMeasurement());
+			row.setLastDate(lastDate);
 			/*
 			 * добавление подготовленного для отображения измерения к списку
 			 * всех подготовленных измерений.
 			 */
-			measurementForViews.add(measurementsForView);
+			rows.add(row);
 		}
 	}
 
 	/**
 	 * удаление измерения из списка измерений.
 	 */
-	public final void deleteMeasurement() {
-		measurementForViews.remove(selectedMeasurementForView);
-		selectedMeasurementForView = null;
-	}
-
-	/**
-	 * метод позволяет получить только измерения, связанные с текущим циклом
-	 * (версией) измерений.
-	 *
-	 * Из всех измерений, которые проводились с изделием, выбираются только те
-	 * измерения версии которых входят в один цикл измерений.
-	 *
-	 * @param version
-	 *            версия цикла-измерения
-	 * @param measurement
-	 *            измерение, к которому ищем связанные измерения
-	 * @return список измерений, связанных с указанным циклом измерений
-	 */
-	// TODO переделать и периименовать
-	private List<Measurement> getLinkedMeasurements(/* final Version version, */
-	final Measurement measurement) {
-		Equipment equipment = measurement.getEquipment();
-		List<Measurement> listOfMeasurementsForEquip =
-				Lists.newArrayList(equipment.getMeasurements());
-		// List<Measurement> removingMeasurements = new
-		// ArrayList<Measurement>();
-		// int firstParamOfVersion = version.getPart(0);
-		// for (Measurement measurementEquip : listOfMeasurementsForEquip) {
-		// /*
-		// * проверяем версию измерения, измерения должны быть одного цикла,
-		// * т.е. оставляем только измерения, первая цифра которого в версии
-		// * соответсвует версии обрабатываемого измерения
-		// */
-		// Version versionEq = new Version(measurementEquip.getVersion());
-		// int firstParamOfVersionEq = versionEq.getPart(0);
-		// if (firstParamOfVersionEq != firstParamOfVersion) {
-		// /*
-		// * измерения не относящиеся к текущему циклу измерений заносятся
-		// * в список удаляемых измерений
-		// */
-		// removingMeasurements.add(measurementEquip);
-		// }
-		// }
-		// listOfMeasurementsForEquip.removeAll(removingMeasurements);
-		return listOfMeasurementsForEquip;
+	@Override
+	public final void deleteSelected() {
+		rows.remove(selected);
+		selected = null;
 	}
 
 	/**
@@ -225,9 +183,8 @@ public class ListOfDataJournalView implements Serializable {
 	 */
 	private List<Spectrum> getActualSpectrums(final Measurement measurement) {
 
-		Map<Long, Spectrum> actualSpectrumAndParameter =
-				getActualSpectrumAndParameter(new HashMap<Long, Spectrum>(),
-						measurement);
+		Map<Long, Spectrum> actualSpectrumMap =
+			getActualSpectrumMap(new HashMap<Long, Spectrum>(), measurement);
 		// new HashMap<Long, Spectrum>();
 		//
 		// for (Measurement measurement : measurements) {
@@ -258,16 +215,16 @@ public class ListOfDataJournalView implements Serializable {
 		// }
 		// }
 		List<Spectrum> actualSpectrums = new ArrayList<Spectrum>();
-		for (Entry<Long, Spectrum> actualSpectrum : actualSpectrumAndParameter
-				.entrySet()) {
-			actualSpectrums.add(actualSpectrum.getValue());
+		for (Entry<Long, Spectrum> spectrum : actualSpectrumMap.entrySet()) {
+			actualSpectrums.add(spectrum.getValue());
 		}
 
 		return actualSpectrums;
 	}
 
-	private Map<Long, Spectrum> getActualSpectrumAndParameter(
-			Map<Long, Spectrum> prevActual, Measurement measurement) {
+	private Map<Long, Spectrum> getActualSpectrumMap(
+			final Map<Long, Spectrum> prevActualMap,
+			final Measurement measurement) {
 		Map<Long, Spectrum> actualMap = new HashMap<Long, Spectrum>();
 		if (measurement != null) {
 
@@ -296,18 +253,17 @@ public class ListOfDataJournalView implements Serializable {
 
 				for (Entry<Long, Spectrum> actualSpectrum : actualMap
 						.entrySet()) {
-					prevActual.put(actualSpectrum.getKey(),
+					prevActualMap.put(actualSpectrum.getKey(),
 							actualSpectrum.getValue());
 				}
 
-				actualMap = prevActual;
+				actualMap = prevActualMap;
 
 			}
 			Measurement nextMeasurement = measurement.getNextMeasurement();
 			if (nextMeasurement != null) {
 				actualMap =
-						getActualSpectrumAndParameter(prevActual,
-								nextMeasurement);
+						getActualSpectrumMap(prevActualMap, nextMeasurement);
 			}
 		}
 
@@ -324,42 +280,40 @@ public class ListOfDataJournalView implements Serializable {
 	 *            цикл связанных измерений
 	 * @return дата последнего из цикла измерения
 	 */
-	private DateOfMeasurement getLastDateOfMeasurement(
-			final Measurement measurement) {
+	private DateOfMeasurement getLastDate(final Measurement measurement) {
 		Measurement lastMeasurement = null;
 		if (measurement.getNextMeasurement() != null) {
 			lastMeasurement = measurement;
-			while (lastMeasurement.getNextMeasurement() != null)
-			{
+			while (lastMeasurement.getNextMeasurement() != null) {
 				lastMeasurement = lastMeasurement.getNextMeasurement();
 			}
 
 			return lastMeasurement.getDate();
-//		if (measurements.size() > 1) {
-//			DateOfMeasurement lastDateOfMeasurement = null;
-//
-//			for (Measurement measurement : measurements) {
-//				/*
-//				 * установка даты повторных измерений требуется только для
-//				 * испытаний, которым это требуется. например после приемочных
-//				 * испытаний проходят приемосдаточные испытания. проверяем что у
-//				 * приемосдаточных испытаний имеются предшевствующие испытания,
-//				 * и тогда устанавливаем последнюю дату этих испытаний
-//				 */
-//				if (measurement.getPurpose().getPrevPurpose() != null) {
-//					DateOfMeasurement checkingDate = measurement.getDate();
-//					if (lastDateOfMeasurement == null) {
-//						lastDateOfMeasurement = checkingDate;
-//						continue;
-//					}
-//					if (lastDateOfMeasurement.getDate().isBefore(
-//							checkingDate.getDate())) {
-//						lastDateOfMeasurement = checkingDate;
-//					}
-//				}
-//			}
-//			return lastDateOfMeasurement;
-//		}
+			// if (measurements.size() > 1) {
+			// DateOfMeasurement lastDateOfMeasurement = null;
+			//
+			// for (Measurement measurement : measurements) {
+			// /*
+			// * установка даты повторных измерений требуется только для
+			// * испытаний, которым это требуется. например после приемочных
+			// * испытаний проходят приемосдаточные испытания. проверяем что у
+			// * приемосдаточных испытаний имеются предшевствующие испытания,
+			// * и тогда устанавливаем последнюю дату этих испытаний
+			// */
+			// if (measurement.getPurpose().getPrevPurpose() != null) {
+			// DateOfMeasurement checkingDate = measurement.getDate();
+			// if (lastDateOfMeasurement == null) {
+			// lastDateOfMeasurement = checkingDate;
+			// continue;
+			// }
+			// if (lastDateOfMeasurement.getDate().isBefore(
+			// checkingDate.getDate())) {
+			// lastDateOfMeasurement = checkingDate;
+			// }
+			// }
+			// }
+			// return lastDateOfMeasurement;
+			// }
 		}
 		return null;
 	}
@@ -369,22 +323,21 @@ public class ListOfDataJournalView implements Serializable {
 	 *
 	 * запускать после сортировки данных.
 	 *
-	 * @param measurementForViews
+	 * @param rows
 	 *            список отсортированных измерений
 	 * @return список измерений, с убранными повторяющимися датами и моделями.
 	 *
 	 * @deprecated
 	 */
 	@Deprecated
-	private List<MeasurementForView> setVisibleFields(
-			final List<MeasurementForView> measurementForViews) {
+	private List<Row> setVisibleFields(final List<Row> dataRows) {
 
-		if (measurementForViews == null) {
-			return measurementForViews;
+		if (dataRows == null) {
+			return dataRows;
 		}
 
-		if (measurementForViews.isEmpty()) {
-			return measurementForViews;
+		if (dataRows.isEmpty()) {
+			return dataRows;
 		}
 
 		DateTime currentDate = null;
@@ -392,27 +345,26 @@ public class ListOfDataJournalView implements Serializable {
 		String currentModelName = "";
 		String preModelName = "";
 
-		MeasurementForView currentMeasForView = null;
-		MeasurementForView preMeasForView = null;
+		Row currentMeasForView = null;
+		Row preMeasForView = null;
 
 		/*
 		 * идут ли измерения в списке по возрастанию или же убыванию.
 		 */
-		boolean isIncrease = isIncrease(measurementForViews);
+		boolean isIncrease = isIncrease(dataRows);
 
-		for (int i = 0; i < measurementForViews.size(); i++) {
+		for (int i = 0; i < dataRows.size(); i++) {
 
-			currentMeasForView = measurementForViews.get(i);
-			currentDate =
-					currentMeasForView.getFirstDateOfMeasurement().getDate();
+			currentMeasForView = dataRows.get(i);
+			currentDate = currentMeasForView.getFirstDate().getDate();
 			currentModelName =
 					currentMeasForView.getEquipment().getModel().getName();
 
 			currentMeasForView.setEnableFirstDate(true);
 			currentMeasForView.setEnableModelName(true);
 			if (i > 0) {
-				preMeasForView = measurementForViews.get(i - 1);
-				preDate = preMeasForView.getFirstDateOfMeasurement().getDate();
+				preMeasForView = dataRows.get(i - 1);
+				preDate = preMeasForView.getFirstDate().getDate();
 				preModelName =
 						preMeasForView.getEquipment().getModel().getName();
 			} else {
@@ -445,14 +397,14 @@ public class ListOfDataJournalView implements Serializable {
 
 		}
 
-		return measurementForViews;
+		return dataRows;
 	}
 
 	/**
 	 * предворительная проверка, идут ли измерения в списке по возрастанию или
 	 * же убыванию.
 	 *
-	 * @param list
+	 * @param datRows
 	 *            список проверяемых измерений
 	 * @return true если значения в списке идут по возрастанию, false - если по
 	 *         убыванию
@@ -460,22 +412,20 @@ public class ListOfDataJournalView implements Serializable {
 	 * @deprecated
 	 */
 	@Deprecated
-	private boolean isIncrease(final List<MeasurementForView> list) {
-		if (list == null) {
+	private boolean isIncrease(final List<Row> datRows) {
+		if (datRows == null) {
 			return false;
 		}
-		if (list.isEmpty()) {
+		if (datRows.isEmpty()) {
 			return false;
 		}
 		boolean isIncrease = false;
-		MeasurementForView firstMeas = list.get(0);
-		MeasurementForView currentMeas;
-		for (MeasurementForView measurementForView : measurementForViews) {
+		Row firstMeas = datRows.get(0);
+		Row currentMeas;
+		for (Row measurementForView : rows) {
 			currentMeas = measurementForView;
-			DateTime firstDate =
-					firstMeas.getFirstDateOfMeasurement().getDate();
-			DateTime currentDate =
-					currentMeas.getFirstDateOfMeasurement().getDate();
+			DateTime firstDate = firstMeas.getFirstDate().getDate();
+			DateTime currentDate = currentMeas.getFirstDate().getDate();
 			if (firstDate.isEqual(currentDate)) {
 				continue;
 			}

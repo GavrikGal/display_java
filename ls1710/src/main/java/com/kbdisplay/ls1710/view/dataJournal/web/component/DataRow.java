@@ -7,8 +7,10 @@ import java.util.List;
 import com.kbdisplay.ls1710.domain.DateOfMeasurement;
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
+import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.Spectrum;
 import com.kbdisplay.ls1710.domain.User;
+import com.kbdisplay.ls1710.view.dataJournal.Row;
 
 /**
  * измерение, в котором данные и поля подобраны для вывода в список на
@@ -17,7 +19,7 @@ import com.kbdisplay.ls1710.domain.User;
  * @author Gavrik
  *
  */
-public class MeasurementForView implements Serializable {
+public class DataRow implements Serializable, Row {
 
 	/**
 	 * серийный номер класса.
@@ -28,33 +30,30 @@ public class MeasurementForView implements Serializable {
 	 * ID измерения.
 	 */
 	private Long id;
+
 	/**
 	 * дата первого измерения.
 	 */
-	private DateOfMeasurement firstDateOfMeasurement;
-	/**
-	 * включить/выключить отображение даты первого измерения.
-	 */
-	private boolean enableFirstDate;
+	private DateOfMeasurement firstDate;
+
 	/**
 	 * дата последнего измерения.
 	 */
-	private DateOfMeasurement lastDateOfMeasurement;
+	private DateOfMeasurement lastDate;
+
 	/**
 	 * испытуемое изделие.
 	 */
 	private Equipment equipment;
-	/**
-	 * включить/выключить отображение модели изделия.
-	 */
-	private boolean enableModelName;
+
 	/**
 	 * последние результирующие спектры измеренных частот и амплитуд.
 	 *
 	 * выбираются последние актуальные спектры.
 	 *
 	 */
-	private List<Spectrum> lastSpectrums;
+	private List<Spectrum> spectrums;
+
 	/**
 	 * измерения, связанные с данным изделием одним циклом.
 	 *
@@ -63,19 +62,37 @@ public class MeasurementForView implements Serializable {
 	 * второй раз приходит на пи.
 	 */
 	private Measurement measurement;
+
 	/**
 	 * пользователь, проводивший измерения.
 	 */
 	private User user;
 
 	/**
-	 * конструктор по умолчанию инициализирует списки в полях новыми списками
-	 * соответствующего типа.
+	 * включить/выключить отображение даты первого измерения.
 	 */
-	public MeasurementForView() {
-		lastSpectrums = new ArrayList<Spectrum>();
+	private boolean enableFirstDate;
+
+	/**
+	 * включить/выключить отображение модели изделия.
+	 */
+	private boolean enableModelName;
+
+
+	/**
+	 * инициализирует строку таблицы данных соответствующими значениями.
+	 */
+	@Override
+	public void init(final Long id, final Measurement measurement) {
+		this.id = id;
+		this.spectrums = new ArrayList<Spectrum>();
+		this.firstDate = measurement.getDate();
+		this.equipment = measurement.getEquipment();
+		this.user = measurement.getUser();
+		this.measurement = measurement;
 	}
 
+	@Override
 	public final Long getId() {
 		return id;
 	}
@@ -84,24 +101,26 @@ public class MeasurementForView implements Serializable {
 		this.id = id;
 	}
 
-	public final DateOfMeasurement getFirstDateOfMeasurement() {
-		return firstDateOfMeasurement;
+	@Override
+	public final DateOfMeasurement getFirstDate() {
+		return firstDate;
 	}
 
-	public final void setFirstDateOfMeasurement(
-			final DateOfMeasurement firstDateOfMeasurement) {
-		this.firstDateOfMeasurement = firstDateOfMeasurement;
+	public final void setFirstDate(final DateOfMeasurement firstDate) {
+		this.firstDate = firstDate;
 	}
 
-	public final DateOfMeasurement getLastDateOfMeasurement() {
-		return lastDateOfMeasurement;
+	@Override
+	public final DateOfMeasurement getLastDate() {
+		return lastDate;
 	}
 
-	public final void setLastDateOfMeasurement(
-			final DateOfMeasurement lastDateOfMeasurement) {
-		this.lastDateOfMeasurement = lastDateOfMeasurement;
+	@Override
+	public final void setLastDate(final DateOfMeasurement lastDate) {
+		this.lastDate = lastDate;
 	}
 
+	@Override
 	public final Equipment getEquipment() {
 		return equipment;
 	}
@@ -110,14 +129,17 @@ public class MeasurementForView implements Serializable {
 		this.equipment = equipment;
 	}
 
-	public final List<Spectrum> getLastSpectrums() {
-		return lastSpectrums;
+	@Override
+	public final List<Spectrum> getSpectrums() {
+		return spectrums;
 	}
 
-	public final void setLastSpectrums(final List<Spectrum> lastSpectrums) {
-		this.lastSpectrums = lastSpectrums;
+	@Override
+	public final void setSpectrums(final List<Spectrum> spectrums) {
+		this.spectrums = spectrums;
 	}
 
+	@Override
 	public final Measurement getMeasurement() {
 		return measurement;
 	}
@@ -126,6 +148,7 @@ public class MeasurementForView implements Serializable {
 		this.measurement = measurement;
 	}
 
+	@Override
 	public final User getUser() {
 		return user;
 	}
@@ -134,18 +157,27 @@ public class MeasurementForView implements Serializable {
 		this.user = user;
 	}
 
+	@Override
+	public final PurposeOfMeasurement getPurpose() {
+		return measurement.getPurpose();
+	}
+
+	@Override
 	public boolean isEnableFirstDate() {
 		return enableFirstDate;
 	}
 
+	@Override
 	public void setEnableFirstDate(final boolean enableFirstDate) {
 		this.enableFirstDate = enableFirstDate;
 	}
 
+	@Override
 	public boolean isEnableModelName() {
 		return enableModelName;
 	}
 
+	@Override
 	public void setEnableModelName(final boolean enableModelName) {
 		this.enableModelName = enableModelName;
 	}
