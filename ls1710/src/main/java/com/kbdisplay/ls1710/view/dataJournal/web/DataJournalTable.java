@@ -46,7 +46,7 @@ public class DataJournalTable implements Serializable, DataTable {
 	/**
 	 * список отфильтрованных из общего представления измерений.
 	 */
-	private List<Row> filteredRows;
+	private List<Row> filtered;
 	/**
 	 * выделеная строка данных об измерениях.
 	 */
@@ -68,8 +68,6 @@ public class DataJournalTable implements Serializable, DataTable {
 	 * @return - список строк.
 	 */
 	public final List<Row> getRows() {
-		for (Row row : rows) {
-		}
 		return setVisibleFields(rows);
 		// TODO переложить эту часть на javascript
 		// return rows;
@@ -84,14 +82,14 @@ public class DataJournalTable implements Serializable, DataTable {
 	 *
 	 * @return - список отфильтрованных строк.
 	 */
-	public List<Row> getFilteredRows() {
-		return setVisibleFields(filteredRows);
+	public List<Row> getFiltered() {
+		return setVisibleFields(filtered);
 		// TODO переложить эту часть на javascript
-		// return filteredRows;
+		// return filtered;
 	}
 
-	public void setFilteredRows(final List<Row> filteredRows) {
-		this.filteredRows = filteredRows;
+	public void setFiltered(final List<Row> filtered) {
+		this.filtered = filtered;
 	}
 
 	@Override
@@ -129,20 +127,17 @@ public class DataJournalTable implements Serializable, DataTable {
 	 */
 	@Override
 	public final void add(final Measurement measurement) {
-		/* проверка версии измерения */
-		// Version versionMeas = new Version(measurement.getVersion());
-		// int secondParamOfVersion = versionMeas.getPart(1);
 		currentId++;
 		/*
 		 * проверка являются ли измерения начальными в серии испытаний например
-		 * начальными являются испытания с версией = 1
+		 * если у измемения родительское измерение равно null,то измерение
+		 * начальное.
 		 */
 		if (measurement.getParentMeasurement() == null) {
 
 			Row row = new DataRow();
 
 			row.init(currentId, measurement);
-
 
 			/* установка актуальных спектров из цикла измерений */
 			List<Spectrum> lastSpectrums =
@@ -185,35 +180,6 @@ public class DataJournalTable implements Serializable, DataTable {
 
 		Map<Long, Spectrum> actualSpectrumMap =
 			getActualSpectrumMap(new HashMap<Long, Spectrum>(), measurement);
-		// new HashMap<Long, Spectrum>();
-		//
-		// for (Measurement measurement : measurements) {
-		// List<Spectrum> spectrums = measurement.getSpectrums();
-		//
-		// if (!spectrums.isEmpty()) {
-		// /*
-		// * поиск и замена более старых спектров на новые. в качестве
-		// * критерия используется версия спектра, т.е. спектр с большей
-		// * версией актуальнее.
-		// */
-		// for (Spectrum spectrum : spectrums) {
-		// Long parameterId = spectrum.getParameter().getId();
-		// if (!actualSpectrumAndParameter.containsKey(parameterId)) {
-		// actualSpectrumAndParameter.put(parameterId, spectrum);
-		// } else {
-		// int actualVersion =
-		// actualSpectrumAndParameter.get(parameterId)
-		// .getVersion();
-		// int currentVersion = spectrum.getVersion();
-		// if (actualVersion < currentVersion) {
-		// actualSpectrumAndParameter.put(parameterId,
-		// spectrum);
-		// }
-		//
-		// }
-		// }
-		// }
-		// }
 		List<Spectrum> actualSpectrums = new ArrayList<Spectrum>();
 		for (Entry<Long, Spectrum> spectrum : actualSpectrumMap.entrySet()) {
 			actualSpectrums.add(spectrum.getValue());
@@ -289,31 +255,6 @@ public class DataJournalTable implements Serializable, DataTable {
 			}
 
 			return lastMeasurement.getDate();
-			// if (measurements.size() > 1) {
-			// DateOfMeasurement lastDateOfMeasurement = null;
-			//
-			// for (Measurement measurement : measurements) {
-			// /*
-			// * установка даты повторных измерений требуется только для
-			// * испытаний, которым это требуется. например после приемочных
-			// * испытаний проходят приемосдаточные испытания. проверяем что у
-			// * приемосдаточных испытаний имеются предшевствующие испытания,
-			// * и тогда устанавливаем последнюю дату этих испытаний
-			// */
-			// if (measurement.getPurpose().getPrevPurpose() != null) {
-			// DateOfMeasurement checkingDate = measurement.getDate();
-			// if (lastDateOfMeasurement == null) {
-			// lastDateOfMeasurement = checkingDate;
-			// continue;
-			// }
-			// if (lastDateOfMeasurement.getDate().isBefore(
-			// checkingDate.getDate())) {
-			// lastDateOfMeasurement = checkingDate;
-			// }
-			// }
-			// }
-			// return lastDateOfMeasurement;
-			// }
 		}
 		return null;
 	}
@@ -321,7 +262,8 @@ public class DataJournalTable implements Serializable, DataTable {
 	/**
 	 * делает неотображаемыми повторяющиеся элементы даты и модели.
 	 *
-	 * запускать после сортировки данных.
+	 * запускать после сортировки данных. TODO переложить эту функцию на
+	 * javascript
 	 *
 	 * @param rows
 	 *            список отсортированных измерений

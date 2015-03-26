@@ -28,8 +28,8 @@ import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
 import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
 import com.kbdisplay.ls1710.view.dataJournal.DataTable;
-import com.kbdisplay.ls1710.view.dataJournal.web.EditFormDataJournalView;
 import com.kbdisplay.ls1710.view.dataJournal.web.DataJournalTable;
+import com.kbdisplay.ls1710.view.dataJournal.web.EditFormDataJournalView;
 import com.kbdisplay.ls1710.view.dataJournal.web.component.ModelBean;
 
 /**
@@ -57,34 +57,58 @@ public class DataJournalController {
 	 */
 	@Autowired
 	private MeasurementService measurementsService;
+
 	/**
 	 * сервис доступа к моделям изделий.
 	 */
 	@Autowired
 	private ModelService modelService;
+
 	/**
 	 * сервис доступа к измеряемым величинам.
 	 */
 	@Autowired
 	private MeasurandService measurandService;
+
 	/**
 	 * сервис доступа к разрешениям экранов.
 	 */
 	@Autowired
 	private ScreenResolutionService screenResolutionService;
+
 	/**
 	 * сервис доступа к типам спектра.
 	 */
 	@Autowired
 	private TypeOfSpectrumService typeOfSpectrumService;
+
+	/**
+	 * сервис доступа к параметрам спектров.
+	 */
 	@Autowired
 	private SpectrumParameterService spectrumParameterService;
+
+	/**
+	 * сервис сохранения/обновления данных об измерениях.
+	 */
 	@Autowired
 	private MeasurementsUpdaterService updaterService;
+
+	/**
+	 * сервис доступа к измерениям.
+	 */
 	@Autowired
 	private MeasurementService measurementService;
+
+	/**
+	 * сервис доступа к испытуемым изделиям.
+	 */
 	@Autowired
 	private EquipmentService equipmentService;
+
+	/**
+	 * сервис доступа к целям испытаний.
+	 */
 	@Autowired
 	private PurposeOfMeasurementService purposeOfMeasurementService;
 
@@ -157,6 +181,16 @@ public class DataJournalController {
 		return editFormDataJournalView;
 	}
 
+	/**
+	 * сохранить новое измерение из формы редактирования.
+	 *
+	 * TODO заменить на интерфейс
+	 *
+	 * @param editFormDJView
+	 *            - форма редактирования
+	 * @param dataTable
+	 *            - таблица данных измерений
+	 */
 	public void save(final EditFormDataJournalView editFormDJView,
 			final DataTable dataTable) {
 
@@ -171,31 +205,12 @@ public class DataJournalController {
 			SpectrumParameter parameter = editFormDJView.getSpectrumParameter();
 			parameter = spectrumParameterService.save(parameter);
 
-			// Version lastVersion = editFormDJView.getVersion();
-			// Version currentVersion;
-			// if (lastVersion == null) {
-			// currentVersion = new Version("1.0");
-			// } else {
-			// currentVersion = lastVersion;
-			// if (editFormDJView.isRepeated()) {
-			// currentVersion.setPart(1, currentVersion.getPart(1) + 1);
-			// } else {
-			// currentVersion.setPart(0, currentVersion.getPart(0) + 1);
-			// }
-			// }
-
-			// Measurement measurement =
 			updaterService.saveMeasurements(model,
 					editFormDJView.getSerialNumber(), parameter,
 					editFormDJView.getPurposeOfMeasurement(),
 					/* currentVersion, */editFormDJView.getDescription());
 			List<Measurement> measurements = measurementsService.findAll();
 			dataTable.init(measurements);
-			// Equipment newEquipment = new Equipment();
-			// newEquipment.setModel(editFormDJView.getEquipment().getModel());
-			// newEquipment.setSerialNumber(editFormDJView.getEquipment()
-			// .getSerialNumber());
-			// editFormDJView.setEquipment(newEquipment);
 			editFormDJView.setDescription(null);
 
 			FacesContext fc = FacesContext.getCurrentInstance();
@@ -204,20 +219,35 @@ public class DataJournalController {
 					new FacesMessage("Измерение успешно сохранено", "Изделие: "
 							+ model.getName() + " № "
 							+ editFormDJView.getSerialNumber()));
+
+			logger.info("Measurement was updated. Model - " + model.getName()
+					+ ", serial number - " + editFormDJView.getSerialNumber());
 		}
 	}
 
-	// TODO заменить на метод с аргументом selectedRow
-	public void delete(DataTable dataTable1) {
+	/**
+	 * удалить выделеное измерение из БД и из представления.
+	 *
+	 * @param selected
+	 *            - удаляемое измерение.
+	 */
+	public void delete(final Measurement selected) {
+
+		logger.info("Measurement was removed. Measurement date - "
+				+ selected.getDate().getDate() + ", model - "
+				+ selected.getEquipment().getModel().getName()
+				+ ", serial number - "
+				+ selected.getEquipment().getSerialNumber() + ", user - "
+				+ selected.getUser().getLogin());
 
 		FacesContext fc = FacesContext.getCurrentInstance();
 		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
 		DataTable dataTable =
 				(DataTable) fc.getApplication().getELResolver()
-						.getValue(elContext, null, "listOfDataJournalView");
+						.getValue(elContext, null, "dataJournalTable");
 
-		measurementService.delete(dataTable.getSelected().getMeasurement());
+		measurementService.delete(selected);
 
 		dataTable.deleteSelected();
 
@@ -225,54 +255,10 @@ public class DataJournalController {
 	}
 
 	/**
-	 * проверка являются ли испытания для данного изделия повторными.
-	 *
-	 * @param editFormDJView
-	 *            форма редактирования данных таблицы измерений.
-	 *
-	 * @deprecated надо убрать этот метод
-	 */
-	// @Deprecated
-	// public void checkOnRepeatedMeasurement(
-	// final EditFormDataJournalView editFormDJView) {
-	// ModelOfEquipment model = editFormDJView.getModel();
-	// if (model != null) {
-	// String serialNumber = editFormDJView.getSerialNumber();
-	// if (model.getIdModel() != null && serialNumber != null) {
-	// Equipment equipment =
-	// equipmentService.findBySerialNumberAndModel(
-	// serialNumber, model);
-	// List<Measurement> measurements =
-	// measurementService.findByEquipment(equipment);
-	// if (!measurements.isEmpty()) {
-	// DateTime currentDate = new DateTime();
-	// currentDate = currentDate.withTime(0, 0, 0, 0);
-	// boolean repeated = false;
-	// Version version = null;
-	// for (Measurement measurement : measurements) {
-	// DateTime date =
-	// measurement.getDateOfMeasurement().getDate();
-	// if (currentDate.isAfter(date)) {
-	// repeated = true;
-	// } else {
-	// repeated = false;
-	// }
-	// version = new Version(measurement.getVersion());
-	// }
-	// if (repeated) {
-	// editFormDJView.setPurposeOfMeasurement(editFormDJView
-	// .getPurposeOfMeasurements().get(1));
-	// }
-	// // editFormDJView.setRepeated(repeated);
-	// editFormDJView.setVersion(version);
-	// }
-	// }
-	// }
-	// }
-
-	/**
 	 * создает новый бин-поддержки для добавления модели в БД.
 	 *
+	 * @param model
+	 *            - модель изделия, которую надо добавить в приложение.
 	 * @return бин добавления модели.
 	 */
 	public ModelBean newModelBean(final ModelOfEquipment model) {
