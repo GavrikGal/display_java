@@ -113,7 +113,7 @@ public class DataJournalTable implements Serializable, DataTable {
 
 		currentId = 0L;
 		for (Measurement measurement : measurements) {
-			add(measurement);
+			insertRow(measurement);
 		}
 	}
 
@@ -122,12 +122,36 @@ public class DataJournalTable implements Serializable, DataTable {
 	 *
 	 * @param measurement
 	 *            добавляемое измерение
-	 * @param id
-	 *            id измерения в списке
 	 */
 	@Override
 	public final void add(final Measurement measurement) {
-		currentId++;
+
+		Measurement rootMeasurement = measurement;
+		while (rootMeasurement.getParentMeasurement() != null) {
+			rootMeasurement = rootMeasurement.getParentMeasurement();
+		}
+
+		Row rowWithMeasurement = null;
+		for (Row row : rows) {
+			if (row.getId().equals(rootMeasurement.getId())) {
+				rowWithMeasurement = row;
+				break;
+			}
+		}
+		if (rowWithMeasurement == null) {
+			insertRow(rootMeasurement);
+		} else {
+			updateRow(rowWithMeasurement, measurement);
+		}
+	}
+
+	/**
+	 * вставка новой строки измерения в таблицу измерений.
+	 *
+	 * @param measurement - новое измерение.
+	 */
+	public final void insertRow(final Measurement measurement) {
+		//currentId++;
 		/*
 		 * проверка являются ли измерения начальными в серии испытаний например
 		 * если у измемения родительское измерение равно null,то измерение
@@ -137,7 +161,7 @@ public class DataJournalTable implements Serializable, DataTable {
 
 			Row row = new DataRow();
 
-			row.init(currentId, measurement);
+			row.init(measurement.getId(), measurement);
 
 			/* установка актуальных спектров из цикла измерений */
 			List<Spectrum> lastSpectrums =
@@ -155,6 +179,31 @@ public class DataJournalTable implements Serializable, DataTable {
 		}
 	}
 
+	/**
+	 * обновление строки измерения в таблице измерений с новыми данными.
+	 *
+	 * @param row - обновляемая строка.
+	 * @param measurement - новое измерение.
+	 */
+	public final void updateRow(final Row row, final Measurement measurement) {
+
+		//TODO кастыль - исправить нахрен
+		Measurement rootMeasurement = measurement;
+		while (rootMeasurement.getParentMeasurement() != null) {
+			rootMeasurement = rootMeasurement.getParentMeasurement();
+		}
+		// кастыль
+
+		System.out.println(rootMeasurement.getNextMeasurement());
+
+		List<Spectrum> lastSpectrums =
+				getActualSpectrums(rootMeasurement);
+		row.setSpectrums(lastSpectrums);
+
+		if (measurement.getParentMeasurement() != null) {
+			row.setLastDate(measurement.getDate());
+		}
+	}
 	/**
 	 * удаление измерения из списка измерений.
 	 */

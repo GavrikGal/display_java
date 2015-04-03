@@ -939,11 +939,16 @@ public class MeasurementsUpdaterServiceImpl implements
 					newHarmonics.setNoise(noise);
 					newHarmonics.setSpectrum(spectrum);
 					harmonicService.save(newHarmonics);
+					spectrum.getHarmonics().add(newHarmonics);
+
 				}
 			} else {
 				break;
 			}
 		}
+
+		Measurement measurement = spectrum.getMeasurement();
+		measurement.getSpectrums().add(spectrum);
 
 		description = newDescription.getDescription();
 		return description;

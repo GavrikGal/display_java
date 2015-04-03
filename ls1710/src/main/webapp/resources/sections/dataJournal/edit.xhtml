@@ -144,7 +144,7 @@
 							<p:commandButton value="#{msg['label_measurement_save']}"
 								id="save" widgetVar="saveButton"
 								update="editForm:description editForm:spectrumParameters :form:dataTable :messages:message newModelDilog"
-								action="#{dataJournalController.save(editFormDJView, dataJournalTable)}"
+								action="#{dataJournalController.save(editFormDJView)}"
 								immediate="false" type="submit">
 								<p:resetInput target="description" />
 							</p:commandButton>

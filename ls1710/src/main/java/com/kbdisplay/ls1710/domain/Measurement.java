@@ -102,11 +102,17 @@ public class Measurement implements Serializable {
 //	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 //	private List<Measurement> nextMeasurements = new ArrayList<Measurement>();
 
+	/**
+	 * предыдущее измерение.
+	 */
 	@OneToOne
 	@JoinColumn(name = "parent_id")
 	private Measurement parentMeasurement;
 
-	@OneToOne(mappedBy="parentMeasurement")
+	/**
+	 * следующее измерение.
+	 */
+	@OneToOne(mappedBy = "parentMeasurement")
 	private Measurement nextMeasurement;
 
 
@@ -206,22 +212,11 @@ public class Measurement implements Serializable {
 	 this.parentMeasurement = parentMeasurement;
 	 }
 
-
-
-//	 public List<Measurement> getNextMeasurements() {
-//	 return nextMeasurements;
-//	 }
-//
-//	 public void setNextMeasurements(final List<Measurement> nextMeasurements)
-//	 {
-//	 this.nextMeasurements = nextMeasurements;
-//	 }
-
 	public Measurement getNextMeasurement() {
 		return nextMeasurement;
 	}
 
-	public void setNextMeasurement(Measurement nextMeasurement) {
+	public void setNextMeasurement(final Measurement nextMeasurement) {
 		this.nextMeasurement = nextMeasurement;
 	}
 

@@ -191,8 +191,7 @@ public class DataJournalController {
 	 * @param dataTable
 	 *            - таблица данных измерений
 	 */
-	public void save(final EditFormDataJournalView editFormDJView,
-			final DataTable dataTable) {
+	public void save(final EditFormDataJournalView editFormDJView) {
 
 		if (editFormDJView.getModel() != null) {
 
@@ -205,15 +204,22 @@ public class DataJournalController {
 			SpectrumParameter parameter = editFormDJView.getSpectrumParameter();
 			parameter = spectrumParameterService.save(parameter);
 
-			updaterService.saveMeasurements(model,
+			Measurement measurement = updaterService.saveMeasurements(model,
 					editFormDJView.getSerialNumber(), parameter,
 					editFormDJView.getPurposeOfMeasurement(),
-					/* currentVersion, */editFormDJView.getDescription());
-			List<Measurement> measurements = measurementsService.findAll();
-			dataTable.init(measurements);
+					editFormDJView.getDescription());
+			//List<Measurement> measurements = measurementsService.findAll();
+			FacesContext fc = FacesContext.getCurrentInstance();
+			ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+
+			DataTable dataTable =
+					(DataTable) fc.getApplication().getELResolver()
+							.getValue(elContext, null, "dataJournalTable");
+
+			dataTable.add(measurement);
+			//dataTable.init(measurements);
 			editFormDJView.setDescription(null);
 
-			FacesContext fc = FacesContext.getCurrentInstance();
 			fc.addMessage(
 					null,
 					new FacesMessage("Измерение успешно сохранено", "Изделие: "
