@@ -5,7 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:component="http://java.sun.com/jsf/composite/components/dataJournal">
+	xmlns:component="http://java.sun.com/jsf/composite/views/dataJournal/components">
 
 
 
@@ -24,6 +24,8 @@
 		emptyMessage="#{msg['label_measurement_table_empty']}"
 		filteredValue="#{dataJournalTable.filtered}"
 		lazy="false">
+		
+		<p:ajax event="rowDblselect" listener="#{editFormDJView.onRowDbSelect}" update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement" />
 
 		<p:column width="70"
 			filterBy="#{row.firstDate.date}"

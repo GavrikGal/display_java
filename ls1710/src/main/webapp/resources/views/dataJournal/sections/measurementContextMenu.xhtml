@@ -12,8 +12,11 @@
 	окна и id="dataTable" таблицы данных update="measurementDetail" 
 	oncomplete="PF('measurementDialog').show()"  -->
 	<p:contextMenu for="dataTable">
-		<p:menuitem value="View" icon="ui-icon-search" />
-		<p:menuitem value="Delete" update="dataTable :messages:message"
+		<p:menuitem value="#{msg['menu_edit']}" update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement"
+			icon="ui-icon-pencil"
+			action="#{dataJournalController.edit(dataJournalTable.selected.measurement)}" />
+		<p:menuitem value="#{msg['menu_view']}" icon="ui-icon-search" />
+		<p:menuitem value="#{msg['menu_delete']}" update="dataTable :messages:message"
 			icon="ui-icon-close"
 			action="#{dataJournalController.delete(dataJournalTable.selected.measurement)}" />
 	</p:contextMenu>

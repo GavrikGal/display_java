@@ -5,7 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:component="http://java.sun.com/jsf/composite/components/dataJournal">
+	xmlns:component="http://java.sun.com/jsf/composite/views/dataJournal/components">
 
 
 	<div class="listPanel">
@@ -18,7 +18,7 @@
 				контекстного меню и widgetVar="measurementDialog" диалогового 
 				окна и id="measurementForViews" таблицы данных  -->
 				<ui:include
-					src="/resources/sections/dataJournal/measurementContextMenu.xhtml" />
+					src="/resources/views/dataJournal/sections/measurementContextMenu.xhtml" />
 
 
 				<!-- таблица данных с измерениями. 
@@ -27,7 +27,7 @@
 				update="measurementForViews" контекстного меню и
 				id="measurementForViews" таблицы данных -->
 				<ui:include
-					src="/resources/sections/dataJournal/measurementDataTable.xhtml" />
+					src="/resources/views/dataJournal/sections/measurementDataTable.xhtml" />
 
 
 				<!-- диалоговое окно детальной информации об измерении. 
@@ -36,7 +36,7 @@
 				update="measurementDetail" контекстного меню и
 				widgetVar="measurementDialog" диалогового окна -->
 				<ui:include
-					src="/resources/sections/dataJournal/measurementDetailDialog.xhtml" />
+					src="/resources/views/dataJournal/sections/measurementDetailDialog.xhtml" />
 			</h:form>
 		</p:panel>
 	</div>

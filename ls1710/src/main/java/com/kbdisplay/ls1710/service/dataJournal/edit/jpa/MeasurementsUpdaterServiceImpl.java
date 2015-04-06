@@ -655,6 +655,7 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		if (lastPrevMeasurement != null) {
 			measurement.setParentMeasurement(lastPrevMeasurement);
+			lastPrevMeasurement.setNextMeasurement(measurement);
 		}
 
 		measurement = measurementService.save(measurement);

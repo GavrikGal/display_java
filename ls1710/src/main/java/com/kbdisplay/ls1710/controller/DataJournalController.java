@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
@@ -175,7 +176,7 @@ public class DataJournalController {
 			editFormDataJournalView.getSpectrumParameter().setScreenResolution(
 					lastSpectrumParameter.getScreenResolution());
 		} else {
-			System.out.println(" Last Measurement do not initialize!!");
+			logger.info(" Last Measurement do not initialize!!");
 		}
 
 		return editFormDataJournalView;
@@ -188,8 +189,6 @@ public class DataJournalController {
 	 *
 	 * @param editFormDJView
 	 *            - форма редактирования
-	 * @param dataTable
-	 *            - таблица данных измерений
 	 */
 	public void save(final EditFormDataJournalView editFormDJView) {
 
@@ -204,20 +203,21 @@ public class DataJournalController {
 			SpectrumParameter parameter = editFormDJView.getSpectrumParameter();
 			parameter = spectrumParameterService.save(parameter);
 
-			Measurement measurement = updaterService.saveMeasurements(model,
-					editFormDJView.getSerialNumber(), parameter,
-					editFormDJView.getPurposeOfMeasurement(),
-					editFormDJView.getDescription());
-			//List<Measurement> measurements = measurementsService.findAll();
+			Measurement measurement =
+					updaterService.saveMeasurements(model,
+							editFormDJView.getSerialNumber(), parameter,
+							editFormDJView.getPurposeOfMeasurement(),
+							editFormDJView.getDescription());
+			// List<Measurement> measurements = measurementsService.findAll();
 			FacesContext fc = FacesContext.getCurrentInstance();
-			ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-
+			ELContext elContext =
+					FacesContext.getCurrentInstance().getELContext();
 			DataTable dataTable =
 					(DataTable) fc.getApplication().getELResolver()
 							.getValue(elContext, null, "dataJournalTable");
 
 			dataTable.add(measurement);
-			//dataTable.init(measurements);
+			// dataTable.init(measurements);
 			editFormDJView.setDescription(null);
 
 			fc.addMessage(
@@ -253,11 +253,50 @@ public class DataJournalController {
 				(DataTable) fc.getApplication().getELResolver()
 						.getValue(elContext, null, "dataJournalTable");
 
+		Long equipId = selected.getEquipment().getId();
+
 		measurementService.delete(selected);
+		Equipment equipment = equipmentService.findById(equipId);
+
+		System.out.println(equipment.getMeasurements());
+
+		if (equipment.getMeasurements().size() < 1) {
+			equipmentService.delete(equipment);
+		}
 
 		dataTable.deleteSelected();
 
 		fc.addMessage(null, new FacesMessage("Измерение удалено"));
+	}
+
+	/**
+	 * установить в форме редактирования выделеное измерение.
+	 *
+	 * @param selected - редактируемое измерение.
+	 */
+	public void edit(final Measurement selected) {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+
+		EditFormDataJournalView editForm =
+				(EditFormDataJournalView) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "editFormDJView");
+		if (selected.getEquipment().getModel() != null) {
+			editForm.setModel(selected.getEquipment().getModel());
+		}
+		if (selected.getEquipment().getSerialNumber() != null) {
+			editForm.setSerialNumber(selected.getEquipment().getSerialNumber());
+		}
+
+		if (selected.getNextMeasurement() != null) {
+			Measurement lastMeasurement = selected.getNextMeasurement();
+			while (lastMeasurement.getNextMeasurement() != null) {
+				lastMeasurement = lastMeasurement.getNextMeasurement();
+			}
+			editForm.setPurposeOfMeasurement(lastMeasurement.getPurpose());
+		} else {
+			editForm.setPurposeOfMeasurement(selected.getPurpose());
+		}
 	}
 
 	/**

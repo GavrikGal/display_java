@@ -14,6 +14,10 @@
             <base-name>MessageResources</base-name>
             <var>msg</var>
        </resource-bundle> 
+       <resource-bundle>
+       		<base-name>DevelopResources</base-name>
+       		<var>dev</var>
+       </resource-bundle>
 	</application>
 	<managed-bean>
 		<managed-bean-name>modelService</managed-bean-name>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,13 +55,10 @@ public class MeasurementServiceImpl implements MeasurementService {
 	}
 
 	@Override
+	@Modifying
+	@Transactional(readOnly = false)
 	public void delete(Measurement measurement) {
-		Equipment delitingEquipment = measurement.getEquipment();
-		if (delitingEquipment.getMeasurements().size() > 1) {
-			measurementRepository.delete(measurement);
-		} else {
-			equipmentRepository.delete(delitingEquipment);
-		}
+		measurementRepository.delete(measurement.getId());
 	}
 
 	@Override

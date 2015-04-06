@@ -98,7 +98,7 @@ public class Harmonic implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "spectrum_id")
+	@JoinColumn(name = "spectrum_id", updatable = true)
 	public Spectrum getSpectrum() {
 		return spectrum;
 	}

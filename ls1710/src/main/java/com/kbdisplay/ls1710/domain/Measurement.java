@@ -83,24 +83,26 @@ public class Measurement implements Serializable {
 	@JoinColumn(name = "norm_id")
 	private Norm norm;
 
-//	/**
-//	 * предыдущее испытание. например перед испытаниями приемосдаточными
-//	 * испытаниями идут приемочные испытания, а также перед типовыми испытаниями
-//	 * могут идти приемосдаточные испытания.
-//	 */
-//	@ManyToOne
-//	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-//	@JoinColumn(name = "parent_id")
-//	private Measurement parentMeasurement;
-//
-//	/**
-//	 * все испытания идущие после текущего испытания.
-//	 * например после пи-испытания будет идти пси-испытание
-//	 */
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parentMeasurement",
-//			cascade = CascadeType.ALL)
-//	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-//	private List<Measurement> nextMeasurements = new ArrayList<Measurement>();
+	// /**
+	// * предыдущее испытание. например перед испытаниями приемосдаточными
+	// * испытаниями идут приемочные испытания, а также перед типовыми
+	// испытаниями
+	// * могут идти приемосдаточные испытания.
+	// */
+	// @ManyToOne
+	// @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	// @JoinColumn(name = "parent_id")
+	// private Measurement parentMeasurement;
+	//
+	// /**
+	// * все испытания идущие после текущего испытания.
+	// * например после пи-испытания будет идти пси-испытание
+	// */
+	// @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentMeasurement",
+	// cascade = CascadeType.ALL)
+	// @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	// private List<Measurement> nextMeasurements = new
+	// ArrayList<Measurement>();
 
 	/**
 	 * предыдущее измерение.
@@ -114,7 +116,6 @@ public class Measurement implements Serializable {
 	 */
 	@OneToOne(mappedBy = "parentMeasurement")
 	private Measurement nextMeasurement;
-
 
 	// TODO заменить на результаты испытаний
 	/**
@@ -204,13 +205,13 @@ public class Measurement implements Serializable {
 		this.norm = norm;
 	}
 
-	 public Measurement getParentMeasurement() {
-	 return parentMeasurement;
-	 }
+	public Measurement getParentMeasurement() {
+		return parentMeasurement;
+	}
 
-	 public void setParentMeasurement(final Measurement parentMeasurement) {
-	 this.parentMeasurement = parentMeasurement;
-	 }
+	public void setParentMeasurement(final Measurement parentMeasurement) {
+		this.parentMeasurement = parentMeasurement;
+	}
 
 	public Measurement getNextMeasurement() {
 		return nextMeasurement;

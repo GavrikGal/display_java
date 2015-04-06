@@ -194,8 +194,6 @@ public class DataJournalTable implements Serializable, DataTable {
 		}
 		// кастыль
 
-		System.out.println(rootMeasurement.getNextMeasurement());
-
 		List<Spectrum> lastSpectrums =
 				getActualSpectrums(rootMeasurement);
 		row.setSpectrums(lastSpectrums);

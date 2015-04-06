@@ -105,7 +105,7 @@ public class Spectrum implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "measurement_id")
+	@JoinColumn(name = "measurement_id", updatable = true)
 	public Measurement getMeasurement() {
 		return measurement;
 	}

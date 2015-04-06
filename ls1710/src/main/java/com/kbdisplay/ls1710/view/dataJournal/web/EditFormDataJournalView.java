@@ -3,14 +3,17 @@ package com.kbdisplay.ls1710.view.dataJournal.web;
 import java.io.Serializable;
 import java.util.List;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.stereotype.Component;
 
 import com.kbdisplay.ls1710.domain.Measurand;
+import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
+import com.kbdisplay.ls1710.view.dataJournal.Row;
 
 /**
  * представление формы для добавления/редактирования списка измерений.
@@ -53,7 +56,7 @@ public class EditFormDataJournalView implements Serializable {
 	 *
 	 * определяет начало нового цикла измерений или продолжение старого.
 	 */
-//	private Version version;
+	// private Version version;
 
 	/**
 	 * описание измерения.
@@ -107,7 +110,7 @@ public class EditFormDataJournalView implements Serializable {
 		spectrumParameter = new SpectrumParameter();
 		repeated = false;
 		showNewModelDialog = false;
-//		version = null;
+		// version = null;
 	}
 
 	/*
@@ -146,13 +149,13 @@ public class EditFormDataJournalView implements Serializable {
 		this.purposeOfMeasurement = purposeOfMeasurement;
 	}
 
-//	public Version getVersion() {
-//		return version;
-//	}
-//
-//	public void setVersion(final Version version) {
-//		this.version = version;
-//	}
+	// public Version getVersion() {
+	// return version;
+	// }
+	//
+	// public void setVersion(final Version version) {
+	// this.version = version;
+	// }
 
 	public String getDescription() {
 		return this.description;
@@ -225,4 +228,27 @@ public class EditFormDataJournalView implements Serializable {
 		this.purposeOfMeasurements = purposeOfMeasurements;
 	}
 
+	/**
+	 * обработчик события, когда по строке совершен двойной клик.
+	 *
+	 * @param event - событие двойного клика.
+	 */
+	public void onRowDbSelect(final SelectEvent event) {
+		Row row = (Row) event.getObject();
+		this.model = row.getEquipment().getModel();
+		this.serialNumber = row.getEquipment().getSerialNumber();
+
+		// установка цели последней испытаний.
+		if (row.getMeasurement().getNextMeasurement() != null) {
+			Measurement lastMeasurement =
+					row.getMeasurement().getNextMeasurement();
+			while (lastMeasurement.getNextMeasurement() != null) {
+				lastMeasurement = lastMeasurement.getNextMeasurement();
+			}
+			this.purposeOfMeasurement = lastMeasurement.getPurpose();
+			System.out.println(this.purposeOfMeasurement.getName());
+		} else {
+			this.purposeOfMeasurement = row.getMeasurement().getPurpose();
+		}
+	}
 }

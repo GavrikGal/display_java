@@ -62,7 +62,6 @@ public class Equipment implements Serializable {
 		return serialVersionUID;
 	}
 
-
 	/**
 	 * Получение ID изделия.
 	 *
@@ -75,7 +74,6 @@ public class Equipment implements Serializable {
 		return id;
 	}
 
-
 	/**
 	 * Установка ID изделия.
 	 *
@@ -85,7 +83,6 @@ public class Equipment implements Serializable {
 	public void setId(final Long id) {
 		this.id = id;
 	}
-
 
 	/**
 	 * Получение модели изделия.
@@ -98,7 +95,6 @@ public class Equipment implements Serializable {
 		return model;
 	}
 
-
 	/**
 	 * Установка модели изделия.
 	 *
@@ -108,7 +104,6 @@ public class Equipment implements Serializable {
 	public void setModel(final ModelOfEquipment model) {
 		this.model = model;
 	}
-
 
 	/**
 	 * Получение серийного номера изделия.
@@ -120,7 +115,6 @@ public class Equipment implements Serializable {
 		return serialNumber;
 	}
 
-
 	/**
 	 * Установка серийного номера изделия.
 	 *
@@ -131,7 +125,6 @@ public class Equipment implements Serializable {
 		this.serialNumber = serialNumber;
 	}
 
-
 	/**
 	 * Получение списка измерений, соответствующих изделию.
 	 *
@@ -141,12 +134,11 @@ public class Equipment implements Serializable {
 	 * @return список измерений модели
 	 */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "equipment",
-			cascade = CascadeType.ALL, orphanRemoval = true)
+			cascade = CascadeType.MERGE, orphanRemoval = false)
 	@OrderBy("id")
 	public Set<Measurement> getMeasurements() {
 		return this.measurements;
 	}
-
 
 	/**
 	 * Установка списка измерений, соответствующих изделию.
