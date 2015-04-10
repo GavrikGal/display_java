@@ -1,10 +1,12 @@
-package com.kbdisplay.ls1710.view.dataJournal.web;
+package com.kbdisplay.ls1710.view.dataJournal.web.component;
 
 import java.io.Serializable;
 import java.util.List;
 
-import org.primefaces.event.SelectEvent;
-import org.springframework.stereotype.Component;
+import javax.el.ELContext;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
@@ -13,21 +15,26 @@ import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
-import com.kbdisplay.ls1710.view.dataJournal.Row;
+import com.kbdisplay.ls1710.service.data.MeasurandService;
+import com.kbdisplay.ls1710.service.data.ModelService;
+import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
+import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
+import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
+import com.kbdisplay.ls1710.view.dataJournal.EditData;
 
 /**
- * представление формы для добавления/редактирования списка измерений.
+ * данные формы для редактирования.
  *
  * @author Gavrik
- *
  */
-@Component("editFormDataJournalView")
-public class EditFormDataJournalView implements Serializable {
+@ManagedBean
+@ViewScoped
+public class EditFormData implements Serializable, EditData {
 
 	/**
-	 * серийный номер класса.
+	 *
 	 */
-	private static final long serialVersionUID = 141495139686315409L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * модель испытуемого изделия.
@@ -52,29 +59,12 @@ public class EditFormDataJournalView implements Serializable {
 	private PurposeOfMeasurement purposeOfMeasurement;
 
 	/**
-	 * версия измерений.
-	 *
-	 * определяет начало нового цикла измерений или продолжение старого.
-	 */
-	// private Version version;
-
-	/**
 	 * описание измерения.
 	 *
 	 * сюда записываются данные пользователем, затем они парсятся и заносятся в
 	 * БД.
 	 */
 	private String description;
-
-	/**
-	 * являются ли испытания повторными.
-	 */
-	private boolean repeated;
-
-	/**
-	 * отображать ли диалог добавления новой модели.
-	 */
-	private boolean showNewModelDialog;
 
 	/**
 	 * список доступных моделей изделий.
@@ -105,150 +95,164 @@ public class EditFormDataJournalView implements Serializable {
 	/**
 	 * конструктор по умолчанию.
 	 */
-	public EditFormDataJournalView() {
+	public EditFormData() {
 		model = null;
 		spectrumParameter = new SpectrumParameter();
-		repeated = false;
-		showNewModelDialog = false;
-		// version = null;
 	}
 
-	/*
-	 * геттеры и сеттеры.
-	 */
-	public SpectrumParameter getSpectrumParameter() {
-		return spectrumParameter;
+	@Override
+	public void init() {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+
+		ModelService modelService =
+				(ModelService) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "modelService");
+		MeasurandService measurandService =
+				(MeasurandService) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "measurandService");
+		ScreenResolutionService screenResolutionService =
+				(ScreenResolutionService) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "screenResolutionService");
+		TypeOfSpectrumService typeOfSpectrumService =
+				(TypeOfSpectrumService) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "typeOfSpectrumService");
+		PurposeOfMeasurementService purposeOfMeasurementService =
+				(PurposeOfMeasurementService) fc
+						.getApplication()
+						.getELResolver()
+						.getValue(elContext, null,
+								"purposeOfMeasurementService");
+
+		modelOfEquipments = modelService.findAll();
+		measurands = measurandService.findAll();
+		screenResolutions = screenResolutionService.findAll();
+		typeOfSpectrums = typeOfSpectrumService.findAll();
+		purposeOfMeasurements = purposeOfMeasurementService.findAll();
 	}
 
+	@Override
+	public void initSelected(final Measurement selectedMeasurement) {
+		model = selectedMeasurement.getEquipment().getModel();
+		SpectrumParameter lastSpectrumParameter =
+				selectedMeasurement.getSpectrums()
+						.get(selectedMeasurement.getSpectrums().size() - 1)
+						.getParameter();
+		spectrumParameter.setMeasurand(lastSpectrumParameter.getMeasurand());
+		spectrumParameter.setTypeOfSpectrum(lastSpectrumParameter
+				.getTypeOfSpectrum());
+		spectrumParameter.setScreenResolution(lastSpectrumParameter
+				.getScreenResolution());
+		purposeOfMeasurement = selectedMeasurement.getPurpose();
+	};
+
+	@Override
 	public ModelOfEquipment getModel() {
 		return model;
 	}
 
+	@Override
 	public void setModel(final ModelOfEquipment model) {
 		this.model = model;
 	}
 
+	@Override
 	public String getSerialNumber() {
 		return serialNumber;
 	}
 
+	@Override
 	public void setSerialNumber(final String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
 
-	public void setSpectrumParameter(final SpectrumParameter spectrParameter) {
-		this.spectrumParameter = spectrParameter;
+	@Override
+	public SpectrumParameter getSpectrumParameter() {
+		return spectrumParameter;
 	}
 
+	@Override
+	public void setSpectrumParameter(final SpectrumParameter parameter) {
+		this.spectrumParameter = parameter;
+	}
+
+	@Override
 	public PurposeOfMeasurement getPurposeOfMeasurement() {
 		return purposeOfMeasurement;
 	}
 
-	public void setPurposeOfMeasurement(
-			final PurposeOfMeasurement purposeOfMeasurement) {
-		this.purposeOfMeasurement = purposeOfMeasurement;
+	@Override
+	public void setPurposeOfMeasurement(final PurposeOfMeasurement purpose) {
+		this.purposeOfMeasurement = purpose;
 	}
 
-	// public Version getVersion() {
-	// return version;
-	// }
-	//
-	// public void setVersion(final Version version) {
-	// this.version = version;
-	// }
-
+	@Override
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
+	@Override
 	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public boolean isRepeated() {
-		return repeated;
-	}
-
-	public void setRepeated(final boolean repeated) {
-		this.repeated = repeated;
-	}
-
-	public boolean isShowNewModelDialog() {
-		return showNewModelDialog;
-	}
-
-	public void setShowNewModelDialog(final boolean showNewModelDialog) {
-		this.showNewModelDialog = showNewModelDialog;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
+	@Override
 	public List<ModelOfEquipment> getModelOfEquipments() {
 		return modelOfEquipments;
 	}
 
+	@Override
 	public void setModelOfEquipments(
 			final List<ModelOfEquipment> modelOfEquipments) {
 		this.modelOfEquipments = modelOfEquipments;
 	}
 
+	@Override
 	public List<Measurand> getMeasurands() {
 		return measurands;
 	}
 
+	@Override
 	public void setMeasurands(final List<Measurand> measurands) {
 		this.measurands = measurands;
 	}
 
+	@Override
 	public List<ScreenResolution> getScreenResolutions() {
 		return screenResolutions;
 	}
 
+	@Override
 	public void setScreenResolutions(
 			final List<ScreenResolution> screenResolutions) {
 		this.screenResolutions = screenResolutions;
 	}
 
+	@Override
 	public List<TypeOfSpectrum> getTypeOfSpectrums() {
 		return typeOfSpectrums;
 	}
 
+	@Override
 	public void setTypeOfSpectrums(final List<TypeOfSpectrum> typeOfSpectrums) {
 		this.typeOfSpectrums = typeOfSpectrums;
 	}
 
+	@Override
 	public List<PurposeOfMeasurement> getPurposeOfMeasurements() {
 		return purposeOfMeasurements;
 	}
 
+	@Override
 	public void setPurposeOfMeasurements(
 			final List<PurposeOfMeasurement> purposeOfMeasurements) {
 		this.purposeOfMeasurements = purposeOfMeasurements;
 	}
 
-	/**
-	 * обработчик события, когда по строке совершен двойной клик.
-	 *
-	 * @param event - событие двойного клика.
-	 */
-	public void onRowDbSelect(final SelectEvent event) {
-		Row row = (Row) event.getObject();
-		this.model = row.getEquipment().getModel();
-		this.serialNumber = row.getEquipment().getSerialNumber();
 
-		// установка цели последней испытаний.
-		if (row.getMeasurement().getNextMeasurement() != null) {
-			Measurement lastMeasurement =
-					row.getMeasurement().getNextMeasurement();
-			while (lastMeasurement.getNextMeasurement() != null) {
-				lastMeasurement = lastMeasurement.getNextMeasurement();
-			}
-			this.purposeOfMeasurement = lastMeasurement.getPurpose();
-			System.out.println(this.purposeOfMeasurement.getName());
-		} else {
-			this.purposeOfMeasurement = row.getMeasurement().getPurpose();
-		}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
+
+
 }

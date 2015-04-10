@@ -14,7 +14,7 @@
 	<p:contextMenu for="dataTable">
 		<p:menuitem value="#{msg['menu_edit']}" update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement"
 			icon="ui-icon-pencil"
-			action="#{dataJournalController.edit(dataJournalTable.selected.measurement)}" />
+			action="#{editFormDJView.edit(dataJournalTable.selected.measurement)}" />
 		<p:menuitem value="#{msg['menu_view']}" icon="ui-icon-search" />
 		<p:menuitem value="#{msg['menu_delete']}" update="dataTable :messages:message"
 			icon="ui-icon-close"

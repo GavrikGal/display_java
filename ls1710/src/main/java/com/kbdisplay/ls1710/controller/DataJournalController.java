@@ -12,25 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.kbdisplay.ls1710.domain.Equipment;
-import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
-import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
-import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
-import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
-import com.kbdisplay.ls1710.service.data.MeasurandService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
-import com.kbdisplay.ls1710.service.data.ModelService;
-import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
-import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
 import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
-import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
 import com.kbdisplay.ls1710.view.dataJournal.DataTable;
+import com.kbdisplay.ls1710.view.dataJournal.EditForm;
+import com.kbdisplay.ls1710.view.dataJournal.web.DataJournalEditForm;
 import com.kbdisplay.ls1710.view.dataJournal.web.DataJournalTable;
-import com.kbdisplay.ls1710.view.dataJournal.web.EditFormDataJournalView;
 import com.kbdisplay.ls1710.view.dataJournal.web.component.ModelBean;
 
 /**
@@ -57,31 +49,7 @@ public class DataJournalController {
 	 * сервис доступа к данным по измерениям.
 	 */
 	@Autowired
-	private MeasurementService measurementsService;
-
-	/**
-	 * сервис доступа к моделям изделий.
-	 */
-	@Autowired
-	private ModelService modelService;
-
-	/**
-	 * сервис доступа к измеряемым величинам.
-	 */
-	@Autowired
-	private MeasurandService measurandService;
-
-	/**
-	 * сервис доступа к разрешениям экранов.
-	 */
-	@Autowired
-	private ScreenResolutionService screenResolutionService;
-
-	/**
-	 * сервис доступа к типам спектра.
-	 */
-	@Autowired
-	private TypeOfSpectrumService typeOfSpectrumService;
+	private MeasurementService measurementService;
 
 	/**
 	 * сервис доступа к параметрам спектров.
@@ -96,22 +64,10 @@ public class DataJournalController {
 	private MeasurementsUpdaterService updaterService;
 
 	/**
-	 * сервис доступа к измерениям.
-	 */
-	@Autowired
-	private MeasurementService measurementService;
-
-	/**
 	 * сервис доступа к испытуемым изделиям.
 	 */
 	@Autowired
 	private EquipmentService equipmentService;
-
-	/**
-	 * сервис доступа к целям испытаний.
-	 */
-	@Autowired
-	private PurposeOfMeasurementService purposeOfMeasurementService;
 
 
 	/**
@@ -124,7 +80,7 @@ public class DataJournalController {
 		logger.info("Creating new list of measurement for data Journal");
 
 		DataTable dataTable = new DataJournalTable();
-		List<Measurement> measurements = measurementsService.findAll();
+		List<Measurement> measurements = measurementService.findAll();
 		if (measurements.size() > 0) {
 			lastMeasurement = measurements.get(measurements.size() - 1);
 		} else {
@@ -140,46 +96,15 @@ public class DataJournalController {
 	 *
 	 * @return форму для редактирования списка измерений
 	 */
-	public final EditFormDataJournalView newEditFormDataJournalView() {
+	public final EditForm newEditFormDataJournalView() {
 
 		logger.info("Creating new edit form for data Journal");
 
-		List<ModelOfEquipment> modelOfEquipments = modelService.findAll();
-		List<Measurand> measurands = measurandService.findAll();
-		List<ScreenResolution> screenResolutions =
-				screenResolutionService.findAll();
-		List<TypeOfSpectrum> typeOfSpectrums = typeOfSpectrumService.findAll();
-		List<PurposeOfMeasurement> purposeOfMeasurements =
-				purposeOfMeasurementService.findAll();
+		EditForm editForm = new DataJournalEditForm();
 
-		EditFormDataJournalView editFormDataJournalView =
-				new EditFormDataJournalView();
-		editFormDataJournalView.setModelOfEquipments(modelOfEquipments);
-		editFormDataJournalView.setMeasurands(measurands);
-		editFormDataJournalView.setScreenResolutions(screenResolutions);
-		editFormDataJournalView.setTypeOfSpectrums(typeOfSpectrums);
-		editFormDataJournalView.setPurposeOfMeasurements(purposeOfMeasurements);
-		editFormDataJournalView.setPurposeOfMeasurement(purposeOfMeasurements
-				.get(0));
+		editForm.init(lastMeasurement);
 
-		if (lastMeasurement != null) {
-			editFormDataJournalView.setModel(lastMeasurement.getEquipment()
-					.getModel());
-			SpectrumParameter lastSpectrumParameter =
-					lastMeasurement.getSpectrums()
-							.get(lastMeasurement.getSpectrums().size() - 1)
-							.getParameter();
-			editFormDataJournalView.getSpectrumParameter().setMeasurand(
-					lastSpectrumParameter.getMeasurand());
-			editFormDataJournalView.getSpectrumParameter().setTypeOfSpectrum(
-					lastSpectrumParameter.getTypeOfSpectrum());
-			editFormDataJournalView.getSpectrumParameter().setScreenResolution(
-					lastSpectrumParameter.getScreenResolution());
-		} else {
-			logger.info(" Last Measurement do not initialize!!");
-		}
-
-		return editFormDataJournalView;
+		return editForm;
 	}
 
 	/**
@@ -187,28 +112,29 @@ public class DataJournalController {
 	 *
 	 * TODO заменить на интерфейс
 	 *
-	 * @param editFormDJView
+	 * @param editForm
 	 *            - форма редактирования
 	 */
-	public void save(final EditFormDataJournalView editFormDJView) {
+	public void save(final EditForm editForm) {
 
-		if (editFormDJView.getModel() != null) {
+		if (editForm.getData().getModel() != null) {
 
-			ModelOfEquipment model = editFormDJView.getModel();
+			ModelOfEquipment model = editForm.getData().getModel();
 			if (model.getId() == null) {
-				editFormDJView.setShowNewModelDialog(true);
+				editForm.setShowNewModelDialog(true);
 				return;
 			}
 
-			SpectrumParameter parameter = editFormDJView.getSpectrumParameter();
+			SpectrumParameter parameter =
+					editForm.getData().getSpectrumParameter();
 			parameter = spectrumParameterService.save(parameter);
 
 			Measurement measurement =
-					updaterService.saveMeasurements(model,
-							editFormDJView.getSerialNumber(), parameter,
-							editFormDJView.getPurposeOfMeasurement(),
-							editFormDJView.getDescription());
-			// List<Measurement> measurements = measurementsService.findAll();
+					updaterService.saveMeasurements(model, editForm.getData()
+							.getSerialNumber(), parameter, editForm.getData()
+							.getPurposeOfMeasurement(), editForm.getData()
+							.getDescription());
+
 			FacesContext fc = FacesContext.getCurrentInstance();
 			ELContext elContext =
 					FacesContext.getCurrentInstance().getELContext();
@@ -217,17 +143,15 @@ public class DataJournalController {
 							.getValue(elContext, null, "dataJournalTable");
 
 			dataTable.add(measurement);
-			// dataTable.init(measurements);
-			editFormDJView.setDescription(null);
+			editForm.getData().setDescription(null);
 
-			fc.addMessage(
-					null,
-					new FacesMessage("Измерение успешно сохранено", "Изделие: "
-							+ model.getName() + " № "
-							+ editFormDJView.getSerialNumber()));
+			fc.addMessage(null, new FacesMessage("Измерение успешно сохранено",
+					"Изделие: " + model.getName() + " № "
+							+ editForm.getData().getSerialNumber()));
 
 			logger.info("Measurement was updated. Model - " + model.getName()
-					+ ", serial number - " + editFormDJView.getSerialNumber());
+					+ ", serial number - "
+					+ editForm.getData().getSerialNumber());
 		}
 	}
 
@@ -267,36 +191,6 @@ public class DataJournalController {
 		dataTable.deleteSelected();
 
 		fc.addMessage(null, new FacesMessage("Измерение удалено"));
-	}
-
-	/**
-	 * установить в форме редактирования выделеное измерение.
-	 *
-	 * @param selected - редактируемое измерение.
-	 */
-	public void edit(final Measurement selected) {
-		FacesContext fc = FacesContext.getCurrentInstance();
-		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-
-		EditFormDataJournalView editForm =
-				(EditFormDataJournalView) fc.getApplication().getELResolver()
-						.getValue(elContext, null, "editFormDJView");
-		if (selected.getEquipment().getModel() != null) {
-			editForm.setModel(selected.getEquipment().getModel());
-		}
-		if (selected.getEquipment().getSerialNumber() != null) {
-			editForm.setSerialNumber(selected.getEquipment().getSerialNumber());
-		}
-
-		if (selected.getNextMeasurement() != null) {
-			Measurement lastMeasurement = selected.getNextMeasurement();
-			while (lastMeasurement.getNextMeasurement() != null) {
-				lastMeasurement = lastMeasurement.getNextMeasurement();
-			}
-			editForm.setPurposeOfMeasurement(lastMeasurement.getPurpose());
-		} else {
-			editForm.setPurposeOfMeasurement(selected.getPurpose());
-		}
 	}
 
 	/**

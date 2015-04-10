@@ -18,7 +18,7 @@
 		<config>java:com.kbdisplay.ls1710.view.converter.ModelOfEqupmentConverter</config>
 		<config>java:com.kbdisplay.ls1710.view.converter.PurposeOfMeasurementConverter</config>
 		<config>java:com.kbdisplay.ls1710.view.dataJournal.web.component.ModelBean</config>
-		<config>java:com.kbdisplay.ls1710.view.dataJournal.web.EditFormDataJournalView</config>
+		<config>java:com.kbdisplay.ls1710.view.dataJournal.web.DataJournalEditFormnfig>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>

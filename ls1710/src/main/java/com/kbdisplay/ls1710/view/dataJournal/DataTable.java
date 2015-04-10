@@ -28,8 +28,6 @@ public interface DataTable {
 	 */
 	void add(final Measurement measurement);
 
-	// TODO добавить метод получения выбранной строки данных.
-
 	/**
 	 * удалить выбранные(выделеные в таблице) данные.
 	 */

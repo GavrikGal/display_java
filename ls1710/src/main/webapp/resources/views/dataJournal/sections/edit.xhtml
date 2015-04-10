@@ -43,11 +43,11 @@
 								autoSync="true" id="currentDate"/>
 						</p:column>
 						<p:column colspan="1">
-							<p:selectOneMenu id="model" value="#{editFormDJView.model}"
+							<p:selectOneMenu id="model" value="#{editFormDJView.data.model}"
 								converter="#{modelConverter}" panelStyle="width:180px"
 								effect="fade" var="m" style="width:120px" filter="true"
 								filterMatchMode="contains" editable="true">
-								<f:selectItems value="#{editFormDJView.modelOfEquipments}"
+								<f:selectItems value="#{editFormDJView.data.modelOfEquipments}"
 									var="model" itemLabel="#{model.name}" itemValue="#{model}" />
 
 								<p:column>
@@ -58,31 +58,31 @@
 						</p:column>
 						<p:column colspan="1">
 							<p:inputText id="serialNumber" placeholder="xxxxxx"
-								value="#{editFormDJView.serialNumber}" size="10">
+								value="#{editFormDJView.data.serialNumber}" size="10">
 
 							</p:inputText>
 						</p:column>
 						<p:column colspan="2">
 							<p:panelGrid id="spectrumParameters" columns="3">
 								<p:selectOneMenu id="measurand"
-									value="#{editFormDJView.spectrumParameter.measurand}"
-									editable="true" converter="#{measurandConverter}">
-									<f:selectItems value="#{editFormDJView.measurands}"
+									value="#{editFormDJView.data.spectrumParameter.measurand}"
+									editable="false" converter="#{measurandConverter}">
+									<f:selectItems value="#{editFormDJView.data.measurands}"
 										var="measurand" itemLabel="#{measurand.name}"
 										itemValue="#{measurand}" />
 
 								</p:selectOneMenu>
 								<p:selectOneMenu id="type"
-									value="#{editFormDJView.spectrumParameter.typeOfSpectrum}"
-									editable="true" converter="#{typeOfSpectrumConverter}">
-									<f:selectItems value="#{editFormDJView.typeOfSpectrums}"
+									value="#{editFormDJView.data.spectrumParameter.typeOfSpectrum}"
+									editable="false" converter="#{typeOfSpectrumConverter}">
+									<f:selectItems value="#{editFormDJView.data.typeOfSpectrums}"
 										var="typeOfSpectrum" itemLabel="#{typeOfSpectrum.name}"
 										itemValue="#{typeOfSpectrum}" />
 								</p:selectOneMenu>
 								<p:selectOneMenu id="screenResolution"
-									value="#{editFormDJView.spectrumParameter.screenResolution}"
-									editable="true" converter="#{screenResolutionConverter}">
-									<f:selectItems value="#{editFormDJView.screenResolutions}"
+									value="#{editFormDJView.data.spectrumParameter.screenResolution}"
+									editable="false" converter="#{screenResolutionConverter}">
+									<f:selectItems value="#{editFormDJView.data.screenResolutions}"
 										var="screenResolution"
 										itemLabel="#{screenResolution.resolution}"
 										itemValue="#{screenResolution}" />
@@ -91,7 +91,7 @@
 						</p:column>
 						<p:column colspan="1">
 							<p:inputTextarea id="description" rows="2" cols="45"
-								value="#{editFormDJView.description}"
+								value="#{editFormDJView.data.description}"
 								placeholder="32.5 - 35 / 16; соотв." />
 						</p:column>
 					</p:row>
@@ -132,9 +132,9 @@
 						</p:column>
 						<p:column colspan="1">
 							<p:selectOneMenu id="purposeOfMeasurement"
-								value="#{editFormDJView.purposeOfMeasurement}"
-								editable="true" converter="#{purposeOfMeasurementConverter}">
-								<f:selectItems value="#{editFormDJView.purposeOfMeasurements}"
+								value="#{editFormDJView.data.purposeOfMeasurement}"
+								editable="false" converter="#{purposeOfMeasurementConverter}">
+								<f:selectItems value="#{editFormDJView.data.purposeOfMeasurements}"
 									var="purposeOfMeasurement"
 									itemLabel="#{purposeOfMeasurement.name}"
 									itemValue="#{purposeOfMeasurement}"/>

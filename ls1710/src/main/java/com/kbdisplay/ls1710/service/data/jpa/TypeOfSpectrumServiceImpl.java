@@ -12,7 +12,7 @@ import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 import com.kbdisplay.ls1710.repository.TypeOfSpectrumRepository;
 import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 
-@Service("typesService")
+@Service("typeOfSpectrumService")
 @Repository
 @Transactional
 public class TypeOfSpectrumServiceImpl implements TypeOfSpectrumService {
