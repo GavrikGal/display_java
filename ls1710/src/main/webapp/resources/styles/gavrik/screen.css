@@ -259,7 +259,24 @@ caption {background:#eee;}
 	margin: auto !important;
 }
 
+#form\:btnYes {
+	margin: 5px;
+	float: left;
+}
 
+#form\:btnNo {
+	margin: 5px;
+	float: right;
+}
+
+.ui-dialog-footer {
+	padding: 5px !important;
+}
+
+/*.ui-confirmdialog-no {
+	display: none !important;
+	visibility: hidden !important;
+}*/
 
 /* .measurementDetailColumn {
 	vertical-align: top;

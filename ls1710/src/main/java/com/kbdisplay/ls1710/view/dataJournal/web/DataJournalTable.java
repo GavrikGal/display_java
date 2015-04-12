@@ -52,12 +52,6 @@ public class DataJournalTable implements Serializable, DataTable {
 	 */
 	private Row selected;
 
-	/**
-	 * текущий id строк в таблице данных.
-	 */
-	private Long currentId;
-
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -111,7 +105,6 @@ public class DataJournalTable implements Serializable, DataTable {
 	public final void init(final List<Measurement> measurements) {
 		rows = new ArrayList<Row>();
 
-		currentId = 0L;
 		for (Measurement measurement : measurements) {
 			insertRow(measurement);
 		}

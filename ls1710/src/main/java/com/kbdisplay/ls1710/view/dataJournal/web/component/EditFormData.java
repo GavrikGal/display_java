@@ -11,14 +11,18 @@ import javax.faces.context.FacesContext;
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
+import com.kbdisplay.ls1710.domain.TypeOfParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 import com.kbdisplay.ls1710.service.data.MeasurandService;
 import com.kbdisplay.ls1710.service.data.ModelService;
+import com.kbdisplay.ls1710.service.data.ParameterService;
 import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
 import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
+import com.kbdisplay.ls1710.service.data.TypeOfParameterService;
 import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 import com.kbdisplay.ls1710.view.dataJournal.EditData;
 
@@ -123,6 +127,46 @@ public class EditFormData implements Serializable, EditData {
 						.getELResolver()
 						.getValue(elContext, null,
 								"purposeOfMeasurementService");
+
+		ParameterService parameterService = (ParameterService) fc.getApplication().getELResolver()
+				.getValue(elContext, null, "parameterService");
+
+		TypeOfParameterService typeOfParameterService = (TypeOfParameterService) fc.getApplication().getELResolver()
+				.getValue(elContext, null, "typeOfParameterService");
+
+		List<TypeOfParameter> list = typeOfParameterService.findAll();
+
+		for (TypeOfParameter typeOfParameter : list) {
+			System.out.println(typeOfParameter.getId() + " " + typeOfParameter.getName());
+		}
+
+		System.out.println(parameterService);
+
+		List<Parameter> parentParameters = parameterService.findAll();
+
+		if(parentParameters != null) {
+			for (Parameter parameter : parentParameters) {
+				System.out.println(parameter.getName());
+			}
+		} else {
+			System.out.println("fuck");
+		}
+
+//		Parameter parameter = new Parameter();
+//		parameter.setName("E");
+//		parameter.setType(list.get(0));
+//		List<Parameter> newParen = new ArrayList<Parameter>();
+//		parameter.setParentParameters(newParen);
+//		parameter.getParentParameters().add(parentParameters.get(0));
+//		parameterService.save(parameter);
+//
+//		parameter = new Parameter();
+//		parameter.setName("U");
+//		parameter.setType(list.get(0));
+//		newParen = new ArrayList<Parameter>();
+//		parameter.setParentParameters(newParen);
+//		parameter.getParentParameters().add(parentParameters.get(0));
+//		parameterService.save(parameter);
 
 		modelOfEquipments = modelService.findAll();
 		measurands = measurandService.findAll();

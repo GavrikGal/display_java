@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -43,48 +45,69 @@ public class Spectrum implements Serializable {
 	/**
 	 * ID измеренного спектра.
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 
 	/**
 	 * измеренный спектр.
 	 */
+	@ManyToOne
+	@JoinColumn(name = "measurement_id", updatable = true)
 	private Measurement measurement;
 
 	/**
 	 * Параметры спектра (измеряемая величина, разрешение, тип измерений и
 	 * т.д.).
 	 */
+	@ManyToOne
+	@JoinColumn(name = "parameter_id")
 	private SpectrumParameter parameter;
 
 	/**
 	 * версия спектра.
 	 */
+	@Column(name = "version")
 	private int	version;
 
 	/**
 	 * Описание измеренного спектра, либо комментарии к измеренному спектру
 	 * (типа: соотв. и т.д.).
 	 */
+	@Column(name = "description")
 	private String description;
 
 	/**
 	 * Время измерения спектра.
 	 */
+	@Column(name = "date")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@DateTimeFormat(iso = ISO.DATE)
 	private DateTime date;
 
 	/**
 	 * Список спектральных составляющих - гармоник спектра.
 	 */
+	@OneToMany(mappedBy = "spectrum",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("frequency")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Harmonic> harmonics;
+
+	/**
+	 * список параметров спектра.
+	 */
+	@ManyToMany
+	@JoinTable(name = "specrum_parameters", joinColumns = @JoinColumn(name
+	= "spectrum_id"), inverseJoinColumns = @JoinColumn(name = "parameter_id"))
+	private List<Parameter> parameters;
+
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	@OneToMany(mappedBy = "spectrum",
-			cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy("frequency")
-	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Harmonic> getHarmonics() {
 		return this.harmonics;
 	}
@@ -93,9 +116,6 @@ public class Spectrum implements Serializable {
 		this.harmonics = harmonics;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
 	public Long getId() {
 		return id;
 	}
@@ -104,8 +124,6 @@ public class Spectrum implements Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "measurement_id", updatable = true)
 	public Measurement getMeasurement() {
 		return measurement;
 	}
@@ -114,8 +132,6 @@ public class Spectrum implements Serializable {
 		this.measurement = measurement;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "parameter_id")
 	public SpectrumParameter getParameter() {
 		return parameter;
 	}
@@ -125,7 +141,6 @@ public class Spectrum implements Serializable {
 		this.parameter = parameter;
 	}
 
-	@Column(name = "version")
 	public int getVersion() {
 		return version;
 	}
@@ -134,9 +149,6 @@ public class Spectrum implements Serializable {
 		this.version = version;
 	}
 
-	@Column(name = "date")
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	@DateTimeFormat(iso = ISO.DATE)
 	public DateTime getDate() {
 		return date;
 	}
@@ -145,17 +157,6 @@ public class Spectrum implements Serializable {
 		this.date = date;
 	}
 
-
-//	@Column(name = "Time")
-//	public Time getTime() {
-//		return time;
-//	}
-//
-//	public void setTime(final Time time) {
-//		this.time = time;
-//	}
-
-	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -163,5 +164,14 @@ public class Spectrum implements Serializable {
 	public void setDescription(final String description) {
 		this.description = description;
 	}
+
+	public List<Parameter> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<Parameter> parameters) {
+		this.parameters = parameters;
+	}
+
 
 }

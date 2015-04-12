@@ -1,5 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
@@ -12,13 +14,47 @@
 	окна и id="dataTable" таблицы данных update="measurementDetail" 
 	oncomplete="PF('measurementDialog').show()"  -->
 	<p:contextMenu for="dataTable">
-		<p:menuitem value="#{msg['menu_edit']}" update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement"
+		<p:menuitem value="#{msg['menu_edit']}" 
+			update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement"
 			icon="ui-icon-pencil"
 			action="#{editFormDJView.edit(dataJournalTable.selected.measurement)}" />
-		<p:menuitem value="#{msg['menu_view']}" icon="ui-icon-search" />
-		<p:menuitem value="#{msg['menu_delete']}" update="dataTable :messages:message"
+		<p:menuitem value="#{msg['menu_view']}" 
+			icon="ui-icon-search" />
+		<p:menuitem value="#{msg['menu_delete']}" 
+			onclick="PF('confirmDelete').show()"
+			process="@this dataTable"
+			ajax="true"
 			icon="ui-icon-close"
-			action="#{dataJournalController.delete(dataJournalTable.selected.measurement)}" />
+			>
+		</p:menuitem>
 	</p:contextMenu>
+	
+	<p:confirmDialog id="confirmDialog" 
+		widgetVar="confirmDelete" 
+		header="#{msg['confirm_delete_header']}" 
+		severity="alert" 
+		closeOnEscape="true" 
+		showEffect="fade" 
+		hideEffect="fade"
+		closable="true">
+        <p:commandButton id="btnYes"
+        	value="#{msg['confirm_yes']}" 
+        	onclick="PF('confirmDelete').hide()"
+        	update="dataTable :messages:message"
+        	styleClass="ui-confirmdialog-yes"
+        	action="#{dataJournalController.delete(dataJournalTable.selected.measurement)}"
+        	icon="ui-icon-check" />
+        <p:commandButton id="btnNo"
+        	value="#{msg['confirm_no']}" 
+        	onclick="PF('confirmDelete').hide()"
+        	type="button"
+        	styleClass="ui-confirmdialog-no"
+        	icon="ui-icon-close" />
+        <f:facet name="message">
+	        <p:outputPanel>
+	            <h:outputFormat value="#{msg['confirm_delete_msg']}?" escape="false"/>
+	        </p:outputPanel>
+	    </f:facet>
+    </p:confirmDialog>
 
 </ui:composition>

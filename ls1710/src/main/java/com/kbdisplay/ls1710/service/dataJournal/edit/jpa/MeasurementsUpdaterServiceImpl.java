@@ -525,7 +525,9 @@ public class MeasurementsUpdaterServiceImpl implements
 						measurement =
 								saveSpectrum(measurement, parameter,
 										description, measurement.getVersion());
-					} else {
+					}
+					/* TODO доработать
+					else {
 						// TODO если пользователь хочет началь новые испытания с
 						// этим изделием, то создать новые испытания.
 						measurement =
@@ -535,7 +537,7 @@ public class MeasurementsUpdaterServiceImpl implements
 						measurement =
 								saveSpectrum(measurement, parameter,
 										description, measurement.getVersion());
-					}
+					}*/
 				}
 			}
 
@@ -630,7 +632,7 @@ public class MeasurementsUpdaterServiceImpl implements
 					measurementService.findByEquipmentAndPurpose(equipment,
 							prevPurpose);
 
-			if (prevMeasurements != null || !prevMeasurements.isEmpty()) {
+			if (prevMeasurements != null) {
 				// поиск последнего испытания, основывается на номере версии.
 				// при этом текущему испытанию будет присвоена версия связанного
 				// с ним последнего испытания.
@@ -796,8 +798,6 @@ public class MeasurementsUpdaterServiceImpl implements
 							.getUsersDetails();
 		}
 
-		List<Measurement> measurementsList =
-				measurementService.findByEquipment(equipment);
 
 		// if (measurementsList.isEmpty()) {
 		measurement = new Measurement();
