@@ -26,6 +26,14 @@ public class TypeOfParameterServiceImpl implements TypeOfParameterService {
 		return Lists.newArrayList(typeOfParameterRepository.findAll());
 	}
 
+	@Override
+	public TypeOfParameter findByName(String name) {
+		return typeOfParameterRepository.findByName(name);
+	}
 
+	@Override
+	public List<TypeOfParameter> findByPrevTypeId(Long id) {
+		return typeOfParameterRepository.findByPrevTypeId(id);
+	}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
@@ -128,10 +129,20 @@ public class DataJournalController {
 			SpectrumParameter parameter =
 					editForm.getData().getSpectrumParameter();
 			parameter = spectrumParameterService.save(parameter);
+			List<Parameter> selectedParameters = editForm.getData().getSelectedParameters();
+
+			int i=0;
+			for (Parameter parameter2 : selectedParameters) {
+				System.out.println(i + "-й параметр: ");
+				System.out.println("   id: " + parameter2.getId()+ ",  name " + parameter2.getName());
+				i++;
+			}
+
+
 
 			Measurement measurement =
 					updaterService.saveMeasurements(model, editForm.getData()
-							.getSerialNumber(), parameter, editForm.getData()
+							.getSerialNumber(), selectedParameters,parameter, editForm.getData()
 							.getPurposeOfMeasurement(), editForm.getData()
 							.getDescription());
 

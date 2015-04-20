@@ -1,13 +1,22 @@
 package com.kbdisplay.ls1710.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 
 /**
  * типы параметров спектра из БД.
@@ -37,6 +46,22 @@ public class TypeOfParameter implements Serializable {
 	@Column(name = "name")
 	private String name;
 
+	@ManyToOne
+	@JoinColumn(name = "prev_type_id")
+	private TypeOfParameter prevType;
+
+	@OneToMany(mappedBy = "prevType",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<TypeOfParameter> nextTypes;
+
+	@OneToMany(mappedBy = "type",
+			cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Parameter> parameters;
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -55,6 +80,30 @@ public class TypeOfParameter implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public List<Parameter> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(final List<Parameter> parameters) {
+		this.parameters = parameters;
+	}
+
+	public TypeOfParameter getPrevType() {
+		return prevType;
+	}
+
+	public void setPrevType(TypeOfParameter prevType) {
+		this.prevType = prevType;
+	}
+
+	public List<TypeOfParameter> getNextTypes() {
+		return nextTypes;
+	}
+
+	public void setNextTypes(List<TypeOfParameter> nextTypes) {
+		this.nextTypes = nextTypes;
 	}
 
 

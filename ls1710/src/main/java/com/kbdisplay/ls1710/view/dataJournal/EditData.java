@@ -2,12 +2,16 @@ package com.kbdisplay.ls1710.view.dataJournal;
 
 import java.util.List;
 
+import org.primefaces.model.menu.MenuModel;
+
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.SpectrumParameter;
+import com.kbdisplay.ls1710.domain.TypeOfParameter;
 import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 
 public interface EditData {
@@ -38,8 +42,7 @@ public interface EditData {
 
 	List<ModelOfEquipment> getModelOfEquipments();
 
-	void setModelOfEquipments(
-			final List<ModelOfEquipment> modelOfEquipments);
+	void setModelOfEquipments(final List<ModelOfEquipment> modelOfEquipments);
 
 	List<Measurand> getMeasurands();
 
@@ -47,8 +50,7 @@ public interface EditData {
 
 	List<ScreenResolution> getScreenResolutions();
 
-	void setScreenResolutions(
-			final List<ScreenResolution> screenResolutions);
+	void setScreenResolutions(final List<ScreenResolution> screenResolutions);
 
 	List<TypeOfSpectrum> getTypeOfSpectrums();
 
@@ -58,5 +60,26 @@ public interface EditData {
 
 	void setPurposeOfMeasurements(
 			final List<PurposeOfMeasurement> purposeOfMeasurements);
+
+	List<TypeOfParameter> getAvailableTypes();
+
+	void setAvailableTypes(List<TypeOfParameter> availableTypes);
+
+	List<Parameter> getSelectedParameters();
+
+	void setSelectedParameters(List<Parameter> selectedParameters);
+
+	void selectTypeOfParameter(String itemN);
+
+	List<List<Parameter>> getAvailableParameterLists();
+
+	void setAvailableParameterLists(
+			List<List<Parameter>> availableParameterLists);
+
+	MenuModel getMenuModel();
+
+
+
+
 
 }

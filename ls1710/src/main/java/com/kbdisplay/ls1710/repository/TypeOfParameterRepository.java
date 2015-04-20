@@ -1,5 +1,7 @@
 package com.kbdisplay.ls1710.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 import com.kbdisplay.ls1710.domain.TypeOfParameter;
@@ -13,4 +15,7 @@ import com.kbdisplay.ls1710.domain.TypeOfParameter;
 public interface TypeOfParameterRepository extends
 		CrudRepository<TypeOfParameter, Long> {
 
+	TypeOfParameter findByName(String name);
+
+	List<TypeOfParameter> findByPrevTypeId(Long id);
 }

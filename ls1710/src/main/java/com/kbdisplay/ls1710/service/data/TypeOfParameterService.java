@@ -8,4 +8,8 @@ public interface TypeOfParameterService {
 
 	public List<TypeOfParameter> findAll();
 
+	public TypeOfParameter findByName(String name);
+
+	public List<TypeOfParameter> findByPrevTypeId(Long id);
+
 }

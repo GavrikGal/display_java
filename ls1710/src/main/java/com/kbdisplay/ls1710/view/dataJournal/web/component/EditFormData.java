@@ -1,12 +1,17 @@
 package com.kbdisplay.ls1710.view.dataJournal.web.component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.MenuModel;
 
 import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
@@ -95,6 +100,13 @@ public class EditFormData implements Serializable, EditData {
 	 */
 	private List<PurposeOfMeasurement> purposeOfMeasurements;
 
+	private TypeOfParameter selectedType;
+	private List<TypeOfParameter> availableTypes;
+	private MenuModel menuModel;
+
+	private List<Parameter> selectedParameters;
+
+	private List<List<Parameter>> availableParameterLists;
 
 	/**
 	 * конструктор по умолчанию.
@@ -109,79 +121,119 @@ public class EditFormData implements Serializable, EditData {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
-		ModelService modelService =
-				(ModelService) fc.getApplication().getELResolver()
-						.getValue(elContext, null, "modelService");
-		MeasurandService measurandService =
-				(MeasurandService) fc.getApplication().getELResolver()
-						.getValue(elContext, null, "measurandService");
-		ScreenResolutionService screenResolutionService =
-				(ScreenResolutionService) fc.getApplication().getELResolver()
-						.getValue(elContext, null, "screenResolutionService");
-		TypeOfSpectrumService typeOfSpectrumService =
-				(TypeOfSpectrumService) fc.getApplication().getELResolver()
-						.getValue(elContext, null, "typeOfSpectrumService");
-		PurposeOfMeasurementService purposeOfMeasurementService =
-				(PurposeOfMeasurementService) fc
-						.getApplication()
-						.getELResolver()
-						.getValue(elContext, null,
-								"purposeOfMeasurementService");
+		ModelService modelService = (ModelService) fc.getApplication()
+				.getELResolver().getValue(elContext, null, "modelService");
+		MeasurandService measurandService = (MeasurandService) fc
+				.getApplication().getELResolver()
+				.getValue(elContext, null, "measurandService");
+		ScreenResolutionService screenResolutionService = (ScreenResolutionService) fc
+				.getApplication().getELResolver()
+				.getValue(elContext, null, "screenResolutionService");
+		TypeOfSpectrumService typeOfSpectrumService = (TypeOfSpectrumService) fc
+				.getApplication().getELResolver()
+				.getValue(elContext, null, "typeOfSpectrumService");
+		PurposeOfMeasurementService purposeOfMeasurementService = (PurposeOfMeasurementService) fc
+				.getApplication().getELResolver()
+				.getValue(elContext, null, "purposeOfMeasurementService");
 
-		ParameterService parameterService = (ParameterService) fc.getApplication().getELResolver()
+		ParameterService parameterService = (ParameterService) fc
+				.getApplication().getELResolver()
 				.getValue(elContext, null, "parameterService");
 
-		TypeOfParameterService typeOfParameterService = (TypeOfParameterService) fc.getApplication().getELResolver()
+		TypeOfParameterService typeOfParameterService = (TypeOfParameterService) fc
+				.getApplication().getELResolver()
 				.getValue(elContext, null, "typeOfParameterService");
 
-		List<TypeOfParameter> list = typeOfParameterService.findAll();
+		menuModel = new DefaultMenuModel();
 
-		for (TypeOfParameter typeOfParameter : list) {
-			System.out.println(typeOfParameter.getId() + " " + typeOfParameter.getName());
-		}
+		// List<TypeOfParameter> list = typeOfParameterService.findAll();
+		availableTypes = typeOfParameterService.findByPrevTypeId(null);
 
-		System.out.println(parameterService);
+		if (availableTypes != null) {
 
-		List<Parameter> parentParameters = parameterService.findAll();
+			int itemN = 0;
+			for (TypeOfParameter availableType : availableTypes) {
+				DefaultMenuItem item = new DefaultMenuItem(
+						availableType.getName());
+				item.setCommand("#{editFormDJView.data.selectTypeOfParameter('"
+						+ itemN + "')}");
+				item.setUpdate("spectrumParameters spectrumParametersMenu");
 
-		if(parentParameters != null) {
-			for (Parameter parameter : parentParameters) {
-				System.out.println(parameter.getName());
+				menuModel.addElement(item);
+
+				itemN++;
 			}
-		} else {
-			System.out.println("fuck");
 		}
 
-//		Parameter parameter = new Parameter();
-//		parameter.setName("E");
-//		parameter.setType(list.get(0));
-//		List<Parameter> newParen = new ArrayList<Parameter>();
-//		parameter.setParentParameters(newParen);
-//		parameter.getParentParameters().add(parentParameters.get(0));
-//		parameterService.save(parameter);
-//
-//		parameter = new Parameter();
-//		parameter.setName("U");
-//		parameter.setType(list.get(0));
-//		newParen = new ArrayList<Parameter>();
-//		parameter.setParentParameters(newParen);
-//		parameter.getParentParameters().add(parentParameters.get(0));
-//		parameterService.save(parameter);
+		// Parameter parameter = new Parameter();
+		// parameter.setName("E");
+		// parameter.setType(list.get(0));
+		// List<Parameter> newParen = new ArrayList<Parameter>();
+		// parameter.setParentParameters(newParen);
+		// parameter.getParentParameters().add(parentParameters.get(0));
+		// parameterService.save(parameter);
+		//
+		// parameter = new Parameter();
+		// parameter.setName("U");
+		// parameter.setType(list.get(0));
+		// newParen = new ArrayList<Parameter>();
+		// parameter.setParentParameters(newParen);
+		// parameter.getParentParameters().add(parentParameters.get(0));
+		// parameterService.save(parameter);
 
 		modelOfEquipments = modelService.findAll();
 		measurands = measurandService.findAll();
 		screenResolutions = screenResolutionService.findAll();
 		typeOfSpectrums = typeOfSpectrumService.findAll();
 		purposeOfMeasurements = purposeOfMeasurementService.findAll();
+
+
+		selectedParameters = new ArrayList<Parameter>();
+		availableParameterLists = new ArrayList<List<Parameter>>();
+	}
+
+	@Override
+	public void selectTypeOfParameter(String itemN) {
+		selectedType = availableTypes.get(Integer.parseInt(itemN));
+		availableTypes = selectedType.getNextTypes();
+		menuModel = null;
+
+		if (selectedType != null) {
+
+			List<Parameter> availableParameters = selectedType.getParameters();
+
+			if ((availableParameters != null) && (!availableParameters.isEmpty())) {
+				availableParameterLists.add(availableParameters);
+				selectedParameters.add(selectedType.getParameters().get(0));
+			}
+		}
+
+
+		if (availableTypes != null) {
+			menuModel = new DefaultMenuModel();
+			int itemN2 = 0;
+			for (TypeOfParameter availableType : availableTypes) {
+				DefaultMenuItem item = new DefaultMenuItem(
+						availableType.getName());
+				item.setCommand("#{editFormDJView.data.selectTypeOfParameter('"
+						+ itemN2 + "')}");
+				item.setUpdate("spectrumParameters spectrumParametersMenu");
+
+				menuModel.addElement(item);
+
+				itemN2++;
+
+			}
+		}
 	}
 
 	@Override
 	public void initSelected(final Measurement selectedMeasurement) {
 		model = selectedMeasurement.getEquipment().getModel();
-		SpectrumParameter lastSpectrumParameter =
-				selectedMeasurement.getSpectrums()
-						.get(selectedMeasurement.getSpectrums().size() - 1)
-						.getParameter();
+		SpectrumParameter lastSpectrumParameter = selectedMeasurement
+				.getSpectrums()
+				.get(selectedMeasurement.getSpectrums().size() - 1)
+				.getParameter();
 		spectrumParameter.setMeasurand(lastSpectrumParameter.getMeasurand());
 		spectrumParameter.setTypeOfSpectrum(lastSpectrumParameter
 				.getTypeOfSpectrum());
@@ -293,10 +345,57 @@ public class EditFormData implements Serializable, EditData {
 		this.purposeOfMeasurements = purposeOfMeasurements;
 	}
 
+	@Override
+	public List<Parameter> getSelectedParameters() {
+		return selectedParameters;
+	}
+
+	@Override
+	public void setSelectedParameters(List<Parameter> selectedParameters) {
+		this.selectedParameters = selectedParameters;
+	}
+
+	@Override
+	public List<TypeOfParameter> getAvailableTypes() {
+		return availableTypes;
+	}
+
+	@Override
+	public void setAvailableTypes(List<TypeOfParameter> availableTypes) {
+		this.availableTypes = availableTypes;
+	}
+
+	public TypeOfParameter getSelectedType() {
+		return selectedType;
+	}
+
+	public void setSelectedType(TypeOfParameter selectedType) {
+		this.selectedType = selectedType;
+	}
+
+
+	@Override
+	public List<List<Parameter>> getAvailableParameterLists() {
+		return availableParameterLists;
+	}
+
+	@Override
+	public void setAvailableParameterLists(
+			List<List<Parameter>> availableParameterLists) {
+		this.availableParameterLists = availableParameterLists;
+	}
+
+	@Override
+	public MenuModel getMenuModel() {
+		return menuModel;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+
+
 
 
 }
