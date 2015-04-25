@@ -259,19 +259,49 @@ caption {background:#eee;}
 	margin: auto !important;
 }
 
-#form\:btnYes {
-	margin: 5px;
+.ui-dialog {
+	top: 200px !important;
+	
+}
+
+.btnYes {
+	margin: 5px !important;
 	float: left;
 }
 
-#form\:btnNo {
-	margin: 5px;
+.btnNo {
+	margin: 5px !important;
 	float: right;
 }
+
+.btnSave {
+	margin: 5px !important;
+	float: left;
+}
+
+.btnCancel {
+	margin: 5px !important;
+	float: right;
+}
+
+
 
 .ui-dialog-footer {
 	padding: 5px !important;
 }
+
+#editForm\:spectrumParameters td {
+	border: 0 px !important;
+}
+
+#editForm\:spectrumParameters tr {
+	border: 0 px !important;
+}
+
+#editForm\:spectrumParameters table {
+	border: 0 px !important;
+}
+
 
 /*.ui-confirmdialog-no {
 	display: none !important;

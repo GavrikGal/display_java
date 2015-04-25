@@ -15,215 +15,25 @@
 			<h:form id="editForm">
 				<!-- <p:log /> -->
 
-
-
 				<p:panelGrid style="width: 100%;">
-					<p:row>
-						<p:column colspan="1">
-							<p:outputLabel for="currentDate"
-								value="#{msg['label_measurement_table_date']}" />
-						</p:column>
-						<p:column colspan="1">
-							<p:outputLabel for="model"
-								value="#{msg['label_measurement_table_model']}" />
-						</p:column>
-						<p:column colspan="1">
-							<p:outputLabel for="serialNumber"
-								value="#{msg['label_measurement_table_serial_number']}" />
-						</p:column>
-						<p:column colspan="2">
-							<p:outputLabel
-								value="#{msg['label_measurement_table_spectrum_parameter']}" />
-						</p:column>
-						<p:column colspan="1">
-							<p:outputLabel for="description"
-								value="#{msg['label_measurement_table_spectrum']}" />
-						</p:column>
-
-					</p:row>
-					<p:row>
-						<p:column colspan="1"
-							style="width:200px">
-							
-							<p:clock pattern="dd.MM.yyyy - HH:mm:ss"
-								mode="server"
-								autoSync="true"
-								id="currentDate"/>
-						</p:column>
-						<p:column colspan="1">
-							<p:selectOneMenu id="model" 
-								value="#{editFormDJView.data.model}"
-								var="m"
-								converter="#{modelConverter}" 
-								panelStyle="width:180px"
-								effect="fade" 
-								style="width:120px"
-								filter="true"
-								filterMatchMode="contains"
-								editable="true">
-								
-								<f:selectItems value="#{editFormDJView.data.modelOfEquipments}"
-									var="model" 
-									itemLabel="#{model.name}" 
-									itemValue="#{model}" />
-
-								<p:column>
-									<h:outputText value="#{m.name}" />
-								</p:column>
-
-							</p:selectOneMenu>
-						</p:column>
-						<p:column colspan="1">
-							<p:inputText id="serialNumber" placeholder="xxxxxx"
-								value="#{editFormDJView.data.serialNumber}" size="10">
-
-							</p:inputText>
-						</p:column>
-						<p:column colspan="2">
-							<p:panelGrid 
-								id="spectrumParameters" 
-								columns="3"
-								rows="3">
-								
-								<c:forEach 
-									items="#{editFormDJView.data.availableParameterLists}" 
-									var="availableParameterList" 
-									varStatus="loop">
-									
-									<p:selectOneMenu 
-										value="#{editFormDJView.data.selectedParameters[loop.index]}"
-										editable="true" 
-										converter="#{parameterConverter}">
+				
+					<ui:include src="/resources/views/dataJournal/sections/edit/editMainInputForms.xhtml" />
+					
+					<ui:include src="/resources/views/dataJournal/sections/edit/editOtherParameters.xhtml" />
+					
+					<ui:include src="/resources/views/dataJournal/sections/edit/editFooterWithSubmits.xhtml" />
 										
-										<f:selectItems 
-											value="#{availableParameterList}"
-											var="parameter" 
-											itemLabel="#{parameter.name}"
-											itemValue="#{parameter}" />
-									
-									</p:selectOneMenu>
-								</c:forEach>
-								
-								<p:commandButton id="selectTypeButton" 
-									type="button" 
-									icon="ui-icon-plus" />
-  								
-							</p:panelGrid>
-							<p:menu id="spectrumParametersMenu" 
-								overlay="true" 
-  								trigger="selectTypeButton" 
-  								my="left top" 
-  								at="left bottom" 
-  								model="#{editFormDJView.data.menuModel}" />
-						</p:column>
-
-						<p:column colspan="1">
-							<p:inputTextarea id="description" 
-								rows="2" 
-								cols="45"
-								value="#{editFormDJView.data.description}"
-								placeholder="32.5 - 35 / 16; соотв." />
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column colspan="6">
-							<p:panel id="otherParameters" 
-								widgetVar="otherParametersWV"
-								toggleable="true" 
-								toggleSpeed="150"
-								collapsed="true"
-								style="border: 0px;">
-								<p:panelGrid columns="4" 
-									style="width:100%;">
-
-									<p:outputLabel
-										value="#{msg['label_measurement_table_receiver_bandwidth']}" />
-									<p:inputText value="30" />
-									<p:outputLabel
-										value="#{msg['label_measurement_table_distance']}" />
-									<p:inputText value="0.5" />
-									<p:outputLabel
-										value="Резерв" />
-									<p:outputLabel
-										value="Резерв" />
-									<p:outputLabel
-										value="#{msg['label_measurement_table_testing_equpment']}" />
-									<p:commandButton
-										value="#{msg['label_measurement_table_go_to_testing_equpment']}" />
-								</p:panelGrid>
-							</p:panel>
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column colspan="2">
-							<p:commandButton
-								value="#{msg['label_measurement_other_parameters']}"
-								onclick="PF('otherParametersWV').toggle()"
-								type="button" />
-						</p:column>
-						<p:column colspan="2">
-							<p:outputLabel
-								value="#{msg['label_measurement_table_purpose_of_measurement']}" />
-						</p:column>
-						<p:column colspan="1">
-							<p:selectOneMenu id="purposeOfMeasurement"
-								value="#{editFormDJView.data.purposeOfMeasurement}"
-								editable="false" 
-								converter="#{purposeOfMeasurementConverter}">
-								<f:selectItems value="#{editFormDJView.data.purposeOfMeasurements}"
-									var="purposeOfMeasurement"
-									itemLabel="#{purposeOfMeasurement.name}"
-									itemValue="#{purposeOfMeasurement}"/>
-							</p:selectOneMenu>
-						</p:column>
-						<p:column colspan="1">
-							<p:commandButton value="#{msg['label_measurement_save']}"
-								id="save" 
-								widgetVar="saveButton"
-								update="editForm:description editForm:spectrumParameters :form:dataTable :messages:message newModelDilog"
-								action="#{dataJournalController.save(editFormDJView)}"
-								immediate="false"
-								type="submit">
-								<p:resetInput target="description" />
-							</p:commandButton>
-						</p:column>
-					</p:row>
 				</p:panelGrid>
-				<p:dialog id="newModelDilog" 
-					widgetVar="newModelDilogWV"
-					header="Изделие не найдено"
-					visible="#{editFormDJView.showNewModelDialog}"
-					modal="true"
-					position="top"
-					resizable="false" >
-					<p:panelGrid>
-						<p:row>
-							<p:column colspan="2">
-								<p:outputLabel
-									value="Добавить новое изделие в базу данных?" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:commandButton value="Нет"
-									onclick="PF('newModelDilogWV').hide()" />
-							</p:column>
-							<p:column>
-								<p:commandButton value="Да"
-									onclick="PF('newModelDilogWV').hide()"
-									action="addModel"/>
-							</p:column>
-						</p:row>
-					</p:panelGrid>
-				</p:dialog>
-
+				
+				<ui:include src="/resources/views/dataJournal/sections/edit/editNewModelDialog.xhtml" />
+				
+				<ui:include src="/resources/views/dataJournal/sections/edit/editNewTypeOfParameterDialog.xhtml" />
+				
 			</h:form>
 		</p:panel>
 
 		<p:sticky target="editMeasurement"
 			margin="36" />
 	</div>
-
-
 
 </ui:composition>

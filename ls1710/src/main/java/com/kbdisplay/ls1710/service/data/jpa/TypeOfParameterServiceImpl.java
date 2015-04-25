@@ -36,4 +36,11 @@ public class TypeOfParameterServiceImpl implements TypeOfParameterService {
 		return typeOfParameterRepository.findByPrevTypeId(id);
 	}
 
+	@Override
+	public TypeOfParameter save(TypeOfParameter type) {
+		return typeOfParameterRepository.save(type);
+	}
+
+
+
 }

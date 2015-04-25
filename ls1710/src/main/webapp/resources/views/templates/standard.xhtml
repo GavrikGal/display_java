@@ -36,9 +36,11 @@
 					<ui:include src="/resources/views/common/header.xhtml" />
 				</ui:insert>
 			</div>
+			
 			<h:form id="messages">
 				<p:growl id="message" showDetail="true" sticky="false" life="5000" />
 			</h:form>
+			
 			<div class="content">
 				<ui:insert name="content" />
 			</div>

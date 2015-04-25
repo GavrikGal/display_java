@@ -3,8 +3,8 @@ package com.kbdisplay.ls1710.service.data;
 import java.util.List;
 
 import com.kbdisplay.ls1710.domain.Measurement;
+import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.Spectrum;
-import com.kbdisplay.ls1710.domain.SpectrumParameter;
 
 public interface SpectrumService {
 
@@ -12,8 +12,8 @@ public interface SpectrumService {
 
 	public Spectrum findById(Long id);
 
-	public List <Spectrum> findByMeasurementAndParameter(Measurement measurement,
-			SpectrumParameter spectrumParameter);
+	public List <Spectrum> findByMeasurementAndParameters(Measurement measurement,
+			List<Parameter> parameters);
 
 	public Spectrum save(Spectrum spectrum);
 

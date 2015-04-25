@@ -15,10 +15,10 @@ import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.Parameter;
-import com.kbdisplay.ls1710.domain.SpectrumParameter;
+import com.kbdisplay.ls1710.domain.TypeOfParameter;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
-import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
+import com.kbdisplay.ls1710.service.data.ParameterService;
 import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
 import com.kbdisplay.ls1710.view.dataJournal.DataTable;
 import com.kbdisplay.ls1710.view.dataJournal.EditForm;
@@ -55,8 +55,8 @@ public class DataJournalController {
 	/**
 	 * сервис доступа к параметрам спектров.
 	 */
-	@Autowired
-	private SpectrumParameterService spectrumParameterService;
+	// @Autowired
+	// private SpectrumParameterService spectrumParameterService;
 
 	/**
 	 * сервис сохранения/обновления данных об измерениях.
@@ -70,6 +70,8 @@ public class DataJournalController {
 	@Autowired
 	private EquipmentService equipmentService;
 
+	@Autowired
+	private ParameterService parameterService;
 
 	/**
 	 * создает новый список представления измерений.
@@ -126,32 +128,33 @@ public class DataJournalController {
 				return;
 			}
 
-			SpectrumParameter parameter =
-					editForm.getData().getSpectrumParameter();
-			parameter = spectrumParameterService.save(parameter);
-			List<Parameter> selectedParameters = editForm.getData().getSelectedParameters();
-
-			int i=0;
-			for (Parameter parameter2 : selectedParameters) {
-				System.out.println(i + "-й параметр: ");
-				System.out.println("   id: " + parameter2.getId()+ ",  name " + parameter2.getName());
-				i++;
+			// SpectrumParameter parameter =
+			// editForm.getData().getSpectrumParameter();
+			// parameter = spectrumParameterService.save(parameter);
+			List<Parameter> selectedParameters = editForm.getData()
+					.getSelectedParameters();
+			for (int i = 0 ; i < selectedParameters.size(); i++) {
+				Parameter parameter = selectedParameters.get(i);
+				if (parameter.getId() == null) {
+					TypeOfParameter type = editForm.getData().getSelectedType();
+					parameter.setType(type);
+					parameter = parameterService.save(parameter);
+					selectedParameters.remove(i);
+					selectedParameters.add(parameter);
+				}
 			}
 
-
-
-			Measurement measurement =
-					updaterService.saveMeasurements(model, editForm.getData()
-							.getSerialNumber(), selectedParameters,parameter, editForm.getData()
-							.getPurposeOfMeasurement(), editForm.getData()
-							.getDescription());
+			Measurement measurement = updaterService.saveMeasurements(model,
+					editForm.getData().getSerialNumber(), selectedParameters,
+					editForm.getData().getPurposeOfMeasurement(), editForm
+							.getData().getDescription());
 
 			FacesContext fc = FacesContext.getCurrentInstance();
-			ELContext elContext =
-					FacesContext.getCurrentInstance().getELContext();
-			DataTable dataTable =
-					(DataTable) fc.getApplication().getELResolver()
-							.getValue(elContext, null, "dataJournalTable");
+			ELContext elContext = FacesContext.getCurrentInstance()
+					.getELContext();
+			DataTable dataTable = (DataTable) fc.getApplication()
+					.getELResolver()
+					.getValue(elContext, null, "dataJournalTable");
 
 			dataTable.add(measurement);
 			editForm.getData().setDescription(null);
@@ -184,16 +187,13 @@ public class DataJournalController {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
-		DataTable dataTable =
-				(DataTable) fc.getApplication().getELResolver()
-						.getValue(elContext, null, "dataJournalTable");
+		DataTable dataTable = (DataTable) fc.getApplication().getELResolver()
+				.getValue(elContext, null, "dataJournalTable");
 
 		Long equipId = selected.getEquipment().getId();
 
 		measurementService.delete(selected);
 		Equipment equipment = equipmentService.findById(equipId);
-
-		System.out.println(equipment.getMeasurements());
 
 		if (equipment.getMeasurements().size() < 1) {
 			equipmentService.delete(equipment);

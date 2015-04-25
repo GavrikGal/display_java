@@ -6,7 +6,6 @@ import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
-import com.kbdisplay.ls1710.domain.SpectrumParameter;
 
 public interface MeasurementsUpdaterService {
 
@@ -18,7 +17,6 @@ public interface MeasurementsUpdaterService {
 
 	public Measurement saveMeasurements(ModelOfEquipment modelOfEquipment,
 			String serialNumber, List<Parameter> selectedParameters,
-			SpectrumParameter spectrumParameter,
 			PurposeOfMeasurement purposeOfMeasurement,
 			/* Version version, */String description);
 

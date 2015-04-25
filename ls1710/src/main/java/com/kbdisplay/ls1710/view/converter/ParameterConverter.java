@@ -20,7 +20,16 @@ public class ParameterConverter implements Converter {
 	public Object getAsObject(final FacesContext fc, final UIComponent uic,
 			final String value) {
 		if (value != null && value.trim().length() > 0) {
-			return parameterService.findByName(value.toString());
+			Object object = parameterService.findByName(value.toString());
+			if (object != null) {
+				return object;
+			} else {
+				Parameter newParameter = new Parameter();
+				newParameter.setName(value.toString());
+
+
+				return newParameter;
+			}
 		} else {
 			return null;
 		}

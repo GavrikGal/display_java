@@ -25,27 +25,19 @@ import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.DateOfMeasurement;
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Harmonic;
-import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
-import com.kbdisplay.ls1710.domain.ScreenResolution;
 import com.kbdisplay.ls1710.domain.Spectrum;
-import com.kbdisplay.ls1710.domain.SpectrumParameter;
-import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 import com.kbdisplay.ls1710.domain.User;
 import com.kbdisplay.ls1710.service.data.DateOfMeasurementService;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
 import com.kbdisplay.ls1710.service.data.HarmonicService;
-import com.kbdisplay.ls1710.service.data.MeasurandService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
 import com.kbdisplay.ls1710.service.data.ModelService;
 import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
-import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
-import com.kbdisplay.ls1710.service.data.SpectrumParameterService;
 import com.kbdisplay.ls1710.service.data.SpectrumService;
-import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 import com.kbdisplay.ls1710.service.data.UserService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
 import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
@@ -82,14 +74,14 @@ public class MeasurementsUpdaterServiceImpl implements
 	@Autowired
 	private MeasurementService measurementService;
 
-	@Autowired
-	private MeasurandService measurandService;
-
-	@Autowired
-	private TypeOfSpectrumService typesOfSpectrumService;
-
-	@Autowired
-	private ScreenResolutionService screenResolutionService;
+//	@Autowired
+//	private MeasurandService measurandService;
+//
+//	@Autowired
+//	private TypeOfSpectrumService typesOfSpectrumService;
+//
+//	@Autowired
+//	private ScreenResolutionService screenResolutionService;
 
 	@Autowired
 	private SpectrumService spectrumService;
@@ -97,8 +89,8 @@ public class MeasurementsUpdaterServiceImpl implements
 	@Autowired
 	private HarmonicService harmonicService;
 
-	@Autowired
-	private SpectrumParameterService spectrumParameterService;
+//	@Autowired
+//	private SpectrumParameterService spectrumParameterService;
 
 	@Autowired
 	private FileFinderService fileFinder;
@@ -170,12 +162,12 @@ public class MeasurementsUpdaterServiceImpl implements
 					Measurement measurement = getMeasurements(equipment);
 
 					// ������� �������� ��������� ������� �� ��, ��� ������� ��
-					SpectrumParameter spectrumParameter = getSpectrumsParameters(
-							measurandName, typeName, screenResolutionsName);
+//					SpectrumParameter spectrumParameter = getSpectrumsParameters(
+//							measurandName, typeName, screenResolutionsName);
 
 					// ���� ������ � ��, ��� ������� �����
-					Spectrum spectrum = getSpectrums(measurement,
-							spectrumParameter);
+//					Spectrum spectrum = getSpectrums(measurement,
+//							spectrumParameter);
 
 					// Measurements newMeasurements = new Measurements();
 
@@ -266,39 +258,37 @@ public class MeasurementsUpdaterServiceImpl implements
 							// ��������, ���������� ����� �������� ��� ��������
 
 							Harmonic newHarmonics = new Harmonic();
-							List<Harmonic> oldHarmonics = spectrum
-									.getHarmonics();
-							for (Harmonic harmonics : oldHarmonics) {
-								if (((harmonics.getFrequency() + deviationFrequency
-										* harmonics.getFrequency()) > frequency)
-										&& ((harmonics.getFrequency() - deviationFrequency
-												* harmonics.getFrequency()) < frequency)) {
-									newHarmonics = harmonics;
-								}
-							}
-							newHarmonics.setFrequency(frequency);
-							newHarmonics
-									.setReceiverBandwidth(receiverBandwidth);
-							if (amplitude != null) {
-								newHarmonics.setAmplitude(amplitude);
-								if (noise == null) {
-									noise = 0.0;
-								}
-								newHarmonics.setNoise(noise);
-								newHarmonics.setSpectrum(spectrum);
-								if (newHarmonics.getId() == null) {
-									harmonicService.save(newHarmonics);
-									spectrum.getHarmonics().add(newHarmonics);
-								}
-
-							}
+//							List<Harmonic> oldHarmonics = spectrum
+//									.getHarmonics();
+//							for (Harmonic harmonics : oldHarmonics) {
+//								if (((harmonics.getFrequency() + deviationFrequency
+//										* harmonics.getFrequency()) > frequency)
+//										&& ((harmonics.getFrequency() - deviationFrequency
+//												* harmonics.getFrequency()) < frequency)) {
+//									newHarmonics = harmonics;
+//								}
+//							}
+//							newHarmonics.setFrequency(frequency);
+//							newHarmonics
+//									.setReceiverBandwidth(receiverBandwidth);
+//							if (amplitude != null) {
+//								newHarmonics.setAmplitude(amplitude);
+//								if (noise == null) {
+//									noise = 0.0;
+//								}
+//								newHarmonics.setNoise(noise);
+//								newHarmonics.setSpectrum(spectrum);
+//								if (newHarmonics.getId() == null) {
+//									harmonicService.save(newHarmonics);
+//									spectrum.getHarmonics().add(newHarmonics);
+//								}
+//
+//							}
 
 							// spectrum.getHarmonics().add(newHarmonics);
 
 						}
 						// measurement.getSpectrums().add(spectrum);
-						System.out.println("new spectrum if : "
-								+ spectrum.getId());
 					}
 
 					measurement = getMeasurements(equipment);
@@ -322,18 +312,18 @@ public class MeasurementsUpdaterServiceImpl implements
 						System.out.println("        getMeasurement() - "
 								+ spectrums.getMeasurement().getId());
 						System.out.println("        spectrum parameters:");
-						System.out
-								.println("            spectrum parameters ID -"
-										+ spectrums.getParameter().getId());
-						System.out.println("            Measurands -"
-								+ spectrums.getParameter().getMeasurand()
-										.getId());
-						System.out.println("            type - "
-								+ spectrums.getParameter().getTypeOfSpectrum()
-										.getId());
-						System.out.println("            Resolution - "
-								+ spectrums.getParameter()
-										.getScreenResolution().getResolution());
+//						System.out
+//								.println("            spectrum parameters ID -"
+//										+ spectrums.getParameter().getId());
+//						System.out.println("            Measurands -"
+//								+ spectrums.getParameter().getMeasurand()
+//										.getId());
+//						System.out.println("            type - "
+//								+ spectrums.getParameter().getTypeOfSpectrum()
+//										.getId());
+//						System.out.println("            Resolution - "
+//								+ spectrums.getParameter()
+//										.getScreenResolution().getResolution());
 						System.out.println("        Harmonics:");
 						for (Harmonic harmonics : spectrums.getHarmonics()) {
 
@@ -384,19 +374,19 @@ public class MeasurementsUpdaterServiceImpl implements
 		Measurement measurement = getMeasurements(equipment);
 
 		// ������� �������� ��������� ������� �� ��, ��� ������� ��
-		SpectrumParameter spectrumParameter = getSpectrumsParameters(
-				measurandName, typeName, screenResolutionsName);
+//		SpectrumParameter spectrumParameter = getSpectrumsParameters(
+//				measurandName, typeName, screenResolutionsName);
 
 		// ���� ������ � ��, ��� ������� �����
-		Spectrum spectrum = getSpectrums(measurement, spectrumParameter);
+//		Spectrum spectrum = getSpectrums(measurement, spectrumParameter);
 
 		// �������� � ������ �������� �� ��������. ������ �������� �� �������
 		// ��������, ���������� ����� �������� ��� ��������
-		String newDescription = setHarmonicsFromDescription(spectrum,
-				description);
+//		String newDescription = setHarmonicsFromDescription(spectrum,
+//				description);
 
 		// ��������� ��������
-		setDescription(spectrum, newDescription);
+//		setDescription(spectrum, newDescription);
 
 		return measurement;
 	}
@@ -405,7 +395,6 @@ public class MeasurementsUpdaterServiceImpl implements
 	public Measurement saveMeasurements(
 			final ModelOfEquipment modelOfEquipment, final String serialNumber,
 			List<Parameter> selectedParameters,
-			final SpectrumParameter parameter,
 			final PurposeOfMeasurement purposeOfMeasurement,
 			/* Version version, */final String description) {
 
@@ -438,7 +427,7 @@ public class MeasurementsUpdaterServiceImpl implements
 					purposeOfMeasurement, user);
 
 			measurement = saveSpectrum(measurement, selectedParameters,
-					parameter, description, measurement.getVersion());
+					description, measurement.getVersion());
 		} else {
 
 			/*
@@ -457,7 +446,7 @@ public class MeasurementsUpdaterServiceImpl implements
 						purposeOfMeasurement, user);
 
 				measurement = saveSpectrum(measurement, selectedParameters,
-						parameter, description, measurement.getVersion());
+						description, measurement.getVersion());
 
 			} else {
 				/*
@@ -466,8 +455,9 @@ public class MeasurementsUpdaterServiceImpl implements
 				 * же параметрами спектра.
 				 */
 
-				List<Spectrum> spectrums = spectrumService
-						.findByMeasurementAndParameter(measurement, parameter);
+//				List<Spectrum> spectrums = spectrumService
+//						.findByMeasurementAndParameters(measurement, selectedParameters);
+				List<Spectrum> spectrums = findSpectrumsWithSelectedParameters(measurement, selectedParameters);
 
 				/*
 				 * если таких параметров еще не было, то добавить к последнему
@@ -477,7 +467,7 @@ public class MeasurementsUpdaterServiceImpl implements
 				if (spectrums == null || spectrums.isEmpty()) {
 					measurement.setUser(user);
 					measurement = saveSpectrum(measurement, selectedParameters,
-							parameter, description, measurement.getVersion());
+							description, measurement.getVersion());
 				} else {
 
 					// TODO спросить у пользователя:
@@ -509,7 +499,7 @@ public class MeasurementsUpdaterServiceImpl implements
 						measurement.setUser(user);
 
 						measurement = saveSpectrum(measurement,
-								selectedParameters, parameter, description,
+								selectedParameters, description,
 								measurement.getVersion());
 					}
 					/*
@@ -591,6 +581,24 @@ public class MeasurementsUpdaterServiceImpl implements
 		return lastMeasurement;
 	}
 
+	private List<Spectrum> findSpectrumsWithSelectedParameters(Measurement measurement, List<Parameter> selectedParameters) {
+		List<Spectrum> spectrums = measurement.getSpectrums();
+		List<Spectrum> spectrumsWithSelectedParameters = new ArrayList<Spectrum>();
+
+		for (Spectrum spectrum : spectrums) {
+			List<Parameter> parameters = spectrum.getParameters();
+			if (parameters.size() != selectedParameters.size()) {
+				continue;
+			}
+			if (parameters.containsAll(selectedParameters)) {
+				spectrumsWithSelectedParameters.add(spectrum);
+			}
+		}
+
+
+		return spectrumsWithSelectedParameters;
+	}
+
 	// создаем новое испытание.
 	private Measurement newMeasurement(final DateOfMeasurement date,
 			final Equipment equipment, final PurposeOfMeasurement purpose,
@@ -650,13 +658,13 @@ public class MeasurementsUpdaterServiceImpl implements
 
 	// сохраняем в испытание спектр
 	private Measurement saveSpectrum(final Measurement measurement,
-			List<Parameter> selectedParameters,
-			final SpectrumParameter parameter, final String description,
+			final List<Parameter> selectedParameters,
+			final String description,
 			final int version) {
 
 		// ���� ������ � ��, ��� ������� �����
 		Spectrum newSpectrum = newSpectrum(measurement, selectedParameters,
-				parameter, version);
+				version);
 
 		// TODO какой-то костыль, проверить будет ли без него работать, если
 		// нет,то исправить
@@ -677,13 +685,12 @@ public class MeasurementsUpdaterServiceImpl implements
 
 	// создаем новый спектр.
 	private Spectrum newSpectrum(final Measurement measurement,
-			List<Parameter> selectedParameters,
-			final SpectrumParameter parameter, final int version) {
+			final List<Parameter> selectedParameters,
+			final int version) {
 
 		Spectrum spectrum = new Spectrum();
 
 		spectrum.setMeasurement(measurement);
-		spectrum.setParameter(parameter);
 		spectrum.setParameters(selectedParameters);
 		spectrum.setVersion(version);
 		spectrum.setHarmonics(new ArrayList<Harmonic>());
@@ -818,7 +825,7 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	// �������� ��������� ������� �� �� ��� ������� �����
-	private SpectrumParameter getSpectrumsParameters(String measurandName,
+/*	private SpectrumParameter getSpectrumsParameters(String measurandName,
 			String typeName, String screenResolutionName) {
 		Measurand measurand = measurandService.findByName(measurandName);
 		if (measurand == null) {
@@ -841,10 +848,10 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		spectrumParameter = spectrumParameterService.save(spectrumParameter);
 		return spectrumParameter;
-	}
+	}*/
 
 	// ��������� ���������� ������, ���� ��� ���
-	private ScreenResolution getScreenResolutions(String screenResolutionsName) {
+/*	private ScreenResolution getScreenResolutions(String screenResolutionsName) {
 		screenResolutionsName = screenResolutionsName.trim();
 		ScreenResolution screenResolution = screenResolutionService
 				.findByResolution(screenResolutionsName);
@@ -856,10 +863,10 @@ public class MeasurementsUpdaterServiceImpl implements
 			screenResolution = screenResolutionService.save(screenResolution);
 		}
 		return screenResolution;
-	}
+	}*/
 
 	// �������� ����� �� �� ��� ������� �����
-	private Spectrum getSpectrums(Measurement measurement,
+/*	private Spectrum getSpectrums(Measurement measurement,
 			SpectrumParameter spectrumParameter) {
 
 		Spectrum spectrum = null;
@@ -881,7 +888,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		//
 		// }
 		return spectrum;
-	}
+	}*/
 
 	// ������ �������� �� ������� �������� � ������������� �� � ������
 	private String setHarmonicsFromDescription(Spectrum spectrum,

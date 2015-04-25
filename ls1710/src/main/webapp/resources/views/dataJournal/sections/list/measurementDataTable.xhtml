@@ -25,7 +25,7 @@
 		filteredValue="#{dataJournalTable.filtered}"
 		lazy="false">
 		
-		<p:ajax event="rowDblselect" listener="#{editFormDJView.onRowDbSelect}" update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement" />
+		<p:ajax event="rowDblselect" listener="#{editFormDJView.onRowDbSelect}" update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement  :editForm:spectrumParameters" />
 
 		<p:column width="70"
 			filterBy="#{row.firstDate.date}"

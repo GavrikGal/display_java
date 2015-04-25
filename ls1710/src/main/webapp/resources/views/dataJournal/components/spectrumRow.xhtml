@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:composite="http://java.sun.com/jsf/composite">
 
 
@@ -19,17 +20,17 @@
     	<p:panelGrid>
 			<p:row>
 				<p:column style="width: #{cc.attrs.widthFirstColumn}">
-					<h:outputText
-						value="#{cc.attrs.spectrum.parameter.measurand}
-    											 #{cc.attrs.spectrum.parameter.typeOfSpectrum != null ? ', ' : ''}"
-						style="font-size: small;" />
-					<h:outputText
-						value="#{cc.attrs.spectrum.parameter.typeOfSpectrum}
-         									 #{cc.attrs.spectrum.parameter.screenResolution != null ? ', ' : ''}"
-						style="font-size: small;" />
-					<h:outputText
-						value="#{cc.attrs.spectrum.parameter.screenResolution}"
-						style="font-size: small;" />
+				
+					<ui:repeat value="#{cc.attrs.spectrum.parameters}"
+							var="parameter" 
+							size="#{fn:length(cc.attrs.spectrum.parameters)}">
+							
+						<h:outputText
+							value="#{parameter.name}, "
+							style="font-size: 90%;" />
+											
+					</ui:repeat>
+					
 				</p:column>
 				<p:column>
 					<ui:repeat var="harmonic" value="#{cc.attrs.spectrum.harmonics}"

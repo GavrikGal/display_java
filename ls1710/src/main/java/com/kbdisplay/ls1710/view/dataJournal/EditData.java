@@ -4,15 +4,11 @@ import java.util.List;
 
 import org.primefaces.model.menu.MenuModel;
 
-import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
-import com.kbdisplay.ls1710.domain.ScreenResolution;
-import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfParameter;
-import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
 
 public interface EditData {
 
@@ -28,9 +24,9 @@ public interface EditData {
 
 	void setSerialNumber(final String serialNumber);
 
-	SpectrumParameter getSpectrumParameter();
-
-	void setSpectrumParameter(final SpectrumParameter spectrParameter);
+	// SpectrumParameter getSpectrumParameter();
+	//
+	// void setSpectrumParameter(final SpectrumParameter spectrParameter);
 
 	PurposeOfMeasurement getPurposeOfMeasurement();
 
@@ -44,17 +40,18 @@ public interface EditData {
 
 	void setModelOfEquipments(final List<ModelOfEquipment> modelOfEquipments);
 
-	List<Measurand> getMeasurands();
-
-	void setMeasurands(final List<Measurand> measurands);
-
-	List<ScreenResolution> getScreenResolutions();
-
-	void setScreenResolutions(final List<ScreenResolution> screenResolutions);
-
-	List<TypeOfSpectrum> getTypeOfSpectrums();
-
-	void setTypeOfSpectrums(final List<TypeOfSpectrum> typeOfSpectrums);
+	// List<Measurand> getMeasurands();
+	//
+	// void setMeasurands(final List<Measurand> measurands);
+	//
+	// List<ScreenResolution> getScreenResolutions();
+	//
+	// void setScreenResolutions(final List<ScreenResolution>
+	// screenResolutions);
+	//
+	// List<TypeOfSpectrum> getTypeOfSpectrums();
+	//
+	// void setTypeOfSpectrums(final List<TypeOfSpectrum> typeOfSpectrums);
 
 	List<PurposeOfMeasurement> getPurposeOfMeasurements();
 
@@ -69,17 +66,25 @@ public interface EditData {
 
 	void setSelectedParameters(List<Parameter> selectedParameters);
 
-	void selectTypeOfParameter(String itemN);
+
 
 	List<List<Parameter>> getAvailableParameterLists();
 
 	void setAvailableParameterLists(
 			List<List<Parameter>> availableParameterLists);
 
+
+
+	TypeOfParameter getNewType();
+
+	void setNewType(TypeOfParameter newType);
+
+	TypeOfParameter getSelectedType();
+
+	void setSelectedType(TypeOfParameter selectedType);
+
 	MenuModel getMenuModel();
 
-
-
-
+	void setMenuModel(MenuModel menuModel);
 
 }

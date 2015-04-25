@@ -141,10 +141,11 @@ public class DataJournalTable implements Serializable, DataTable {
 	/**
 	 * вставка новой строки измерения в таблицу измерений.
 	 *
-	 * @param measurement - новое измерение.
+	 * @param measurement
+	 *            - новое измерение.
 	 */
 	public final void insertRow(final Measurement measurement) {
-		//currentId++;
+		// currentId++;
 		/*
 		 * проверка являются ли измерения начальными в серии испытаний например
 		 * если у измемения родительское измерение равно null,то измерение
@@ -157,8 +158,8 @@ public class DataJournalTable implements Serializable, DataTable {
 			row.init(measurement.getId(), measurement);
 
 			/* установка актуальных спектров из цикла измерений */
-			List<Spectrum> lastSpectrums =
-					getActualSpectrums(row.getMeasurement());
+			List<Spectrum> lastSpectrums = getActualSpectrums(row
+					.getMeasurement());
 			row.setSpectrums(lastSpectrums);
 
 			/* установка даты последнего измерения из цикла */
@@ -175,26 +176,28 @@ public class DataJournalTable implements Serializable, DataTable {
 	/**
 	 * обновление строки измерения в таблице измерений с новыми данными.
 	 *
-	 * @param row - обновляемая строка.
-	 * @param measurement - новое измерение.
+	 * @param row
+	 *            - обновляемая строка.
+	 * @param measurement
+	 *            - новое измерение.
 	 */
 	public final void updateRow(final Row row, final Measurement measurement) {
 
-		//TODO кастыль - исправить нахрен
+		// TODO кастыль - исправить нахрен
 		Measurement rootMeasurement = measurement;
 		while (rootMeasurement.getParentMeasurement() != null) {
 			rootMeasurement = rootMeasurement.getParentMeasurement();
 		}
 		// кастыль
 
-		List<Spectrum> lastSpectrums =
-				getActualSpectrums(rootMeasurement);
+		List<Spectrum> lastSpectrums = getActualSpectrums(rootMeasurement);
 		row.setSpectrums(lastSpectrums);
 
 		if (measurement.getParentMeasurement() != null) {
 			row.setLastDate(measurement.getDate());
 		}
 	}
+
 	/**
 	 * удаление измерения из списка измерений.
 	 */
@@ -218,8 +221,8 @@ public class DataJournalTable implements Serializable, DataTable {
 	 */
 	private List<Spectrum> getActualSpectrums(final Measurement measurement) {
 
-		Map<Long, Spectrum> actualSpectrumMap =
-			getActualSpectrumMap(new HashMap<Long, Spectrum>(), measurement);
+		Map<Long, Spectrum> actualSpectrumMap = getActualSpectrumMap(
+				new HashMap<Long, Spectrum>(), measurement);
 		List<Spectrum> actualSpectrums = new ArrayList<Spectrum>();
 		for (Entry<Long, Spectrum> spectrum : actualSpectrumMap.entrySet()) {
 			actualSpectrums.add(spectrum.getValue());
@@ -243,12 +246,14 @@ public class DataJournalTable implements Serializable, DataTable {
 				 * версией актуальнее.
 				 */
 				for (Spectrum spectrum : spectrums) {
-					Long parameterId = spectrum.getParameter().getId();
+
+					Long parameterId = spectrum.getParameters()
+							.get(spectrum.getParameters().size() - 1).getId();
 					if (!actualMap.containsKey(parameterId)) {
 						actualMap.put(parameterId, spectrum);
 					} else {
-						int actualVersion =
-								actualMap.get(parameterId).getVersion();
+						int actualVersion = actualMap.get(parameterId)
+								.getVersion();
 						int currentVersion = spectrum.getVersion();
 						if (actualVersion < currentVersion) {
 							actualMap.put(parameterId, spectrum);
@@ -268,8 +273,7 @@ public class DataJournalTable implements Serializable, DataTable {
 			}
 			Measurement nextMeasurement = measurement.getNextMeasurement();
 			if (nextMeasurement != null) {
-				actualMap =
-						getActualSpectrumMap(prevActualMap, nextMeasurement);
+				actualMap = getActualSpectrumMap(prevActualMap, nextMeasurement);
 			}
 		}
 
@@ -339,16 +343,16 @@ public class DataJournalTable implements Serializable, DataTable {
 
 			currentMeasForView = dataRows.get(i);
 			currentDate = currentMeasForView.getFirstDate().getDate();
-			currentModelName =
-					currentMeasForView.getEquipment().getModel().getName();
+			currentModelName = currentMeasForView.getEquipment().getModel()
+					.getName();
 
 			currentMeasForView.setEnableFirstDate(true);
 			currentMeasForView.setEnableModelName(true);
 			if (i > 0) {
 				preMeasForView = dataRows.get(i - 1);
 				preDate = preMeasForView.getFirstDate().getDate();
-				preModelName =
-						preMeasForView.getEquipment().getModel().getName();
+				preModelName = preMeasForView.getEquipment().getModel()
+						.getName();
 			} else {
 				preMeasForView = currentMeasForView;
 				continue;

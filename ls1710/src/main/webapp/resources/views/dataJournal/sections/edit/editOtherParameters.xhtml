@@ -1,0 +1,46 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:row>
+		<p:column 
+			colspan="6">
+			
+			<p:panel 
+				id="otherParameters" 
+				widgetVar="otherParametersWV"
+				toggleable="true" 
+				toggleSpeed="150"
+				collapsed="true"
+				style="border: 0px;">
+				
+				<p:panelGrid 
+					columns="4" 
+					style="width:100%;">
+
+					<p:outputLabel
+						value="#{msg['label_measurement_table_receiver_bandwidth']}" />
+					<p:inputText 
+						value="30" />
+						
+					<p:outputLabel
+						value="#{msg['label_measurement_table_distance']}" />
+					<p:inputText 
+						value="0.5" />
+						
+					<p:outputLabel
+						value="Резерв" />
+					<p:outputLabel
+						value="Резерв" />
+						
+					<p:outputLabel
+						value="#{msg['label_measurement_table_testing_equpment']}" />
+					<p:commandButton
+						value="#{msg['label_measurement_table_go_to_testing_equpment']}" />
+				</p:panelGrid>
+			</p:panel>
+		</p:column>
+	</p:row>
+</ui:composition>

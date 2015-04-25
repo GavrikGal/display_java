@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import com.kbdisplay.ls1710.domain.Measurement;
+import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.Spectrum;
-import com.kbdisplay.ls1710.domain.SpectrumParameter;
 
 /**
  * интерфейс измеренного спектра для доступа к данным из БД.
@@ -23,7 +23,7 @@ public interface SpectrumRepository extends CrudRepository<Spectrum, Long> {
 	 * @param parameter параметры спектра
 	 * @return найденный спектр или null
 	 */
-	List <Spectrum> findByMeasurementAndParameter(
-			Measurement measurement, SpectrumParameter parameter);
+	List <Spectrum> findByMeasurementAndParameters(
+			Measurement measurement, List<Parameter> parameters);
 
 }

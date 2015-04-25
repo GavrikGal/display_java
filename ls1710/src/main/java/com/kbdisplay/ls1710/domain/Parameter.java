@@ -14,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 /**
  * Объект параметров спектра из БД.
  *
@@ -50,30 +53,13 @@ public class Parameter implements Serializable {
 	private String name;
 
 	/**
-	 * родительские параметры спектра.
-	 */
-	@ManyToMany
-	@JoinTable(name = "relationship_parameters", joinColumns = @JoinColumn(
-			name = "child_id"), inverseJoinColumns = @JoinColumn(
-			name = "parent_id"))
-	private List<Parameter> parentParameters;
-
-	/**
-	 * дочерние параметры спектра.
-	 */
-	@ManyToMany
-	@JoinTable(name = "relationship_parameters", joinColumns = @JoinColumn(
-			name = "parent_id"), inverseJoinColumns = @JoinColumn(
-			name = "child_id"))
-	private List<Parameter> childParameters;
-
-	/**
 	 * спектры с этим параметром.
 	 */
 	@ManyToMany
 	@JoinTable(name = "specrum_parameters", joinColumns = @JoinColumn(
 			name = "parameter_id"), inverseJoinColumns = @JoinColumn(
 			name = "spectrum_id"))
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Spectrum> spectrums;
 
 
@@ -101,22 +87,6 @@ public class Parameter implements Serializable {
 		this.name = name;
 	}
 
-	public List<Parameter> getParentParameters() {
-		return parentParameters;
-	}
-
-	public void setParentParameters(final List<Parameter> parentParameters) {
-		this.parentParameters = parentParameters;
-	}
-
-	public List<Parameter> getChildParameters() {
-		return childParameters;
-	}
-
-	public void setChildParameters(final List<Parameter> childParameters) {
-		this.childParameters = childParameters;
-	}
-
 	public List<Spectrum> getSpectrums() {
 		return spectrums;
 	}
@@ -128,5 +98,38 @@ public class Parameter implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Parameter other = (Parameter) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
+
+
 
 }

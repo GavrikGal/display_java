@@ -61,9 +61,9 @@ public class Spectrum implements Serializable {
 	 * Параметры спектра (измеряемая величина, разрешение, тип измерений и
 	 * т.д.).
 	 */
-	@ManyToOne
-	@JoinColumn(name = "parameter_id")
-	private SpectrumParameter parameter;
+//	@ManyToOne
+//	@JoinColumn(name = "parameter_id")
+//	private SpectrumParameter parameter;
 
 	/**
 	 * версия спектра.
@@ -101,6 +101,8 @@ public class Spectrum implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "specrum_parameters", joinColumns = @JoinColumn(name
 	= "spectrum_id"), inverseJoinColumns = @JoinColumn(name = "parameter_id"))
+	@OrderBy("type")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Parameter> parameters;
 
 
@@ -132,14 +134,14 @@ public class Spectrum implements Serializable {
 		this.measurement = measurement;
 	}
 
-	public SpectrumParameter getParameter() {
-		return parameter;
-	}
-
-	public void setParameter(
-			final SpectrumParameter parameter) {
-		this.parameter = parameter;
-	}
+//	public SpectrumParameter getParameter() {
+//		return parameter;
+//	}
+//
+//	public void setParameter(
+//			final SpectrumParameter parameter) {
+//		this.parameter = parameter;
+//	}
 
 	public int getVersion() {
 		return version;
@@ -172,6 +174,5 @@ public class Spectrum implements Serializable {
 	public void setParameters(List<Parameter> parameters) {
 		this.parameters = parameters;
 	}
-
 
 }

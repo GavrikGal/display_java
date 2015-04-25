@@ -1,0 +1,43 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:confirmDialog 
+		id="confirmDialog" 
+		widgetVar="confirmDelete" 
+		header="#{msg['confirm_delete_header']}" 
+		severity="alert" 
+		showEffect="fade" 
+		hideEffect="fade"
+		closeOnEscape="true" 
+		closable="true">
+		
+		<p:commandButton 
+         	id="btnYes"
+        	value="#{msg['dialog_btn_yes']}" 
+        	onclick="PF('confirmDelete').hide()"
+        	update="dataTable :messages:message"
+        	styleClass="btnYes"
+        	action="#{dataJournalController.delete(dataJournalTable.selected.measurement)}"
+        	icon="ui-icon-check" />
+       
+        <p:commandButton 
+        	id="btnNo"
+        	value="#{msg['dialog_btn_no']}" 
+        	onclick="PF('confirmDelete').hide()"
+        	type="button"
+        	styleClass="btnNo"
+        	icon="ui-icon-close" />
+        	
+        <f:facet name="message">
+	        <p:outputPanel>
+	            <h:outputFormat value="#{msg['confirm_delete_msg']}?" escape="true"/>
+	        </p:outputPanel>
+	    </f:facet>
+    </p:confirmDialog>
+
+</ui:composition>

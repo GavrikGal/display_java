@@ -9,26 +9,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
 
-import com.kbdisplay.ls1710.domain.Measurand;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
-import com.kbdisplay.ls1710.domain.ScreenResolution;
-import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.domain.TypeOfParameter;
-import com.kbdisplay.ls1710.domain.TypeOfSpectrum;
-import com.kbdisplay.ls1710.service.data.MeasurandService;
 import com.kbdisplay.ls1710.service.data.ModelService;
-import com.kbdisplay.ls1710.service.data.ParameterService;
 import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
-import com.kbdisplay.ls1710.service.data.ScreenResolutionService;
-import com.kbdisplay.ls1710.service.data.TypeOfParameterService;
-import com.kbdisplay.ls1710.service.data.TypeOfSpectrumService;
 import com.kbdisplay.ls1710.view.dataJournal.EditData;
 
 /**
@@ -60,7 +49,7 @@ public class EditFormData implements Serializable, EditData {
 	 *
 	 * такие как измеряемая величина, разрешение экрана, тип измерений и т.д.
 	 */
-	private SpectrumParameter spectrumParameter;
+	// private SpectrumParameter spectrumParameter;
 
 	/**
 	 * цель измерений (пи/пси/типовые/т.д.).
@@ -83,22 +72,24 @@ public class EditFormData implements Serializable, EditData {
 	/**
 	 * список доступных измеряемых физических величин.
 	 */
-	private List<Measurand> measurands;
+	// private List<Measurand> measurands;
 
 	/**
 	 * список доступных разрешений экрана.
 	 */
-	private List<ScreenResolution> screenResolutions;
+	// private List<ScreenResolution> screenResolutions;
 
 	/**
 	 * список доступных типов спектра.
 	 */
-	private List<TypeOfSpectrum> typeOfSpectrums;
+	// private List<TypeOfSpectrum> typeOfSpectrums;
 
 	/**
 	 * список доступных целей измерений.
 	 */
 	private List<PurposeOfMeasurement> purposeOfMeasurements;
+
+	private TypeOfParameter newType;
 
 	private TypeOfParameter selectedType;
 	private List<TypeOfParameter> availableTypes;
@@ -113,7 +104,9 @@ public class EditFormData implements Serializable, EditData {
 	 */
 	public EditFormData() {
 		model = null;
-		spectrumParameter = new SpectrumParameter();
+		selectedParameters = new ArrayList<Parameter>();
+		selectedType = null;
+		availableParameterLists = new ArrayList<List<Parameter>>();
 	}
 
 	@Override
@@ -123,124 +116,46 @@ public class EditFormData implements Serializable, EditData {
 
 		ModelService modelService = (ModelService) fc.getApplication()
 				.getELResolver().getValue(elContext, null, "modelService");
-		MeasurandService measurandService = (MeasurandService) fc
-				.getApplication().getELResolver()
-				.getValue(elContext, null, "measurandService");
-		ScreenResolutionService screenResolutionService = (ScreenResolutionService) fc
-				.getApplication().getELResolver()
-				.getValue(elContext, null, "screenResolutionService");
-		TypeOfSpectrumService typeOfSpectrumService = (TypeOfSpectrumService) fc
-				.getApplication().getELResolver()
-				.getValue(elContext, null, "typeOfSpectrumService");
+
 		PurposeOfMeasurementService purposeOfMeasurementService = (PurposeOfMeasurementService) fc
 				.getApplication().getELResolver()
 				.getValue(elContext, null, "purposeOfMeasurementService");
 
-		ParameterService parameterService = (ParameterService) fc
-				.getApplication().getELResolver()
-				.getValue(elContext, null, "parameterService");
-
-		TypeOfParameterService typeOfParameterService = (TypeOfParameterService) fc
-				.getApplication().getELResolver()
-				.getValue(elContext, null, "typeOfParameterService");
-
-		menuModel = new DefaultMenuModel();
-
-		// List<TypeOfParameter> list = typeOfParameterService.findAll();
-		availableTypes = typeOfParameterService.findByPrevTypeId(null);
-
-		if (availableTypes != null) {
-
-			int itemN = 0;
-			for (TypeOfParameter availableType : availableTypes) {
-				DefaultMenuItem item = new DefaultMenuItem(
-						availableType.getName());
-				item.setCommand("#{editFormDJView.data.selectTypeOfParameter('"
-						+ itemN + "')}");
-				item.setUpdate("spectrumParameters spectrumParametersMenu");
-
-				menuModel.addElement(item);
-
-				itemN++;
-			}
-		}
-
-		// Parameter parameter = new Parameter();
-		// parameter.setName("E");
-		// parameter.setType(list.get(0));
-		// List<Parameter> newParen = new ArrayList<Parameter>();
-		// parameter.setParentParameters(newParen);
-		// parameter.getParentParameters().add(parentParameters.get(0));
-		// parameterService.save(parameter);
-		//
-		// parameter = new Parameter();
-		// parameter.setName("U");
-		// parameter.setType(list.get(0));
-		// newParen = new ArrayList<Parameter>();
-		// parameter.setParentParameters(newParen);
-		// parameter.getParentParameters().add(parentParameters.get(0));
-		// parameterService.save(parameter);
-
 		modelOfEquipments = modelService.findAll();
-		measurands = measurandService.findAll();
-		screenResolutions = screenResolutionService.findAll();
-		typeOfSpectrums = typeOfSpectrumService.findAll();
+
 		purposeOfMeasurements = purposeOfMeasurementService.findAll();
-
-
-		selectedParameters = new ArrayList<Parameter>();
-		availableParameterLists = new ArrayList<List<Parameter>>();
-	}
-
-	@Override
-	public void selectTypeOfParameter(String itemN) {
-		selectedType = availableTypes.get(Integer.parseInt(itemN));
-		availableTypes = selectedType.getNextTypes();
-		menuModel = null;
-
-		if (selectedType != null) {
-
-			List<Parameter> availableParameters = selectedType.getParameters();
-
-			if ((availableParameters != null) && (!availableParameters.isEmpty())) {
-				availableParameterLists.add(availableParameters);
-				selectedParameters.add(selectedType.getParameters().get(0));
-			}
-		}
-
-
-		if (availableTypes != null) {
-			menuModel = new DefaultMenuModel();
-			int itemN2 = 0;
-			for (TypeOfParameter availableType : availableTypes) {
-				DefaultMenuItem item = new DefaultMenuItem(
-						availableType.getName());
-				item.setCommand("#{editFormDJView.data.selectTypeOfParameter('"
-						+ itemN2 + "')}");
-				item.setUpdate("spectrumParameters spectrumParametersMenu");
-
-				menuModel.addElement(item);
-
-				itemN2++;
-
-			}
-		}
 	}
 
 	@Override
 	public void initSelected(final Measurement selectedMeasurement) {
+		selectedParameters = new ArrayList<Parameter>();
+		availableParameterLists = new ArrayList<List<Parameter>>();
 		model = selectedMeasurement.getEquipment().getModel();
-		SpectrumParameter lastSpectrumParameter = selectedMeasurement
-				.getSpectrums()
+
+		// получаем параметры из последнего измеренного спектра
+		List<Parameter> parameters = selectedMeasurement.getSpectrums()
 				.get(selectedMeasurement.getSpectrums().size() - 1)
-				.getParameter();
-		spectrumParameter.setMeasurand(lastSpectrumParameter.getMeasurand());
-		spectrumParameter.setTypeOfSpectrum(lastSpectrumParameter
-				.getTypeOfSpectrum());
-		spectrumParameter.setScreenResolution(lastSpectrumParameter
-				.getScreenResolution());
+				.getParameters();
+		for (Parameter parameter : parameters) {
+			Parameter selectedParameter = new Parameter();
+			selectedParameter.setName(parameter.getName());
+			selectedParameters.add(selectedParameter);
+
+		}
+
+		TypeOfParameter type = null;
+
+		for (Parameter parameter : parameters) {
+			type = parameter.getType();
+			List<Parameter> availableParameter = type.getParameters();
+			availableParameterLists.add(availableParameter);
+			selectedType = type;
+		}
+
 		purposeOfMeasurement = selectedMeasurement.getPurpose();
 	};
+
+
 
 	@Override
 	public ModelOfEquipment getModel() {
@@ -260,16 +175,6 @@ public class EditFormData implements Serializable, EditData {
 	@Override
 	public void setSerialNumber(final String serialNumber) {
 		this.serialNumber = serialNumber;
-	}
-
-	@Override
-	public SpectrumParameter getSpectrumParameter() {
-		return spectrumParameter;
-	}
-
-	@Override
-	public void setSpectrumParameter(final SpectrumParameter parameter) {
-		this.spectrumParameter = parameter;
 	}
 
 	@Override
@@ -304,37 +209,6 @@ public class EditFormData implements Serializable, EditData {
 	}
 
 	@Override
-	public List<Measurand> getMeasurands() {
-		return measurands;
-	}
-
-	@Override
-	public void setMeasurands(final List<Measurand> measurands) {
-		this.measurands = measurands;
-	}
-
-	@Override
-	public List<ScreenResolution> getScreenResolutions() {
-		return screenResolutions;
-	}
-
-	@Override
-	public void setScreenResolutions(
-			final List<ScreenResolution> screenResolutions) {
-		this.screenResolutions = screenResolutions;
-	}
-
-	@Override
-	public List<TypeOfSpectrum> getTypeOfSpectrums() {
-		return typeOfSpectrums;
-	}
-
-	@Override
-	public void setTypeOfSpectrums(final List<TypeOfSpectrum> typeOfSpectrums) {
-		this.typeOfSpectrums = typeOfSpectrums;
-	}
-
-	@Override
 	public List<PurposeOfMeasurement> getPurposeOfMeasurements() {
 		return purposeOfMeasurements;
 	}
@@ -365,14 +239,15 @@ public class EditFormData implements Serializable, EditData {
 		this.availableTypes = availableTypes;
 	}
 
+	@Override
 	public TypeOfParameter getSelectedType() {
 		return selectedType;
 	}
 
+	@Override
 	public void setSelectedType(TypeOfParameter selectedType) {
 		this.selectedType = selectedType;
 	}
-
 
 	@Override
 	public List<List<Parameter>> getAvailableParameterLists() {
@@ -386,16 +261,27 @@ public class EditFormData implements Serializable, EditData {
 	}
 
 	@Override
+	public TypeOfParameter getNewType() {
+		return newType;
+	}
+
+	@Override
+	public void setNewType(TypeOfParameter newType) {
+		this.newType = newType;
+	}
+
+	@Override
 	public MenuModel getMenuModel() {
 		return menuModel;
+	}
+
+	@Override
+	public void setMenuModel(MenuModel menuModel) {
+		this.menuModel = menuModel;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
-
-
-
 
 }

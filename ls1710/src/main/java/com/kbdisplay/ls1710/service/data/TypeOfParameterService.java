@@ -12,4 +12,6 @@ public interface TypeOfParameterService {
 
 	public List<TypeOfParameter> findByPrevTypeId(Long id);
 
+	public TypeOfParameter save(TypeOfParameter type);
+
 }

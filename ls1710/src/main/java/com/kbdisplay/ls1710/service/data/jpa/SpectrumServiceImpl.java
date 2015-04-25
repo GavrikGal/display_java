@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.Measurement;
+import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.Spectrum;
-import com.kbdisplay.ls1710.domain.SpectrumParameter;
 import com.kbdisplay.ls1710.repository.SpectrumRepository;
 import com.kbdisplay.ls1710.service.data.SpectrumService;
 
@@ -35,16 +35,16 @@ public class SpectrumServiceImpl implements SpectrumService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List <Spectrum> findByMeasurementAndParameter(Measurement measurement,
-			SpectrumParameter parameter) {
-		return spectrumRepository.findByMeasurementAndParameter(measurement,
-				parameter);
+	public Spectrum save(Spectrum spectrum) {
+		return spectrumRepository.save(spectrum);
 	}
 
 	@Override
-	public Spectrum save(Spectrum spectrum) {
-		return spectrumRepository.save(spectrum);
+	@Transactional(readOnly = true)
+	public List<Spectrum> findByMeasurementAndParameters(
+			Measurement measurement, List<Parameter> parameters) {
+		return spectrumRepository.findByMeasurementAndParameters(measurement,
+				parameters);
 	}
 
 }
