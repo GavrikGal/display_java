@@ -22,10 +22,19 @@
 	    <filter-name>PrimeFaces FileUpload Filter</filter-name>
 	    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
 	</filter>
+	<!-- http://marco-ng.blogspot.com/2014/02/primefaces-jsf2-spring-security-spring.html http://mprabhat.com/2013/01/28/integrating-primefaces-and-spring-security/ -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
 	<filter-mapping>
 	    <filter-name>PrimeFaces FileUpload Filter</filter-name>
 	    <servlet-name>Faces Servlet</servlet-name>
 	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
 	
