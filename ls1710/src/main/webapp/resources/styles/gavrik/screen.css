@@ -259,7 +259,7 @@ caption {background:#eee;}
 	margin: auto !important;
 }
 
-.ui-dialog {
+.ui-dialog-modal {
 	top: 200px !important;
 	
 }
@@ -275,6 +275,11 @@ caption {background:#eee;}
 }
 
 .btnSave {
+	margin: 5px !important;
+	float: left;
+}
+
+.btnLogin {
 	margin: 5px !important;
 	float: left;
 }
@@ -300,6 +305,7 @@ caption {background:#eee;}
 
 #editForm\:spectrumParameters table {
 	border: 0 px !important;
+	
 }
 
 

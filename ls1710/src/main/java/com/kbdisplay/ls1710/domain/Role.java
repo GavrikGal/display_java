@@ -20,7 +20,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "name")
+@Table(name = "role")
 public class Role implements Serializable {
 	/**
 	 * Серийный номер класса.
@@ -53,7 +53,7 @@ public class Role implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "role")
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -68,7 +68,7 @@ public class Role implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "user_role",
-		joinColumns = @JoinColumn(name = "name_id"),
+		joinColumns = @JoinColumn(name = "role_id"),
 		inverseJoinColumns = @JoinColumn(name = "user_id"))
 	public Set<User> getUsers() {
 		return users;

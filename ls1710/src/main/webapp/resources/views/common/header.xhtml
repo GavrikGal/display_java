@@ -3,7 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
 
 
 	<div class="headerContent">
@@ -26,8 +27,27 @@
 				icon="ui-icon-wrench">
 				<f:param name="i" value="3" />
 			</p:menuitem>
-
+			
 		</p:tabMenu>
+		
+
+		
+
+		
+			<p:commandButton
+				id="logout" 
+				value="#{msg['login_btn_logout']}"
+				action="#{loginMgmtBean.logout}"
+				style="float:right; top: -53px; right: 10px; position: relative;"
+				update=":messages:message"/>
+		
+
+		<ui:include src="/resources/views/common/sections/loginPanel.xhtml" />
+		
+		
+
+		
+		
 
 	</div>
 

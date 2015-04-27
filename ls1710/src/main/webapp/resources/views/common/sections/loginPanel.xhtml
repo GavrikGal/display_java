@@ -1,0 +1,74 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:commandButton 
+		id="loginBtn" 
+		value="#{msg['login_btn_enter']}"
+		style="float:right; top: -53px; right: 10px; position: relative; " 
+		type="button"/>
+		
+	<p:overlayPanel 
+		id="loginPanel" 
+		for="loginBtn" 
+		dynamic="true" 
+		widgetVar="loginDialogWV">
+		
+		<h:form  
+			id="loginFormId" 
+			prependId="false">
+			
+			<p:panelGrid columns="2">
+				<p:outputLabel 
+					value="#{msg['label_userName']}" 
+					for="userName"/>
+				<p:inputText 
+					id="userName" 
+					required="true" 
+					value="#{loginMgmtBean.userName}" 
+					requiredMessage="#{msg['msg_required_userName']}"/>
+				
+				<p:outputLabel 
+					value="#{msg['label_password']}" 
+					for="password"/>
+				<p:password 
+					id="password" 
+					required="true" 
+					value="#{loginMgmtBean.password}" 
+					requiredMessage="#{msg['msg_required_password']}"/>
+					
+			</p:panelGrid>
+		</h:form>
+
+		<p:outputPanel>
+       
+			<p:commandButton 
+     			id="btnLoginId" 
+     			value="#{msg['dialog_btn_login']}" 
+     			action="#{loginMgmtBean.login}" 
+     			onclick="PF('loginDialogWV').hide()"
+     			styleClass="btnLogin" 
+     			update=":messages:message"
+     			icon="ui-icon-check" />
+		     			
+			<p:commandButton 
+				id="btnCancelId"
+				value="#{msg['dialog_btn_cansel']}" 
+				action="#{loginMgmtBean.cancel}"
+				onclick="PF('loginDialogWV').hide()"
+				styleClass="btnCancel" 
+				immediate="true" 
+				update=":messages:message loginFormId"
+				icon="ui-icon-close" />
+     		
+		</p:outputPanel>
+	    
+	</p:overlayPanel>
+	
+	
+
+</ui:composition>
