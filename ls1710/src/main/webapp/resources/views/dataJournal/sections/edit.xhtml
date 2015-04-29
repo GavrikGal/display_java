@@ -5,7 +5,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
 
 
 	<div class="editPanel">
@@ -14,8 +15,15 @@
 			
 			<h:form id="editForm">
 				<!-- <p:log /> -->
+				
+				
 
 				<p:panelGrid style="width: 100%;">
+				
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<p:outputLabel id="test" value="asdf"/>
+				</sec:authorize>
+				
 				
 					<ui:include src="/resources/views/dataJournal/sections/edit/editMainInputForms.xhtml" />
 					

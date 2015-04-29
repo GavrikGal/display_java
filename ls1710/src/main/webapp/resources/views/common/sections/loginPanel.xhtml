@@ -3,7 +3,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
 
 
 	<p:commandButton 
@@ -42,6 +43,9 @@
 					requiredMessage="#{msg['msg_required_password']}"/>
 					
 			</p:panelGrid>
+			
+
+			
 		</h:form>
 
 		<p:outputPanel>
@@ -52,7 +56,7 @@
      			action="#{loginMgmtBean.login}" 
      			onclick="PF('loginDialogWV').hide()"
      			styleClass="btnLogin" 
-     			update=":messages:message"
+     			update=":messages:message :editForm"
      			icon="ui-icon-check" />
 		     			
 			<p:commandButton 

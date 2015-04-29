@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.Role;
 import com.kbdisplay.ls1710.repository.UserRepository;
 import com.kbdisplay.ls1710.service.data.UserService;
-import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
 
 @Service("userService")
 @Repository
@@ -71,7 +70,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 					userRoles.add(new SimpleGrantedAuthority(role.getName()));
 					System.out.println("     " + role.getName());
 				}
-				user = new CustomUserDetails(userFromDB, userRoles);
+				boolean enabled = true;
+				boolean accountNonExpired = true;
+				boolean credentialsNonExpired = true;
+				boolean accountNonLocked = true;
+
+
+				user = new User(userFromDB.getLogin(), userFromDB.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, userRoles);
 
 			} else {
 				throw new UsernameNotFoundException("� ������������ ���������� ����������");

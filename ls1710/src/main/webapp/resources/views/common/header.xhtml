@@ -31,6 +31,7 @@
 		</p:tabMenu>
 		
 
+
 		
 
 		
@@ -40,13 +41,18 @@
 				action="#{loginMgmtBean.logout}"
 				style="float:right; top: -53px; right: 10px; position: relative;"
 				update=":messages:message"/>
-		
+			
+			<p:commandButton
+				value="Test"
+				action="#{loginMgmtBean.testAscess}"
+				style="float:right; top: -13px; right: 10px; position: relative;"
+				update=":messages:message"/>
 
 		<ui:include src="/resources/views/common/sections/loginPanel.xhtml" />
 		
 		
 
-		
+
 		
 
 	</div>

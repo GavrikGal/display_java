@@ -10,6 +10,9 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
 	
 	
 	<!-- JSF 2 -->
@@ -28,20 +31,21 @@
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
 	    <filter-name>PrimeFaces FileUpload Filter</filter-name>
 	    <servlet-name>Faces Servlet</servlet-name>
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<filter-mapping>
-		<filter-name>PrimeFaces FileUpload Filter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
+
 	
 	<context-param>
-        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
-        <param-value>/WEB-INF/taglib/springsecurity.taglib.xml</param-value>
-    </context-param>
+		<param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+		<param-value>/WEB-INF/springsecurity.taglib.xml</param-value>
+	</context-param>
 	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
@@ -81,6 +85,10 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.faces</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+	    <servlet-name>Faces Servlet</servlet-name>
+	    <url-pattern>*.xhtml</url-pattern>
+	  </servlet-mapping>
 	
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
@@ -96,5 +104,8 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/app/*</url-pattern>
 	</servlet-mapping>
+		<session-config>
+    <session-timeout>1</session-timeout>
+  </session-config>
 	
 </web-app>
