@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,63 +16,73 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
+
 @ManagedBean(name = "loginMgmtBean")
 @SessionScoped
 public class LoginManagerBean {
 	private String userName = null;
 	private String password = null;
 
-
 	@ManagedProperty(value = "#{authenticationManager}")
 	private AuthenticationManager authenticationManager;
 
-	public void login() {
+
+	public String login() {
 		try {
 
 			Authentication request =
 					new UsernamePasswordAuthenticationToken(this.getUserName(),
 							this.getPassword());
 			Authentication result = authenticationManager.authenticate(request);
-			System.out.println(result.getName());
 			SecurityContextHolder.getContext().setAuthentication(result);
 		} catch (AuthenticationException e) {
 			FacesContext fc = FacesContext.getCurrentInstance();
-			fc.addMessage(null, new FacesMessage("Вы ахренели?",
-					"Пока... "));
+			fc.addMessage(null, new FacesMessage("Вход для пользователя " + this.userName + " не может быть выполнен",
+					"Проверте логин и пароль, затем повторите вход"));
 
-			return ;
+			return "loginFail" ;
 		}
+		CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		FacesContext fc = FacesContext.getCurrentInstance();
-		fc.addMessage(null, new FacesMessage("Вы залогинены",
-				"Привет: "));
+		fc.addMessage(null, new FacesMessage("Вход в систему",
+				user.getFirstName() + ", добро пожаловать в систему"));
 		this.password = null;
-		return ;
+		return null;
 	}
 
 	public void cancel() {
-		return ;
+		return;
 	}
 
-	public void logout() {
+	public String logout() {
 		FacesContext fc = FacesContext.getCurrentInstance();
-		fc.addMessage(null, new FacesMessage("Вы вышли из системы",
-				"Пока... "));
+		fc.addMessage(null, new FacesMessage("Выход из системы", "Вы вышли из системы"));
 
-		System.out.println("logout name: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+		SecurityContextHolder.clearContext();
+		return "logout";
+	}
+
+	public void testAscess() {
+
+		System.out.println("logout name: "
+				+ SecurityContextHolder.getContext().getAuthentication()
+						.getName());
 		List<GrantedAuthority> grants = new ArrayList<GrantedAuthority>();
-		grants.addAll(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		grants.addAll(SecurityContextHolder.getContext().getAuthentication()
+				.getAuthorities());
 		System.out.println("Grantes:");
+		String grantes = "";
 		for (GrantedAuthority grantedAuthority : grants) {
 			System.out.println(grantedAuthority.getAuthority());
+			grantes += " " + grantedAuthority.getAuthority();
 		}
-		SecurityContextHolder.clearContext();
-	}
 
-	@PreAuthorize(value="hasRole('ROLE_ANONYMOUS')")
-	public void testAscess(){
-		System.out.println("it is work");
+		FacesContext fc = FacesContext.getCurrentInstance();
+		fc.addMessage(null, new FacesMessage("Authentication Name: "
+				+ SecurityContextHolder.getContext().getAuthentication()
+						.getName(), "Grantes: " + grantes));
 	}
-
 
 	public String getUserName() {
 		return userName;
@@ -95,10 +104,9 @@ public class LoginManagerBean {
 		return authenticationManager;
 	}
 
-	public void
-			setAuthenticationManager(AuthenticationManager authenticationManager) {
+	public void setAuthenticationManager(
+			AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
-
 
 }

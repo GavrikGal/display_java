@@ -1,6 +1,7 @@
 package com.kbdisplay.ls1710.view.dataJournal;
 
 import org.primefaces.event.SelectEvent;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.kbdisplay.ls1710.domain.Measurement;
 
@@ -20,6 +21,7 @@ public interface EditForm {
 	 * @param event
 	 *            - событие двойного клика.
 	 */
+	@PreAuthorize(value="hasAuthority('ROLE_USER')")
 	void onRowDbSelect(final SelectEvent event);
 
 	/**

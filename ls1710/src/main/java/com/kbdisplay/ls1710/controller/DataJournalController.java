@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import com.kbdisplay.ls1710.domain.Equipment;
@@ -78,7 +79,7 @@ public class DataJournalController {
 	 *
 	 * @return список измерений
 	 */
-	public final DataTable newDataJournalTable() {
+	public DataTable newDataJournalTable() {
 
 		logger.info("Creating new list of measurement for data Journal");
 
@@ -99,7 +100,7 @@ public class DataJournalController {
 	 *
 	 * @return форму для редактирования списка измерений
 	 */
-	public final EditForm newEditFormDataJournalView() {
+	public EditForm newEditFormDataJournalView() {
 
 		logger.info("Creating new edit form for data Journal");
 
@@ -112,8 +113,6 @@ public class DataJournalController {
 
 	/**
 	 * сохранить новое измерение из формы редактирования.
-	 *
-	 * TODO заменить на интерфейс
 	 *
 	 * @param editForm
 	 *            - форма редактирования
@@ -175,6 +174,7 @@ public class DataJournalController {
 	 * @param selected
 	 *            - удаляемое измерение.
 	 */
+	@PreAuthorize(value="hasAuthority('ROLE_USER')")
 	public void delete(final Measurement selected) {
 
 		logger.info("Measurement was removed. Measurement date - "

@@ -3,7 +3,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
 
 
 	<!-- контекстное меню. 
@@ -13,11 +14,13 @@
 	контекстного меню и widgetVar="measurementDialog" диалогового 
 	окна и id="dataTable" таблицы данных update="measurementDetail" 
 	oncomplete="PF('measurementDialog').show()"  -->
-	<p:contextMenu for="dataTable">
-		<p:menuitem value="#{msg['menu_edit']}" 
-			update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement :editForm:spectrumParameters"
-			icon="ui-icon-pencil"
-			action="#{editFormDJView.edit(dataJournalTable.selected.measurement)}" />
+	<p:contextMenu for="dataTable" styleClass="postAuthorizeUpdate">
+		<sec:authorize access="hasRole('ROLE_USER')" >  
+			<p:menuitem value="#{msg['menu_edit']}" 
+				update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement :editForm:spectrumParameters"
+				icon="ui-icon-pencil"
+				action="#{editFormDJView.edit(dataJournalTable.selected.measurement)}" />
+		</sec:authorize>
 			
 		<p:menuitem value="#{msg['menu_view']}" 
 			icon="ui-icon-search" />

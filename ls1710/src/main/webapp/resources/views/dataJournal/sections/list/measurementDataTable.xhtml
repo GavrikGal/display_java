@@ -5,7 +5,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:component="http://java.sun.com/jsf/composite/views/dataJournal/components">
+	xmlns:component="http://java.sun.com/jsf/composite/views/dataJournal/components"
+	xmlns:sec="http://www.springframework.org/security/tags">
 
 
 
@@ -23,10 +24,12 @@
 		widgetVar="dataTableWidget"
 		emptyMessage="#{msg['label_measurement_table_empty']}"
 		filteredValue="#{dataJournalTable.filtered}"
-		lazy="false">
+		lazy="false"
+		styleClass="postAuthorizeUpdate">
 		
-		<p:ajax event="rowDblselect" listener="#{editFormDJView.onRowDbSelect}" update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement  :editForm:spectrumParameters" />
-
+		<p:ajax  event="rowDblselect" listener="#{editFormDJView.onRowDbSelect}" update=":editSection" />
+		
+		
 		<p:column width="70"
 			filterBy="#{row.firstDate.date}"
 			filterMatchMode="contains">

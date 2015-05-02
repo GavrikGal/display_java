@@ -71,7 +71,7 @@ caption {background:#eee;}
 
 .content {
 	width: 1150px;
-	margin: 0 auto;
+	margin: 50 auto;
 }
 
 .editPanel {
@@ -308,6 +308,9 @@ caption {background:#eee;}
 	
 }
 
+.postAuthorizeUpdate { 
+	
+}
 
 /*.ui-confirmdialog-no {
 	display: none !important;

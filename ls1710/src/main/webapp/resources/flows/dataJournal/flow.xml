@@ -13,6 +13,8 @@
 			<evaluate expression="dataJournalController.newEditFormDataJournalView()"
 				result="viewScope.editFormDJView" />
 		</on-entry>
+		<transition on="logout" to="start"/>
+		<transition on="loginFail" to="start"/>
 		<transition on="addModel" to="addModel-step-1">
 			<evaluate expression="dataJournalController.newModelBean(editFormDJView.model)"
 				result="flowScope.modelBean" >

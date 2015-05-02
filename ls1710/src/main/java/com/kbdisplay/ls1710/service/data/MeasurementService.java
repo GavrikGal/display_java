@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
@@ -25,6 +26,7 @@ public interface MeasurementService {
 
 	public Measurement save(Measurement measurement);
 
+	@PreAuthorize(value="hasAuthority('ROLE_USER')")
 	public void delete(Measurement measurement);
 
 	public Long count();

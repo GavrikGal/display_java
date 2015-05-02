@@ -10,20 +10,15 @@
 
 
 	<div class="editPanel">
+	<p:outputPanel id="editSection" styleClass="postAuthorizeUpdate">
+		<sec:authorize access="hasRole('ROLE_USER')" > 
 		<p:panel id="editMeasurement"
 			styleClass="editMeasurementPanel">
 			
 			<h:form id="editForm">
 				<!-- <p:log /> -->
-				
-				
 
 				<p:panelGrid style="width: 100%;">
-				
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<p:outputLabel id="test" value="asdf"/>
-				</sec:authorize>
-				
 				
 					<ui:include src="/resources/views/dataJournal/sections/edit/editMainInputForms.xhtml" />
 					
@@ -42,6 +37,8 @@
 
 		<p:sticky target="editMeasurement"
 			margin="36" />
+		</sec:authorize>
+	</p:outputPanel>
 	</div>
 
 </ui:composition>

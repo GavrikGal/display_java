@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.Role;
 import com.kbdisplay.ls1710.repository.UserRepository;
 import com.kbdisplay.ls1710.service.data.UserService;
+import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
 
 @Service("userService")
 @Repository
@@ -58,32 +59,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		User user;
 
 		if (userFromDB != null) {
-			System.out.println("Get user. \nUserName: " + userFromDB.getLogin()
-					+ "\nPassword: " + userFromDB.getPassword()
-					+ "\nid: " + userFromDB.getId()
-					+ "\nFirstName: " + userFromDB.getFirstName()
-					+ "\nLastName:" + userFromDB.getLastName());
 			if (userFromDB.getRoles() != null) {
-				System.out.println("Roles:");
 				Collection<GrantedAuthority> userRoles = new ArrayList<GrantedAuthority>();
 				for (Role role : userFromDB.getRoles()) {
 					userRoles.add(new SimpleGrantedAuthority(role.getName()));
-					System.out.println("     " + role.getName());
 				}
-				boolean enabled = true;
-				boolean accountNonExpired = true;
-				boolean credentialsNonExpired = true;
-				boolean accountNonLocked = true;
 
-
-				user = new User(userFromDB.getLogin(), userFromDB.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, userRoles);
+				user = new CustomUserDetails(userFromDB, userRoles);
 
 			} else {
-				throw new UsernameNotFoundException("� ������������ ���������� ����������");
+				throw new UsernameNotFoundException("Can not find user");
 			}
 		} else {
 			System.out.println("Can not find user with UserName: " + login);
-			throw new UsernameNotFoundException("� ������� ���� ��� ������������: " + login);
+			throw new UsernameNotFoundException("Can not find user with UserName: " + login);
 		}
 
 		return user;
