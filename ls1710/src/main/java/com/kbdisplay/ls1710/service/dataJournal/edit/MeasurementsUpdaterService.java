@@ -2,11 +2,14 @@ package com.kbdisplay.ls1710.service.dataJournal.edit;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.PurposeOfMeasurement;
 
+@PreAuthorize("hasRole('ROLE_USER')")
 public interface MeasurementsUpdaterService {
 
 	public void updateFromFolder();

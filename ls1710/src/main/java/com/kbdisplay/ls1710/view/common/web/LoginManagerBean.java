@@ -41,13 +41,12 @@ public class LoginManagerBean {
 			fc.addMessage(null, new FacesMessage("Вход для пользователя " + this.userName + " не может быть выполнен",
 					"Проверте логин и пароль, затем повторите вход"));
 
-			return "loginFail" ;
+			return null;
 		}
 		CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		FacesContext fc = FacesContext.getCurrentInstance();
 		fc.addMessage(null, new FacesMessage("Вход в систему",
 				user.getFirstName() + ", добро пожаловать в систему"));
-		this.password = null;
 		return null;
 	}
 
@@ -60,7 +59,7 @@ public class LoginManagerBean {
 		fc.addMessage(null, new FacesMessage("Выход из системы", "Вы вышли из системы"));
 
 		SecurityContextHolder.clearContext();
-		return "logout";
+		return null;
 	}
 
 	public void testAscess() {

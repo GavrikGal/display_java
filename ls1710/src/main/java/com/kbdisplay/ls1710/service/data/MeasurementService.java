@@ -24,9 +24,10 @@ public interface MeasurementService {
 	public List<Measurement> findByEquipmentAndPurpose(Equipment equipment,
 			PurposeOfMeasurement purpose);
 
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public Measurement save(Measurement measurement);
 
-	@PreAuthorize(value="hasAuthority('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public void delete(Measurement measurement);
 
 	public Long count();

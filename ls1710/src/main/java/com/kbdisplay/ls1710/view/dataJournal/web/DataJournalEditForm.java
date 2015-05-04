@@ -18,7 +18,6 @@ import org.primefaces.model.menu.DefaultSeparator;
 import org.primefaces.model.menu.MenuModel;
 import org.springframework.faces.security.FaceletsAuthorizeTagUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.Parameter;
@@ -96,15 +95,11 @@ public class DataJournalEditForm implements Serializable, EditForm {
 	@Override
 	public void onRowDbSelect(final SelectEvent event) {
 		//TODO заменить сраный if на аннотацию (чтоб они только заработали падлы)
-		System.out.println("Пробую...");
 		try {
 			if (FaceletsAuthorizeTagUtils.areAllGranted("ROLE_USER")) {
 				Row row = (Row) event.getObject();
 				Measurement selected = row.getMeasurement();
 				edit(selected);
-				System.out.println("xopowo " + SecurityContextHolder.getContext().getAuthentication().getName());
-			} else {
-				System.out.println("xepoBo");
 			}
 		} catch (IOException e) {
 			// TODO Автоматически созданный блок catch

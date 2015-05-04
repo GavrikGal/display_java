@@ -13,28 +13,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
-	<bean id="securityExpressionHandler"
-    	class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler" />
-    	
-    <bean id="preInvocationAdvice"
-	    class="org.springframework.security.access.expression.method.ExpressionBasedPreInvocationAdvice"
-	    p:expressionHandler-ref="securityExpressionHandler" />
-	
-	<util:list id="decisionVoters">
-	    <bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
-	    <bean class="org.springframework.security.access.vote.RoleVoter" />
-	    <bean class="org.springframework.security.access.prepost.PreInvocationAuthorizationAdviceVoter"
-	        c:pre-ref="preInvocationAdvice" />
-	</util:list>
 
-	<bean id="accessDecisionManager"
-	    class="org.springframework.security.access.vote.UnanimousBased"
-	    c:decisionVoters-ref="decisionVoters" />
-	
-	<security:global-method-security pre-post-annotations="enabled" authentication-manager-ref="authenticationManager" >
-		
-         <security:expression-handler ref="securityExpressionHandler" />
-	</security:global-method-security>
 	
     <import resource="classpath:datasource-tx-jpa.xml" />
     <import resource="security-context.xml" />

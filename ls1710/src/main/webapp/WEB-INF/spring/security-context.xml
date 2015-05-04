@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
- 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:c="http://www.springframework.org/schema/c"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 		
 	<context:annotation-config />
 	<context:spring-configured />
+	
+		<bean id="securityExpressionHandler"
+    	class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler" />
+    	
+    <bean id="preInvocationAdvice"
+	    class="org.springframework.security.access.expression.method.ExpressionBasedPreInvocationAdvice"
+	    p:expressionHandler-ref="securityExpressionHandler" />
+	
+	<util:list id="decisionVoters">
+	    <bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+	    <bean class="org.springframework.security.access.vote.RoleVoter" />
+	    <bean class="org.springframework.security.access.prepost.PreInvocationAuthorizationAdviceVoter"
+	        c:pre-ref="preInvocationAdvice" />
+	</util:list>
+
+	<bean id="accessDecisionManager"
+	    class="org.springframework.security.access.vote.UnanimousBased"
+	    c:decisionVoters-ref="decisionVoters" />
+	
+	<sec:global-method-security pre-post-annotations="enabled" authentication-manager-ref="authenticationManager" >
+         <sec:expression-handler ref="securityExpressionHandler" />
+	</sec:global-method-security>
 	
     <sec:http auto-config="true" use-expressions="true">
         <sec:intercept-url pattern='/**' access='permitAll' />

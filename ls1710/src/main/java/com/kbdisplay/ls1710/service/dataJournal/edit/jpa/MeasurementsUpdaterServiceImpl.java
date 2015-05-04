@@ -412,7 +412,8 @@ public class MeasurementsUpdaterServiceImpl implements
 				.getMeasurements());
 
 		// TODO получаем пользователя проводившего испытания
-		User user = userService.findById(1L);
+		CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userDetails.getUsersDetails();
 
 		Measurement measurement = null;
 

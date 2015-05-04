@@ -21,7 +21,7 @@ public interface EditForm {
 	 * @param event
 	 *            - событие двойного клика.
 	 */
-	@PreAuthorize(value="hasAuthority('ROLE_USER')")
+	@PreAuthorize(value="hasRole('ROLE_USER')")
 	void onRowDbSelect(final SelectEvent event);
 
 	/**

@@ -19,18 +19,80 @@
 				Rendered only if user has any of the listed roles
 				<h:outputText value="Lorem ipsum dolor sit amet areAnyGranted" rendered="#{sec:areAnyGranted('ROLE_USER, ROLE_ADMIN')}"/> -->
 	<p:outputPanel id="loginSection">			
-		<sec:authorize access="!isAnonymous()" >
-			<p:commandButton
-				id="logout" 
-				value="#{msg['login_btn_logout']}"
-				action="#{loginMgmtBean.logout}"
-				style="float:right; top: -53px; right: 10px; position: relative;"
-				update=":messages:message @(.header)"/>
+		<sec:authorize access="isAuthenticated()" >
+		
+			<p:commandButton 
+				id="logName"
+				onclick="PF('logNameDialogWV').loadContents()"
+				value="#{request.getUserPrincipal().principal.firstName} #{request.getUserPrincipal().principal.lastName}"
+				style="float:right; top: -53px; right: 10px; position: relative; " 
+				type="button" />
+			
+			<p:overlayPanel
+				id="logNameDialog"
+				for="logName"
+				dynamic="true" 
+				widgetVar="logNameDialogWV"
+				showEffect="blind"
+				hideEffect="blind"
+				style="width: 300px;">
+				
+				<h:form  
+					id="ChangeUserFormId" 
+					prependId="false">
+					
+					<p:panelGrid columns="2">
+						<p:outputLabel 
+							value="#{msg['label_userName']}" 
+							for="changeUserName"/>
+						<p:inputText id="changeUserName"
+							value="#{loginMgmtBean.userName}"
+							required="true" 
+							requiredMessage="#{msg['msg_required_userName']}"/>
+						
+						
+						<p:outputLabel 
+							value="#{msg['label_password']}" 
+							for="changePassword"/>
+		               <p:password
+			               	id="changePassword"
+							value="#{loginMgmtBean.password}"
+							required="true" 
+							requiredMessage="#{msg['msg_required_password']}"/>
+							
+					</p:panelGrid>
+					
+				</h:form>
+				<p:outputPanel>
+		       
+					<p:commandButton 
+		     			id="changeUser" 
+		     			value="#{msg['login_btn_change_user']}" 
+		     			action="#{loginMgmtBean.login}"
+		     			onclick="PF('logNameDialogWV').hide()"
+		     			styleClass="btnLogin" 
+		     			update=":messages:message :form:dataTable @(.postAuthorizeUpdate)"
+		     			icon="ui-icon-check" />
+				     			
+					<p:commandButton 
+						id="logout"
+						value="#{msg['login_btn_logout']}" 
+						action="#{loginMgmtBean.logout}"
+						onclick="PF('logNameDialogWV').hide()"
+						update=":messages:message loginSection :form:dataTable @(.postAuthorizeUpdate)"
+		     			styleClass="btnCancel" 
+						immediate="true" 
+						icon="ui-icon-close" />
+		     		
+				</p:outputPanel>
+			</p:overlayPanel>
+
 		</sec:authorize>
 		
 		<sec:authorize access="isAnonymous()" >
 			<p:commandButton 
-				id="loginBtn" 
+				id="loginBtn"
+				onclick="PF('loginDialogWV').loadContents()"
 				value="#{msg['login_btn_enter']}"
 				style="float:right; top: -53px; right: 10px; position: relative; " 
 				type="button"/>
@@ -39,7 +101,10 @@
 				id="loginPanel" 
 				for="loginBtn" 
 				dynamic="true" 
-				widgetVar="loginDialogWV">
+				widgetVar="loginDialogWV"
+				showEffect="blind"
+				hideEffect="blind"
+				style="width: 300px;">
 				
 				<h:form  
 					id="loginFormId" 

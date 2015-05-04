@@ -117,8 +117,8 @@ public class DataJournalController {
 	 * @param editForm
 	 *            - форма редактирования
 	 */
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public void save(final EditForm editForm) {
-
 		if (editForm.getData().getModel() != null) {
 
 			ModelOfEquipment model = editForm.getData().getModel();
@@ -174,7 +174,7 @@ public class DataJournalController {
 	 * @param selected
 	 *            - удаляемое измерение.
 	 */
-	@PreAuthorize(value="hasAuthority('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public void delete(final Measurement selected) {
 
 		logger.info("Measurement was removed. Measurement date - "
@@ -211,6 +211,7 @@ public class DataJournalController {
 	 *            - модель изделия, которую надо добавить в приложение.
 	 * @return бин добавления модели.
 	 */
+
 	public ModelBean newModelBean(final ModelOfEquipment model) {
 		ModelBean modelBean = new ModelBean();
 		modelBean.setModel(model);
