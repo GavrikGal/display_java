@@ -3,9 +3,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
 
-
+	<p:outputPanel id="confirmDialogPanel" styleClass="postAuthorizeUpdate">
+	<sec:authorize access="hasRole('ROLE_USER')" > 
 	<p:confirmDialog 
 		id="confirmDialog" 
 		widgetVar="confirmDelete" 
@@ -39,5 +41,7 @@
 	        </p:outputPanel>
 	    </f:facet>
     </p:confirmDialog>
+    </sec:authorize>
+    </p:outputPanel>
 
 </ui:composition>

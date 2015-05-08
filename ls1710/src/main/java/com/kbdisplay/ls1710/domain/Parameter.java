@@ -62,6 +62,12 @@ public class Parameter implements Serializable {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Spectrum> spectrums;
 
+	@ManyToMany
+	@JoinTable(name = "norm_parameters", joinColumns = @JoinColumn(
+			name = "parameter_id"), inverseJoinColumns = @JoinColumn(
+			name = "norm_id"))
+	private List<Norm> norms;
+
 
 	public Long getId() {
 		return id;
@@ -93,6 +99,14 @@ public class Parameter implements Serializable {
 
 	public void setSpectrums(final List<Spectrum> spectrums) {
 		this.spectrums = spectrums;
+	}
+
+	public List<Norm> getNorms() {
+		return norms;
+	}
+
+	public void setNorms(List<Norm> norms) {
+		this.norms = norms;
 	}
 
 	public static long getSerialversionuid() {
@@ -129,7 +143,5 @@ public class Parameter implements Serializable {
 			return false;
 		return true;
 	}
-
-
 
 }

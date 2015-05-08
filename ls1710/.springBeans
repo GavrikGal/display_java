@@ -14,12 +14,12 @@
 		<config>java:com.kbdisplay.ls1710.view.converter.ModelOfEqupmentConverter</config>
 		<config>java:com.kbdisplay.ls1710.view.converter.PurposeOfMeasurementConverter</config>
 		<config>java:com.kbdisplay.ls1710.view.dataJournal.web.component.ModelBean</config>
+		<config>resources/spring-test-config.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
 		<config>java:com.kbdisplay.ls1710.controller.MeasurementsController</config>
-		<config>java:com.kbdisplay.ls1710.view.dataJournal.web.DataJournalEditForm</config>
 		<config>java:com.kbdisplay.ls1710.view.converter.ParameterConverter</config>
 		<config>java:com.kbdisplay.ls1710.view.converter.TypeOfParameterConverter</config>
 	</autoconfigs>

@@ -24,12 +24,14 @@
 			
 		<p:menuitem value="#{msg['menu_view']}" 
 			icon="ui-icon-search" />
-			
-		<p:menuitem value="#{msg['menu_delete']}" 
-			onclick="PF('confirmDelete').show()"
-			process="@this dataTable"
-			ajax="true"
-			icon="ui-icon-close" />
+		
+		<sec:authorize access="hasRole('ROLE_USER')" > 	
+			<p:menuitem value="#{msg['menu_delete']}" 
+				onclick="PF('confirmDelete').show()"
+				process="@this dataTable"
+				ajax="true"
+				icon="ui-icon-close" />
+		</sec:authorize>
 	</p:contextMenu>
 	
 	<ui:include

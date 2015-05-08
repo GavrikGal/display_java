@@ -52,6 +52,7 @@ public class DataJournalTable implements Serializable, DataTable {
 	 */
 	private Row selected;
 
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -106,7 +107,7 @@ public class DataJournalTable implements Serializable, DataTable {
 		rows = new ArrayList<Row>();
 
 		for (Measurement measurement : measurements) {
-			insertRow(measurement);
+			this.insertRow(measurement);
 		}
 	}
 
@@ -132,9 +133,9 @@ public class DataJournalTable implements Serializable, DataTable {
 			}
 		}
 		if (rowWithMeasurement == null) {
-			insertRow(rootMeasurement);
+			this.insertRow(rootMeasurement);
 		} else {
-			updateRow(rowWithMeasurement, measurement);
+			this.updateRow(rowWithMeasurement, measurement);
 		}
 	}
 
@@ -158,12 +159,24 @@ public class DataJournalTable implements Serializable, DataTable {
 			row.init(measurement.getId(), measurement);
 
 			/* установка актуальных спектров из цикла измерений */
-			List<Spectrum> lastSpectrums = getActualSpectrums(row
-					.getMeasurement());
+			List<Spectrum> lastSpectrums =
+					this.getActualSpectrums(row.getMeasurement());
 			row.setSpectrums(lastSpectrums);
 
+			// System.out.println("Norm:");
+			// Norm norm = lastSpectrums.get(lastSpectrums.size()-1).getNorm();
+			// System.out.println(norm.getName());
+			// List<Limit> limits = norm.getLimits();
+			// System.out.println("Limits:");
+			// for (Limit limit : limits) {
+			// System.out.println(limit.getFrequency() + " - " +
+			// limit.getAmplitude());
+			// }
+			row.setUser(lastSpectrums.get(lastSpectrums.size() - 1)
+					.getMeasurement().getUser());
+
 			/* установка даты последнего измерения из цикла */
-			DateOfMeasurement lastDate = getLastDate(row.getMeasurement());
+			DateOfMeasurement lastDate = this.getLastDate(row.getMeasurement());
 			row.setLastDate(lastDate);
 			/*
 			 * добавление подготовленного для отображения измерения к списку
@@ -190,8 +203,10 @@ public class DataJournalTable implements Serializable, DataTable {
 		}
 		// кастыль
 
-		List<Spectrum> lastSpectrums = getActualSpectrums(rootMeasurement);
+		List<Spectrum> lastSpectrums = this.getActualSpectrums(rootMeasurement);
 		row.setSpectrums(lastSpectrums);
+		row.setUser(lastSpectrums.get(lastSpectrums.size() - 1)
+				.getMeasurement().getUser());
 
 		if (measurement.getParentMeasurement() != null) {
 			row.setLastDate(measurement.getDate());
@@ -221,8 +236,9 @@ public class DataJournalTable implements Serializable, DataTable {
 	 */
 	private List<Spectrum> getActualSpectrums(final Measurement measurement) {
 
-		Map<Long, Spectrum> actualSpectrumMap = getActualSpectrumMap(
-				new HashMap<Long, Spectrum>(), measurement);
+		Map<Long, Spectrum> actualSpectrumMap =
+				this.getActualSpectrumMap(new HashMap<Long, Spectrum>(),
+						measurement);
 		List<Spectrum> actualSpectrums = new ArrayList<Spectrum>();
 		for (Entry<Long, Spectrum> spectrum : actualSpectrumMap.entrySet()) {
 			actualSpectrums.add(spectrum.getValue());
@@ -247,13 +263,15 @@ public class DataJournalTable implements Serializable, DataTable {
 				 */
 				for (Spectrum spectrum : spectrums) {
 
-					Long parameterId = spectrum.getParameters()
-							.get(spectrum.getParameters().size() - 1).getId();
+					Long parameterId =
+							spectrum.getParameters()
+									.get(spectrum.getParameters().size() - 1)
+									.getId();
 					if (!actualMap.containsKey(parameterId)) {
 						actualMap.put(parameterId, spectrum);
 					} else {
-						int actualVersion = actualMap.get(parameterId)
-								.getVersion();
+						int actualVersion =
+								actualMap.get(parameterId).getVersion();
 						int currentVersion = spectrum.getVersion();
 						if (actualVersion < currentVersion) {
 							actualMap.put(parameterId, spectrum);
@@ -273,7 +291,9 @@ public class DataJournalTable implements Serializable, DataTable {
 			}
 			Measurement nextMeasurement = measurement.getNextMeasurement();
 			if (nextMeasurement != null) {
-				actualMap = getActualSpectrumMap(prevActualMap, nextMeasurement);
+				actualMap =
+						this.getActualSpectrumMap(prevActualMap,
+								nextMeasurement);
 			}
 		}
 
@@ -343,16 +363,16 @@ public class DataJournalTable implements Serializable, DataTable {
 
 			currentMeasForView = dataRows.get(i);
 			currentDate = currentMeasForView.getFirstDate().getDate();
-			currentModelName = currentMeasForView.getEquipment().getModel()
-					.getName();
+			currentModelName =
+					currentMeasForView.getEquipment().getModel().getName();
 
 			currentMeasForView.setEnableFirstDate(true);
 			currentMeasForView.setEnableModelName(true);
 			if (i > 0) {
 				preMeasForView = dataRows.get(i - 1);
 				preDate = preMeasForView.getFirstDate().getDate();
-				preModelName = preMeasForView.getEquipment().getModel()
-						.getName();
+				preModelName =
+						preMeasForView.getEquipment().getModel().getName();
 			} else {
 				preMeasForView = currentMeasForView;
 				continue;

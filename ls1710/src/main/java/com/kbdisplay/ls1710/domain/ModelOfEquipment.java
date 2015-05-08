@@ -53,6 +53,8 @@ public class ModelOfEquipment implements Serializable {
 	 */
 	private String description;
 
+	private Document document;
+
 	/**
 	 * Фото модели изделия.
 	 */
@@ -132,5 +134,17 @@ public class ModelOfEquipment implements Serializable {
 	public void setModelType(final ModelType modelType) {
 		this.modelType = modelType;
 	}
+
+	@ManyToOne
+	@JoinColumn(name = "document_id")
+	public Document getDocument() {
+		return document;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+
+
 
 }

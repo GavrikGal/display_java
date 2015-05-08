@@ -95,6 +95,8 @@ public class Spectrum implements Serializable {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Harmonic> harmonics;
 
+
+
 	/**
 	 * список параметров спектра.
 	 */

@@ -52,6 +52,8 @@ public class Equipment implements Serializable {
 	 */
 	private Set<Measurement> measurements = new HashSet<Measurement>();
 
+	private Document specialDocument;
+
 
 	/**
 	 * Получение серийного номера класса.
@@ -149,5 +151,17 @@ public class Equipment implements Serializable {
 	public void setMeasurements(final Set<Measurement> measurements) {
 		this.measurements = measurements;
 	}
+
+	@ManyToOne
+	@JoinColumn(name = "document_id")
+	public Document getSpecialDocument() {
+		return specialDocument;
+	}
+
+	public void setSpecialDocument(Document specialDocument) {
+		this.specialDocument = specialDocument;
+	}
+
+
 
 }

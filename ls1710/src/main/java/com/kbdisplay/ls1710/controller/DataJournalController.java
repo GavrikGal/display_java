@@ -12,13 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+import com.kbdisplay.ls1710.domain.Document;
 import com.kbdisplay.ls1710.domain.Equipment;
+import com.kbdisplay.ls1710.domain.Limit;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.Norm;
 import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.TypeOfParameter;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
+import com.kbdisplay.ls1710.service.data.LimitService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
+import com.kbdisplay.ls1710.service.data.NormService;
 import com.kbdisplay.ls1710.service.data.ParameterService;
 import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
 import com.kbdisplay.ls1710.view.dataJournal.DataTable;
@@ -74,6 +79,12 @@ public class DataJournalController {
 	@Autowired
 	private ParameterService parameterService;
 
+	@Autowired
+	private NormService normService;
+
+	@Autowired
+	private LimitService limitService;
+
 	/**
 	 * создает новый список представления измерений.
 	 *
@@ -91,6 +102,23 @@ public class DataJournalController {
 			lastMeasurement = null;
 		}
 		dataTable.init(measurements);
+
+		Document document = lastMeasurement.getEquipment().getModel().getDocument();
+
+		Norm norm = document.getNorms().get(0);
+
+		List<Parameter> parameters = norm.getParameters();
+
+		System.out.println("params:");
+		for (Parameter parameter : parameters) {
+			System.out.println(parameter.getName());
+		}
+
+
+		List<Limit> limits = norm.getLimits();
+		for (Limit limit : limits) {
+			System.out.println("   " + limit.getFrequency() + " - " + limit.getAmplitude());
+		}
 
 		return dataTable;
 	}

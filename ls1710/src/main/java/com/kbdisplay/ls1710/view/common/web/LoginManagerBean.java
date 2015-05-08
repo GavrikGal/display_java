@@ -59,7 +59,7 @@ public class LoginManagerBean {
 		fc.addMessage(null, new FacesMessage("Выход из системы", "Вы вышли из системы"));
 
 		SecurityContextHolder.clearContext();
-		return null;
+		return "logout";
 	}
 
 	public void testAscess() {

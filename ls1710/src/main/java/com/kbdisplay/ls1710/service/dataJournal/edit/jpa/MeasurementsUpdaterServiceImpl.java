@@ -74,14 +74,14 @@ public class MeasurementsUpdaterServiceImpl implements
 	@Autowired
 	private MeasurementService measurementService;
 
-//	@Autowired
-//	private MeasurandService measurandService;
-//
-//	@Autowired
-//	private TypeOfSpectrumService typesOfSpectrumService;
-//
-//	@Autowired
-//	private ScreenResolutionService screenResolutionService;
+	// @Autowired
+	// private MeasurandService measurandService;
+	//
+	// @Autowired
+	// private TypeOfSpectrumService typesOfSpectrumService;
+	//
+	// @Autowired
+	// private ScreenResolutionService screenResolutionService;
 
 	@Autowired
 	private SpectrumService spectrumService;
@@ -89,14 +89,15 @@ public class MeasurementsUpdaterServiceImpl implements
 	@Autowired
 	private HarmonicService harmonicService;
 
-//	@Autowired
-//	private SpectrumParameterService spectrumParameterService;
+	// @Autowired
+	// private SpectrumParameterService spectrumParameterService;
 
 	@Autowired
 	private FileFinderService fileFinder;
 
 	@Autowired
 	private PurposeOfMeasurementService purposeService;
+
 
 	@Override
 	@Deprecated
@@ -106,16 +107,17 @@ public class MeasurementsUpdaterServiceImpl implements
 			// String rootPath = "D:\\������";
 
 			final Double deviationFrequency = 0.02;
-			List<File> fileList = fileFinder.findFiles(rootPathName,
-					"[\\w[�-��-�]]+\\.(docx|doc)");
+			List<File> fileList =
+					fileFinder.findFiles(rootPathName,
+							"[\\w[�-��-�]]+\\.(docx|doc)");
 
 			for (File file : fileList) {
 
 				// ��������� ������ �� ����� ���������
 				// ��������� ���� ��������� � ����������
 				File typeMeasurementsFolder = new File(file.getParent());
-				String[] typeAndResolutions = typeMeasurementsFolder.getName()
-						.split(" ");
+				String[] typeAndResolutions =
+						typeMeasurementsFolder.getName().split(" ");
 				String measurandName = typeAndResolutions[0];
 				String screenResolutionsNameOrType = typeAndResolutions[1];
 				String typeName;
@@ -132,16 +134,16 @@ public class MeasurementsUpdaterServiceImpl implements
 				System.out.println("Type: " + typeName);
 
 				// ��������� ������ �������
-				File modelMeasurementsFilder = new File(
-						typeMeasurementsFolder.getParent());
+				File modelMeasurementsFilder =
+						new File(typeMeasurementsFolder.getParent());
 				String modelName = modelMeasurementsFilder.getName();
 				System.out.println("model: " + modelName);
 
 				// ��������� ��������� ������
 				String fileName = file.getName();
 				fileName = fileName.trim();
-				String serialNumber = fileName.substring(0,
-						fileName.indexOf(".doc"));
+				String serialNumber =
+						fileName.substring(0, fileName.indexOf(".doc"));
 				System.out.println("sn: " + serialNumber);
 
 				String absoluteFileName = file.getAbsolutePath();
@@ -162,12 +164,13 @@ public class MeasurementsUpdaterServiceImpl implements
 					Measurement measurement = getMeasurements(equipment);
 
 					// ������� �������� ��������� ������� �� ��, ��� ������� ��
-//					SpectrumParameter spectrumParameter = getSpectrumsParameters(
-//							measurandName, typeName, screenResolutionsName);
+					// SpectrumParameter spectrumParameter =
+					// getSpectrumsParameters(
+					// measurandName, typeName, screenResolutionsName);
 
 					// ���� ������ � ��, ��� ������� �����
-//					Spectrum spectrum = getSpectrums(measurement,
-//							spectrumParameter);
+					// Spectrum spectrum = getSpectrums(measurement,
+					// spectrumParameter);
 
 					// Measurements newMeasurements = new Measurements();
 
@@ -179,16 +182,17 @@ public class MeasurementsUpdaterServiceImpl implements
 					int noiseCellNumber = -1;
 					int receiverBandwidthCellNumber = -1;
 
-					XWPFDocument document = new XWPFDocument(
-							new FileInputStream(absoluteFileName));
+					XWPFDocument document =
+							new XWPFDocument(new FileInputStream(
+									absoluteFileName));
 
 					List<XWPFTable> tables = document.getTables();
 
 					for (XWPFTable table : tables) {
 						List<XWPFTableRow> rows = table.getRows();
 
-						List<XWPFTableCell> headTable = rows.get(0)
-								.getTableCells();
+						List<XWPFTableCell> headTable =
+								rows.get(0).getTableCells();
 						for (int a = 0; a < headTable.size(); a++) {
 							if (headTable.get(a).getText()
 									.equalsIgnoreCase(frequencyCellName)) {
@@ -229,8 +233,8 @@ public class MeasurementsUpdaterServiceImpl implements
 						}
 
 						for (int i = 1; i < rows.size(); i++) {
-							List<XWPFTableCell> cells = rows.get(i)
-									.getTableCells();
+							List<XWPFTableCell> cells =
+									rows.get(i).getTableCells();
 							// System.out.print(cells.get(frequencyCellNumber)
 							// .getText() + "\t");
 							// System.out.print(cells.get(
@@ -244,46 +248,53 @@ public class MeasurementsUpdaterServiceImpl implements
 
 							Double frequency, receiverBandwidth, amplitude, noise;
 
-							frequency = Double.parseDouble(cells.get(
-									frequencyCellNumber).getText());
-							receiverBandwidth = Double.parseDouble(cells.get(
-									receiverBandwidthCellNumber).getText());
-							amplitude = Double.parseDouble(cells.get(
-									amplitudeCellNumber).getText());
-							noise = Double.parseDouble(cells.get(
-									noiseCellNumber).getText());
+							frequency =
+									Double.parseDouble(cells.get(
+											frequencyCellNumber).getText());
+							receiverBandwidth =
+									Double.parseDouble(cells.get(
+											receiverBandwidthCellNumber)
+											.getText());
+							amplitude =
+									Double.parseDouble(cells.get(
+											amplitudeCellNumber).getText());
+							noise =
+									Double.parseDouble(cells.get(
+											noiseCellNumber).getText());
 
 							// �������� � ������ �������� �� ��������. ������
 							// �������� �� �������
 							// ��������, ���������� ����� �������� ��� ��������
 
 							Harmonic newHarmonics = new Harmonic();
-//							List<Harmonic> oldHarmonics = spectrum
-//									.getHarmonics();
-//							for (Harmonic harmonics : oldHarmonics) {
-//								if (((harmonics.getFrequency() + deviationFrequency
-//										* harmonics.getFrequency()) > frequency)
-//										&& ((harmonics.getFrequency() - deviationFrequency
-//												* harmonics.getFrequency()) < frequency)) {
-//									newHarmonics = harmonics;
-//								}
-//							}
-//							newHarmonics.setFrequency(frequency);
-//							newHarmonics
-//									.setReceiverBandwidth(receiverBandwidth);
-//							if (amplitude != null) {
-//								newHarmonics.setAmplitude(amplitude);
-//								if (noise == null) {
-//									noise = 0.0;
-//								}
-//								newHarmonics.setNoise(noise);
-//								newHarmonics.setSpectrum(spectrum);
-//								if (newHarmonics.getId() == null) {
-//									harmonicService.save(newHarmonics);
-//									spectrum.getHarmonics().add(newHarmonics);
-//								}
-//
-//							}
+							// List<Harmonic> oldHarmonics = spectrum
+							// .getHarmonics();
+							// for (Harmonic harmonics : oldHarmonics) {
+							// if (((harmonics.getFrequency() +
+							// deviationFrequency
+							// * harmonics.getFrequency()) > frequency)
+							// && ((harmonics.getFrequency() -
+							// deviationFrequency
+							// * harmonics.getFrequency()) < frequency)) {
+							// newHarmonics = harmonics;
+							// }
+							// }
+							// newHarmonics.setFrequency(frequency);
+							// newHarmonics
+							// .setReceiverBandwidth(receiverBandwidth);
+							// if (amplitude != null) {
+							// newHarmonics.setAmplitude(amplitude);
+							// if (noise == null) {
+							// noise = 0.0;
+							// }
+							// newHarmonics.setNoise(noise);
+							// newHarmonics.setSpectrum(spectrum);
+							// if (newHarmonics.getId() == null) {
+							// harmonicService.save(newHarmonics);
+							// spectrum.getHarmonics().add(newHarmonics);
+							// }
+							//
+							// }
 
 							// spectrum.getHarmonics().add(newHarmonics);
 
@@ -312,18 +323,18 @@ public class MeasurementsUpdaterServiceImpl implements
 						System.out.println("        getMeasurement() - "
 								+ spectrums.getMeasurement().getId());
 						System.out.println("        spectrum parameters:");
-//						System.out
-//								.println("            spectrum parameters ID -"
-//										+ spectrums.getParameter().getId());
-//						System.out.println("            Measurands -"
-//								+ spectrums.getParameter().getMeasurand()
-//										.getId());
-//						System.out.println("            type - "
-//								+ spectrums.getParameter().getTypeOfSpectrum()
-//										.getId());
-//						System.out.println("            Resolution - "
-//								+ spectrums.getParameter()
-//										.getScreenResolution().getResolution());
+						// System.out
+						// .println("            spectrum parameters ID -"
+						// + spectrums.getParameter().getId());
+						// System.out.println("            Measurands -"
+						// + spectrums.getParameter().getMeasurand()
+						// .getId());
+						// System.out.println("            type - "
+						// + spectrums.getParameter().getTypeOfSpectrum()
+						// .getId());
+						// System.out.println("            Resolution - "
+						// + spectrums.getParameter()
+						// .getScreenResolution().getResolution());
 						System.out.println("        Harmonics:");
 						for (Harmonic harmonics : spectrums.getHarmonics()) {
 
@@ -374,19 +385,19 @@ public class MeasurementsUpdaterServiceImpl implements
 		Measurement measurement = getMeasurements(equipment);
 
 		// ������� �������� ��������� ������� �� ��, ��� ������� ��
-//		SpectrumParameter spectrumParameter = getSpectrumsParameters(
-//				measurandName, typeName, screenResolutionsName);
+		// SpectrumParameter spectrumParameter = getSpectrumsParameters(
+		// measurandName, typeName, screenResolutionsName);
 
 		// ���� ������ � ��, ��� ������� �����
-//		Spectrum spectrum = getSpectrums(measurement, spectrumParameter);
+		// Spectrum spectrum = getSpectrums(measurement, spectrumParameter);
 
 		// �������� � ������ �������� �� ��������. ������ �������� �� �������
 		// ��������, ���������� ����� �������� ��� ��������
-//		String newDescription = setHarmonicsFromDescription(spectrum,
-//				description);
+		// String newDescription = setHarmonicsFromDescription(spectrum,
+		// description);
 
 		// ��������� ��������
-//		setDescription(spectrum, newDescription);
+		// setDescription(spectrum, newDescription);
 
 		return measurement;
 	}
@@ -408,11 +419,13 @@ public class MeasurementsUpdaterServiceImpl implements
 		equipment = equipmentService.update(equipment);
 
 		// получаем измерения, которые уже проводились с изделием.
-		List<Measurement> measurements = Lists.newArrayList(equipment
-				.getMeasurements());
+		List<Measurement> measurements =
+				Lists.newArrayList(equipment.getMeasurements());
 
 		// TODO получаем пользователя проводившего испытания
-		CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		CustomUserDetails userDetails =
+				(CustomUserDetails) SecurityContextHolder.getContext()
+						.getAuthentication().getPrincipal();
 		User user = userDetails.getUsersDetails();
 
 		Measurement measurement = null;
@@ -424,11 +437,13 @@ public class MeasurementsUpdaterServiceImpl implements
 		if (measurements == null || measurements.isEmpty()) {
 			equipment.setMeasurements(new HashSet<Measurement>());
 
-			measurement = newMeasurement(currentDate, equipment,
-					purposeOfMeasurement, user);
+			measurement =
+					this.newMeasurement(currentDate, equipment,
+							purposeOfMeasurement, user);
 
-			measurement = saveSpectrum(measurement, selectedParameters,
-					description, measurement.getVersion());
+			measurement =
+					this.saveSpectrum(measurement, selectedParameters,
+							description, measurement.getVersion());
 		} else {
 
 			/*
@@ -436,18 +451,21 @@ public class MeasurementsUpdaterServiceImpl implements
 			 * предыдущих испытаний та же цель. Так как после испытаний пси
 			 * изделие может поступить на периодические испытания и т.д.
 			 */
-			measurement = findLastMeasurementWithCurrentPurpose(measurements,
-					purposeOfMeasurement);
+			measurement =
+					this.findLastMeasurementWithCurrentPurpose(measurements,
+							purposeOfMeasurement);
 
 			/*
 			 * если новая цель испытаний, то создать новое испытание.
 			 */
 			if (measurement == null) {
-				measurement = newMeasurement(currentDate, equipment,
-						purposeOfMeasurement, user);
+				measurement =
+						this.newMeasurement(currentDate, equipment,
+								purposeOfMeasurement, user);
 
-				measurement = saveSpectrum(measurement, selectedParameters,
-						description, measurement.getVersion());
+				measurement =
+						this.saveSpectrum(measurement, selectedParameters,
+								description, measurement.getVersion());
 
 			} else {
 				/*
@@ -456,9 +474,12 @@ public class MeasurementsUpdaterServiceImpl implements
 				 * же параметрами спектра.
 				 */
 
-//				List<Spectrum> spectrums = spectrumService
-//						.findByMeasurementAndParameters(measurement, selectedParameters);
-				List<Spectrum> spectrums = findSpectrumsWithSelectedParameters(measurement, selectedParameters);
+				// List<Spectrum> spectrums = spectrumService
+				// .findByMeasurementAndParameters(measurement,
+				// selectedParameters);
+				List<Spectrum> spectrums =
+						this.findSpectrumsWithSelectedParameters(measurement,
+								selectedParameters);
 
 				/*
 				 * если таких параметров еще не было, то добавить к последнему
@@ -467,8 +488,9 @@ public class MeasurementsUpdaterServiceImpl implements
 				 */
 				if (spectrums == null || spectrums.isEmpty()) {
 					measurement.setUser(user);
-					measurement = saveSpectrum(measurement, selectedParameters,
-							description, measurement.getVersion());
+					measurement =
+							this.saveSpectrum(measurement, selectedParameters,
+									description, measurement.getVersion());
 				} else {
 
 					// TODO спросить у пользователя:
@@ -499,9 +521,10 @@ public class MeasurementsUpdaterServiceImpl implements
 						}
 						measurement.setUser(user);
 
-						measurement = saveSpectrum(measurement,
-								selectedParameters, description,
-								measurement.getVersion());
+						measurement =
+								this.saveSpectrum(measurement,
+										selectedParameters, description,
+										measurement.getVersion());
 					}
 					/*
 					 * TODO доработать else { // TODO если пользователь хочет
@@ -582,9 +605,11 @@ public class MeasurementsUpdaterServiceImpl implements
 		return lastMeasurement;
 	}
 
-	private List<Spectrum> findSpectrumsWithSelectedParameters(Measurement measurement, List<Parameter> selectedParameters) {
+	private List<Spectrum> findSpectrumsWithSelectedParameters(
+			Measurement measurement, List<Parameter> selectedParameters) {
 		List<Spectrum> spectrums = measurement.getSpectrums();
-		List<Spectrum> spectrumsWithSelectedParameters = new ArrayList<Spectrum>();
+		List<Spectrum> spectrumsWithSelectedParameters =
+				new ArrayList<Spectrum>();
 
 		for (Spectrum spectrum : spectrums) {
 			List<Parameter> parameters = spectrum.getParameters();
@@ -595,7 +620,6 @@ public class MeasurementsUpdaterServiceImpl implements
 				spectrumsWithSelectedParameters.add(spectrum);
 			}
 		}
-
 
 		return spectrumsWithSelectedParameters;
 	}
@@ -618,11 +642,12 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		if (purpose.getPrevPurpose() != null) {
 
-			PurposeOfMeasurement prevPurpose = purposeService.findById(purpose
-					.getPrevPurpose());
+			PurposeOfMeasurement prevPurpose =
+					purposeService.findById(purpose.getPrevPurpose());
 
-			List<Measurement> prevMeasurements = measurementService
-					.findByEquipmentAndPurpose(equipment, prevPurpose);
+			List<Measurement> prevMeasurements =
+					measurementService.findByEquipmentAndPurpose(equipment,
+							prevPurpose);
 
 			if (prevMeasurements != null) {
 				// поиск последнего испытания, основывается на номере версии.
@@ -659,13 +684,12 @@ public class MeasurementsUpdaterServiceImpl implements
 
 	// сохраняем в испытание спектр
 	private Measurement saveSpectrum(final Measurement measurement,
-			final List<Parameter> selectedParameters,
-			final String description,
+			final List<Parameter> selectedParameters, final String description,
 			final int version) {
 
 		// ���� ������ � ��, ��� ������� �����
-		Spectrum newSpectrum = newSpectrum(measurement, selectedParameters,
-				version);
+		Spectrum newSpectrum =
+				this.newSpectrum(measurement, selectedParameters, version);
 
 		// TODO какой-то костыль, проверить будет ли без него работать, если
 		// нет,то исправить
@@ -675,19 +699,18 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		// �������� � ������ �������� �� ��������. ������ �������� �� �������
 		// ��������, ���������� ����� �������� ��� ��������
-		String newDescription = setHarmonicsFromDescription(newSpectrum,
-				description);
+		String newDescription =
+				this.setHarmonicsFromDescription(newSpectrum, description);
 
 		// добавляем комментарий к спектру
-		newSpectrum = setDescription(newSpectrum, newDescription);
+		newSpectrum = this.setDescription(newSpectrum, newDescription);
 
 		return measurement;
 	}
 
 	// создаем новый спектр.
 	private Spectrum newSpectrum(final Measurement measurement,
-			final List<Parameter> selectedParameters,
-			final int version) {
+			final List<Parameter> selectedParameters, final int version) {
 
 		Spectrum spectrum = new Spectrum();
 
@@ -709,8 +732,8 @@ public class MeasurementsUpdaterServiceImpl implements
 		DateTime currentDate = new DateTime();
 		DateOfMeasurement currentDateOfMeasurement = new DateOfMeasurement();
 		currentDateOfMeasurement.setDate(currentDate.withTime(0, 0, 0, 0));
-		currentDateOfMeasurement = dateOfMeasurementService
-				.update(currentDateOfMeasurement);
+		currentDateOfMeasurement =
+				dateOfMeasurementService.update(currentDateOfMeasurement);
 		return currentDateOfMeasurement;
 	}
 
@@ -747,12 +770,12 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		// ��������� ������� ����� ������, ���� �� ������ �� ������� �� �������
 		try {
-			List<File> searchModelFolder = fileFinder.findDirectories(
-					rootPathName, modelName);
+			List<File> searchModelFolder =
+					fileFinder.findDirectories(rootPathName, modelName);
 
 			if (searchModelFolder.isEmpty()) {
-				File modelFolder = new File(rootPathName + File.separator
-						+ modelName);
+				File modelFolder =
+						new File(rootPathName + File.separator + modelName);
 				modelFolder.mkdir();
 			}
 		} catch (Exception e) {
@@ -762,7 +785,8 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	// �������� ������� �� ��, ���� ��� ��� ��� �� ������� �������
-	private Equipment getEquipments(ModelOfEquipment model, String serialNumber) {
+	private Equipment
+			getEquipments(ModelOfEquipment model, String serialNumber) {
 		Equipment equipment = new Equipment();
 		equipment.setModel(model);
 		equipment.setSerialNumber(serialNumber);
@@ -777,7 +801,8 @@ public class MeasurementsUpdaterServiceImpl implements
 	// �����������
 	private Measurement getMeasurements(Equipment equipment) {
 
-		DateOfMeasurement currentDateOfMeasurement = getCurrentDateOfMeasurement();
+		DateOfMeasurement currentDateOfMeasurement =
+				getCurrentDateOfMeasurement();
 		Measurement measurement;
 		// setCurrentDateOfMeasurement(measurement);
 
@@ -785,8 +810,10 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		if (SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal() != "anonymousUser") {
-			user = ((CustomUserDetails) SecurityContextHolder.getContext()
-					.getAuthentication().getPrincipal()).getUsersDetails();
+			user =
+					((CustomUserDetails) SecurityContextHolder.getContext()
+							.getAuthentication().getPrincipal())
+							.getUsersDetails();
 		}
 
 		// if (measurementsList.isEmpty()) {
@@ -826,77 +853,63 @@ public class MeasurementsUpdaterServiceImpl implements
 	}
 
 	// �������� ��������� ������� �� �� ��� ������� �����
-/*	private SpectrumParameter getSpectrumsParameters(String measurandName,
-			String typeName, String screenResolutionName) {
-		Measurand measurand = measurandService.findByName(measurandName);
-		if (measurand == null) {
-			logger.error("�� ������ ��������: measurand = " + measurandName
-					+ ". ������� ��� � ��");
-		}
-		ScreenResolution screenResolution = getScreenResolutions(screenResolutionName);
-		TypeOfSpectrum typeOfSpectrum = typesOfSpectrumService
-				.findByName(typeName);
-		if (typeOfSpectrum == null) {
-			logger.error("�� ������ ��������: type = " + typeName
-					+ ". ������� ��� � ��");
-		}
-
-		SpectrumParameter spectrumParameter = new SpectrumParameter();
-		spectrumParameter.setMeasurand(measurand);
-		spectrumParameter.setScreenResolution(screenResolution);
-		spectrumParameter.setTypeOfSpectrum(typeOfSpectrum);
-		spectrumParameter.setSpectrums(new HashSet<Spectrum>());
-
-		spectrumParameter = spectrumParameterService.save(spectrumParameter);
-		return spectrumParameter;
-	}*/
+	/*
+	 * private SpectrumParameter getSpectrumsParameters(String measurandName,
+	 * String typeName, String screenResolutionName) { Measurand measurand =
+	 * measurandService.findByName(measurandName); if (measurand == null) {
+	 * logger.error("�� ������ ��������: measurand = " + measurandName +
+	 * ". ������� ��� � ��"); } ScreenResolution screenResolution =
+	 * getScreenResolutions(screenResolutionName); TypeOfSpectrum typeOfSpectrum
+	 * = typesOfSpectrumService .findByName(typeName); if (typeOfSpectrum ==
+	 * null) { logger.error("�� ������ ��������: type = " + typeName +
+	 * ". ������� ��� � ��"); }
+	 *
+	 * SpectrumParameter spectrumParameter = new SpectrumParameter();
+	 * spectrumParameter.setMeasurand(measurand);
+	 * spectrumParameter.setScreenResolution(screenResolution);
+	 * spectrumParameter.setTypeOfSpectrum(typeOfSpectrum);
+	 * spectrumParameter.setSpectrums(new HashSet<Spectrum>());
+	 *
+	 * spectrumParameter = spectrumParameterService.save(spectrumParameter);
+	 * return spectrumParameter; }
+	 */
 
 	// ��������� ���������� ������, ���� ��� ���
-/*	private ScreenResolution getScreenResolutions(String screenResolutionsName) {
-		screenResolutionsName = screenResolutionsName.trim();
-		ScreenResolution screenResolution = screenResolutionService
-				.findByResolution(screenResolutionsName);
-		if (screenResolution == null) {
-			screenResolution = new ScreenResolution();
-			screenResolution.setResolution(screenResolutionsName);
-			screenResolution
-					.setSpectrumsParameters(new HashSet<SpectrumParameter>());
-			screenResolution = screenResolutionService.save(screenResolution);
-		}
-		return screenResolution;
-	}*/
+	/*
+	 * private ScreenResolution getScreenResolutions(String
+	 * screenResolutionsName) { screenResolutionsName =
+	 * screenResolutionsName.trim(); ScreenResolution screenResolution =
+	 * screenResolutionService .findByResolution(screenResolutionsName); if
+	 * (screenResolution == null) { screenResolution = new ScreenResolution();
+	 * screenResolution.setResolution(screenResolutionsName); screenResolution
+	 * .setSpectrumsParameters(new HashSet<SpectrumParameter>());
+	 * screenResolution = screenResolutionService.save(screenResolution); }
+	 * return screenResolution; }
+	 */
 
 	// �������� ����� �� �� ��� ������� �����
-/*	private Spectrum getSpectrums(Measurement measurement,
-			SpectrumParameter spectrumParameter) {
-
-		Spectrum spectrum = null;
-		// spectrumService.findByMeasurementAndParameter(measurement,
-		// spectrumParameter);
-		//
-		// if (spectrum == null) {
-		// spectrum = new Spectrum();
-		// spectrum.setMeasurement(measurement);
-		// spectrum.setParameter(spectrumParameter);
-		// spectrum.setHarmonics(new ArrayList<Harmonic>());
-		// }
-		// DateTime currentDate = new DateTime();
-		// spectrum.setDate(currentDate);
-		//
-		// spectrum = spectrumService.save(spectrum);
-		// if (measurement.getSpectrums().isEmpty()) {
-		// measurement.getSpectrums().add(spectrum);
-		//
-		// }
-		return spectrum;
-	}*/
+	/*
+	 * private Spectrum getSpectrums(Measurement measurement, SpectrumParameter
+	 * spectrumParameter) {
+	 *
+	 * Spectrum spectrum = null; //
+	 * spectrumService.findByMeasurementAndParameter(measurement, //
+	 * spectrumParameter); // // if (spectrum == null) { // spectrum = new
+	 * Spectrum(); // spectrum.setMeasurement(measurement); //
+	 * spectrum.setParameter(spectrumParameter); // spectrum.setHarmonics(new
+	 * ArrayList<Harmonic>()); // } // DateTime currentDate = new DateTime(); //
+	 * spectrum.setDate(currentDate); // // spectrum =
+	 * spectrumService.save(spectrum); // if
+	 * (measurement.getSpectrums().isEmpty()) { //
+	 * measurement.getSpectrums().add(spectrum); // // } return spectrum; }
+	 */
 
 	// ������ �������� �� ������� �������� � ������������� �� � ������
 	private String setHarmonicsFromDescription(Spectrum spectrum,
 			String description) {
 
-		DescriptionForParsing newDescription = new DescriptionForParsing(
-				description);
+		DescriptionForParsing newDescription =
+				new DescriptionForParsing(description);
 		final Double deviationFrequency = 0.02;
 
 		Double frequency, receiverBandwidth, amplitude, noise;

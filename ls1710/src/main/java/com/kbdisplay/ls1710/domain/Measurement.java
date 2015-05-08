@@ -76,12 +76,7 @@ public class Measurement implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	/**
-	 * требования(нормы) для измерения.
-	 */
-	@ManyToOne
-	@JoinColumn(name = "norm_id")
-	private Norm norm;
+
 
 	// /**
 	// * предыдущее испытание. например перед испытаниями приемосдаточными
@@ -195,14 +190,6 @@ public class Measurement implements Serializable {
 
 	public void setPurpose(final PurposeOfMeasurement purpose) {
 		this.purpose = purpose;
-	}
-
-	public Norm getNorm() {
-		return norm;
-	}
-
-	public void setNorm(final Norm norm) {
-		this.norm = norm;
 	}
 
 	public Measurement getParentMeasurement() {

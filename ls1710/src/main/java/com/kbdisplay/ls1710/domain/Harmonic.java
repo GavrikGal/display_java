@@ -41,10 +41,17 @@ public class Harmonic implements Serializable {
 	 * Амплитуда.
 	 */
 	private Double amplitude;
+
 	/**
 	 * Шум.
 	 */
 	private Double noise;
+
+	/**
+	 * запас относительно нормы.
+	 */
+	private Double reserve;
+
 	/**
 	 * Спект, содержащий данную гармонику.
 	 */
@@ -95,6 +102,15 @@ public class Harmonic implements Serializable {
 
 	public void setNoise(final Double noise) {
 		this.noise = noise;
+	}
+
+	@Column(name="reserve")
+	public Double getReserve() {
+		return reserve;
+	}
+
+	public void setReserve(Double reserve) {
+		this.reserve = reserve;
 	}
 
 	@ManyToOne
