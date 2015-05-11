@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.service.dataJournal.edit.jpa;
+package com.kbdisplay.ls1710.service.dataJournal.jpa;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +40,8 @@ import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
 import com.kbdisplay.ls1710.service.data.SpectrumService;
 import com.kbdisplay.ls1710.service.data.UserService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
-import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
+import com.kbdisplay.ls1710.service.dataJournal.MeasurementsUpdaterService;
+import com.kbdisplay.ls1710.service.dataJournal.NormGenerator;
 import com.kbdisplay.ls1710.service.file.FileFinderService;
 import com.kbdisplay.ls1710.service.parcer.DescriptionForParsing;
 
@@ -407,7 +408,8 @@ public class MeasurementsUpdaterServiceImpl implements
 			final ModelOfEquipment modelOfEquipment, final String serialNumber,
 			List<Parameter> selectedParameters,
 			final PurposeOfMeasurement purposeOfMeasurement,
-			/* Version version, */final String description) {
+			/* Version version, */final String description,
+			NormGenerator normGenerator) {
 
 		// получение даты измерений.
 		DateOfMeasurement currentDate = getCurrentDateOfMeasurement();
@@ -443,7 +445,8 @@ public class MeasurementsUpdaterServiceImpl implements
 
 			measurement =
 					this.saveSpectrum(measurement, selectedParameters,
-							description, measurement.getVersion());
+							description, normGenerator,
+							measurement.getVersion());
 		} else {
 
 			/*
@@ -465,7 +468,7 @@ public class MeasurementsUpdaterServiceImpl implements
 
 				measurement =
 						this.saveSpectrum(measurement, selectedParameters,
-								description, measurement.getVersion());
+								description, normGenerator, measurement.getVersion());
 
 			} else {
 				/*
@@ -490,7 +493,7 @@ public class MeasurementsUpdaterServiceImpl implements
 					measurement.setUser(user);
 					measurement =
 							this.saveSpectrum(measurement, selectedParameters,
-									description, measurement.getVersion());
+									description, normGenerator, measurement.getVersion());
 				} else {
 
 					// TODO спросить у пользователя:
@@ -523,7 +526,7 @@ public class MeasurementsUpdaterServiceImpl implements
 
 						measurement =
 								this.saveSpectrum(measurement,
-										selectedParameters, description,
+										selectedParameters, description, normGenerator,
 										measurement.getVersion());
 					}
 					/*
@@ -685,7 +688,7 @@ public class MeasurementsUpdaterServiceImpl implements
 	// сохраняем в испытание спектр
 	private Measurement saveSpectrum(final Measurement measurement,
 			final List<Parameter> selectedParameters, final String description,
-			final int version) {
+			NormGenerator normGenerator, final int version) {
 
 		// ���� ������ � ��, ��� ������� �����
 		Spectrum newSpectrum =
@@ -700,7 +703,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		// �������� � ������ �������� �� ��������. ������ �������� �� �������
 		// ��������, ���������� ����� �������� ��� ��������
 		String newDescription =
-				this.setHarmonicsFromDescription(newSpectrum, description);
+				this.setHarmonicsFromDescription(newSpectrum, description, normGenerator);
 
 		// добавляем комментарий к спектру
 		newSpectrum = this.setDescription(newSpectrum, newDescription);
@@ -906,7 +909,7 @@ public class MeasurementsUpdaterServiceImpl implements
 
 	// ������ �������� �� ������� �������� � ������������� �� � ������
 	private String setHarmonicsFromDescription(Spectrum spectrum,
-			String description) {
+			String description, NormGenerator normGenerator) {
 
 		DescriptionForParsing newDescription =
 				new DescriptionForParsing(description);
@@ -941,6 +944,12 @@ public class MeasurementsUpdaterServiceImpl implements
 					}
 					newHarmonics.setNoise(noise);
 					newHarmonics.setSpectrum(spectrum);
+					if (normGenerator != null) {
+						Double norm = normGenerator.getNorm(frequency);
+						if (!norm.isNaN()) {
+							newHarmonics.setReserve(norm - amplitude);
+						}
+					}
 					harmonicService.save(newHarmonics);
 					spectrum.getHarmonics().add(newHarmonics);
 

@@ -10,6 +10,8 @@ public interface ParameterService {
 
 	public List<Parameter> findAll();
 
+	public Parameter findById(Long id);
+
 	public Parameter findByName(String name);
 
 	@PreAuthorize("hasRole('ROLE_USER')")

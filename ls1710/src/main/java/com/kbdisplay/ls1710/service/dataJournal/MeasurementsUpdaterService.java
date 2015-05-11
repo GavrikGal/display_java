@@ -1,4 +1,4 @@
-package com.kbdisplay.ls1710.service.dataJournal.edit;
+package com.kbdisplay.ls1710.service.dataJournal;
 
 import java.util.List;
 
@@ -21,6 +21,6 @@ public interface MeasurementsUpdaterService {
 	public Measurement saveMeasurements(ModelOfEquipment modelOfEquipment,
 			String serialNumber, List<Parameter> selectedParameters,
 			PurposeOfMeasurement purposeOfMeasurement,
-			/* Version version, */String description);
+			/* Version version, */String description, NormGenerator normGenerator);
 
 }

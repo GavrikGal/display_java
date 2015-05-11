@@ -12,12 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-import com.kbdisplay.ls1710.domain.Document;
 import com.kbdisplay.ls1710.domain.Equipment;
-import com.kbdisplay.ls1710.domain.Limit;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
-import com.kbdisplay.ls1710.domain.Norm;
 import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.TypeOfParameter;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
@@ -25,7 +22,10 @@ import com.kbdisplay.ls1710.service.data.LimitService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
 import com.kbdisplay.ls1710.service.data.NormService;
 import com.kbdisplay.ls1710.service.data.ParameterService;
-import com.kbdisplay.ls1710.service.dataJournal.edit.MeasurementsUpdaterService;
+import com.kbdisplay.ls1710.service.dataJournal.MeasurementsUpdaterService;
+import com.kbdisplay.ls1710.service.dataJournal.NormGenerator;
+import com.kbdisplay.ls1710.service.dataJournal.NormGeneratorService;
+import com.kbdisplay.ls1710.service.dataJournal.normGenerator.NormNotFindException;
 import com.kbdisplay.ls1710.view.dataJournal.DataTable;
 import com.kbdisplay.ls1710.view.dataJournal.EditForm;
 import com.kbdisplay.ls1710.view.dataJournal.web.DataJournalEditForm;
@@ -85,6 +85,10 @@ public class DataJournalController {
 	@Autowired
 	private LimitService limitService;
 
+	@Autowired
+	private NormGeneratorService normGeneratorService;
+
+
 	/**
 	 * создает новый список представления измерений.
 	 *
@@ -102,23 +106,6 @@ public class DataJournalController {
 			lastMeasurement = null;
 		}
 		dataTable.init(measurements);
-
-		Document document = lastMeasurement.getEquipment().getModel().getDocument();
-
-		Norm norm = document.getNorms().get(0);
-
-		List<Parameter> parameters = norm.getParameters();
-
-		System.out.println("params:");
-		for (Parameter parameter : parameters) {
-			System.out.println(parameter.getName());
-		}
-
-
-		List<Limit> limits = norm.getLimits();
-		for (Limit limit : limits) {
-			System.out.println("   " + limit.getFrequency() + " - " + limit.getAmplitude());
-		}
 
 		return dataTable;
 	}
@@ -158,9 +145,9 @@ public class DataJournalController {
 			// SpectrumParameter parameter =
 			// editForm.getData().getSpectrumParameter();
 			// parameter = spectrumParameterService.save(parameter);
-			List<Parameter> selectedParameters = editForm.getData()
-					.getSelectedParameters();
-			for (int i = 0 ; i < selectedParameters.size(); i++) {
+			List<Parameter> selectedParameters =
+					editForm.getData().getSelectedParameters();
+			for (int i = 0; i < selectedParameters.size(); i++) {
 				Parameter parameter = selectedParameters.get(i);
 				if (parameter.getId() == null) {
 					TypeOfParameter type = editForm.getData().getSelectedType();
@@ -171,17 +158,28 @@ public class DataJournalController {
 				}
 			}
 
-			Measurement measurement = updaterService.saveMeasurements(model,
-					editForm.getData().getSerialNumber(), selectedParameters,
-					editForm.getData().getPurposeOfMeasurement(), editForm
-							.getData().getDescription());
+			NormGenerator normGenerator = null;
+			try {
+				normGenerator = normGeneratorService.getNormGenerator(editForm.getData()
+						.getModel().getDocument(), selectedParameters);
+			} catch (NormNotFindException e) {
+				FacesContext fc = FacesContext.getCurrentInstance();
+				fc.addMessage(null, new FacesMessage("Норма не найдена",
+						"Для текущих параметров измерений норма не найдена"));
+			}
+
+			Measurement measurement =
+					updaterService.saveMeasurements(model, editForm.getData()
+							.getSerialNumber(), selectedParameters, editForm
+							.getData().getPurposeOfMeasurement(), editForm
+							.getData().getDescription(), normGenerator);
 
 			FacesContext fc = FacesContext.getCurrentInstance();
-			ELContext elContext = FacesContext.getCurrentInstance()
-					.getELContext();
-			DataTable dataTable = (DataTable) fc.getApplication()
-					.getELResolver()
-					.getValue(elContext, null, "dataJournalTable");
+			ELContext elContext =
+					FacesContext.getCurrentInstance().getELContext();
+			DataTable dataTable =
+					(DataTable) fc.getApplication().getELResolver()
+							.getValue(elContext, null, "dataJournalTable");
 
 			dataTable.add(measurement);
 			editForm.getData().setDescription(null);
@@ -215,8 +213,9 @@ public class DataJournalController {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
-		DataTable dataTable = (DataTable) fc.getApplication().getELResolver()
-				.getValue(elContext, null, "dataJournalTable");
+		DataTable dataTable =
+				(DataTable) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "dataJournalTable");
 
 		Long equipId = selected.getEquipment().getId();
 

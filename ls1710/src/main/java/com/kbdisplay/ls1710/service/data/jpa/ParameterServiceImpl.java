@@ -28,6 +28,11 @@ public class ParameterServiceImpl implements ParameterService {
 	}
 
 	@Override
+	public Parameter findById(Long id) {
+		return parameterRepository.findOne(id);
+	}
+
+	@Override
 	@Transactional(readOnly = true)
 	public Parameter findByName(final String name) {
 		return parameterRepository.findByName(name);
