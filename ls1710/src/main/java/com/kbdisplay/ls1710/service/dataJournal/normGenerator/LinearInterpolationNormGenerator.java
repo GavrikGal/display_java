@@ -3,14 +3,22 @@ package com.kbdisplay.ls1710.service.dataJournal.normGenerator;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.springframework.stereotype.Component;
+
 import com.kbdisplay.ls1710.domain.Limit;
+import com.kbdisplay.ls1710.domain.Norm;
 import com.kbdisplay.ls1710.service.dataJournal.NormGenerator;
 
+@Component("linearInterpolationNormGenerator")
 public class LinearInterpolationNormGenerator implements NormGenerator {
 
 	private List<Limit> limits;
+	private Norm documentNorm;
 	private TreeMap<Double, Double> limitTree;
 
+
+	public LinearInterpolationNormGenerator() {
+	}
 
 	public LinearInterpolationNormGenerator(List<Limit> limits) {
 		this.limits = limits;
@@ -57,6 +65,17 @@ public class LinearInterpolationNormGenerator implements NormGenerator {
 				amplitudeL + (frequency - frequencyL)
 						* (amplitudeR - amplitudeL) / (frequencyR - frequencyL);
 		return result;
+	}
+
+	@Override
+	public Norm getDocumentNorm() {
+		return documentNorm;
+	}
+
+	@Override
+	public void setDocumentNorm(Norm documentNorm) {
+		this.documentNorm = documentNorm;
+		this.limits = this.documentNorm.getLimits();
 	}
 
 }

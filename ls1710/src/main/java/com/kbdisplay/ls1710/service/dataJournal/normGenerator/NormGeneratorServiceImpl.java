@@ -1,6 +1,9 @@
-package com.kbdisplay.ls1710.service.dataJournal.jpa;
+package com.kbdisplay.ls1710.service.dataJournal.normGenerator;
 
 import java.util.List;
+
+import javax.el.ELContext;
+import javax.faces.context.FacesContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +15,6 @@ import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.service.data.ParameterService;
 import com.kbdisplay.ls1710.service.dataJournal.NormGenerator;
 import com.kbdisplay.ls1710.service.dataJournal.NormGeneratorService;
-import com.kbdisplay.ls1710.service.dataJournal.normGenerator.LinearInterpolationNormGenerator;
-import com.kbdisplay.ls1710.service.dataJournal.normGenerator.Special2005NormGenerator;
-import com.kbdisplay.ls1710.service.dataJournal.normGenerator.NormNotFindException;
 
 @Service("normGeneratorService")
 @Transactional
@@ -38,17 +38,36 @@ public class NormGeneratorServiceImpl implements NormGeneratorService{
 
 			if (norm != null) {
 
-				if (norm.getParameters().contains(parameterService.findById(2L))) {
-					System.out.println("ИРП");
-					return new LinearInterpolationNormGenerator(norm.getLimits());
-				} else {
-					if (norm.getParameters().contains(parameterService.findById(1L))) {
-						System.out.println("СИ");
-						return new Special2005NormGenerator(parameters);
-					} else {
-						throw new NormNotFindException("Norm not find");
-					}
+				FacesContext fc = FacesContext.getCurrentInstance();
+				ELContext elContext = FacesContext.getCurrentInstance()
+						.getELContext();
+
+				try {
+				String normHandlerName = norm.getNormHandler().getHandlerName();
+				NormGenerator normGenerator = (NormGenerator) fc
+						.getApplication().getELResolver()
+						.getValue(elContext, null, normHandlerName);
+
+				System.out.println("normGenerator - " + normGenerator);
+
+				normGenerator.setDocumentNorm(norm);
+				return normGenerator;
+				} catch (Exception e) {
+					throw new NormNotFindException("Norm not find");
 				}
+
+//				if (norm.getParameters().contains(parameterService.findById(2L))) {
+//
+//					System.out.println("ИРП");
+//					return new LinearInterpolationNormGenerator(norm.getLimits());
+//				} else {
+//					if (norm.getParameters().contains(parameterService.findById(1L))) {
+//						System.out.println("СИ");
+//						return new Special2005NormGenerator(parameters);
+//					} else {
+//						throw new NormNotFindException("Norm not find");
+//					}
+//				}
 			} else {
 				throw new NormNotFindException("Norm not find");
 			}

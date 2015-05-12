@@ -51,6 +51,10 @@ public class Norm implements Serializable {
 	@JoinColumn(name = "standard_id")
 	private Standard standard;
 
+	@ManyToOne
+	@JoinColumn(name = "norm_handler_id")
+	private NormHandler normHandler;
+
 	@OneToMany(mappedBy = "norm", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	@OrderBy("frequency")
@@ -94,6 +98,14 @@ public class Norm implements Serializable {
 
 	public void setStandard(Standard standard) {
 		this.standard = standard;
+	}
+
+	public NormHandler getNormHandler() {
+		return normHandler;
+	}
+
+	public void setNormHandler(NormHandler normHandler) {
+		this.normHandler = normHandler;
 	}
 
 	public static long getSerialversionuid() {
