@@ -1,6 +1,9 @@
 package com.kbdisplay.ls1710.service.dataJournal;
 
+import java.util.List;
+
 import com.kbdisplay.ls1710.domain.Norm;
+import com.kbdisplay.ls1710.domain.Parameter;
 
 
 public interface NormGenerator {
@@ -9,6 +12,6 @@ public interface NormGenerator {
 
 	public Norm getDocumentNorm();
 
-	public void setDocumentNorm(Norm documentNorm);
+	public void setDocumentNormAndParameters(Norm documentNorm, List<Parameter> parameters);
 
 }

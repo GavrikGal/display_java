@@ -50,7 +50,7 @@ public class NormGeneratorServiceImpl implements NormGeneratorService{
 
 				System.out.println("normGenerator - " + normGenerator);
 
-				normGenerator.setDocumentNorm(norm);
+				normGenerator.setDocumentNormAndParameters(norm, parameters);
 				return normGenerator;
 				} catch (Exception e) {
 					throw new NormNotFindException("Norm not find");
