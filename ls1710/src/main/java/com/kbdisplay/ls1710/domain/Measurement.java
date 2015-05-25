@@ -76,7 +76,8 @@ public class Measurement implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-
+	@Column(name = "restricted_access", columnDefinition = "TINYINT(1)")
+	private boolean restrictedAccess;
 
 	// /**
 	// * предыдущее испытание. например перед испытаниями приемосдаточными
@@ -166,6 +167,14 @@ public class Measurement implements Serializable {
 
 	public void setUser(final User user) {
 		this.user = user;
+	}
+
+	public boolean isRestrictedAccess() {
+		return restrictedAccess;
+	}
+
+	public void setRestrictedAccess(boolean restrictedAccess) {
+		this.restrictedAccess = restrictedAccess;
 	}
 
 	public List<Spectrum> getSpectrums() {

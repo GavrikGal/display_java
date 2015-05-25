@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:component="http://java.sun.com/jsf/composite/views/dataJournal/components"
 	xmlns:sec="http://www.springframework.org/security/tags">
@@ -73,12 +74,28 @@
 			<h:outputText value="#{row.equipment.serialNumber}" />
 		</p:column>
 		<p:column headerText="#{msg['label_measurement_table_spectrum']}">
-			<p:dataGrid var="spectrum"
-				value="#{row.spectrums}" columns="1" rows="2"
-				id="spectrums" paginator="false" styleClass="internalTable">
-				<component:spectrumRow spectrum="#{spectrum}"
-					widthFirstColumn="140px" />
-			</p:dataGrid>
+			
+			<sec:authorize access="isAnonymous()" >
+				<p:outputLabel value="#{msg['is_restricted_access']}" rendered="#{row.measurement.restrictedAccess}"/>
+			
+				<p:dataGrid var="spectrum"
+					value="#{row.spectrums}" columns="1" rows="2"
+					id="spectrums" paginator="false" styleClass="internalTable" rendered="#{not row.measurement.restrictedAccess}">
+					<component:spectrumRow spectrum="#{spectrum}"
+						widthFirstColumn="140px" />
+				</p:dataGrid>
+			</sec:authorize>
+			
+			<sec:authorize access="hasRole('ROLE_USER')" >
+				<p:dataGrid var="spectrum"
+					value="#{row.spectrums}" columns="1" rows="2"
+					id="spectrums" paginator="false" styleClass="internalTable"  style="border-color: red">
+					<component:spectrumRow spectrum="#{spectrum}"
+						widthFirstColumn="140px" />
+					
+				</p:dataGrid>
+				<p:separator style="border-color: #C00000; height:1px" rendered="#{row.measurement.restrictedAccess}"/>
+			</sec:authorize>
 		</p:column>
 		<p:column width="20" styleClass="internalTable"
 			style="border-left: 0px solid #E55 ">

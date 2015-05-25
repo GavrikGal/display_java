@@ -1,8 +1,5 @@
 package com.kbdisplay.ls1710.view.common.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -13,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
@@ -60,27 +56,6 @@ public class LoginManagerBean {
 
 		SecurityContextHolder.clearContext();
 		return "logout";
-	}
-
-	public void testAscess() {
-
-		System.out.println("logout name: "
-				+ SecurityContextHolder.getContext().getAuthentication()
-						.getName());
-		List<GrantedAuthority> grants = new ArrayList<GrantedAuthority>();
-		grants.addAll(SecurityContextHolder.getContext().getAuthentication()
-				.getAuthorities());
-		System.out.println("Grantes:");
-		String grantes = "";
-		for (GrantedAuthority grantedAuthority : grants) {
-			System.out.println(grantedAuthority.getAuthority());
-			grantes += " " + grantedAuthority.getAuthority();
-		}
-
-		FacesContext fc = FacesContext.getCurrentInstance();
-		fc.addMessage(null, new FacesMessage("Authentication Name: "
-				+ SecurityContextHolder.getContext().getAuthentication()
-						.getName(), "Grantes: " + grantes));
 	}
 
 	public String getUserName() {

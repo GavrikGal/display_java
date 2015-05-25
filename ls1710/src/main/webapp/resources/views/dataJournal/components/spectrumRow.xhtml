@@ -36,9 +36,7 @@
 					<ui:repeat var="harmonic" value="#{cc.attrs.spectrum.harmonics}"
 						size="#{fn:length(cc.attrs.spectrum.harmonics) > 2 ? 3 : fn:length(cc.attrs.spectrum.harmonics)}">
 						<h:outputText
-							value="#{harmonic.frequency} - "/>
-						<h:outputText
-							value="#{harmonic.amplitude}" style="color: #{harmonic.reserve > 0.0 ? green : red};"/>
+							value="#{harmonic.frequency} - #{harmonic.amplitude}" style="color: #{harmonic.reserve > 0.0 ? '#006000' : '#A00000'}; "/>
 						<h:outputText
 							value="#{harmonic.noise > 0 ? ('/'.concat(harmonic.noise.toString())) : ''}; " style="color:grey; font-size: 80%"/>		
 					</ui:repeat>

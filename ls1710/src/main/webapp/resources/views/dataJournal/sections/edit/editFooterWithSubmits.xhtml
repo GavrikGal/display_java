@@ -33,7 +33,21 @@
 			</p:selectOneMenu>
 		</p:column>
 		
-		<p:column colspan="2">
+		<p:column colspan="1">
+			<p:commandButton 
+				value="#{msg['label_measurement_update']}"
+				id="update" 
+				widgetVar="updateButton"
+				update="editForm:description editForm:spectrumParameters editForm:spectrumParametersMenu :form:dataTable :messages:message newModelDilog"
+				action="#{dataJournalController.updateFromFolder()}"
+				immediate="false"
+				type="submit"
+				style="float:right;">
+				<p:resetInput target="description" />
+			</p:commandButton>
+		</p:column>
+		
+		<p:column colspan="1">
 			<p:commandButton 
 				value="#{msg['label_measurement_save']}"
 				id="save" 

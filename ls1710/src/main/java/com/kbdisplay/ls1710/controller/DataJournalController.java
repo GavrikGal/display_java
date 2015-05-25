@@ -126,6 +126,25 @@ public class DataJournalController {
 		return editForm;
 	}
 
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public void updateFromFolder() {
+		Measurement measurement = updaterService.updateFromFolder();
+
+		FacesContext fc = FacesContext.getCurrentInstance();
+		ELContext elContext =
+				FacesContext.getCurrentInstance().getELContext();
+		DataTable dataTable =
+				(DataTable) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "dataJournalTable");
+
+		dataTable.add(measurement);
+
+		fc.addMessage(null, new FacesMessage("Измерение успешно сохранено",
+				"Изделие: " + measurement.getEquipment().getModel().getName() + " № "
+						+ measurement.getEquipment().getSerialNumber()));
+
+	}
+
 	/**
 	 * сохранить новое измерение из формы редактирования.
 	 *
@@ -229,6 +248,29 @@ public class DataJournalController {
 		dataTable.deleteSelected();
 
 		fc.addMessage(null, new FacesMessage("Измерение удалено"));
+	}
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public void restrictAccess(final Measurement selected) {
+
+		selected.setRestrictedAccess(true);
+
+		measurementService.save(selected);
+
+		FacesContext fc = FacesContext.getCurrentInstance();
+		fc.addMessage(null, new FacesMessage("Ограничение доступа установлено"));
+	}
+
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public void allowAccess(final Measurement selected) {
+
+		selected.setRestrictedAccess(false);
+
+		measurementService.save(selected);
+
+		FacesContext fc = FacesContext.getCurrentInstance();
+		fc.addMessage(null, new FacesMessage("Ограничение доступа снято"));
 	}
 
 	/**

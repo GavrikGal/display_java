@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -36,12 +39,15 @@ import com.kbdisplay.ls1710.service.data.EquipmentService;
 import com.kbdisplay.ls1710.service.data.HarmonicService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
 import com.kbdisplay.ls1710.service.data.ModelService;
+import com.kbdisplay.ls1710.service.data.ParameterService;
 import com.kbdisplay.ls1710.service.data.PurposeOfMeasurementService;
 import com.kbdisplay.ls1710.service.data.SpectrumService;
 import com.kbdisplay.ls1710.service.data.UserService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
 import com.kbdisplay.ls1710.service.dataJournal.MeasurementsUpdaterService;
 import com.kbdisplay.ls1710.service.dataJournal.NormGenerator;
+import com.kbdisplay.ls1710.service.dataJournal.NormGeneratorService;
+import com.kbdisplay.ls1710.service.dataJournal.normGenerator.NormNotFindException;
 import com.kbdisplay.ls1710.service.file.FileFinderService;
 import com.kbdisplay.ls1710.service.parcer.DescriptionForParsing;
 
@@ -54,11 +60,13 @@ public class MeasurementsUpdaterServiceImpl implements
 			.getLogger(MeasurementsUpdaterServiceImpl.class);
 
 	// TODO �������� ��������� �� �������� ����������� �� ����� ��������
-	final String frequencyCellName = "�������, ���";
-	final String amplitudeCellName = "��+�, �����/�";
-	final String noiseCellName = "��, �����/�";
-	final String receiverBandwidthCellName = "��, ���";
-	final String rootPathName = "D:\\������";
+	final private String frequencyCellName = "Частота, МГц";
+	final private String amplitudeCellName = "Ес+п, дБмкВ/м";
+	final private String noiseCellName = "Еп, дБмкВ/м";
+	final private String receiverBandwidthCellName = "ПП, кГц";
+	final private Double deviationFrequency = 0.02;
+	final private String rootPathName = "D:\\Данные";
+	final private String defaultPurpose = "ПИ";
 
 	@Autowired
 	private DateOfMeasurementService dateOfMeasurementService;
@@ -75,23 +83,14 @@ public class MeasurementsUpdaterServiceImpl implements
 	@Autowired
 	private MeasurementService measurementService;
 
-	// @Autowired
-	// private MeasurandService measurandService;
-	//
-	// @Autowired
-	// private TypeOfSpectrumService typesOfSpectrumService;
-	//
-	// @Autowired
-	// private ScreenResolutionService screenResolutionService;
-
 	@Autowired
 	private SpectrumService spectrumService;
 
 	@Autowired
 	private HarmonicService harmonicService;
 
-	// @Autowired
-	// private SpectrumParameterService spectrumParameterService;
+	@Autowired
+	private ParameterService parameterService;
 
 	@Autowired
 	private FileFinderService fileFinder;
@@ -99,53 +98,67 @@ public class MeasurementsUpdaterServiceImpl implements
 	@Autowired
 	private PurposeOfMeasurementService purposeService;
 
+	@Autowired
+	private NormGeneratorService normGeneratorService;
+
 
 	@Override
 	@Deprecated
-	public void updateFromFolder() {
+	public Measurement updateFromFolder() {
 		try {
-
-			// String rootPath = "D:\\������";
 
 			final Double deviationFrequency = 0.02;
 			List<File> fileList =
 					fileFinder.findFiles(rootPathName,
-							"[\\w[�-��-�]]+\\.(docx|doc)");
+							"[\\w[А-Яа-я]]+\\.(docx|doc)");
 
 			for (File file : fileList) {
 
-				// ��������� ������ �� ����� ���������
-				// ��������� ���� ��������� � ����������
-				File typeMeasurementsFolder = new File(file.getParent());
-				String[] typeAndResolutions =
-						typeMeasurementsFolder.getName().split(" ");
-				String measurandName = typeAndResolutions[0];
-				String screenResolutionsNameOrType = typeAndResolutions[1];
-				String typeName;
-				String screenResolutionsName;
-				if (screenResolutionsNameOrType != "���") {
-					typeName = "��";
-					screenResolutionsName = screenResolutionsNameOrType;
-				} else {
-					typeName = "���";
-					screenResolutionsName = "";
+				File ParameterFolder = new File(file.getParent());
+				String[] ParameterNames = ParameterFolder.getName().split(" ");
+				System.out.println("ParameterNames:");
+				for (String string : ParameterNames) {
+					System.out.println(string);
 				}
-				System.out.println("Measurand: " + measurandName);
-				System.out.println("Resolution: " + screenResolutionsName);
-				System.out.println("Type: " + typeName);
+				List<Parameter> parameters = new ArrayList<Parameter>();
+				for (String parameterName : ParameterNames) {
+					try {
+						Parameter parameter =
+								parameterService.findByName(parameterName);
+						System.out.println("Parameter entity: "
+								+ parameter.getId() + ". "
+								+ parameter.getName());
+						if (parameter != null) {
+							parameters.add(parameter);
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
 
-				// ��������� ������ �������
-				File modelMeasurementsFilder =
-						new File(typeMeasurementsFolder.getParent());
-				String modelName = modelMeasurementsFilder.getName();
+				File modelMeasurementsFolder =
+						new File(ParameterFolder.getParent());
+				String modelName = modelMeasurementsFolder.getName();
 				System.out.println("model: " + modelName);
 
-				// ��������� ��������� ������
 				String fileName = file.getName();
 				fileName = fileName.trim();
-				String serialNumber =
+				String serialNumberAndPurposeFolder =
 						fileName.substring(0, fileName.indexOf(".doc"));
-				System.out.println("sn: " + serialNumber);
+
+				String[] serialNumberAndPurpose =
+						serialNumberAndPurposeFolder.split("-");
+
+				String serialNumber = serialNumberAndPurpose[0].trim();
+				String purposeName;
+				if (serialNumberAndPurpose.length < 2) {
+					purposeName = defaultPurpose;
+				} else {
+					purposeName = serialNumberAndPurpose[1].trim();
+				}
+
+				PurposeOfMeasurement purpose =
+						purposeService.findByName(purposeName);
 
 				String absoluteFileName = file.getAbsolutePath();
 
@@ -154,161 +167,121 @@ public class MeasurementsUpdaterServiceImpl implements
 					throw new FileFormatException();
 				} else {
 
-					// ���� ������, ���� �� ���, �� ������� �� � ����� � ���
-					ModelOfEquipment model = getModel(modelName);
+					ModelOfEquipment model = this.getModel(modelName);
 
-					// ���� ������� � ���� ������, ���� �� �������, �� �������
-					// �����
-					Equipment equipment = getEquipments(model, serialNumber);
+					Equipment equipment =
+							this.getEquipments(model, serialNumber);
 
-					// ���� ������� ��������� � �� ���� ������� �����
-					Measurement measurement = getMeasurements(equipment);
+					Measurement measurement =
+							this.getMeasurements(equipment, purpose);
 
-					// ������� �������� ��������� ������� �� ��, ��� ������� ��
-					// SpectrumParameter spectrumParameter =
-					// getSpectrumsParameters(
-					// measurandName, typeName, screenResolutionsName);
-
-					// ���� ������ � ��, ��� ������� �����
-					// Spectrum spectrum = getSpectrums(measurement,
-					// spectrumParameter);
-
-					// Measurements newMeasurements = new Measurements();
-
-					// setCurrentDateOfMeasurement(newMeasurements);
-					// setEquipment(newMeasurements, modelName, serialNumber);
-
-					int frequencyCellNumber = -1;
-					int amplitudeCellNumber = -1;
-					int noiseCellNumber = -1;
-					int receiverBandwidthCellNumber = -1;
+					Spectrum spectrum =
+							this.getSpectrum(measurement, parameters);
 
 					XWPFDocument document =
 							new XWPFDocument(new FileInputStream(
 									absoluteFileName));
+					List<Harmonic> harmonics =
+							this.getHarmonicFromFile(spectrum, document);
 
-					List<XWPFTable> tables = document.getTables();
-
-					for (XWPFTable table : tables) {
-						List<XWPFTableRow> rows = table.getRows();
-
-						List<XWPFTableCell> headTable =
-								rows.get(0).getTableCells();
-						for (int a = 0; a < headTable.size(); a++) {
-							if (headTable.get(a).getText()
-									.equalsIgnoreCase(frequencyCellName)) {
-								frequencyCellNumber = a;
-							}
-							if (headTable.get(a).getText()
-									.equalsIgnoreCase(amplitudeCellName)) {
-								amplitudeCellNumber = a;
-							}
-							if (headTable.get(a).getText()
-									.equalsIgnoreCase(noiseCellName)) {
-								noiseCellNumber = a;
-							}
-							if (headTable
-									.get(a)
-									.getText()
-									.equalsIgnoreCase(receiverBandwidthCellName)) {
-								receiverBandwidthCellNumber = a;
-							}
-						}
-
-						if (frequencyCellNumber == -1) {
-							System.out.println("�� ������� ������� �������");
-							break;
-						}
-						if (receiverBandwidthCellNumber == -1) {
-							System.out
-									.println("�� ������� ������� ������ �����������");
-							break;
-						}
-						if (amplitudeCellNumber == -1) {
-							System.out.println("�� ������� ������� ���������");
-							break;
-						}
-						if (noiseCellNumber == -1) {
-							System.out.println("�� ������� ������� ����");
-							break;
-						}
-
-						for (int i = 1; i < rows.size(); i++) {
-							List<XWPFTableCell> cells =
-									rows.get(i).getTableCells();
-							// System.out.print(cells.get(frequencyCellNumber)
-							// .getText() + "\t");
-							// System.out.print(cells.get(
-							// receiverBandwidthCellNumber).getText()
-							// + "\t");
-							// System.out.print(cells.get(amplitudeCellNumber)
-							// .getText() + "\t");
-							// System.out.print(cells.get(noiseCellNumber)
-							// .getText());
-							// System.out.println();
-
-							Double frequency, receiverBandwidth, amplitude, noise;
-
-							frequency =
-									Double.parseDouble(cells.get(
-											frequencyCellNumber).getText());
-							receiverBandwidth =
-									Double.parseDouble(cells.get(
-											receiverBandwidthCellNumber)
-											.getText());
-							amplitude =
-									Double.parseDouble(cells.get(
-											amplitudeCellNumber).getText());
-							noise =
-									Double.parseDouble(cells.get(
-											noiseCellNumber).getText());
-
-							// �������� � ������ �������� �� ��������. ������
-							// �������� �� �������
-							// ��������, ���������� ����� �������� ��� ��������
-
-							Harmonic newHarmonics = new Harmonic();
-							// List<Harmonic> oldHarmonics = spectrum
-							// .getHarmonics();
-							// for (Harmonic harmonics : oldHarmonics) {
-							// if (((harmonics.getFrequency() +
-							// deviationFrequency
-							// * harmonics.getFrequency()) > frequency)
-							// && ((harmonics.getFrequency() -
-							// deviationFrequency
-							// * harmonics.getFrequency()) < frequency)) {
-							// newHarmonics = harmonics;
-							// }
-							// }
-							// newHarmonics.setFrequency(frequency);
-							// newHarmonics
-							// .setReceiverBandwidth(receiverBandwidth);
-							// if (amplitude != null) {
-							// newHarmonics.setAmplitude(amplitude);
-							// if (noise == null) {
-							// noise = 0.0;
-							// }
-							// newHarmonics.setNoise(noise);
-							// newHarmonics.setSpectrum(spectrum);
-							// if (newHarmonics.getId() == null) {
-							// harmonicService.save(newHarmonics);
-							// spectrum.getHarmonics().add(newHarmonics);
-							// }
-							//
-							// }
-
-							// spectrum.getHarmonics().add(newHarmonics);
-
-						}
-						// measurement.getSpectrums().add(spectrum);
+					NormGenerator normGenerator = null;
+					try {
+						normGenerator =
+								normGeneratorService.getNormGenerator(
+										model.getDocument(), parameters);
+					} catch (NormNotFindException e) {
+						FacesContext fc = FacesContext.getCurrentInstance();
+						fc.addMessage(
+								null,
+								new FacesMessage("Норма не найдена",
+										"Для текущих параметров измерений норма не найдена"));
 					}
 
-					measurement = getMeasurements(equipment);
+					harmonics = calculateReserv(harmonics, normGenerator);
+
+					spectrum.setHarmonics(harmonics);
+
+					measurement.getSpectrums().add(spectrum);
+
+					/*
+					 * int frequencyCellNumber = -1; int amplitudeCellNumber =
+					 * -1; int noiseCellNumber = -1; int
+					 * receiverBandwidthCellNumber = -1;
+					 *
+					 * XWPFDocument document = new XWPFDocument(new
+					 * FileInputStream( absoluteFileName));
+					 *
+					 * List<XWPFTable> tables = document.getTables();
+					 *
+					 * for (XWPFTable table : tables) { List<XWPFTableRow> rows
+					 * = table.getRows();
+					 *
+					 * List<XWPFTableCell> headTable =
+					 * rows.get(0).getTableCells(); for (int a = 0; a <
+					 * headTable.size(); a++) { if (headTable.get(a).getText()
+					 * .equalsIgnoreCase(frequencyCellName)) {
+					 * frequencyCellNumber = a; } if (headTable.get(a).getText()
+					 * .equalsIgnoreCase(amplitudeCellName)) {
+					 * amplitudeCellNumber = a; } if (headTable.get(a).getText()
+					 * .equalsIgnoreCase(noiseCellName)) { noiseCellNumber = a;
+					 * } if (headTable .get(a) .getText()
+					 * .equalsIgnoreCase(receiverBandwidthCellName)) {
+					 * receiverBandwidthCellNumber = a; } }
+					 *
+					 * if (frequencyCellNumber == -1) {
+					 * System.out.println("frequencyCellNumber error"); break; }
+					 * if (receiverBandwidthCellNumber == -1) { System.out
+					 * .println("receiverBandwidthCellNumber error"); break; }
+					 * if (amplitudeCellNumber == -1) {
+					 * System.out.println("amplitudeCellNumber error"); break; }
+					 * if (noiseCellNumber == -1) {
+					 * System.out.println("noiseCellNumber error"); break; }
+					 *
+					 * for (int i = 1; i < rows.size(); i++) {
+					 * List<XWPFTableCell> cells = rows.get(i).getTableCells();
+					 *
+					 * Double frequency, receiverBandwidth, amplitude, noise;
+					 *
+					 * frequency = Double.parseDouble(cells.get(
+					 * frequencyCellNumber).getText()); receiverBandwidth =
+					 * Double.parseDouble(cells.get(
+					 * receiverBandwidthCellNumber) .getText()); amplitude =
+					 * Double.parseDouble(cells.get(
+					 * amplitudeCellNumber).getText()); noise =
+					 * Double.parseDouble(cells.get(
+					 * noiseCellNumber).getText());
+					 *
+					 * Harmonic newHarmonics = new Harmonic(); List<Harmonic>
+					 * oldHarmonics = spectrum.getHarmonics(); if (oldHarmonics
+					 * == null) { oldHarmonics = new ArrayList<Harmonic>();
+					 * spectrum.setHarmonics(oldHarmonics); } for (Harmonic
+					 * harmonics : oldHarmonics) { if
+					 * (((harmonics.getFrequency() + deviationFrequency
+					 * harmonics.getFrequency()) > frequency) &&
+					 * ((harmonics.getFrequency() - deviationFrequency
+					 * harmonics.getFrequency()) < frequency)) { newHarmonics =
+					 * harmonics; } } newHarmonics.setFrequency(frequency);
+					 * newHarmonics .setReceiverBandwidth(receiverBandwidth); if
+					 * (amplitude != null) {
+					 * newHarmonics.setAmplitude(amplitude); if (noise == null)
+					 * { noise = 0.0; } newHarmonics.setNoise(noise);
+					 * newHarmonics.setSpectrum(spectrum); if
+					 * (newHarmonics.getId() == null) {
+					 * harmonicService.save(newHarmonics);
+					 * spectrum.getHarmonics().add(newHarmonics); }
+					 *
+					 * }
+					 *
+					 * spectrum.getHarmonics().add(newHarmonics);
+					 *
+					 * } measurement.getSpectrums().add(spectrum);
+					 *
+					 * }
+					 */
+
 					System.out.println("New Measurement with ID - "
 							+ measurement.getId() + ":");
 
-					// System.out.println("     Date of meas -" +
-					// measurement.getDateOfMeasurement().getDateString());
 					System.out.println("     Id model -"
 							+ measurement.getEquipment().getModel().getId());
 					System.out.println("     model name - "
@@ -323,42 +296,30 @@ public class MeasurementsUpdaterServiceImpl implements
 								+ spectrums.getId());
 						System.out.println("        getMeasurement() - "
 								+ spectrums.getMeasurement().getId());
-						System.out.println("        spectrum parameters:");
-						// System.out
-						// .println("            spectrum parameters ID -"
-						// + spectrums.getParameter().getId());
-						// System.out.println("            Measurands -"
-						// + spectrums.getParameter().getMeasurand()
-						// .getId());
-						// System.out.println("            type - "
-						// + spectrums.getParameter().getTypeOfSpectrum()
-						// .getId());
-						// System.out.println("            Resolution - "
-						// + spectrums.getParameter()
-						// .getScreenResolution().getResolution());
 						System.out.println("        Harmonics:");
-						for (Harmonic harmonics : spectrums.getHarmonics()) {
+						for (Harmonic harmonic : spectrums.getHarmonics()) {
 
-							System.out
-									.print("            " + harmonics.getId());
-							System.out.print("\t" + harmonics.getFrequency());
+							System.out.print("            " + harmonic.getId());
+							System.out.print("\t" + harmonic.getFrequency());
 							System.out.print("\t"
-									+ harmonics.getReceiverBandwidth());
-							System.out.print("\t" + harmonics.getAmplitude());
-							System.out.print("\t" + harmonics.getNoise());
+									+ harmonic.getReceiverBandwidth());
+							System.out.print("\t" + harmonic.getAmplitude());
+							System.out.print("\t" + harmonic.getNoise());
 							System.out
 									.println("            For spectrum with Id: "
-											+ harmonics.getSpectrum().getId());
+											+ harmonic.getSpectrum().getId());
 
 						}
 
 					}
 
-					// ��������� ��������
 					// setDescription(spectrum, newDescription);
+
+					return measurement;
 				}
 
 			}
+
 
 		} catch (FileFormatException e) {
 			e.printStackTrace();
@@ -369,6 +330,123 @@ public class MeasurementsUpdaterServiceImpl implements
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	private List<Harmonic> getHarmonicFromFile(Spectrum spectrum, XWPFDocument document) {
+
+		// TODO в дальнейшем проработать возможность чтения нескольких таблиц с
+		// данными из файла используя как параметры описание таблиц
+		List<Harmonic> harmonicList = new ArrayList<Harmonic>();
+
+		int frequencyCellNumber = -1;
+		int amplitudeCellNumber = -1;
+		int noiseCellNumber = -1;
+		int receiverBandwidthCellNumber = -1;
+
+		List<XWPFTable> tables = document.getTables();
+
+		if (tables.size() > 1) {
+			logger.error("to many tables on data-document");
+			;
+		}
+
+		for (XWPFTable table : tables) {
+
+			// List<Harmonic> harmonicList = new ArrayList<Harmonic>();
+
+			List<XWPFTableRow> rows = table.getRows();
+
+			List<XWPFTableCell> headTable = rows.get(0).getTableCells();
+			for (int a = 0; a < headTable.size(); a++) {
+				if (headTable.get(a).getText()
+						.equalsIgnoreCase(frequencyCellName)) {
+					frequencyCellNumber = a;
+				}
+				if (headTable.get(a).getText()
+						.equalsIgnoreCase(amplitudeCellName)) {
+					amplitudeCellNumber = a;
+				}
+				if (headTable.get(a).getText().equalsIgnoreCase(noiseCellName)) {
+					noiseCellNumber = a;
+				}
+				if (headTable.get(a).getText()
+						.equalsIgnoreCase(receiverBandwidthCellName)) {
+					receiverBandwidthCellNumber = a;
+				}
+			}
+
+			if (frequencyCellNumber == -1) {
+				System.out.println("frequencyCellNumber error");
+				break;
+			}
+			if (receiverBandwidthCellNumber == -1) {
+				System.out.println("receiverBandwidthCellNumber error");
+				break;
+			}
+			if (amplitudeCellNumber == -1) {
+				System.out.println("amplitudeCellNumber error");
+				break;
+			}
+			if (noiseCellNumber == -1) {
+				System.out.println("noiseCellNumber error");
+				break;
+			}
+
+			for (int i = 1; i < rows.size(); i++) {
+				List<XWPFTableCell> cells = rows.get(i).getTableCells();
+
+				Double frequency, receiverBandwidth, amplitude, noise;
+
+				frequency =
+						Double.parseDouble(cells.get(frequencyCellNumber)
+								.getText());
+				receiverBandwidth =
+						Double.parseDouble(cells.get(
+								receiverBandwidthCellNumber).getText());
+				amplitude =
+						Double.parseDouble(cells.get(amplitudeCellNumber)
+								.getText());
+				noise =
+						Double.parseDouble(cells.get(noiseCellNumber).getText());
+
+				Harmonic newHarmonic = new Harmonic();
+				// List<Harmonic> oldHarmonics =
+				// spectrum.getHarmonics();
+				// if (oldHarmonics == null) {
+				// oldHarmonics = new ArrayList<Harmonic>();
+				// spectrum.setHarmonics(oldHarmonics);
+				// }
+				// for (Harmonic harmonics : oldHarmonics) {
+				// if (((harmonics.getFrequency() + deviationFrequency
+				// * harmonics.getFrequency()) > frequency)
+				// && ((harmonics.getFrequency() - deviationFrequency
+				// * harmonics.getFrequency()) < frequency)) {
+				// newHarmonic = harmonics;
+				// }
+				// }
+				newHarmonic.setFrequency(frequency);
+				newHarmonic.setReceiverBandwidth(receiverBandwidth);
+				if (amplitude != null) {
+					newHarmonic.setAmplitude(amplitude);
+					if (noise == null) {
+						noise = 0.0;
+					}
+					newHarmonic.setNoise(noise);
+					newHarmonic.setSpectrum(spectrum);
+					if (newHarmonic.getId() == null) {
+						harmonicService.save(newHarmonic);
+						spectrum.getHarmonics().add(newHarmonic);
+					}
+
+				}
+
+				harmonicList.add(newHarmonic);
+
+			}
+		}
+
+		return harmonicList;
 	}
 
 	@Override
@@ -383,7 +461,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		Equipment equipment = getEquipments(model, serialNumber);
 
 		// ���� ������� ��������� � �� ���� ������� �����
-		Measurement measurement = getMeasurements(equipment);
+		Measurement measurement = null;// = getMeasurements(equipment);
 
 		// ������� �������� ��������� ������� �� ��, ��� ������� ��
 		// SpectrumParameter spectrumParameter = getSpectrumsParameters(
@@ -468,7 +546,8 @@ public class MeasurementsUpdaterServiceImpl implements
 
 				measurement =
 						this.saveSpectrum(measurement, selectedParameters,
-								description, normGenerator, measurement.getVersion());
+								description, normGenerator,
+								measurement.getVersion());
 
 			} else {
 				/*
@@ -477,9 +556,6 @@ public class MeasurementsUpdaterServiceImpl implements
 				 * же параметрами спектра.
 				 */
 
-				// List<Spectrum> spectrums = spectrumService
-				// .findByMeasurementAndParameters(measurement,
-				// selectedParameters);
 				List<Spectrum> spectrums =
 						this.findSpectrumsWithSelectedParameters(measurement,
 								selectedParameters);
@@ -493,7 +569,8 @@ public class MeasurementsUpdaterServiceImpl implements
 					measurement.setUser(user);
 					measurement =
 							this.saveSpectrum(measurement, selectedParameters,
-									description, normGenerator, measurement.getVersion());
+									description, normGenerator,
+									measurement.getVersion());
 				} else {
 
 					// TODO спросить у пользователя:
@@ -526,8 +603,8 @@ public class MeasurementsUpdaterServiceImpl implements
 
 						measurement =
 								this.saveSpectrum(measurement,
-										selectedParameters, description, normGenerator,
-										measurement.getVersion());
+										selectedParameters, description,
+										normGenerator, measurement.getVersion());
 					}
 					/*
 					 * TODO доработать else { // TODO если пользователь хочет
@@ -543,40 +620,6 @@ public class MeasurementsUpdaterServiceImpl implements
 			}
 
 		}
-		//
-		// Measurement lastMeasurement =
-		// measurements.get(measurements.size() - 1);
-		// lastVersion = lastMeasurement.getVersion();
-		//
-		// }
-		//
-		// if (measurement == null) {
-		// measurement = new Measurement();
-		// measurement.setDate(currentDate);
-		// measurement.setEquipment(equipment);
-		// }
-		//
-		// measurement.setVersion(++lastVersion);
-		// measurement.setPurpose(purposeOfMeasurement);
-		// measurement.setUser(user);
-		// measurement.setSpectrums(new ArrayList<Spectrum>());
-		// measurement = measurementService.save(measurement);
-		//
-		// // ������� �������� ��������� ������� �� ��, ��� ������� ��
-		// // SpectrumParameter spectrumParameter =
-		// // getSpectrumsParameters(measurandName, typeName,
-		// // screenResolutionsName);
-		//
-		// // ���� ������ � ��, ��� ������� �����
-		// Spectrum newSpectrum = getSpectrums(measurement, parameter);
-		//
-		// // �������� � ������ �������� �� ��������. ������ �������� �� �������
-		// // ��������, ���������� ����� �������� ��� ��������
-		// String newDescription =
-		// setHarmonicsFromDescription(newSpectrum, description);
-		//
-		// // ��������� ��������
-		// setDescription(newSpectrum, newDescription);
 
 		return measurement;
 	}
@@ -702,8 +745,14 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		// �������� � ������ �������� �� ��������. ������ �������� �� �������
 		// ��������, ���������� ����� �������� ��� ��������
-		String newDescription =
-				this.setHarmonicsFromDescription(newSpectrum, description, normGenerator);
+		List<Harmonic> harmonics =
+				this.getHarmonicFromDescription(newSpectrum, description);
+		harmonics = this.calculateReserv(harmonics, normGenerator);
+		String newDescription = this.getLastPartFromDescription(description);
+		newSpectrum.setHarmonics(harmonics);
+		// String newDescription =
+		// this.setHarmonicsFromDescription(newSpectrum, description,
+		// normGenerator);
 
 		// добавляем комментарий к спектру
 		newSpectrum = this.setDescription(newSpectrum, newDescription);
@@ -746,7 +795,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		if (model == null) {
 			logger.info("Trying create new models");
 			try {
-				model = createNewModel(modelName);
+				model = this.createNewModel(modelName);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -758,9 +807,6 @@ public class MeasurementsUpdaterServiceImpl implements
 	private ModelOfEquipment findModel(String modelName) {
 		modelName = modelName.trim();
 		ModelOfEquipment model = modelService.findByName(modelName);
-		if (model != null) {
-			logger.info("Model found in the database. Id: " + model.getId());
-		}
 		return model;
 	}
 
@@ -802,27 +848,26 @@ public class MeasurementsUpdaterServiceImpl implements
 
 	// ��������� ���������� ��������� ��� �������� ������� � ������� ����
 	// �����������
-	private Measurement getMeasurements(Equipment equipment) {
+	private Measurement getMeasurements(Equipment equipment,
+			PurposeOfMeasurement purpose) {
 
 		DateOfMeasurement currentDateOfMeasurement =
-				getCurrentDateOfMeasurement();
+				this.getCurrentDateOfMeasurement();
 		Measurement measurement;
 		// setCurrentDateOfMeasurement(measurement);
 
-		User user = null;
-
-		if (SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal() != "anonymousUser") {
-			user =
-					((CustomUserDetails) SecurityContextHolder.getContext()
-							.getAuthentication().getPrincipal())
-							.getUsersDetails();
-		}
+		// TODO получаем пользователя проводившего испытания
+		CustomUserDetails userDetails =
+				(CustomUserDetails) SecurityContextHolder.getContext()
+						.getAuthentication().getPrincipal();
+		User user = userDetails.getUsersDetails();
 
 		// if (measurementsList.isEmpty()) {
 		measurement = new Measurement();
 		measurement.setDate(currentDateOfMeasurement);
 		measurement.setEquipment(equipment);
+		measurement.setPurpose(purpose);
+		measurement.setUser(user);
 		measurement.setSpectrums(new ArrayList<Spectrum>());
 		measurement = measurementService.save(measurement);
 		equipment.getMeasurements().add(measurement);
@@ -844,15 +889,26 @@ public class MeasurementsUpdaterServiceImpl implements
 		 * measurementService.save(measurement);
 		 * equipment.getMeasurements().add(measurement); } } } }
 		 */
-		if (user != null) {
-			measurement.setUser(user);
-		}
 
 		if (measurement.getId() == null) {
 			System.out
 					.println("�������. � ��� ��������. IdMeasurements == null");
 		}
 		return measurement;
+	}
+
+	private Spectrum getSpectrum(Measurement measurement,
+			List<Parameter> parameters) {
+		Spectrum spectrum = new Spectrum();
+		spectrum.setMeasurement(measurement);
+		spectrum.setParameters(parameters);
+		List<Harmonic> harmonics = new ArrayList<Harmonic>();
+		spectrum.setHarmonics(harmonics);
+
+		spectrum = spectrumService.save(spectrum);
+
+		return spectrum;
+
 	}
 
 	// �������� ��������� ������� �� �� ��� ������� �����
@@ -906,6 +962,78 @@ public class MeasurementsUpdaterServiceImpl implements
 	 * (measurement.getSpectrums().isEmpty()) { //
 	 * measurement.getSpectrums().add(spectrum); // // } return spectrum; }
 	 */
+
+	private List<Harmonic> getHarmonicFromDescription(Spectrum spectrum,
+			String description) {
+		List<Harmonic> harmonics = new ArrayList<Harmonic>();
+
+		DescriptionForParsing newDescription =
+				new DescriptionForParsing(description);
+
+		Double frequency, receiverBandwidth, amplitude, noise;
+
+		receiverBandwidth = 30.0;
+
+		while (!newDescription.isString()) {
+
+			frequency = newDescription.parseFrequency();
+			if (frequency != null) {
+				Harmonic newHarmonics = new Harmonic();
+				List<Harmonic> oldHarmonics = spectrum.getHarmonics();
+				for (Harmonic harmonic : oldHarmonics) {
+					if (((harmonic.getFrequency() + deviationFrequency
+							* harmonic.getFrequency()) > frequency)
+							&& ((harmonic.getFrequency() - deviationFrequency
+									* harmonic.getFrequency()) < frequency)) {
+						newHarmonics = harmonic;
+					}
+				}
+				newHarmonics.setFrequency(frequency);
+				newHarmonics.setReceiverBandwidth(receiverBandwidth);
+				amplitude = newDescription.parseAmplitude();
+				if (amplitude != null) {
+					newHarmonics.setAmplitude(amplitude);
+					noise = newDescription.parseNoise();
+					if (noise == null) {
+						noise = 0.0;
+					}
+					newHarmonics.setNoise(noise);
+					newHarmonics.setSpectrum(spectrum);
+					harmonicService.save(newHarmonics);
+					harmonics.add(newHarmonics);
+				}
+			} else {
+				break;
+			}
+		}
+
+		return harmonics;
+	}
+
+	private List<Harmonic> calculateReserv(List<Harmonic> harmonics,
+			NormGenerator normGenerator) {
+
+		List<Harmonic> harmonicsWithReserv = harmonics;
+
+		if (normGenerator != null && !harmonics.isEmpty()) {
+			for (Harmonic harmonic : harmonicsWithReserv) {
+				Double frequency = harmonic.getFrequency();
+				Double norm = normGenerator.getNorm(frequency);
+				if (!norm.isNaN()) {
+					harmonic.setReserve(norm - harmonic.getAmplitude());
+				}
+			}
+		}
+
+		return harmonicsWithReserv;
+	}
+
+	private String getLastPartFromDescription(String description) {
+
+		String[] descriptionParts = description.split(";");
+
+		return descriptionParts[descriptionParts.length - 1];
+	}
 
 	// ������ �������� �� ������� �������� � ������������� �� � ������
 	private String setHarmonicsFromDescription(Spectrum spectrum,

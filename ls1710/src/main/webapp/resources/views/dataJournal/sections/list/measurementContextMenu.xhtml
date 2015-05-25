@@ -24,6 +24,22 @@
 			
 		<p:menuitem value="#{msg['menu_view']}" 
 			icon="ui-icon-search" />
+			
+		<sec:authorize access="hasRole('ROLE_USER')" >  
+			<p:menuitem value="#{msg['restrict_access']}" 
+				update="dataTable"
+				icon="ui-icon-locked"
+				action="#{dataJournalController.restrictAccess(dataJournalTable.selected.measurement)}"/>
+		</sec:authorize>
+		
+		<sec:authorize access="hasRole('ROLE_USER')" >  
+			<p:menuitem value="#{msg['allow_access']}" 
+				update="dataTable"
+				icon="ui-icon-unlocked"
+				action="#{dataJournalController.allowAccess(dataJournalTable.selected.measurement)}"
+				/>
+		</sec:authorize>
+		
 		
 		<sec:authorize access="hasRole('ROLE_USER')" > 	
 			<p:menuitem value="#{msg['menu_delete']}" 
