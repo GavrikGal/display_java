@@ -1,5 +1,6 @@
 package com.kbdisplay.ls1710.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.el.ELContext;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.webflow.execution.RequestContext;
 
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
@@ -131,8 +133,7 @@ public class DataJournalController {
 		Measurement measurement = updaterService.updateFromFolder();
 
 		FacesContext fc = FacesContext.getCurrentInstance();
-		ELContext elContext =
-				FacesContext.getCurrentInstance().getELContext();
+		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 		DataTable dataTable =
 				(DataTable) fc.getApplication().getELResolver()
 						.getValue(elContext, null, "dataJournalTable");
@@ -140,8 +141,8 @@ public class DataJournalController {
 		dataTable.add(measurement);
 
 		fc.addMessage(null, new FacesMessage("Измерение успешно сохранено",
-				"Изделие: " + measurement.getEquipment().getModel().getName() + " № "
-						+ measurement.getEquipment().getSerialNumber()));
+				"Изделие: " + measurement.getEquipment().getModel().getName()
+						+ " № " + measurement.getEquipment().getSerialNumber()));
 
 	}
 
@@ -179,8 +180,10 @@ public class DataJournalController {
 
 			NormGenerator normGenerator = null;
 			try {
-				normGenerator = normGeneratorService.getNormGenerator(editForm.getData()
-						.getModel().getDocument(), selectedParameters);
+				normGenerator =
+						normGeneratorService.getNormGenerator(editForm
+								.getData().getModel().getDocument(),
+								selectedParameters);
 			} catch (NormNotFindException e) {
 				FacesContext fc = FacesContext.getCurrentInstance();
 				fc.addMessage(null, new FacesMessage("Норма не найдена",
@@ -261,7 +264,6 @@ public class DataJournalController {
 		fc.addMessage(null, new FacesMessage("Ограничение доступа установлено"));
 	}
 
-
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public void allowAccess(final Measurement selected) {
 
@@ -273,6 +275,29 @@ public class DataJournalController {
 		fc.addMessage(null, new FacesMessage("Ограничение доступа снято"));
 	}
 
+	public List<Measurement> showDetail(RequestContext context) {
+
+		Long id = context.getRequestScope().getLong("measurementId");
+		logger.info("Selected measurement id: {}", id);
+		Measurement measurement = measurementService.findById(id);
+
+		List<Measurement> measurements = new ArrayList<Measurement>();
+
+		measurements.add(measurement);
+		while (measurement.getNextMeasurement() != null) {
+			measurement = measurement.getNextMeasurement();
+			measurements.add(measurement);
+		}
+
+
+		System.out.println("measurements size = " + measurements.size());
+		for (Measurement measurement2 : measurements) {
+			System.out.println("id = " + measurement2.getId());
+		}
+
+		return measurements;
+	}
+
 	/**
 	 * создает новый бин-поддержки для добавления модели в БД.
 	 *
@@ -280,7 +305,6 @@ public class DataJournalController {
 	 *            - модель изделия, которую надо добавить в приложение.
 	 * @return бин добавления модели.
 	 */
-
 	public ModelBean newModelBean(final ModelOfEquipment model) {
 		ModelBean modelBean = new ModelBean();
 		modelBean.setModel(model);

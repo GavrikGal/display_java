@@ -1,0 +1,78 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	  			xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  			xmlns:p="http://primefaces.org/ui"
+	  			template="/resources/views/templates/standard.xhtml">
+	  			
+
+
+<ui:define name="content">	
+	 	
+	  	<p:outputLabel>Nice!</p:outputLabel>
+	  	
+	  	<ui:repeat value="#{measurements}"
+				var="measurement" 
+				size="#{fn:length(measurements)}">
+				
+			<p:panel>
+				
+				<ui:repeat value="#{measurement.spectrums}"
+				var="spectrum" 
+				size="#{fn:length(measurement.spectrums)}">
+					
+					<p:panel>
+						
+						<p:panelGrid columns="#{fn:length(spectrum.harmonics) + 1}">
+						
+							<f:facet name="header">
+								<p:outputLabel value="#{spectrum.id}"/>
+							</f:facet>
+							
+							<p:column>
+								<p:outputLabel value="F, МГц"/>
+							</p:column>
+							
+							<c:forEach 
+								items="#{spectrum.harmonics}" 
+								var="harmonic" 
+								varStatus="loop">
+									
+									<p:column>
+										<p:outputLabel value="#{harmonic.frequency}"/>
+									</p:column>
+									
+							</c:forEach>
+							
+							
+							
+							<p:column>
+								<p:outputLabel value="Амлитуда, дБ"/>
+							</p:column>
+							
+							<c:forEach 
+								items="#{spectrum.harmonics}" 
+								var="harmonic" 
+								varStatus="loop">
+									
+									<p:column>
+										<p:outputLabel value="#{harmonic.amplitude}"/>
+									</p:column>
+									
+							</c:forEach>
+														
+						</p:panelGrid>
+					</p:panel>
+				</ui:repeat>
+				
+			</p:panel>
+								
+		</ui:repeat>
+	  	
+	  	
+</ui:define>
+
+</ui:composition>

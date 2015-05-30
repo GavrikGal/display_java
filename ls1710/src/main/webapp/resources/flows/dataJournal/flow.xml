@@ -21,11 +21,23 @@
 				<attribute name="model" value="editFormDJView.model"/>
 			</evaluate>
 		</transition>
+		<transition on="viewDetail" to="showDetail">
+			<set 
+				name="requestScope.measurementId" 
+				value="dataJournalTable.selected.measurement.id"></set>
+		</transition>
 	</view-state>
+	
 	<view-state id="addModel-step-1"
 		view="/resources/views/dataJournal/addModel-step-1.xhtml">
 		<transition on="back" to="start"/>
 		<transition on="next" to="addModel-step-1" />
+	</view-state>
+	
+	<view-state id="showDetail" view="/resources/views/dataJournal/showDetail.xhtml" >
+		<on-entry>
+			<evaluate expression="dataJournalController.showDetail(flowRequestContext)" result="viewScope.measurements"/>
+		</on-entry>
 	</view-state>
 
 	<end-state id="finish" />

@@ -22,7 +22,8 @@
 				action="#{editFormDJView.edit(dataJournalTable.selected.measurement)}" />
 		</sec:authorize>
 			
-		<p:menuitem value="#{msg['menu_view']}" 
+		<p:menuitem value="#{msg['menu_view']}"
+			action="viewDetail"
 			icon="ui-icon-search" />
 			
 		<sec:authorize access="hasRole('ROLE_USER')" >  
