@@ -1,0 +1,50 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/resources/views/settings/settings.xhtml">
+
+
+	<ui:define name="usersContent">
+			<h:form id="usersForm">
+				<p:outputLabel value="добавление пользователя" />
+				<h:panelGrid columns="2" cellspacing="10">
+					
+					<p:outputLabel value="Фамилия:"/>
+					
+					<p:outputLabel value="#{user.lastName}"/>
+					
+					<p:outputLabel value="Имя:"/>
+					
+					<p:outputLabel value="#{user.firstName}"/>
+					
+					<p:outputLabel value="Отчество:"/>
+					
+					<p:outputLabel value="#{user.fatherName}"/>
+					
+				</h:panelGrid>
+				
+				<p:commandButton 
+					value="Назад" 
+					action="back" 
+					style="float: left;"/>
+				<p:commandButton 
+					value="Отмена" 
+					action="cancel" 
+					style="float: left;"/>	
+				
+				
+				<p:commandButton 
+					value="Далее" 
+					action="next" 
+					style="float: right;"/>
+				
+			</h:form>
+	</ui:define>
+
+</ui:composition>

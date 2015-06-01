@@ -4,20 +4,66 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-	<view-state id="settings" view="/resources/views/settings/sections/norms.xhtml">
+	<view-state 
+		id="settings" 
+		view="/resources/views/settings/settings.xhtml">
 		
+		<on-entry>
+			<evaluate expression="settingsController.newUsersSetting()"
+				result="flowScope.usersSetting" />
+			<evaluate expression="settingsController.newNormsSetting()"
+				result="flowScope.normsSetting" />
+		</on-entry>
+		
+		<transition 
+			on="addUser"
+			to="addUser-step-1">
+			<evaluate expression="settingsController.newUser()" result="flowScope.user"></evaluate>
+		</transition>
 
-		
 	</view-state>
 	
-	<view-state id="users" view="/resources/views/settings/sections/users.xhtml">
+	<view-state id="addUser-step-1" view="/resources/views/settings/sections/addUser-step-1.xhtml">
+		<transition 
+			on="next"
+			to="addUser-step-2">
+		</transition>
+		<transition
+			on="back"
+			to="settings">
+		</transition>
 	</view-state>
 	
-	<view-state id="norms" view="/resources/views/settings/sections/norms.xhtml"></view-state>
+	<view-state id="addUser-step-2" view="/resources/views/settings/sections/addUser-step-2.xhtml">
+		<transition 
+			on="next"
+			to="addUser-confirm">
+		</transition>
+		<transition
+			on="back"
+			to="addUser-step-1">
+		</transition>
+	</view-state>
+	
+	<view-state id="addUser-confirm" view="/resources/views/settings/sections/addUser-confirm.xhtml">
+		<transition 
+			on="next"
+			to="settings">
+			<evaluate expression="settingsController.saveUser(flowRequestContext)" />
+		</transition>
+		<transition
+			on="back"
+			to="addUser-step-2">
+		</transition>
+	</view-state>
+	
+	
 	
 
 	<global-transitions>
-		<transition on="cancel" to="settings" />
+		<transition 
+			on="cancel" 
+			to="settings" />
 	</global-transitions>
 
 </flow>

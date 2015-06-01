@@ -19,6 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 /**
  * Объект пользователя из БД.
  *
@@ -156,6 +159,7 @@ public class User implements Serializable {
 	@JoinTable(name = "user_role",
 		joinColumns = @JoinColumn(name = "user_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public Set<Role> getRoles() {
 		return roles;
 	}

@@ -6,12 +6,54 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:sec="http://www.springframework.org/security/tags"
-	template="/resources/views/settings/settings.xhtml">
+	xmlns:sec="http://www.springframework.org/security/tags">
 
-<ui:define name="settingsContent">
-	<div>
-		Пользователи
-	</div>
-</ui:define>
+
+	
+		<h:form id="usersForm">
+			<p:outputLabel value="Список пользователей" />
+			<p:dataTable 
+				id="usersTable"
+				value="#{usersSetting.users}"
+				selection="#{usersSetting.selected}"
+				selectionMode="single"
+				var="user"
+				rowKey="#{user.lastName}">
+				
+				<p:column headerText="Фамилия">
+					<p:outputLabel value="#{user.lastName}"/>
+				</p:column>
+				
+				<p:column headerText="Имя">
+					<p:outputLabel value="#{user.firstName}"/>
+				</p:column>
+				
+				<p:column headerText="Отчество">
+					<p:outputLabel value="#{user.fatherName}"/>
+				</p:column>
+				
+				<p:column headerText="Роль">
+					<p:outputLabel value="#{usersSetting.getRole(user)}"/>
+				</p:column>
+				
+				
+			</p:dataTable>
+			<p:commandButton 
+				value="Удалить пользователя" 
+				action="#{settingsController.deleteUser(usersSetting.selected)}" 
+				style="float: left;"
+				update="usersTable"/>
+			
+			<p:commandButton 
+				value="Добавить пользователя" 
+				action="addUser" 
+				style="float: right;"/>
+			<p:commandButton 
+				value="Изменить пользователя" 
+				action="#{settingsController.editUser(usersSetting.selected)}" 
+				style="float: right;"/>
+		</h:form>
+	
+	
+
 </ui:composition>

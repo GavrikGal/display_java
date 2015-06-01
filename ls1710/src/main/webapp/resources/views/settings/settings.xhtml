@@ -10,13 +10,26 @@
 
 <ui:define name="content">
 		<div class="content">
-			<ui:insert name="menu" >
-				<ui:include src="/resources/views/settings/sections/menu.xhtml"></ui:include>
-			</ui:insert>
-			<ui:insert name="settingsContent" />
+			
+				<p:tabView orientation="left" >
+					<p:tab title="Пользователи">
+						<h1>Управление пользователями</h1>
+						<ui:insert name="usersContent">
+							<ui:include src="/resources/views/settings/sections/users.xhtml" />
+						</ui:insert>
+					</p:tab>
+				
+					<p:tab title="Нормы">
+						<h1>Управление нормами</h1>
+						<ui:insert name="normsContent">
+							<ui:include src="/resources/views/settings/sections/norms.xhtml" />
+						</ui:insert>
+					</p:tab>
+				
+				</p:tabView>
+			
 		</div>
 	 	
-dgfgdf
 		<ui:include src="/resources/views/settings/sections/hotkeys.xhtml" />
 </ui:define>
 

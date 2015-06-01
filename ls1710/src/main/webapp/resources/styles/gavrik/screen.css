@@ -313,6 +313,15 @@ caption {background:#eee;}
 	
 }
 
+/** tabs **/
+.ui-tabs.ui-tabs-left > .ui-tabs-nav {
+   width: 15%;
+}
+/** panels **/
+.ui-tabs.ui-tabs-left > .ui-tabs-panels {
+   width: 85%;
+}
+
 /*.ui-confirmdialog-no {
 	display: none !important;
 	visibility: hidden !important;

@@ -17,4 +17,7 @@ public interface UserService {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public User save(User user);
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void delete(User user);
+
 }

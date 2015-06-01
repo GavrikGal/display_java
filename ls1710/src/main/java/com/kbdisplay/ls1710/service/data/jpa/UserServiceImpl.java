@@ -78,4 +78,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return user;
 	}
 
+	@Override
+	public void delete(com.kbdisplay.ls1710.domain.User user) {
+		userRepository.delete(user);
+	}
+
 }
