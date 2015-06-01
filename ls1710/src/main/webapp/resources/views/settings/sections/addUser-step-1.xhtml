@@ -17,15 +17,23 @@
 					
 					<p:outputLabel value="Фамилия"/>
 					
-					<p:inputText value="#{user.lastName}" required="true" requiredMessage="Введите фамилию"/>
+					<p:inputText value="#{usersSetting.selected.lastName}" />
 					
 					<p:outputLabel value="Имя"/>
 					
-					<p:inputText value="#{user.firstName}" required="true" requiredMessage="Введите имя"/>
+					<p:inputText value="#{usersSetting.selected.firstName}" />
 					
 					<p:outputLabel value="Отчество"/>
 					
-					<p:inputText value="#{user.fatherName}" />
+					<p:inputText value="#{usersSetting.selected.fatherName}" />
+					
+					<p:outputLabel value="Логин"/>
+					
+					<p:inputText value="#{usersSetting.selected.login}" />
+					
+					<p:outputLabel value="Пароль"/>
+					
+					<p:inputText value="#{usersSetting.selected.password}" />
 					
 				</h:panelGrid>
 				

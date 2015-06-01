@@ -12,8 +12,16 @@ public interface UsersSetting {
 
 	public String getRole(User user);
 
+	public void setNewRole(String role);
+
+	public String getNewRole();
+
 	public User getSelected();
 
 	public void setSelected(User selected);
+
+	public void newUser();
+
+
 
 }

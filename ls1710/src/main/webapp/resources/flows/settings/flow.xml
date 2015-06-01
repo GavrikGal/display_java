@@ -18,7 +18,12 @@
 		<transition 
 			on="addUser"
 			to="addUser-step-1">
-			<evaluate expression="settingsController.newUser()" result="flowScope.user"></evaluate>
+			<evaluate expression="usersSetting.newUser()" />
+		</transition>
+		
+		<transition 
+			on="editUser" 
+			to="addUser-step-1">
 		</transition>
 
 	</view-state>

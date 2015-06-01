@@ -17,15 +17,23 @@
 					
 					<p:outputLabel value="Фамилия:"/>
 					
-					<p:outputLabel value="#{user.lastName}"/>
+					<p:outputLabel value="#{usersSetting.selected.lastName}"/>
 					
 					<p:outputLabel value="Имя:"/>
 					
-					<p:outputLabel value="#{user.firstName}"/>
+					<p:outputLabel value="#{usersSetting.selected.firstName}"/>
 					
 					<p:outputLabel value="Отчество:"/>
 					
-					<p:outputLabel value="#{user.fatherName}"/>
+					<p:outputLabel value="#{usersSetting.selected.fatherName}"/>
+					
+					<p:outputLabel value="Логин"/>
+					
+					<p:outputLabel value="#{usersSetting.selected.login}" />
+					
+					<p:outputLabel value="Роль: "/>
+					
+					<p:outputLabel value="#{usersSetting.getRole(usersSetting.selected)}"/>
 					
 				</h:panelGrid>
 				

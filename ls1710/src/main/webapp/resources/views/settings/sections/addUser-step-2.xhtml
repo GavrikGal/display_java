@@ -14,7 +14,13 @@
 			<h:form id="usersForm">
 				<p:outputLabel value="добавление пользователя" />
 				
-				выбор роли
+				<h:panelGrid columns="2" cellpadding="5">
+			        <p:outputLabel for="roles" value="Роль:" />
+			        <p:selectOneRadio id="roles" value="#{usersSetting.newRole}">
+			            <f:selectItem itemLabel="Администратор" itemValue="ROLE_ADMIN" />
+			            <f:selectItem itemLabel="Специалист" itemValue="ROLE_USER" />
+			        </p:selectOneRadio>
+			    </h:panelGrid>
 				
 				<p:commandButton 
 					value="Назад" 

@@ -46,9 +46,13 @@ public class SettingsController {
 	}
 
 	public void saveUser(org.springframework.webflow.execution.RequestContext context) {
-		User user = (User) context.getFlowScope().get("user");
-		if (user != null) {
-			userService.save(user);
+		UsersSetting usersSetting = (UsersSetting) context.getFlowScope().get("usersSetting");
+
+		if (usersSetting != null) {
+			System.out.println(usersSetting.getSelected().getFirstName());
+			usersSetting.setSelected(userService.save(usersSetting.getSelected()));
+			usersSetting.getUsers().add(usersSetting.getSelected());
+			System.out.println(usersSetting.getSelected().getId());
 		}
 	}
 
