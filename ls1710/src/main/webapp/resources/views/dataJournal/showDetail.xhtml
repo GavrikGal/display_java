@@ -10,67 +10,118 @@
 	  			
 
 
-<ui:define name="content">	
+<ui:define name="content">
+		
+		<p:panel>
+		
+		<p:panel>
+			<h:panelGrid columns="2" style="margin: auto;" cellspacing="10">
+				<p:outputLabel value="Модель:"/>
+				<p:outputLabel value="#{measurements[0].equipment.model.name}"/>
+				
+				<p:outputLabel value="Серийный номер:"/>
+				<p:outputLabel value="#{measurements[0].equipment.serialNumber}"/>
+				
+			</h:panelGrid>
+		</p:panel>
+		
+		
 	 	
-	  	<p:outputLabel>Nice!</p:outputLabel>
-	  	
-	  	<ui:repeat value="#{measurements}"
-				var="measurement" 
-				size="#{fn:length(measurements)}">
+	  	<c:forEach 
+					items="#{measurements}"
+					var="measurement" 
+					>
+	  
 				
-			<p:panel>
+			<p:fieldset legend="#{measurement.purpose.name}" toggleable="true" toggleSpeed="#{(fn:length(measurement.spectrums) +1 )* 100}" style="margin-top: 15px;" styleClass="measurementFieldset">
+			
 				
-				<ui:repeat value="#{measurement.spectrums}"
-				var="spectrum" 
-				size="#{fn:length(measurement.spectrums)}">
+				<br/>
+				<c:forEach 
+					items="#{measurement.spectrums}"
+					var="spectrum" 
+					varStatus="loop">
 					
-					<p:panel>
-						
-						<p:panelGrid columns="#{fn:length(spectrum.harmonics) + 1}">
-						
-							<f:facet name="header">
-								<p:outputLabel value="#{spectrum.id}"/>
-							</f:facet>
-							
-							<p:column>
-								<p:outputLabel value="F, МГц"/>
-							</p:column>
-							
-							<c:forEach 
-								items="#{spectrum.harmonics}" 
-								var="harmonic" 
-								varStatus="loop">
-									
-									<p:column>
-										<p:outputLabel value="#{harmonic.frequency}"/>
-									</p:column>
-									
-							</c:forEach>
-							
-							
-							
-							<p:column>
-								<p:outputLabel value="Амлитуда, дБ"/>
-							</p:column>
-							
-							<c:forEach 
-								items="#{spectrum.harmonics}" 
-								var="harmonic" 
-								varStatus="loop">
-									
-									<p:column>
-										<p:outputLabel value="#{harmonic.amplitude}"/>
-									</p:column>
-									
-							</c:forEach>
-														
-						</p:panelGrid>
-					</p:panel>
-				</ui:repeat>
-				
-			</p:panel>
+					<p:fieldset toggleable="true" style="margin-top: -11px;" styleClass="spectrumLegend">
+					<f:facet name="legend" >
+							<ui:repeat value="#{spectrum.parameters}"
+								var="parameter" 
+								size="#{fn:length(spectrum.parameters)}" varStatus="loop">
 								
-		</ui:repeat>
+								<h:outputText
+									value="#{parameter.name}, "
+									style="font-size: 90%;" />
+											
+							</ui:repeat>
+							
+							
+							
+							<p:outputLabel value="#{spectrum.date}" style="color:grey; font-size: 80%"> 
+								<f:converter converterId="jodaDataTimeConverter" />
+								<f:attribute name="pattern" value="#{msg['date_time_format_pattern']}" />
+							</p:outputLabel>
+							
+							
+							
+						</f:facet>
+					<h:panelGrid columns="2" style="margin: auto;" rendered="#{spectrum.description != null}" >
+						<h:outputText value="Описание:"/>
+						<h:outputText value="#{spectrum.description}"  style="margin: auto;"/>	
+					</h:panelGrid>
+					<p:panelGrid columns="#{fn:length(spectrum.harmonics) + 1}" style="margin: auto;" >
+					
+						
+						
+							
+								<h:outputText value="F, МГц" rendered="#{fn:length(spectrum.harmonics) > 0}" />
+							
+							<c:forEach 
+								items="#{spectrum.harmonics}" 
+								var="harmonic" 
+								varStatus="loop" >
+								
+								
+									<h:outputText value="#{harmonic.frequency}" style="color: #{harmonic.reserve > 0.0 ? '#006000' : '#A00000'}; "/>
+								
+							</c:forEach>
+						
+							
+								<h:outputText value="Амлитуда, дБ" rendered="#{fn:length(spectrum.harmonics) > 0}"/>
+							
+							<c:forEach 
+								items="#{spectrum.harmonics}" 
+								var="harmonic" 
+								varStatus="loop">
+								
+								
+									<h:outputText value="#{harmonic.amplitude}" style="color: #{harmonic.reserve > 0.0 ? '#006000' : '#A00000'}; "/>
+								
+							</c:forEach>
+						
+						
+						
+						
+							
+						
+													
+					</p:panelGrid>
+					
+					</p:fieldset>
+					
+					
+					
+					
+				
+				</c:forEach>
+				
+				
+				
+			</p:fieldset>
+			
+								
+		</c:forEach>
+		
+		</p:panel>
 	  	
 	  	
 </ui:define>

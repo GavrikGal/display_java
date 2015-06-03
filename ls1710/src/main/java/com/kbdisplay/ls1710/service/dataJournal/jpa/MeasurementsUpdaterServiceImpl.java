@@ -320,7 +320,6 @@ public class MeasurementsUpdaterServiceImpl implements
 
 			}
 
-
 		} catch (FileFormatException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -333,7 +332,8 @@ public class MeasurementsUpdaterServiceImpl implements
 		return null;
 	}
 
-	private List<Harmonic> getHarmonicFromFile(Spectrum spectrum, XWPFDocument document) {
+	private List<Harmonic> getHarmonicFromFile(Spectrum spectrum,
+			XWPFDocument document) {
 
 		// TODO в дальнейшем проработать возможность чтения нескольких таблиц с
 		// данными из файла используя как параметры описание таблиц
@@ -1030,65 +1030,39 @@ public class MeasurementsUpdaterServiceImpl implements
 
 	private String getLastPartFromDescription(String description) {
 
-		String[] descriptionParts = description.split(";");
 
-		return descriptionParts[descriptionParts.length - 1];
+
+
+
+		String newDescription = this.getDescription(description);
+
+
+		return newDescription;
 	}
 
 	// ������ �������� �� ������� �������� � ������������� �� � ������
-	private String setHarmonicsFromDescription(Spectrum spectrum,
-			String description, NormGenerator normGenerator) {
+	private String getDescription(String description) {
 
 		DescriptionForParsing newDescription =
 				new DescriptionForParsing(description);
-		final Double deviationFrequency = 0.02;
 
-		Double frequency, receiverBandwidth, amplitude, noise;
-
-		receiverBandwidth = 30.0;
+		Double frequency, amplitude, noise;
 
 		while (!newDescription.isString()) {
 
 			frequency = newDescription.parseFrequency();
 			if (frequency != null) {
-				Harmonic newHarmonics = new Harmonic();
-				List<Harmonic> oldHarmonics = spectrum.getHarmonics();
-				for (Harmonic harmonics : oldHarmonics) {
-					if (((harmonics.getFrequency() + deviationFrequency
-							* harmonics.getFrequency()) > frequency)
-							&& ((harmonics.getFrequency() - deviationFrequency
-									* harmonics.getFrequency()) < frequency)) {
-						newHarmonics = harmonics;
-					}
-				}
-				newHarmonics.setFrequency(frequency);
-				newHarmonics.setReceiverBandwidth(receiverBandwidth);
+
 				amplitude = newDescription.parseAmplitude();
 				if (amplitude != null) {
-					newHarmonics.setAmplitude(amplitude);
+
 					noise = newDescription.parseNoise();
-					if (noise == null) {
-						noise = 0.0;
-					}
-					newHarmonics.setNoise(noise);
-					newHarmonics.setSpectrum(spectrum);
-					if (normGenerator != null) {
-						Double norm = normGenerator.getNorm(frequency);
-						if (!norm.isNaN()) {
-							newHarmonics.setReserve(norm - amplitude);
-						}
-					}
-					harmonicService.save(newHarmonics);
-					spectrum.getHarmonics().add(newHarmonics);
 
 				}
 			} else {
 				break;
 			}
 		}
-
-		Measurement measurement = spectrum.getMeasurement();
-		measurement.getSpectrums().add(spectrum);
 
 		description = newDescription.getDescription();
 		return description;
