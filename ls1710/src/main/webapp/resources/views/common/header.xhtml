@@ -9,7 +9,7 @@
 
 	<div class="headerContent">
 	
-		<p:tabMenu activeIndex="2">
+		<p:tabMenu activeIndex="2" styleClass="postAuthorizeUpdate">
 			<p:menuitem value="Журнал измерений" url="/app/dataJournal?i=0" 
 				icon="ui-icon-star">
 				<f:param name="i" value="0" />
@@ -19,11 +19,12 @@
 				<f:param name="i" value="1" />
 			</p:menuitem>
 
-
+		<sec:authorize access="isAuthenticated()" >
 			<p:menuitem value="Настройки" url="/app/settings?i=2"
 				icon="ui-icon-wrench">
 				<f:param name="i" value="2" />
 			</p:menuitem>
+		</sec:authorize>	
 			
 		</p:tabMenu>
 			

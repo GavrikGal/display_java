@@ -18,7 +18,7 @@
 			
 				Rendered only if user has any of the listed roles
 				<h:outputText value="Lorem ipsum dolor sit amet areAnyGranted" rendered="#{sec:areAnyGranted('ROLE_USER, ROLE_ADMIN')}"/> -->
-	<p:outputPanel id="loginSection">			
+	<p:outputPanel id="loginSection" styleClass="postAuthorizeUpdate">			
 		<sec:authorize access="isAuthenticated()" >
 		
 			<p:commandButton 
@@ -26,6 +26,7 @@
 				onclick="PF('logNameDialogWV').loadContents()"
 				value="#{request.getUserPrincipal().principal.firstName} #{request.getUserPrincipal().principal.lastName}"
 				style="float:right; top: -30px; right: 10px; position: relative; " 
+				styleClass="postAuthorizeUpdate"
 				type="button" />
 			
 			<p:overlayPanel
@@ -69,7 +70,7 @@
 		     			action="#{loginMgmtBean.login}"
 		     			onclick="PF('logNameDialogWV').hide()"
 		     			styleClass="btnLogin" 
-		     			update=":messages:message :form:dataTable @(.postAuthorizeUpdate)"
+		     			update="@(.postAuthorizeUpdate)"
 		     			icon="ui-icon-check" />
 				     			
 					<p:commandButton 
@@ -77,7 +78,7 @@
 						value="#{msg['login_btn_logout']}" 
 						action="#{loginMgmtBean.logout}"
 						onclick="PF('logNameDialogWV').hide()"
-						update=":messages:message loginSection :form:dataTable @(.postAuthorizeUpdate)"
+						update="loginSection @(.postAuthorizeUpdate)"
 		     			styleClass="btnCancel" 
 						immediate="true" 
 						icon="ui-icon-close" />
@@ -92,7 +93,8 @@
 				id="loginBtn"
 				onclick="PF('loginDialogWV').loadContents()"
 				value="#{msg['login_btn_enter']}"
-				style="float:right; top: -30px; right: 10px; position: relative; " 
+				style="float:right; top: -30px; right: 10px; position: relative; "
+				styleClass="postAuthorizeUpdate" 
 				type="button"/>
 				
 			<p:overlayPanel 
@@ -139,7 +141,7 @@
 		     			action="#{loginMgmtBean.login}" 
 		     			onclick="PF('loginDialogWV').hide()"
 		     			styleClass="btnLogin" 
-		     			update=":messages:message :form:dataTable loginSection @(.postAuthorizeUpdate)"
+		     			update="loginSection @(.postAuthorizeUpdate)"
 		     			icon="ui-icon-check" />
 				     			
 					<p:commandButton 

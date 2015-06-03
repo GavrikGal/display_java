@@ -13,6 +13,9 @@
 				result="flowScope.usersSetting" />
 			<evaluate expression="settingsController.newNormsSetting()"
 				result="flowScope.normsSetting" />
+			<evaluate 
+				expression="settingsController.getCurrentUser()"
+				result="flowScope.currentUserDetails" />
 		</on-entry>
 		
 		<transition 
@@ -25,6 +28,14 @@
 			on="editUser" 
 			to="addUser-step-1">
 		</transition>
+		
+		<transition
+			on="changeLogin"
+			to="changeLogin">
+		
+		</transition>
+		
+		<transition on="logout" to="logout"/>
 
 	</view-state>
 	
@@ -61,6 +72,19 @@
 			to="addUser-step-2">
 		</transition>
 	</view-state>
+	
+	<view-state id="logout" view="flowRedirect:/dataJournal">
+	</view-state>
+	
+	<view-state id="changeLogin" view="/resources/views/settings/sections/changeLogin-step-1.xhtml">
+		<transition
+			on="changeLogin"
+			to="settings" >
+			<evaluate expression="settingsController.changeLogin(flowRequestContext)"></evaluate>
+		</transition>
+	</view-state>
+	
+
 	
 	
 	

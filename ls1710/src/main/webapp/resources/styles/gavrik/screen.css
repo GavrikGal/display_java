@@ -320,8 +320,10 @@ caption {background:#eee;}
 
 .measurementFieldset fieldset{
 	border-right-width: 0px !important;
+	border-bottom-width: 0px !important;
 	border-top-right-radius: 0px !important;
 	border-bottom-right-radius: 0px !important;
+	border-bottom-left-radius: 0px !important;
 }
 
 /** tabs **/

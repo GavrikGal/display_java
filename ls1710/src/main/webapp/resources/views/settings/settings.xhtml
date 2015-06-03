@@ -4,6 +4,7 @@
 	  			xmlns:h="http://java.sun.com/jsf/html"
 	  			xmlns:f="http://java.sun.com/jsf/core"
 	  			xmlns:p="http://primefaces.org/ui"
+	  			xmlns:sec="http://www.springframework.org/security/tags"
 	  			template="/resources/views/templates/standard.xhtml">
 	  			
 
@@ -11,13 +12,15 @@
 <ui:define name="content">
 		<div class="content">
 			
-				<p:tabView orientation="left" >
-					<p:tab title="Пользователи">
-						<h1>Управление пользователями</h1>
-						<ui:insert name="usersContent">
-							<ui:include src="/resources/views/settings/sections/users.xhtml" />
-						</ui:insert>
-					</p:tab>
+				<p:tabView orientation="left" styleClass="postAuthorizeUpdate" >
+					<sec:authorize access="hasRole('ROLE_ADMIN')" > 
+						<p:tab title="Пользователи">
+							<h1>Управление пользователями</h1>
+							<ui:insert name="usersContent">
+								<ui:include src="/resources/views/settings/sections/users.xhtml" />
+							</ui:insert>
+						</p:tab>
+					</sec:authorize>
 				
 					<p:tab title="Нормы">
 						<h1>Управление нормами</h1>
@@ -26,10 +29,10 @@
 						</ui:insert>
 					</p:tab>
 					
-					<p:tab title="Личные данные">
+					<p:tab title="Личные данные" >
 						<h1>Личные данные</h1>
 						<ui:insert name="userDetailContent">
-						
+							<ui:include src="/resources/views/settings/sections/userDetails.xhtml" />
 						</ui:insert>
 					</p:tab>
 				
