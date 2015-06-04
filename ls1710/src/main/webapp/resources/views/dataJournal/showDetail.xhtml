@@ -6,6 +6,7 @@
 	  			xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	  			xmlns:c="http://java.sun.com/jsp/jstl/core"
 	  			xmlns:p="http://primefaces.org/ui"
+	  			xmlns:sec="http://www.springframework.org/security/tags"
 	  			template="/resources/views/templates/standard.xhtml">
 	  			
 
@@ -13,7 +14,7 @@
 <ui:define name="content">
 		
 		<p:panel>
-		
+		<sec:authorize access="hasRole('ROLE_USER')" >  
 		<p:panel>
 			<h:panelGrid columns="2" style="margin: auto;" cellspacing="10">
 				<p:outputLabel value="Модель:"/>
@@ -33,7 +34,7 @@
 					>
 	  
 				
-			<p:fieldset legend="#{measurement.purpose.name}" toggleable="true" toggleSpeed="#{(fn:length(measurement.spectrums) +1 )* 100}" style="margin-top: 15px;" styleClass="measurementFieldset">
+			<p:panel header="#{measurement.purpose.name}" toggleable="true" toggleSpeed="#{(fn:length(measurement.spectrums) +1 )* 100}" style="margin-top: 15px;" styleClass="measurementFieldset">
 			
 				
 				<br/>
@@ -64,6 +65,7 @@
 							
 							
 						</f:facet>
+					
 					<h:panelGrid columns="2" style="margin: auto;" rendered="#{spectrum.description != null}" >
 						<h:outputText value="Описание:"/>
 						<h:outputText value="#{spectrum.description}"  style="margin: auto;"/>	
@@ -106,6 +108,7 @@
 													
 					</p:panelGrid>
 					
+					
 					</p:fieldset>
 					
 					
@@ -116,10 +119,12 @@
 				
 				
 				
-			</p:fieldset>
+			</p:panel>
 			
 								
 		</c:forEach>
+		
+		</sec:authorize>
 		
 		</p:panel>
 	  	

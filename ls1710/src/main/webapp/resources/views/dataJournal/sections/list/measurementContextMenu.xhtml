@@ -15,39 +15,36 @@
 	окна и id="dataTable" таблицы данных update="measurementDetail" 
 	oncomplete="PF('measurementDialog').show()"  -->
 	<p:contextMenu for="dataTable" styleClass="postAuthorizeUpdate">
+		<sec:authorize access="isAnonymous()" >
+			<p:menuitem> Функции контекстного меню доступны только авторизированным пользователям</p:menuitem>
+		</sec:authorize>
 		<sec:authorize access="hasRole('ROLE_USER')" >  
+		 
 			<p:menuitem value="#{msg['menu_edit']}" 
 				update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement :editForm:spectrumParameters"
 				icon="ui-icon-pencil"
 				action="#{editFormDJView.edit(dataJournalTable.selected.measurement)}" />
-		</sec:authorize>
-			
-		<p:menuitem value="#{msg['menu_view']}"
-			action="viewDetail"
-			icon="ui-icon-search" />
-			
-		<sec:authorize access="hasRole('ROLE_USER')" >  
+		
+			<p:menuitem value="#{msg['menu_view']}"
+				action="viewDetail"
+				icon="ui-icon-search" />
+		  
 			<p:menuitem value="#{msg['restrict_access']}" 
 				update="dataTable"
 				icon="ui-icon-locked"
-				action="#{dataJournalController.restrictAccess(dataJournalTable.selected.measurement)}"/>
-		</sec:authorize>
+				action="#{dataJournalController.restrictAccess(dataJournalTable.selected.measurement)}" />
 		
-		<sec:authorize access="hasRole('ROLE_USER')" >  
 			<p:menuitem value="#{msg['allow_access']}" 
 				update="dataTable"
 				icon="ui-icon-unlocked"
-				action="#{dataJournalController.allowAccess(dataJournalTable.selected.measurement)}"
-				/>
-		</sec:authorize>
+				action="#{dataJournalController.allowAccess(dataJournalTable.selected.measurement)}" />
 		
-		
-		<sec:authorize access="hasRole('ROLE_USER')" > 	
 			<p:menuitem value="#{msg['menu_delete']}" 
 				onclick="PF('confirmDelete').show()"
 				process="@this dataTable"
 				ajax="true"
 				icon="ui-icon-close" />
+		
 		</sec:authorize>
 	</p:contextMenu>
 	

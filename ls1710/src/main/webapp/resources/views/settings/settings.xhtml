@@ -11,16 +11,9 @@
 
 <ui:define name="content">
 		<div class="content">
-			
-				<p:tabView orientation="left" styleClass="postAuthorizeUpdate" >
-					<sec:authorize access="hasRole('ROLE_ADMIN')" > 
-						<p:tab title="Пользователи">
-							<h1>Управление пользователями</h1>
-							<ui:insert name="usersContent">
-								<ui:include src="/resources/views/settings/sections/users.xhtml" />
-							</ui:insert>
-						</p:tab>
-					</sec:authorize>
+				<p:tabView orientation="left" styleClass="postAuthorizeUpdate" activeIndex="#{settings.tabIndex}" dynamic="true">
+					<p:ajax event="tabChange" listener="#{settings.onChangeTab}" update="@(.postAuthorizeUpdate)"/>
+					
 				
 					<p:tab title="Нормы">
 						<h1>Управление нормами</h1>
@@ -35,9 +28,17 @@
 							<ui:include src="/resources/views/settings/sections/userDetails.xhtml" />
 						</ui:insert>
 					</p:tab>
+					
+					<sec:authorize access="hasRole('ROLE_ADMIN')" > 
+						<p:tab title="Пользователи" >
+							<h1>Управление пользователями</h1>
+							<ui:insert name="usersContent">
+								<ui:include src="/resources/views/settings/sections/users.xhtml" />
+							</ui:insert>
+						</p:tab>
+					</sec:authorize>
 				
 				</p:tabView>
-			
 		</div>
 	 	
 		<ui:include src="/resources/views/settings/sections/hotkeys.xhtml" />

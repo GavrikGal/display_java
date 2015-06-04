@@ -1,29 +1,51 @@
 package com.kbdisplay.ls1710.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.kbdisplay.ls1710.domain.Role;
 import com.kbdisplay.ls1710.domain.User;
 import com.kbdisplay.ls1710.service.data.UserService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
 import com.kbdisplay.ls1710.view.settings.NormsSetting;
+import com.kbdisplay.ls1710.view.settings.Settings;
+import com.kbdisplay.ls1710.view.settings.UserDetailsSetting;
 import com.kbdisplay.ls1710.view.settings.UsersSetting;
 import com.kbdisplay.ls1710.view.settings.web.NormsSettingImpl;
+import com.kbdisplay.ls1710.view.settings.web.SettingsImpl;
+import com.kbdisplay.ls1710.view.settings.web.UserDetailsSettingImpl;
 import com.kbdisplay.ls1710.view.settings.web.UsersSettingImpl;
 
 @Component("settingsController")
 public class SettingsController {
 
+	/**
+	 * логгер класса.
+	 */
+	private final Logger logger = LoggerFactory
+			.getLogger(SettingsController.class);
+
+
 	@Autowired
 	private UserService userService;
+
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public Settings newSettings(){
+		Settings settings = new SettingsImpl();
+		return settings;
+	}
 
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public UsersSetting newUsersSetting() {
@@ -33,7 +55,6 @@ public class SettingsController {
 		List<User> users = userService.findAll();
 
 		usersSetting.setUsers(users);
-
 
 		return usersSetting;
 	}
@@ -51,15 +72,17 @@ public class SettingsController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void saveUser(org.springframework.webflow.execution.RequestContext context) {
-		UsersSetting usersSetting = (UsersSetting) context.getFlowScope().get("usersSetting");
+	public void saveUser(
+			org.springframework.webflow.execution.RequestContext context) {
+		UsersSetting usersSetting =
+				(UsersSetting) context.getFlowScope().get("usersSetting");
 
 		if (usersSetting != null) {
-			usersSetting.setSelected(userService.save(usersSetting.getSelected()));
+			usersSetting.setSelected(userService.save(usersSetting
+					.getSelected()));
 			usersSetting.getUsers().add(usersSetting.getSelected());
 		}
 	}
-
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void deleteUser(User selected) {
@@ -72,13 +95,18 @@ public class SettingsController {
 						.getAuthentication().getPrincipal();
 		User user = userDetails.getUsersDetails();
 
-		if(selected.getId().equals(user.getId())) {
-			fc.addMessage(null, new FacesMessage("Пользователь не удален",
-					"Пользователь: " + selected.getLastName() + " "
-							+ selected.getFirstName() + " не может удалить сам себя"));
+		if (selected.getId().equals(user.getId())) {
+			fc.addMessage(
+					null,
+					new FacesMessage("Пользователь не удален", "Пользователь: "
+							+ selected.getLastName() + " "
+							+ selected.getFirstName()
+							+ " не может удалить сам себя"));
 		} else {
-			fc.addMessage(null, new FacesMessage("Пользователь удален",
-					"Пользователь: " + selected.getLastName() + " "
+			fc.addMessage(
+					null,
+					new FacesMessage("Пользователь удален", "Пользователь: "
+							+ selected.getLastName() + " "
 							+ selected.getFirstName() + " удален"));
 
 			ELContext elContext =
@@ -88,34 +116,50 @@ public class SettingsController {
 							.getValue(elContext, null, "usersSetting");
 
 			usersSetting.getUsers().remove(selected);
-			//userService.delete(selected);
+			// userService.delete(selected);
 		}
 	}
 
-	public User getCurrentUser() {
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public UserDetailsSetting newUserDetailsSetting() {
+
+		System.out.println("creating new UserDetailsSetting");
+
 		CustomUserDetails userDetails =
 				(CustomUserDetails) SecurityContextHolder.getContext()
 						.getAuthentication().getPrincipal();
 		User user = userDetails.getUsersDetails();
 
-		return user;
+		UserDetailsSetting detailsSetting = new UserDetailsSettingImpl();
+
+		detailsSetting.setUser(user);
+
+		return detailsSetting;
 	}
 
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public void changeLogin(org.springframework.webflow.execution.RequestContext context) {
-		FacesContext fc = FacesContext.getCurrentInstance();
+	public void changeLogin() {
 
-		User user = (User) context.getFlowScope().get("currentUserDetails");
-		fc.addMessage(null, new FacesMessage("Логин изменен",
-				user.getLastName() + " "
-						+ user.getFirstName() + ", при следующем входе в систему, используйте новый логин"));
-		userService.save(user);
+		CustomUserDetails customUserDetails =
+				(CustomUserDetails) SecurityContextHolder.getContext()
+						.getAuthentication().getPrincipal();
+		User user = customUserDetails.getUsersDetails();
+		System.out.println("name - " + user.getLastName());
+		System.out.println("login - " + user.getLogin());
+		List<Role> roles = new ArrayList<Role>(user.getRoles());
+		System.out.println("roles:");
+		for (Role role : roles) {
+			System.out.println(" - " + role.getName());
+		}
+		user = userService.save(user);
+		logger.info("User " + user.getLastName() + " change login");
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String editUser(User selected) {
 		return null;
 	}
+
 
 
 

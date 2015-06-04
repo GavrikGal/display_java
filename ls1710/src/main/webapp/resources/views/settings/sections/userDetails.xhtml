@@ -15,18 +15,18 @@
 			
 			<h:panelGrid columns="2">	
 				<p:outputLabel value="Фамилия"/>
-					<p:outputLabel value="#{currentUserDetails.lastName}"/>
+					<p:outputLabel value="#{currentUser.getPrincipal().usersDetails.lastName}"/>
 				
 				
 				<p:outputLabel value="Имя"/>
-					<p:outputLabel value="#{currentUserDetails.firstName}"/>
+					<p:outputLabel value="#{currentUser.getPrincipal().usersDetails.firstName}"/>
 				
 				
 				<p:outputLabel value="Отчество"/>
-					<p:outputLabel value="#{currentUserDetails.fatherName}"/>
+					<p:outputLabel value="#{currentUser.getPrincipal().usersDetails.fatherName}"/>
 					
 				<p:outputLabel value="Логин"/>
-					<p:outputLabel value="#{currentUserDetails.login}"/>
+					<p:outputLabel value="#{currentUser.getPrincipal().usersDetails.login}"/>
 			</h:panelGrid>
 				
 								
@@ -37,7 +37,6 @@
 			<p:commandButton 
 				value="Изменить логин" 
 				action="changeLogin" 
-				ajax="true"
 				update="userDetailsForm"
 				/>
 			<p:commandButton 
@@ -47,5 +46,4 @@
 		</h:form>
 	
 	
-
 </ui:composition>

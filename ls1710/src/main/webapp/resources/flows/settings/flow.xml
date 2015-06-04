@@ -4,24 +4,69 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
+
 	<view-state 
 		id="settings" 
 		view="/resources/views/settings/settings.xhtml">
 		
 		<on-entry>
-			<evaluate expression="settingsController.newUsersSetting()"
-				result="flowScope.usersSetting" />
-			<evaluate expression="settingsController.newNormsSetting()"
+			<evaluate 
+				expression="settingsController.newNormsSetting()"
 				result="flowScope.normsSetting" />
 			<evaluate 
-				expression="settingsController.getCurrentUser()"
-				result="flowScope.currentUserDetails" />
+				expression="settingsController.newUserDetailsSetting()"
+				result="flowScope.userDetailsSetting" />
+			<evaluate 
+				expression="settingsController.newUsersSetting()"
+				result="flowScope.usersSetting" />
+			<evaluate 
+				expression="settingsController.newSettings()"
+				result="flowScope.settings" />	
+		</on-entry>
+		
+	</view-state>
+	
+	<view-state 
+		id="normsSetting" 
+		view="/resources/views/settings/sections/norms.xhtml">
+		
+		<on-entry>
+			<evaluate 
+				expression="settingsController.newNormsSetting()"
+				result="flowScope.normsSetting" />
+		</on-entry>
+		
+	</view-state>
+	
+	<view-state 
+		id="userDetailsSetting"
+		view="/resources/views/settings/sections/userDetails.xhtml">
+	
+		<on-entry>
+			<evaluate 
+				expression="settingsController.newUserDetailsSetting()"
+				result="flowScope.userDetailsSetting" />
+		</on-entry>
+		
+	</view-state>
+	
+	<view-state 
+		id="usersSetting" 
+		view="/resources/views/settings/sections/users.xhtml">
+	
+		<on-entry>
+			<evaluate 
+				expression="settingsController.newUsersSetting()"
+				result="flowScope.usersSetting" />
 		</on-entry>
 		
 		<transition 
 			on="addUser"
 			to="addUser-step-1">
-			<evaluate expression="usersSetting.newUser()" />
+			
+			<evaluate 
+				expression="usersSetting.newUser()" />
+				
 		</transition>
 		
 		<transition 
@@ -29,70 +74,121 @@
 			to="addUser-step-1">
 		</transition>
 		
-		<transition
-			on="changeLogin"
-			to="changeLogin">
-		
-		</transition>
-		
-		<transition on="logout" to="logout"/>
-
 	</view-state>
 	
-	<view-state id="addUser-step-1" view="/resources/views/settings/sections/addUser-step-1.xhtml">
+	<view-state 
+		id="addUser-step-1" 
+		view="/resources/views/settings/sections/addUser-step-1.xhtml">
+		
 		<transition 
 			on="next"
 			to="addUser-step-2">
 		</transition>
+		
 		<transition
 			on="back"
 			to="settings">
 		</transition>
+		
 	</view-state>
 	
-	<view-state id="addUser-step-2" view="/resources/views/settings/sections/addUser-step-2.xhtml">
+	<view-state 
+		id="addUser-step-2" 
+		view="/resources/views/settings/sections/addUser-step-2.xhtml">
+		
 		<transition 
 			on="next"
 			to="addUser-confirm">
 		</transition>
+		
 		<transition
 			on="back"
 			to="addUser-step-1">
 		</transition>
+		
 	</view-state>
 	
-	<view-state id="addUser-confirm" view="/resources/views/settings/sections/addUser-confirm.xhtml">
+	<view-state 
+		id="addUser-confirm" 
+		view="/resources/views/settings/sections/addUser-confirm.xhtml">
+		
 		<transition 
 			on="next"
 			to="settings">
-			<evaluate expression="settingsController.saveUser(flowRequestContext)" />
+			
+			<evaluate 
+				expression="settingsController.saveUser(flowRequestContext)" />
+				
 		</transition>
+		
 		<transition
 			on="back"
 			to="addUser-step-2">
 		</transition>
+		
 	</view-state>
 	
-	<view-state id="logout" view="flowRedirect:/dataJournal">
+	<view-state 
+		id="logout" 
+		view="flowRedirect:dataJournal">
 	</view-state>
 	
-	<view-state id="changeLogin" view="/resources/views/settings/sections/changeLogin-step-1.xhtml">
+	<view-state 
+		id="changeLogin" 
+		view="/resources/views/settings/sections/changeLogin-step-1.xhtml">
+		
 		<transition
 			on="changeLogin"
 			to="settings" >
-			<evaluate expression="settingsController.changeLogin(flowRequestContext)"></evaluate>
+			
+			<evaluate 
+				expression="settingsController.changeLogin()" />
+				
 		</transition>
+		
 	</view-state>
-	
-
-	
-	
 	
 
 	<global-transitions>
 		<transition 
 			on="cancel" 
 			to="settings" />
+		
+		<transition 
+			on="logout" 
+			to="logout"/>
+		
+		<transition 
+			on="usersSetting" 
+			to="usersSetting" />
+		
+		<transition 
+			on="userDetailsSetting" 
+			to="userDetailsSetting" />
+			
+		<transition 
+			on="normsSetting" 
+			to="normsSetting" />
+			
+		<transition
+			on="changeLogin"
+			to="changeLogin" >
+		</transition>
+		
+		<transition 
+			on="addUser"
+			to="addUser-step-1">
+			
+			<evaluate 
+				expression="usersSetting.newUser()" />
+				
+		</transition>
+		
+		<transition 
+			on="editUser" 
+			to="addUser-step-1">
+		</transition>
+		
 	</global-transitions>
 
 </flow>
