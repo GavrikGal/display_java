@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.el.ELContext;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import com.kbdisplay.ls1710.domain.Role;
@@ -34,7 +35,6 @@ public class UsersSettingImpl implements UsersSetting, Serializable {
 
 	@Override
 	public void setUsers(List<User> users) {
-		System.out.println(users);
 		this.users = users;
 	}
 
@@ -42,7 +42,6 @@ public class UsersSettingImpl implements UsersSetting, Serializable {
 	public String getRole(User user) {
 
 		if (user != null) {
-			System.out.println(user.getFirstName());
 			if (user.getRoles() == null) {
 				FacesContext fc = FacesContext.getCurrentInstance();
 				ELContext elContext = FacesContext.getCurrentInstance()
@@ -105,6 +104,16 @@ public class UsersSettingImpl implements UsersSetting, Serializable {
 
 		selected = user;
 
+	}
+
+	@Override
+	public void checkSelectedUser() {
+		if (selected == null) {
+			FacesContext fc = FacesContext.getCurrentInstance();
+			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Не выбран пользователь",
+					"Выберите пользователя для изменения данных"));
+		}
 	}
 
 

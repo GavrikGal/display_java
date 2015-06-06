@@ -1,0 +1,74 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/resources/views/settings/settings.xhtml">
+
+
+	<ui:define name="normsContent">
+		<h:form id="normForm">
+			<p:outputLabel value="Проверте правильность введенных данных" />
+			
+			
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Стандарт"/>
+				<p:outputLabel value="#{normsSetting.selectedNorm.standard}"/>
+				
+				<p:outputLabel value="Название нормы"/>
+				<p:outputLabel value="#{normsSetting.selectedNorm.name}"/>
+				
+				<p:outputLabel value="Параметры" />
+				<ui:repeat 
+					var="parameter" 
+					value="#{normsSetting.selectedNorm.parameters}">
+					
+					<p:outputLabel value="#{parameter.name}, " />
+				</ui:repeat>
+				
+				<p:outputLabel value="Обработчик норм"/>
+				<p:outputLabel value="#{normsSetting.selectedNorm.normHandler.name}"/>
+				
+			</h:panelGrid>
+			
+			<p:outputLabel value="Предельно допустимые значения"/>
+			
+			<p:dataTable
+				id="limitsTable"
+				value="#{normsSetting.selectedNorm.limits}"
+				var="limit"
+				>
+				
+				
+				<p:column headerText="F, МГц" id="freq">
+						<p:outputLabel value="#{limit.frequency}" />
+				</p:column>
+				
+				<p:column headerText="А, дБ" id="ampl">
+						<p:outputLabel  value="#{limit.amplitude}" />
+				</p:column>
+				
+			</p:dataTable>
+			
+			<p:commandButton 
+					value="Назад" 
+					action="back" 
+					style="float: left;"/>
+				<p:commandButton 
+					value="Отмена" 
+					action="cancel" 
+					style="float: left;"/>	
+				
+				<p:commandButton 
+					value="Сохранить" 
+					action="next" 
+					style="float: right;"/>
+			
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,6 +1,5 @@
 package com.kbdisplay.ls1710.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.el.ELContext;
@@ -14,8 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.kbdisplay.ls1710.domain.Role;
+import com.kbdisplay.ls1710.domain.Norm;
 import com.kbdisplay.ls1710.domain.User;
+import com.kbdisplay.ls1710.service.data.NormService;
 import com.kbdisplay.ls1710.service.data.UserService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
 import com.kbdisplay.ls1710.view.settings.NormsSetting;
@@ -40,6 +40,9 @@ public class SettingsController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private NormService normService;
+
 
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public Settings newSettings(){
@@ -62,6 +65,8 @@ public class SettingsController {
 	public NormsSetting newNormsSetting() {
 
 		NormsSetting normsSetting = new NormsSettingImpl();
+
+		normsSetting.init();
 
 		return normsSetting;
 	}
@@ -95,10 +100,20 @@ public class SettingsController {
 						.getAuthentication().getPrincipal();
 		User user = userDetails.getUsersDetails();
 
+		if (selected.getId() == 1) {
+			fc.addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,"Гала не сломить!", "Пользователь: "
+							+ selected.getLastName() + " "
+							+ selected.getFirstName()
+							+ " скорее тебя удалит, чем ты его"));
+			return;
+		}
+
 		if (selected.getId().equals(user.getId())) {
 			fc.addMessage(
 					null,
-					new FacesMessage("Пользователь не удален", "Пользователь: "
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,"Пользователь не удален", "Пользователь: "
 							+ selected.getLastName() + " "
 							+ selected.getFirstName()
 							+ " не может удалить сам себя"));
@@ -123,8 +138,6 @@ public class SettingsController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public UserDetailsSetting newUserDetailsSetting() {
 
-		System.out.println("creating new UserDetailsSetting");
-
 		CustomUserDetails userDetails =
 				(CustomUserDetails) SecurityContextHolder.getContext()
 						.getAuthentication().getPrincipal();
@@ -144,13 +157,6 @@ public class SettingsController {
 				(CustomUserDetails) SecurityContextHolder.getContext()
 						.getAuthentication().getPrincipal();
 		User user = customUserDetails.getUsersDetails();
-		System.out.println("name - " + user.getLastName());
-		System.out.println("login - " + user.getLogin());
-		List<Role> roles = new ArrayList<Role>(user.getRoles());
-		System.out.println("roles:");
-		for (Role role : roles) {
-			System.out.println(" - " + role.getName());
-		}
 		user = userService.save(user);
 		logger.info("User " + user.getLastName() + " change login");
 	}
@@ -160,6 +166,17 @@ public class SettingsController {
 		return null;
 	}
 
+
+
+	public void saveNewNorm(org.springframework.webflow.execution.RequestContext context) {
+		NormsSetting normsSetting =
+				(NormsSetting) context.getFlowScope().get("normsSetting");
+
+		if (normsSetting != null) {
+			Norm norm = normService.save(normsSetting.getSelectedNorm());
+			System.out.println("save" + norm.getId());
+		}
+	}
 
 
 

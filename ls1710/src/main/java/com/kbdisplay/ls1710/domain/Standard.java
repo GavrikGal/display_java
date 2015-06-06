@@ -110,4 +110,8 @@ public class Standard implements Serializable {
 		return (standardType.getName() + " " + standardNumber.getName() + "-" + year.toString());
 	}
 
+	@Override
+	public String toString() {
+		return standardType.getName() + " " + standardNumber.getName() + "-" + year;
+	}
 }

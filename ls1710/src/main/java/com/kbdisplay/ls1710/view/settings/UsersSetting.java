@@ -22,6 +22,6 @@ public interface UsersSetting {
 
 	public void newUser();
 
-
+	public void checkSelectedUser();
 
 }

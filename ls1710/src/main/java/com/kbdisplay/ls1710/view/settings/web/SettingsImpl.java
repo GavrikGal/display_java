@@ -22,9 +22,6 @@ public class SettingsImpl implements Settings, Serializable {
 
 	@Override
 	public void setTabIndex(int tabIndex) {
-
-		System.out.println(tabIndex);
-
 		this.tabIndex = tabIndex;
 	}
 
@@ -36,17 +33,14 @@ public class SettingsImpl implements Settings, Serializable {
 		if (event.getTab().getTitle().equals("Нормы")) {
 			viewName = "/normsSetting";
 			this.tabIndex = 0;
-			System.out.println("Нормы");
 		}
 		if (event.getTab().getTitle().equals("Личные данные")) {
 			viewName = "/userDetailsSetting";
 			this.tabIndex = 1;
-			System.out.println("Личные данные");
 		}
 		if (event.getTab().getTitle().equals("Пользователи")) {
 			viewName = "/usersSetting";
 			this.tabIndex = 2;
-			System.out.println("Пользователи");
 		}
 
 		return viewName;

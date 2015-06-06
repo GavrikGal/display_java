@@ -11,7 +11,42 @@
 	
 	
 		<h:form id="normForm">
-			Нормы
+			<p:outputLabel value="Список норм" />
+			
+			<p:dataTable
+				id="normTable"
+				value="#{normsSetting.norms}"
+				var="norm"
+				selection="#{normsSetting.selectedNorm}"
+				selectionMode="single"
+				rowKey="#{norm.name}">
+				
+				<p:column headerText="Стандарт">
+					<p:outputLabel value="#{norm.standard.standardType.name}"/>
+					<p:outputLabel value=" #{norm.standard.standardNumber.name}"/>
+					<p:outputLabel value="-#{norm.standard.year}"/>
+					
+				</p:column>
+				
+				<p:column headerText="Норма">
+					<p:outputLabel value="#{norm.name}"/>
+				</p:column>
+				
+			</p:dataTable>
+			
+			<p:commandButton 
+				value="Удалить норму" 
+				style="float: left;"
+				update="normTable"/>
+			
+			<p:commandButton 
+				value="Добавить норму" 
+				action="addNorm" 
+				style="float: right;"/>
+			<p:commandButton 
+				value="Изменить норму" 
+				action="editNorm" 
+				style="float: right;"/>
 		</h:form>
 	
 

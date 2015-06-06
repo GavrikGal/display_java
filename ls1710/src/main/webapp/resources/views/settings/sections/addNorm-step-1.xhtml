@@ -1,0 +1,59 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	template="/resources/views/settings/settings.xhtml">
+
+
+	<ui:define name="normsContent">
+		<h:form id="normForm">
+			<p:outputLabel value="Список стандартов" />
+			<p:dataTable
+				id="standardTable"
+				value="#{normsSetting.standards}"
+				var="standard"
+				selection="#{normsSetting.selectedStandard}"
+				selectionMode="single"
+				rowKey="#{standard.standardNumber.name}">
+				
+				<p:column headerText="Стандарт">
+					<p:outputLabel value="#{standard.standardType.name}"/>
+					<p:outputLabel value=" #{standard.standardNumber.name}"/>
+					<p:outputLabel value="-#{standard.year}"/>
+					
+				</p:column>
+				
+				<p:column headerText="Описание">
+					<p:outputLabel value="#{standard.description}"/>
+				</p:column>
+				
+			</p:dataTable>
+			
+			<p:commandButton 
+					value="Назад" 
+					action="back" 
+					style="float: left;"/>
+				<p:commandButton 
+					value="Отмена" 
+					action="cancel" 
+					style="float: left;"/>	
+				
+				
+				<p:commandButton 
+					value="Далее" 
+					action="next" 
+					style="float: right;"/>
+				<p:commandButton 
+					value="Добавить стандарт" 
+					action="newStandard" 
+					style="float: right;"/>
+			
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -71,14 +71,24 @@
 		
 		<transition 
 			on="editUser" 
-			to="addUser-step-1">
+			to="isUserSelected">
 		</transition>
 		
 	</view-state>
 	
+	<decision-state id="isUserSelected">
+		<on-entry>
+			<evaluate expression="usersSetting.checkSelectedUser()" ></evaluate>
+		</on-entry>
+		
+		<if then="addUser-step-1" test="usersSetting.selected != null" else="settings"/>
+	</decision-state>
+	
 	<view-state 
 		id="addUser-step-1" 
 		view="/resources/views/settings/sections/addUser-step-1.xhtml">
+		
+		
 		
 		<transition 
 			on="next"
@@ -127,6 +137,145 @@
 		</transition>
 		
 	</view-state>
+	
+	<view-state 
+		id="addNorm-step-1"
+		view="/resources/views/settings/sections/addNorm-step-1.xhtml">
+		
+		<transition 
+			on="next"
+			to="isStandardSelected">
+			
+			<evaluate expression="normsSetting.newNorm()"></evaluate>
+		</transition>
+		
+		<transition
+			on="back"
+			to="settings">
+		</transition>
+		
+		<transition
+			on="newStandard"
+			to="addNorm-step-2">
+		</transition>
+		
+	</view-state>
+	
+	<decision-state id="isStandardSelected">
+		<if 
+			test="normsSetting.isStandardSelected()"
+			then="addNorm-step-2"
+			else="addNorm-step-1"/>
+	</decision-state>
+	
+	<view-state 
+		id="addNorm-step-2"
+		view="/resources/views/settings/sections/addNorm-step-2.xhtml">
+		
+		<transition 
+			on="next"
+			to="addNorm-step-3">
+			
+		</transition>
+		
+		<transition
+			on="back"
+			to="addNorm-step-1">
+		</transition>
+		
+	</view-state>
+	
+	<view-state 
+		id="addNorm-step-3"
+		view="/resources/views/settings/sections/addNorm-step-3.xhtml">
+		
+		<transition 
+			on="next"
+			to="isParameterSelected">
+			
+			<evaluate expression="normsSetting.addPatameters()"/>
+		</transition>
+		
+		<transition
+			on="back"
+			to="addNorm-step-2">
+		</transition>
+		
+	</view-state>
+	
+	<decision-state id="isParameterSelected">
+		<if 
+			test="normsSetting.isParameterSelected()"
+			then="addNorm-step-4"
+			else="addNorm-step-3"/>
+	</decision-state>
+	
+	<view-state 
+		id="addNorm-step-4"
+		view="/resources/views/settings/sections/addNorm-step-4.xhtml">
+		
+		<transition 
+			on="next"
+			to="isNormHandlerSelected">
+			
+			<evaluate expression="normsSetting.addNormHandler()"></evaluate>
+		</transition>
+		
+		<transition
+			on="back"
+			to="addNorm-step-3">
+		</transition>
+		
+	</view-state>
+	
+	<decision-state id="isNormHandlerSelected">
+		<if 
+			test="normsSetting.isNormHandlerSelected()"
+			then="addNorm-step-5"
+			else="addNorm-step-4"/>
+	</decision-state>
+	
+	<view-state 
+		id="addNorm-step-5"
+		view="/resources/views/settings/sections/addNorm-step-5.xhtml">
+		<on-entry>
+			<evaluate expression="normsSetting.initLimits()" />
+		</on-entry>
+		
+		<transition 
+			on="next"
+			to="addNorm-confirm">
+			
+			<evaluate expression="normsSetting.confirmLimits()" />
+			
+		</transition>
+		
+		<transition
+			on="back"
+			to="addNorm-step-4">
+		</transition>
+		
+	</view-state>
+	
+	<view-state 
+		id="addNorm-confirm"
+		view="/resources/views/settings/sections/addNorm-confirm.xhtml">
+		
+		<transition 
+			on="next"
+			to="settings">
+			
+			<evaluate expression="settingsController.saveNewNorm(flowRequestContext)" />
+			
+		</transition>
+		
+		<transition
+			on="back"
+			to="addNorm-step-5">
+		</transition>
+		
+	</view-state>
+	
 	
 	<view-state 
 		id="logout" 
@@ -186,7 +335,17 @@
 		
 		<transition 
 			on="editUser" 
-			to="addUser-step-1">
+			to="isUserSelected">
+		</transition>
+		
+		<transition
+			on="addNorm"
+			to="addNorm-step-1">
+		</transition>
+		
+		<transition
+			on="editNorm"
+			to="addNorm-step-2">
 		</transition>
 		
 	</global-transitions>
