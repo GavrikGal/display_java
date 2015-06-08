@@ -9,10 +9,11 @@
 	xmlns:sec="http://www.springframework.org/security/tags"
 	template="/resources/views/settings/settings.xhtml">
 
-
+	<ui:define name="normsContentTitle">
+		<h1>Добавление обработчика норм</h1>
+	</ui:define>
 	<ui:define name="normsContent">
 		<h:form id="normForm">
-			<p:outputLabel value="Добавление обработчика норм" />
 			
 			<h:panelGrid columns="2">
 				<p:outputLabel value="Стандарт"/>
@@ -30,12 +31,13 @@
 				</ui:repeat>
 			</h:panelGrid>
 			
+			<br/>
 			<p:outputLabel value="Выберите обработчик норм из списка" />
 			<p:dataTable
 				id="normHandlersTable"
 				value="#{normsSetting.normHandlers}"
 				var="normHandler"
-				selection="#{normsSetting.selectedNormHandler}"
+				selection="#{normsSetting.selectedNorm.normHandler}"
 				selectionMode="single"
 				rowKey="#{normHandler.name}">
 				
@@ -47,7 +49,7 @@
 			
 			
 			
-			
+			<p:separator/>
 			<p:commandButton 
 					value="Назад" 
 					action="back" 
@@ -61,6 +63,7 @@
 					value="Далее" 
 					action="next" 
 					style="float: right;"/>
+				<br/>
 			
 		</h:form>
 	</ui:define>

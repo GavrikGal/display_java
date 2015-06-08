@@ -34,8 +34,10 @@
 				
 			</p:dataTable>
 			
+			<p:separator />
 			<p:commandButton 
-				value="Удалить норму" 
+				value="Удалить норму"
+				action="#{settingsController.deleteNorm(normsSetting.selectedNorm)}"
 				style="float: left;"
 				update="normTable"/>
 			

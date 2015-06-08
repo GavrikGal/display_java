@@ -15,4 +15,7 @@ public interface NormService {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public Norm save(Norm norm);
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void delete(Norm norm);
+
 }

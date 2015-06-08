@@ -10,6 +10,10 @@
 	template="/resources/views/settings/settings.xhtml">
 
 
+
+	<ui:define name="normsContentTitle">
+		<h1>Выбор стандарта</h1>
+	</ui:define>
 	<ui:define name="normsContent">
 		<h:form id="normForm">
 			<p:outputLabel value="Список стандартов" />
@@ -34,6 +38,7 @@
 				
 			</p:dataTable>
 			
+			<p:separator/>
 			<p:commandButton 
 					value="Назад" 
 					action="back" 

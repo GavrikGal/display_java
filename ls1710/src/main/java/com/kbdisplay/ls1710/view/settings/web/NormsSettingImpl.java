@@ -376,6 +376,7 @@ public class NormsSettingImpl implements NormsSetting, Serializable {
 	@Override
 	public boolean isStandardSelected() {
 		if (selectedStandard != null) {
+			selectedNorm.setStandard(selectedStandard);
 			return true;
 		} else {
 			FacesContext fc = FacesContext.getCurrentInstance();
@@ -399,7 +400,7 @@ public class NormsSettingImpl implements NormsSetting, Serializable {
 
 	@Override
 	public boolean isNormHandlerSelected() {
-		if (selectedNormHandler != null) {
+		if (selectedNorm.getNormHandler() != null) {
 			return true;
 		} else {
 			FacesContext fc = FacesContext.getCurrentInstance();
@@ -411,11 +412,15 @@ public class NormsSettingImpl implements NormsSetting, Serializable {
 
 	@Override
 	public void newNorm() {
-		selectedNorm = new Norm();
-		selectedNorm.setStandard(selectedStandard);
-		List<Limit> limits = new ArrayList<Limit>();
-		this.limits = limits;
-		selectedNorm.setLimits(limits);
+		if (selectedNorm == null) {
+			selectedNorm = new Norm();
+			selectedNorm.setStandard(selectedStandard);
+			List<Limit> limits = new ArrayList<Limit>();
+			this.limits = limits;
+			selectedNorm.setLimits(limits);
+		} else {
+			selectedStandard = selectedNorm.getStandard();
+		}
 	}
 
 	@Override
@@ -432,16 +437,46 @@ public class NormsSettingImpl implements NormsSetting, Serializable {
 
 	@Override
 	public void addNormHandler() {
-		selectedNorm.setNormHandler(selectedNormHandler);
 	}
 
 	@Override
 	public void onCellEdit(CellEditEvent event) {
-		if (event.getColumn().getClientId().contains("ampl")) {
-			Limit newLimit = new Limit();
-			this.limits.add(newLimit);
-		}
+        	if (event.getColumn().getClientId().contains("ampl")) {
+    			Limit newLimit = new Limit();
+    			this.limits.add(newLimit);
+    		}
+	}
 
+	@Override
+	public void addLimitLineBefore(Limit limit) {
+		System.out.println("add line " + limit);
+		if (limit != null) {
+			int limitIndex = limits.indexOf(limit);
+			Limit newLimit = new Limit();
+			limits.add(limitIndex, newLimit);
+		} else {
+			Limit newLimit = new Limit();
+			limits.add(newLimit);
+		}
+	}
+
+	@Override
+	public void addLimitLineAfter(Limit limit) {
+		System.out.println("add line " + limit);
+		if (limit != null) {
+			int limitIndex = limits.indexOf(limit);
+			Limit newLimit = new Limit();
+			limits.add(limitIndex + 1 , newLimit);
+		} else {
+			Limit newLimit = new Limit();
+			limits.add(newLimit);
+		}
+	}
+
+	@Override
+	public void delLimitLine(Limit limit) {
+		System.out.println("del line " + limit);
+		this.limits.remove(limit);
 	}
 
 	@Override
@@ -456,6 +491,54 @@ public class NormsSettingImpl implements NormsSetting, Serializable {
 			}
 		}
 		this.selectedNorm.setLimits(newLimits);
+	}
+
+	@Override
+	public void initParameters() {
+		if (selectedNorm.getParameters() != null) {
+			selectedParameters = selectedNorm.getParameters();
+			this.initSelected(selectedNorm);
+		}
+	}
+
+	private void initSelected(Norm selectedNorm) {
+		selectedParameters = new ArrayList<Parameter>();
+		availableParameterLists = new ArrayList<List<Parameter>>();
+
+		// получаем параметры из последнего измеренного спектра
+		List<Parameter> parameters = selectedNorm.getParameters();
+		for (Parameter parameter : parameters) {
+			Parameter selectedParameter = new Parameter();
+			selectedParameter.setName(parameter.getName());
+			selectedParameters.add(selectedParameter);
+
+		}
+
+		TypeOfParameter type = null;
+
+		for (Parameter parameter : parameters) {
+			type = parameter.getType();
+			List<Parameter> availableParameter = type.getParameters();
+			availableParameterLists.add(availableParameter);
+			selectedType = type;
+		}
+
+		List<TypeOfParameter> availableTypes = initNextAvailableTypes(selectedType);
+		this.availableTypes = availableTypes ;
+
+		menuModel = createTypeMenu(availableTypes);
+
+	}
+
+	@Override
+	public boolean isNormSelected() {
+		if (selectedNorm != null) {
+			selectedStandard = selectedNorm.getStandard();
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 

@@ -9,10 +9,12 @@
 	xmlns:sec="http://www.springframework.org/security/tags"
 	template="/resources/views/settings/settings.xhtml">
 
-
+	<ui:define name="normsContentTitle">
+		<h1>Добавление параметров соответствующих норме</h1>
+	</ui:define>
 	<ui:define name="normsContent">
 		<h:form id="normForm">
-			<p:outputLabel value="Добавление параметров соответствующих норме" />
+			
 			
 			<h:panelGrid columns="2">
 				<p:outputLabel value="Стандарт"/>
@@ -22,8 +24,9 @@
 				<p:outputLabel value="#{normsSetting.selectedNorm.name}"/>
 			</h:panelGrid>
 			
-			
-			<p:panelGrid 
+			<br/>
+			<p:outputLabel value="Добавте параметры соответствующие норме" />
+			<h:panelGrid 
 				id="spectrumParameters" 
 				columns="4"
 				style="border: 0px;">
@@ -53,7 +56,7 @@
 					type="button" 
 					icon="ui-icon-plus" />
 						
-			</p:panelGrid>
+			</h:panelGrid>
 			<p:panel id="spectrumParameterscontextMenu" visible="false">
 				<c:forEach 
 						items="#{normsSetting.availableParameterLists}" 
@@ -69,6 +72,7 @@
 				</c:forEach>
 			</p:panel>
 			
+			
 			<p:menu id="spectrumParametersMenu" 
 				overlay="true" 
 						trigger="selectTypeButton" 
@@ -76,7 +80,7 @@
 						at="left bottom" 
 						model="#{normsSetting.menuModel}" />
 			
-			
+			<p:separator/>
 			<p:commandButton 
 					value="Назад" 
 					action="back" 

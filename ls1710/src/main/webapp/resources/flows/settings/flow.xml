@@ -138,6 +138,13 @@
 		
 	</view-state>
 	
+	<decision-state id="isNormSelected">
+		<if 
+			test="normsSetting.isNormSelected()"
+			then="addNorm-step-1"
+			else="settings"/>
+	</decision-state>
+	
 	<view-state 
 		id="addNorm-step-1"
 		view="/resources/views/settings/sections/addNorm-step-1.xhtml">
@@ -188,6 +195,10 @@
 	<view-state 
 		id="addNorm-step-3"
 		view="/resources/views/settings/sections/addNorm-step-3.xhtml">
+		
+		<on-entry>
+			<evaluate expression="normsSetting.initParameters()" />
+		</on-entry>
 		
 		<transition 
 			on="next"
@@ -345,7 +356,8 @@
 		
 		<transition
 			on="editNorm"
-			to="addNorm-step-2">
+			to="isNormSelected">
+			
 		</transition>
 		
 	</global-transitions>

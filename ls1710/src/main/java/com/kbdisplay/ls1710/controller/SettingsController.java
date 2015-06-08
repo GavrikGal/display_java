@@ -13,9 +13,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.kbdisplay.ls1710.domain.Limit;
 import com.kbdisplay.ls1710.domain.Norm;
 import com.kbdisplay.ls1710.domain.User;
 import com.kbdisplay.ls1710.service.data.NormService;
+import com.kbdisplay.ls1710.service.data.StandardService;
 import com.kbdisplay.ls1710.service.data.UserService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
 import com.kbdisplay.ls1710.view.settings.NormsSetting;
@@ -36,16 +38,18 @@ public class SettingsController {
 	private final Logger logger = LoggerFactory
 			.getLogger(SettingsController.class);
 
-
 	@Autowired
 	private UserService userService;
 
 	@Autowired
 	private NormService normService;
 
+	@Autowired
+	private StandardService standardService;
+
 
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public Settings newSettings(){
+	public Settings newSettings() {
 		Settings settings = new SettingsImpl();
 		return settings;
 	}
@@ -103,20 +107,22 @@ public class SettingsController {
 		if (selected.getId() == 1) {
 			fc.addMessage(
 					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,"Гала не сломить!", "Пользователь: "
-							+ selected.getLastName() + " "
-							+ selected.getFirstName()
-							+ " скорее тебя удалит, чем ты его"));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Гала не сломить!", "Пользователь: "
+									+ selected.getLastName() + " "
+									+ selected.getFirstName()
+									+ " скорее тебя удалит, чем ты его"));
 			return;
 		}
 
 		if (selected.getId().equals(user.getId())) {
 			fc.addMessage(
 					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,"Пользователь не удален", "Пользователь: "
-							+ selected.getLastName() + " "
-							+ selected.getFirstName()
-							+ " не может удалить сам себя"));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Пользователь не удален", "Пользователь: "
+									+ selected.getLastName() + " "
+									+ selected.getFirstName()
+									+ " не может удалить сам себя"));
 		} else {
 			fc.addMessage(
 					null,
@@ -166,18 +172,100 @@ public class SettingsController {
 		return null;
 	}
 
-
-
-	public void saveNewNorm(org.springframework.webflow.execution.RequestContext context) {
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public void saveNewNorm(
+			org.springframework.webflow.execution.RequestContext context) {
 		NormsSetting normsSetting =
 				(NormsSetting) context.getFlowScope().get("normsSetting");
 
+		FacesContext fc = FacesContext.getCurrentInstance();
+
 		if (normsSetting != null) {
-			Norm norm = normService.save(normsSetting.getSelectedNorm());
-			System.out.println("save" + norm.getId());
+
+			try {
+				Norm norm = normsSetting.getSelectedNorm();
+				if (norm.getId() == null) {
+					Norm newNorm = new Norm();
+					newNorm.setName(norm.getName());
+
+					newNorm = normService.save(newNorm);
+
+					newNorm.setNormHandler(norm.getNormHandler());
+					// newNorm.getNormHandler().getNorms().add(newNorm);
+
+					if (norm.getStandard() == null) {
+						norm.setStandard(standardService.save(norm
+								.getStandard()));
+
+					}
+
+					newNorm.setStandard(norm.getStandard());
+					// newNorm.getStandard().getNorms().add(newNorm);
+
+					for (Limit limit : norm.getLimits()) {
+						limit.setNorm(newNorm);
+					}
+
+					newNorm.setLimits(norm.getLimits());
+
+					newNorm.setParameters(norm.getParameters());
+
+					newNorm = normService.save(newNorm);
+
+					norm = newNorm;
+
+					fc.addMessage(null, new FacesMessage(
+							"Норма успешно добавлена",
+							"Добавлена новая норма: " + norm.getName()));
+
+				} else {
+
+					for (Limit limit : norm.getLimits()) {
+						limit.setNorm(norm);
+					}
+					norm = normService.save(norm);
+
+					fc.addMessage(null, new FacesMessage("Норма успешно изменена",
+							"Изменена норма: " + norm.getName()));
+				}
+			} catch (Exception e) {
+
+				fc.addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+								"Не удалось добавить норму",
+								"Норма не была добавлена, обратитель к администратору системы"));
+
+				e.printStackTrace();
+			}
+
 		}
 	}
 
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void deleteNorm(Norm selectedNorm) {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		if (selectedNorm != null) {
+			if (selectedNorm.getId() < 6) {
+				fc.addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+								"Не удалось удалить норму",
+								"Это не ошибка, я не хочу чтобы вы поудаляли все нормы"));
+			} else {
+				ELContext elContext =
+						FacesContext.getCurrentInstance().getELContext();
+				NormsSetting normsSetting =
+						(NormsSetting) fc.getApplication().getELResolver()
+								.getValue(elContext, null, "normsSetting");
+				normsSetting.getNorms().remove(selectedNorm);
+				normService.delete(selectedNorm);
+				fc.addMessage(
+						null,
+						new FacesMessage("Норма удалена",
+								"Норма успешно удалена"));
+			}
+		}
+	}
 
 }

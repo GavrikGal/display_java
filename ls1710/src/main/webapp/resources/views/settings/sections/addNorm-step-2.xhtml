@@ -9,21 +9,23 @@
 	xmlns:sec="http://www.springframework.org/security/tags"
 	template="/resources/views/settings/settings.xhtml">
 
-
+	<ui:define name="normsContentTitle">
+		<h1>Добавление названия нормы</h1>
+	</ui:define>
 	<ui:define name="normsContent">
 		<h:form id="normForm">
-			<p:outputLabel value="Добавление новой нормы" />
 			<h:panelGrid columns="2">
 				<p:outputLabel value="Стандарт" />
-				<p:outputLabel value="#{normsSetting.selectedStandard}" />
+				<p:outputLabel value="#{normsSetting.selectedNorm.standard}" />
 
 				<p:outputLabel value="Название нормы" />
 				<p:inputText value="#{normsSetting.selectedNorm.name}"
 					required="true"
-					requiredMessage="Название нормы не может быть пустым" />
+					requiredMessage="Название нормы не может быть пустым"
+					size="100"/>
 			</h:panelGrid>
 
-
+			<p:separator/>
 			<p:commandButton value="Назад" action="back" style="float: left;" />
 			<p:commandButton value="Отмена" action="cancel" style="float: left;" />
 

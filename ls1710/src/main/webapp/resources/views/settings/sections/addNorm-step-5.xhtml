@@ -9,10 +9,11 @@
 	xmlns:sec="http://www.springframework.org/security/tags"
 	template="/resources/views/settings/settings.xhtml">
 
-
+	<ui:define name="normsContentTitle">
+		<h1>Добавление предельно допустимых значений</h1>
+	</ui:define>
 	<ui:define name="normsContent">
 		<h:form id="normForm">
-			<p:outputLabel value="Добавление предельно допустимых значений" />
 			
 			<h:panelGrid columns="2">
 				<p:outputLabel value="Стандарт"/>
@@ -34,6 +35,7 @@
 				
 			</h:panelGrid>
 			
+			<br/>
 			<p:outputLabel value="Заполните таблицу предельно допустимых значения"/>
 			
 			<p:dataTable
@@ -43,26 +45,45 @@
 				editable="true"
 				editMode="cell">
 				
-				<p:ajax event="cellEdit" listener="#{normsSetting.onCellEdit}"  immediate="true" oncomplete="updateLimitTable()"/>
+				
 				
 				<p:column headerText="F, МГц" id="freq">
 					<p:cellEditor>
 						<f:facet name="output"><h:outputText value="#{limit.frequency == null ? 'добавить частоту' : ''}#{limit.frequency}" /></f:facet>
-						<f:facet name="input"><p:inputText value="#{limit.frequency}"/></f:facet>
+						<f:facet name="input"><p:inputText value="#{limit.frequency}" size="61"/></f:facet>
 					</p:cellEditor>
 				</p:column>
 				
 				<p:column headerText="А, дБ" id="ampl">
 					<p:cellEditor >
 						<f:facet name="output"><h:outputText value="#{limit.amplitude == null ? 'добавить амплитуду' : ''}#{limit.amplitude}" /></f:facet>
-						<f:facet name="input"><p:inputText value="#{limit.amplitude}"/></f:facet>
+						<f:facet name="input"><p:inputText value="#{limit.amplitude}" size="61"/></f:facet>
 					</p:cellEditor>
 				</p:column>
 				
+				<p:column style="width: 99px;">
+					<p:commandButton 
+						icon="ui-icon-arrowreturnthick-1-s" 
+						action="#{normsSetting.addLimitLineAfter(limit)}" 
+						update="limitsTable"
+						title="Добавить строку ниже"/>
+					<p:commandButton 
+						icon="ui-icon-trash" 
+						action="#{normsSetting.delLimitLine(limit)}" 
+						update="limitsTable"
+						title="Удалить строку"/>
+					<p:commandButton 
+						icon="ui-icon-arrowreturnthick-1-n" 
+						action="#{normsSetting.addLimitLineBefore(limit)}" 
+						update="limitsTable" 
+						title="Добавить строку выше"/>
+					
+				</p:column>
+				
 			</p:dataTable>
-			<p:commandButton value="Добавить строку" onclick="onCellEdit()" type="button"></p:commandButton><br/><br/>
 			<p:remoteCommand name="updateLimitTable" update="limitsTable" />
 			
+			<p:separator/>
 			<p:commandButton 
 					value="Назад" 
 					action="back" 
@@ -76,6 +97,8 @@
 					value="Далее" 
 					action="next" 
 					style="float: right;"/>
+				
+				<br/>
 			
 		</h:form>
 	</ui:define>

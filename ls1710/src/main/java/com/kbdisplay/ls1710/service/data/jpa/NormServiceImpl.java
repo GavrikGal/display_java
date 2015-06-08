@@ -3,6 +3,8 @@ package com.kbdisplay.ls1710.service.data.jpa;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,14 @@ public class NormServiceImpl implements NormService {
 	@Override
 	public Norm save(Norm norm) {
 		return normRepository.save(norm);
+	}
+
+	@Override
+	@Modifying
+	@Transactional(readOnly = false)
+	@PreAuthorize(value="hasAuthority('ROLE_ADMIN')")
+	public void delete(Norm norm) {
+		normRepository.delete(norm.getId());
 	}
 
 }

@@ -93,5 +93,13 @@ public interface NormsSetting {
 
 	public void confirmLimits();
 
+	public void addLimitLineBefore(Limit limit);
 
+	public void addLimitLineAfter(Limit limit);
+
+	public void delLimitLine(Limit limit);
+
+	public void initParameters();
+
+	public boolean isNormSelected();
 }
