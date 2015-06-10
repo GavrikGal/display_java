@@ -14,14 +14,19 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
 
+import com.kbdisplay.ls1710.domain.Document;
 import com.kbdisplay.ls1710.domain.Equipment;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
+import com.kbdisplay.ls1710.domain.ModelType;
 import com.kbdisplay.ls1710.domain.Parameter;
 import com.kbdisplay.ls1710.domain.TypeOfParameter;
+import com.kbdisplay.ls1710.service.data.DocumentService;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
 import com.kbdisplay.ls1710.service.data.LimitService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
+import com.kbdisplay.ls1710.service.data.ModelService;
+import com.kbdisplay.ls1710.service.data.ModelTypeService;
 import com.kbdisplay.ls1710.service.data.NormService;
 import com.kbdisplay.ls1710.service.data.ParameterService;
 import com.kbdisplay.ls1710.service.dataJournal.MeasurementsUpdaterService;
@@ -89,6 +94,15 @@ public class DataJournalController {
 
 	@Autowired
 	private NormGeneratorService normGeneratorService;
+
+	@Autowired
+	private ModelService modelService;
+
+	@Autowired
+	private ModelTypeService modelTypeService;
+
+	@Autowired
+	private DocumentService documentService;
 
 
 	/**
@@ -289,12 +303,6 @@ public class DataJournalController {
 			measurements.add(measurement);
 		}
 
-
-		System.out.println("measurements size = " + measurements.size());
-		for (Measurement measurement2 : measurements) {
-			System.out.println("id = " + measurement2.getId());
-		}
-
 		return measurements;
 	}
 
@@ -305,9 +313,23 @@ public class DataJournalController {
 	 *            - модель изделия, которую надо добавить в приложение.
 	 * @return бин добавления модели.
 	 */
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public ModelBean newModelBean(final ModelOfEquipment model) {
 		ModelBean modelBean = new ModelBean();
-		modelBean.setModel(model);
+		ModelOfEquipment newModel = new ModelOfEquipment();
+		Document document = documentService.findById(1l);
+		newModel.setDocument(document);
+		modelBean.setModel(newModel);
+		List<ModelType> modelTypes = modelTypeService.findAll();
+		modelBean.setSelectedModelType(modelTypes.get(0));
+		modelBean.setModelTypes(modelTypes);
+
 		return modelBean;
+	}
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public void saveModel(ModelOfEquipment model, ModelType selectedModelType) {
+		model.setModelType(selectedModelType);
+		model = modelService.save(model);
 	}
 }

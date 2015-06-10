@@ -211,6 +211,9 @@ public class DataJournalTable implements Serializable, DataTable {
 		if (measurement.getParentMeasurement() != null) {
 			row.setLastDate(measurement.getDate());
 		}
+		int index = rows.indexOf(row);
+		rows.remove(row);
+		rows.add(index, row);
 	}
 
 	/**

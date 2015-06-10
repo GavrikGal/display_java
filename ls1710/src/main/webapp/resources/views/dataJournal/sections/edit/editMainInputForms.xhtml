@@ -30,28 +30,32 @@
 	
 	<!-- inputs -->
 	<p:row>
-		<p:column colspan="1">
-			<p:selectOneMenu id="model" 
-				value="#{editFormDJView.data.model}"
-				var="m"
-				converter="#{modelConverter}" 
-				panelStyle="width:180px"
-				effect="fade" 
-				style="width:120px"
-				filter="true"
-				filterMatchMode="contains"
-				editable="true">
-				
-				<f:selectItems value="#{editFormDJView.data.modelOfEquipments}"
-					var="model" 
-					itemLabel="#{model.name}" 
-					itemValue="#{model}" />
-
-				<p:column>
-					<h:outputText value="#{m.name}" />
-				</p:column>
-
-			</p:selectOneMenu>
+		<p:column colspan="1" style="width: 170px;">
+			<h:panelGrid columns="2">
+				<p:selectOneMenu id="model" 
+					value="#{editFormDJView.data.model}"
+					var="m"
+					converter="#{modelConverter}" 
+					panelStyle="width:180px"
+					effect="fade" 
+					style="width:120px"
+					filter="true"
+					filterMatchMode="contains"
+					editable="true">
+					
+					<f:selectItems value="#{editFormDJView.data.modelOfEquipments}"
+						var="model" 
+						itemLabel="#{model.name}" 
+						itemValue="#{model}" />
+	
+					<p:column>
+						<h:outputText value="#{m.name}" />
+					</p:column>
+	
+				</p:selectOneMenu>
+				<p:commandButton icon="ui-icon-plus" action="addModel" 
+						style="margin: 0px; padding: 0px;"/>
+			</h:panelGrid>
 		</p:column>
 		<p:column colspan="1">
 			<p:inputText id="serialNumber" placeholder="xxxxxx"
@@ -60,7 +64,7 @@
 			</p:inputText>
 		</p:column>
 		<p:column colspan="2">
-			<p:panelGrid 
+			<h:panelGrid 
 				id="spectrumParameters" 
 				columns="4"
 				style="border: 0px;">
@@ -88,9 +92,9 @@
 				
 				<p:commandButton id="selectTypeButton" 
 					type="button" 
-					icon="ui-icon-plus" />
+					icon="ui-icon-plus"	/>
 						
-			</p:panelGrid>
+			</h:panelGrid>
 			<p:panel id="spectrumParameterscontextMenu" visible="false">
 				<c:forEach 
 						items="#{editFormDJView.data.availableParameterLists}" 

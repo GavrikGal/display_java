@@ -14,14 +14,41 @@
 
 				<h3 align="center">Добавление нового изделия</h3>
 
-				<p:panelGrid columns="2" style="margin: auto;">
-					<p:outputLabel value="название изделия" />
-					<p:inputText />
+				<h:panelGrid columns="2" style="margin: auto;">
+					<p:outputLabel value="Тип изделия" />
+					
+					<p:selectOneMenu id="modelType" 
+						value="#{modelBean.selectedModelType}"
+						var="selectedModelType"
+						converter="#{modelTypeConverter}" 
+						effect="fade" 
+						style="width:300px"
+						filter="true"
+						filterMatchMode="contains"
+						editable="true">
+						
+						<f:selectItems value="#{modelBean.modelTypes}"
+							var="modelType" 
+							itemLabel="#{modelType.name}" 
+							itemValue="#{modelType}" />
+		
+						<p:column>
+							<h:outputText value="#{selectedModelType.name}" />
+						</p:column>
+		
+					</p:selectOneMenu>	
+					
 					<p:outputLabel value="Модель изделия" />
-					<p:inputText value="#{modelBean.model.modelName}" />
+					<p:inputText 
+						value="#{modelBean.model.name}"
+						required="true"
+						requiredMessage="Введите название модели" 
+						style="width:300px"/>
 					<p:outputLabel value="Описание изделия" />
-					<p:inputTextarea value="#{modelBean.model.description}" />
-				</p:panelGrid>
+					<p:inputTextarea 
+						value="#{modelBean.model.description}"
+						style="width:300px"/>
+				</h:panelGrid>
 
 
 				<p:dataGrid value="#{modelBean.photoNames}" var="photoName"
@@ -48,7 +75,7 @@
 				<p:commandButton icon="ui-icon-image"
 					onclick="PF('addPhotoDialogWV').show()" value="Добавить фотографии"
 					styleClass="ui-button-addModel-addPhoto" />
-
+				<br/>
 
 
 				<p:toolbar>
@@ -57,7 +84,7 @@
 						<p:commandButton value="Отмена" action="cancel" />
 					</p:toolbarGroup>
 					<p:toolbarGroup id="right" align="right">
-						<p:commandButton value="Далее" action="next" />
+						<p:commandButton value="Добавить модель" action="next" />
 					</p:toolbarGroup>
 				</p:toolbar>
 

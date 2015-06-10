@@ -16,9 +16,9 @@
 		<transition on="logout" to="start"/>
 		<transition on="loginFail" to="start"/>
 		<transition on="addModel" to="addModel-step-1">
-			<evaluate expression="dataJournalController.newModelBean(editFormDJView.model)"
+			<evaluate expression="dataJournalController.newModelBean(editFormDJView.data.model)"
 				result="flowScope.modelBean" >
-				<attribute name="model" value="editFormDJView.model"/>
+				<attribute name="model" value="editFormDJView.data.model"/>
 			</evaluate>
 		</transition>
 		<transition on="viewDetail" to="showDetail">
@@ -31,7 +31,9 @@
 	<view-state id="addModel-step-1"
 		view="/resources/views/dataJournal/addModel-step-1.xhtml">
 		<transition on="back" to="start"/>
-		<transition on="next" to="addModel-step-1" />
+		<transition on="next" to="start" >
+			<evaluate expression="dataJournalController.saveModel(modelBean.model, modelBean.selectedModelType)"></evaluate>
+		</transition>
 	</view-state>
 	
 	<view-state id="showDetail" view="/resources/views/dataJournal/showDetail.xhtml" >
