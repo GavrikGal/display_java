@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<view-state id="protocolJournal"
+		view="/resources/views/protocol/protocol.xhtml">
+
+		<on-entry>
+			<evaluate expression="protocolController.newProtocolJournal()"
+				result="viewScope.protocolJournal" />
+		</on-entry>
+		
+		
+	</view-state>
+	
+	<end-state id="finish" />
+	
+	<view-state 
+		id="logout" 
+		view="flowRedirect:dataJournal">
+	</view-state>
+
+	<global-transitions>
+		<transition on="logout" to="logout"/>
+		<transition on="loginFail" to="logout"/>
+		<transition on="cancel" to="protocolJournal" />
+		
+	</global-transitions>
+
+</flow>

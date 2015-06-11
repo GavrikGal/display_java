@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -117,12 +119,14 @@ public class Measurement implements Serializable {
 	/**
 	 * Список спектров, которые включает в себя измерение.
 	 */
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "measurement",
-			cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "measurement", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("date")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Spectrum> spectrums;
 
+	@ManyToMany
+	@JoinTable(name = "protocol_measurement", joinColumns = @JoinColumn(name = "measurement_id"), inverseJoinColumns = @JoinColumn(name = "protocol_id"))
+	private List<Measurement> measurements;
 
 	public DateOfMeasurement getDate() {
 		return date;
@@ -219,6 +223,14 @@ public class Measurement implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public List<Measurement> getMeasurements() {
+		return measurements;
+	}
+
+	public void setMeasurements(List<Measurement> measurements) {
+		this.measurements = measurements;
 	}
 
 }

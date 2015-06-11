@@ -26,6 +26,22 @@
 				name="requestScope.measurementId" 
 				value="dataJournalTable.selected.measurement.id"></set>
 		</transition>
+		
+		<transition 
+			on="createProtocol"
+			to="createProtocol">
+			<set 
+				name="requestScope.selectedMeasurement" 
+				value="dataJournalTable.selected.measurement"></set>
+		</transition>
+		
+	</view-state>
+	
+	<view-state id="createProtocol" view="flowRedirect:protocol">
+		<on-entry>
+			<evaluate 
+				expression="protocolController.createProtocol(selectedMeasurement)"/>
+		</on-entry>
 	</view-state>
 	
 	<view-state id="addModel-step-1"

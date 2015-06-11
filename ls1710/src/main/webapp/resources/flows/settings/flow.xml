@@ -310,6 +310,9 @@
 	
 
 	<global-transitions>
+		<transition on="logout" to="logout"/>
+		<transition on="loginFail" to="logout"/>
+		
 		<transition 
 			on="cancel" 
 			to="settings" />

@@ -18,7 +18,12 @@
 		<sec:authorize access="isAnonymous()" >
 			<p:menuitem> Функции контекстного меню доступны только авторизированным пользователям</p:menuitem>
 		</sec:authorize>
-		<sec:authorize access="hasRole('ROLE_USER')" >  
+		<sec:authorize access="hasRole('ROLE_USER')" >
+		
+			<p:menuitem 
+				value="Подготовить протокол"
+				icon="ui-icon-document"
+				action="createProtocol"/> 
 		 
 			<p:menuitem value="#{msg['menu_edit']}" 
 				update=":editForm:model :editForm:serialNumber :editForm:purposeOfMeasurement :editForm:spectrumParameters"

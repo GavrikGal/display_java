@@ -1,0 +1,76 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:p="http://primefaces.org/ui"
+	  			xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	  			template="/resources/views/templates/standard.xhtml">
+	  			
+
+
+<ui:define name="content">
+	<p:panel>
+		<h:form id="form">	
+	 	
+	  		Журнал протоколов
+	  		<p:dataTable 
+	  			id="protocolTable"
+	  			value="#{protocolJournal}"
+	  			var="protocol"
+	  			rowKey="#{protocol.id}"
+	  			sortBy="#{protocol.id}"
+	  			emptyMessage="Нет протоколов"
+	  			styleClass="postAuthorizeUpdate">
+	  			
+	  			<p:ajax  event="rowDblselect" />
+	  			
+	  			<p:column 
+	  				headerText="Номер протокола"
+	  				width="70">
+	  				
+	  				<h:outputText value="#{protocol.number}"/>
+	  			</p:column>
+	  			
+	  			<p:column 
+	  				headerText="Дата протокола"
+	  				width="70">
+	  				
+	  				<h:outputText value="#{protocol.date}">
+						<f:converter converterId="jodaDataTimeConverter" />
+						<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
+					</h:outputText>
+	  			</p:column>
+	  			
+	  			<p:column headerText="Изделие">
+	  				<h:outputText value="#{protocol.measurements[fn:length(protocol.measurements)-1].equipment.model}"/>
+	  			</p:column>
+	  			
+	  			<p:column headerText="Серийный номер">
+	  				<h:outputText value="#{protocol.measurements[fn:length(protocol.measurements)-1].equipment.serialNumber}"/>
+	  			</p:column>
+	  			
+	  			<p:column 
+	  				headerText="Цель испытаний"
+	  				width="150">
+	  				
+	  				<ui:repeat 
+	  					var="measurement" 
+	  					value="#{protocol.measurements}"
+	  					varStatus="loop">
+	  					
+	  					<h:outputText value="#{measurement.purpose.name}"/>
+	  					<h:outputText 
+	  						value=" / " 
+	  						rendered="#{protocol.measurements[loop.index+1] != null}"/>
+	  				
+	  				</ui:repeat>
+	  			</p:column>
+	  		
+	  		</p:dataTable>
+	  	
+	  	</h:form>
+	</p:panel>
+</ui:define>
+
+</ui:composition>
