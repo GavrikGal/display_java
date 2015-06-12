@@ -35,8 +35,8 @@ public class ProtocolServiceImpl implements ProtocolService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Protocol findByNumberAndIndex(Long number, String index) {
-		return protocolRepository.findByNumberAndIndex(number, index);
+	public Protocol findByNumberAndPostfix(Long number, String postfix) {
+		return protocolRepository.findByNumberAndPostfix(number, postfix);
 	}
 
 	@Override

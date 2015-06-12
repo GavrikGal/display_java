@@ -13,7 +13,7 @@ public interface ProtocolService {
 
 	public Protocol findById(Long id);
 
-	public Protocol findByNumberAndIndex(Long number, String index);
+	public Protocol findByNumberAndPostfix(Long number, String index);
 
 	public List<Protocol> findByMeasurements(List<Measurement> measurements);
 

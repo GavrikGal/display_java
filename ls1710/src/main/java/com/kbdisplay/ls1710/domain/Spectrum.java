@@ -90,7 +90,7 @@ public class Spectrum implements Serializable {
 	 * Список спектральных составляющих - гармоник спектра.
 	 */
 	@OneToMany(mappedBy = "spectrum",
-			cascade = CascadeType.ALL, orphanRemoval = true)
+			cascade = CascadeType.ALL)
 	@OrderBy("frequency")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Harmonic> harmonics;

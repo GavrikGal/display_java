@@ -126,7 +126,7 @@ public class Measurement implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "protocol_measurement", joinColumns = @JoinColumn(name = "measurement_id"), inverseJoinColumns = @JoinColumn(name = "protocol_id"))
-	private List<Measurement> measurements;
+	private List<Protocol> protocols;
 
 	public DateOfMeasurement getDate() {
 		return date;
@@ -225,12 +225,12 @@ public class Measurement implements Serializable {
 		return serialVersionUID;
 	}
 
-	public List<Measurement> getMeasurements() {
-		return measurements;
+	public List<Protocol> getProtocols() {
+		return protocols;
 	}
 
-	public void setMeasurements(List<Measurement> measurements) {
-		this.measurements = measurements;
+	public void setProtocols(List<Protocol> protocols) {
+		this.protocols = protocols;
 	}
 
 }

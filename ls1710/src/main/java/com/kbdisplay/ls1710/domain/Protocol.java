@@ -21,7 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
-@Table(name = "protocol")
+@Table(name = "protocol_of_measurement")
 public class Protocol implements Serializable {
 
 	/**
@@ -37,8 +37,8 @@ public class Protocol implements Serializable {
 	@Column(name = "number")
 	private Long number;
 
-	@Column(name = "index")
-	private String index;
+	@Column(name = "postfix")
+	private String postfix;
 
 	@Column(name = "date")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -51,14 +51,9 @@ public class Protocol implements Serializable {
 	private List<Measurement> measurements;
 
 	@ManyToMany
-	@JoinTable(name = "protocol_harmonic_1", joinColumns = @JoinColumn(name = "protocol_id"), inverseJoinColumns = @JoinColumn(name = "harmonic_id"))
+	@JoinTable(name = "protocol_harmonic", joinColumns = @JoinColumn(name = "protocol_id"), inverseJoinColumns = @JoinColumn(name = "harmonic_id"))
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Harmonic> harmonics1;
-
-	@ManyToMany
-	@JoinTable(name = "protocol_harmonic_2", joinColumns = @JoinColumn(name = "protocol_id"), inverseJoinColumns = @JoinColumn(name = "harmonic_id"))
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Harmonic> harmonics2;
+	private List<Harmonic> harmonics;
 
 	public Long getId() {
 		return id;
@@ -76,12 +71,14 @@ public class Protocol implements Serializable {
 		this.number = number;
 	}
 
-	public String getIndex() {
-		return index;
+
+
+	public String getPostfix() {
+		return postfix;
 	}
 
-	public void setIndex(String index) {
-		this.index = index;
+	public void setPostfix(String postfix) {
+		this.postfix = postfix;
 	}
 
 	public DateTime getDate() {
@@ -100,21 +97,15 @@ public class Protocol implements Serializable {
 		this.measurements = measurements;
 	}
 
-	public List<Harmonic> getHarmonics1() {
-		return harmonics1;
+	public List<Harmonic> getHarmonics() {
+		return harmonics;
 	}
 
-	public void setHarmonics1(List<Harmonic> harmonics1) {
-		this.harmonics1 = harmonics1;
+	public void setHarmonics(List<Harmonic> harmonics) {
+		this.harmonics = harmonics;
 	}
 
-	public List<Harmonic> getHarmonics2() {
-		return harmonics2;
-	}
 
-	public void setHarmonics2(List<Harmonic> harmonics2) {
-		this.harmonics2 = harmonics2;
-	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

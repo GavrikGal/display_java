@@ -1,6 +1,7 @@
 package com.kbdisplay.ls1710.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,38 +31,49 @@ public class Harmonic implements Serializable {
 	/**
 	 * ID измеренной гармоники.
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 	/**
 	 * Частота.
 	 */
+	@Column(name = "frequency")
 	private Double frequency;
 	/**
 	 * Полоса пропускания приемника.
 	 */
+	@Column(name = "receiver_bandwidth")
 	private Double receiverBandwidth;
 	/**
 	 * Амплитуда.
 	 */
+	@Column(name = "amplitude")
 	private Double amplitude;
 
 	/**
 	 * Шум.
 	 */
+	@Column(name = "noise")
 	private Double noise;
 
 	/**
 	 * запас относительно нормы.
 	 */
+	@Column(name = "reserve")
 	private Double reserve;
 
 	/**
 	 * Спект, содержащий данную гармонику.
 	 */
+	@ManyToOne
+	@JoinColumn(name = "spectrum_id", updatable = true)
 	private Spectrum spectrum;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@ManyToMany
+	@JoinTable(name = "protocol_harmonic", joinColumns = @JoinColumn(name = "harmonic_id"), inverseJoinColumns = @JoinColumn(name = "protocol_id"))
+	private List<Protocol> protocols;
+
 	public Long getId() {
 		return id;
 	}
@@ -68,7 +82,6 @@ public class Harmonic implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "frequency")
 	public Double getFrequency() {
 		return frequency;
 	}
@@ -77,7 +90,6 @@ public class Harmonic implements Serializable {
 		this.frequency = frequency;
 	}
 
-	@Column(name = "receiver_bandwidth")
 	public Double getReceiverBandwidth() {
 		return receiverBandwidth;
 	}
@@ -86,7 +98,6 @@ public class Harmonic implements Serializable {
 		this.receiverBandwidth = receiverBandwidth;
 	}
 
-	@Column(name = "amplitude")
 	public Double getAmplitude() {
 		return amplitude;
 	}
@@ -95,7 +106,6 @@ public class Harmonic implements Serializable {
 		this.amplitude = amplitude;
 	}
 
-	@Column(name = "noise")
 	public Double getNoise() {
 		return noise;
 	}
@@ -104,7 +114,6 @@ public class Harmonic implements Serializable {
 		this.noise = noise;
 	}
 
-	@Column(name="reserve")
 	public Double getReserve() {
 		return reserve;
 	}
@@ -113,8 +122,6 @@ public class Harmonic implements Serializable {
 		this.reserve = reserve;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "spectrum_id", updatable = true)
 	public Spectrum getSpectrum() {
 		return spectrum;
 	}
@@ -126,5 +133,15 @@ public class Harmonic implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public List<Protocol> getProtocols() {
+		return protocols;
+	}
+
+	public void setProtocols(List<Protocol> protocols) {
+		this.protocols = protocols;
+	}
+
+
 
 }

@@ -9,7 +9,7 @@ import com.kbdisplay.ls1710.domain.Protocol;
 
 public interface ProtocolRepository extends CrudRepository<Protocol, Long> {
 
-	Protocol findByNumberAndIndex(Long number, String index);
+	Protocol findByNumberAndPostfix(Long number, String postfix);
 
 	List<Protocol> findByMeasurements(List<Measurement> measurements);
 
