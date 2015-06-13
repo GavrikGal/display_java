@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+        
+    <input 
+    	name="modelBean"
+    	value="flowScope.modelBean"/>
+
+	<view-state id="newDocument"
+		view="/resources/views/dataJournal/newDocument-step-1.xhtml">
+		<on-entry>
+			<evaluate expression="modelBean.newDocument()" result="flowScope.document"/>
+			<evaluate expression="normService.findAll()" result="flowScope.norms"/>
+		</on-entry>
+
+		<transition 
+			on="next"
+			to="checkSelected">
+			
+		</transition>
+		
+	</view-state>
+	
+	<decision-state id="checkSelected" >
+		<if 
+			test="document.norms.isEmpty()"
+			then="newDocument"
+			else="saveDocument"/>
+	</decision-state>
+	
+	<end-state id="saveDocument">
+		<on-entry>
+			<evaluate expression="documentService.save(document)" result="flowScope.document"></evaluate>
+		</on-entry>
+		
+		<output 
+			name="document" 
+			value="document"/>
+	</end-state>
+
+	<end-state id="newDocumentCanceled" />
+
+	<global-transitions>
+		<transition on="cancel" to="newDocumentCanceled" />
+	</global-transitions>
+
+</flow>

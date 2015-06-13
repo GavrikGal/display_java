@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,7 @@ import com.google.common.collect.Lists;
 import com.kbdisplay.ls1710.domain.Document;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.ModelType;
+import com.kbdisplay.ls1710.domain.Norm;
 import com.kbdisplay.ls1710.service.data.ModelTypeService;
 
 /**
@@ -171,6 +173,7 @@ public class ModelBean implements Serializable {
 	}
 
 	public void setModelTypes(List<ModelType> modelTypes) {
+		this.selectedModelType = modelTypes.get(0);
 		this.modelTypes = modelTypes;
 	}
 
@@ -189,6 +192,7 @@ public class ModelBean implements Serializable {
 
 
 	public void setDocuments(List<Document> documents) {
+		this.selectedDocument = documents.get(0);
 		this.documents = documents;
 	}
 
@@ -202,6 +206,17 @@ public class ModelBean implements Serializable {
 		this.selectedDocument = selectedDocument;
 	}
 
+	public void addDocument(Document document) {
+		documents.add(document);
+		selectedDocument = document;
+	}
 
+	public Document newDocument() {
+		Document document = new Document();
+		List<Norm> norms = new ArrayList<Norm>();
+		document.setNorms(norms);
+		document.setName("Название документа");
+		return document;
+	}
 
 }

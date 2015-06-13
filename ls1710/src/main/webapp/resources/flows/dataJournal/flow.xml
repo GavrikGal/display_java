@@ -50,7 +50,35 @@
 		<transition on="next" to="start" >
 			<evaluate expression="dataJournalController.saveModel(modelBean.model, modelBean.selectedModelType, modelBean.selectedDocument)"></evaluate>
 		</transition>
+		<transition
+			on="newDocument"
+			to="newDocument">
+			
+		</transition>
 	</view-state>
+	
+	<subflow-state id="newDocument" subflow="document">
+	
+		<input 
+			name="modelBean"
+			value="flowScope.modelBean"/>
+		
+		<output 
+			name="document" 
+			value="flowScope.newDocument"/>
+		
+		<transition 
+			on="saveDocument"
+			to="addModel-step-1">
+			
+			<evaluate expression="modelBean.addDocument(newDocument)" />
+		</transition>
+		
+		<transition 
+			on="newDocumentCanceled"
+			to="addModel-step-1"/>
+		
+	</subflow-state>
 	
 	<view-state 
 		id="showDetail" 

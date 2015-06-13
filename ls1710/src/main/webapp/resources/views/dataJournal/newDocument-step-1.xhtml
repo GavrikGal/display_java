@@ -1,0 +1,74 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/resources/views/templates/standard.xhtml">
+
+
+
+	<ui:define name="content">
+		<p:panel style="margin-top:50px; margin-bottom: 50px;">
+			<h:form id="addDocumentForm">
+
+				<h3 align="center">Добавление нового документа</h3>
+
+				<h:panelGrid columns="2" style="margin: auto;">
+					<p:outputLabel value="Название документа, устанавливающего нормы (ТУ)" />
+					
+					<p:inputText 
+						value="#{document.name}"
+						required="true"
+						requiredMessage="Введите название документа" 
+						style="width:300px"/>
+					
+				</h:panelGrid>
+				<p:outputLabel value="Выберите нормы"/>
+				<p:dataTable
+					id="normTable" 
+					value="#{norms}"
+					var="norm"
+					selection="#{document.norms}"
+					rowKey="#{norm.id}">
+					
+					<p:column 
+						selectionMode="multiple" 
+						style="width:16px;text-align:center"/>
+					
+					<p:column 
+						headerText="Норма">
+						<h:outputText value="#{norm.name}"/>
+					</p:column>
+					
+					<p:column 
+						headerText="Стандарт">
+						<h:outputText value="#{norm.standard}"/>
+					</p:column>
+					
+					<p:column headerText="Параметры">
+						<ui:repeat 
+							var="parameter" 
+							value="#{norm.parameters}">
+							
+							<p:outputLabel value="#{parameter.name}, " />
+						</ui:repeat>
+					</p:column>
+				
+				</p:dataTable>
+
+
+				<p:toolbar>
+					<p:toolbarGroup id="left" align="left">
+						<p:commandButton value="Отмена" action="cancel" />
+					</p:toolbarGroup>
+					<p:toolbarGroup id="right" align="right">
+						<p:commandButton value="Добавить документ" action="next" />
+					</p:toolbarGroup>
+				</p:toolbar>
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+
+</ui:composition>

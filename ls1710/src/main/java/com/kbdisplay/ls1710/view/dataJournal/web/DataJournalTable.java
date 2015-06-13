@@ -136,7 +136,6 @@ public class DataJournalTable implements Serializable, DataTable {
 			this.insertRow(rootMeasurement);
 		} else {
 			this.updateRow(rowWithMeasurement, measurement);
-			System.out.println("update row");
 		}
 	}
 

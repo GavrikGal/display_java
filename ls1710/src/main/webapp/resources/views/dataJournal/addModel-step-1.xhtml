@@ -38,35 +38,46 @@
 		
 					</p:selectOneMenu>
 					
-					<p:outputLabel value="Документ, устанавливающий требования" />
-					
-					<p:selectOneMenu id="document" 
-						value="#{modelBean.selectedDocument}"
-						var="selectedDocument"
-						converter="#{documentConverter}" 
-						effect="fade" 
-						style="width:300px"
-						filter="true"
-						filterMatchMode="contains"
-						editable="true">
-						
-						<f:selectItems value="#{modelBean.documents}"
-							var="document" 
-							itemLabel="#{document.name}" 
-							itemValue="#{document}" />
-		
-						<p:column>
-							<h:outputText value="#{selectedDocument.name}" />
-						</p:column>
-		
-					</p:selectOneMenu>	
-					
 					<p:outputLabel value="Модель изделия" />
 					<p:inputText 
 						value="#{modelBean.model.name}"
 						required="true"
 						requiredMessage="Введите название модели" 
 						style="width:300px"/>
+						
+					<p:outputLabel value="Документ, устанавливающий требования" />
+					
+					<h:panelGrid columns="2" >
+						<p:column style="margin:0px; padding:0px;">
+							<p:selectOneMenu id="document" 
+								value="#{modelBean.selectedDocument}"
+								var="selectedDocument"
+								converter="#{documentConverter}" 
+								effect="fade" 
+								style="width:250px; margin:0px; padding:0px;"
+								filter="true"
+								filterMatchMode="contains"
+								editable="true">
+								
+								<f:selectItems value="#{modelBean.documents}"
+									var="document" 
+									itemLabel="#{document.name}" 
+									itemValue="#{document}" />
+				
+								<p:column>
+									<h:outputText value="#{selectedDocument.name}" />
+								</p:column>
+				
+							</p:selectOneMenu>
+						</p:column>
+						<p:column style="width: 10%">
+							<p:commandButton 
+								icon="ui-icon-plus"
+								action="newDocument">
+							</p:commandButton>
+						</p:column>
+					</h:panelGrid>
+					
 					<p:outputLabel value="Описание изделия" />
 					<p:inputTextarea 
 						value="#{modelBean.model.description}"
