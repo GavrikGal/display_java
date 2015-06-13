@@ -31,6 +31,7 @@ public class MeasurementServiceImpl implements MeasurementService {
 	private EquipmentRepository equipmentRepository;
 
 
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Measurement> findAll() {
@@ -60,6 +61,7 @@ public class MeasurementServiceImpl implements MeasurementService {
 	@Transactional(readOnly = false)
 	@PreAuthorize(value="hasAuthority('ROLE_USER')")
 	public void delete(Measurement measurement) {
+
 		measurementRepository.delete(measurement.getId());
 	}
 

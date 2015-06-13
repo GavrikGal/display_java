@@ -25,7 +25,7 @@
 				id="logName"
 				onclick="PF('logNameDialogWV').loadContents()"
 				value="#{request.getUserPrincipal().principal.firstName} #{request.getUserPrincipal().principal.lastName}"
-				style="float:right; top: -30px; right: 10px; position: relative; " 
+				style="float:right; top: -30px; right: 10px; position: relative; z-index: 2;" 
 				styleClass="postAuthorizeUpdate"
 				type="button" />
 			
@@ -40,7 +40,7 @@
 					id="ChangeUserFormId" 
 					prependId="false">
 					
-					<p:panelGrid columns="2">
+					<h:panelGrid columns="2">
 						<p:outputLabel 
 							value="#{msg['label_userName']}" 
 							for="changeUserName"/>
@@ -59,7 +59,7 @@
 							required="true" 
 							requiredMessage="#{msg['msg_required_password']}"/>
 							
-					</p:panelGrid>
+					</h:panelGrid>
 					
 				</h:form>
 				<p:outputPanel>
@@ -93,7 +93,7 @@
 				id="loginBtn"
 				onclick="PF('loginDialogWV').loadContents()"
 				value="#{msg['login_btn_enter']}"
-				style="float:right; top: -30px; right: 10px; position: relative; "
+				style="float:right; top: -30px; right: 10px; position: relative; z-index: 2;"
 				styleClass="postAuthorizeUpdate" 
 				type="button"/>
 				
@@ -108,7 +108,7 @@
 					id="loginFormId" 
 					prependId="false">
 					
-					<p:panelGrid columns="2">
+					<h:panelGrid columns="2">
 						<p:outputLabel 
 							value="#{msg['label_userName']}" 
 							for="userName"/>
@@ -127,7 +127,7 @@
 							value="#{loginMgmtBean.password}" 
 							requiredMessage="#{msg['msg_required_password']}"/>
 							
-					</p:panelGrid>
+					</h:panelGrid>
 					
 		
 					

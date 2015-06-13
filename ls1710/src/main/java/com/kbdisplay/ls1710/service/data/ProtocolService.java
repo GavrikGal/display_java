@@ -20,4 +20,7 @@ public interface ProtocolService {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public Protocol save(Protocol protocol);
 
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public void delete(Protocol protocol);
+
 }

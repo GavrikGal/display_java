@@ -8,13 +8,14 @@
 
 
 	<div class="headerContent">
-	
-		<p:tabMenu activeIndex="2" styleClass="postAuthorizeUpdate">
+		<p:tabMenu activeIndex="#{tabMenu.index}" styleClass="postAuthorizeUpdate" style="z-index:1;">
+			
+			
 			<p:menuitem value="Журнал измерений" url="/app/dataJournal?i=0" 
 				icon="ui-icon-star">
 				<f:param name="i" value="0" />
 			</p:menuitem>
-			<p:menuitem value="Протоколы" url="/app/protocol?i=0"
+			<p:menuitem value="Протоколы" url="/app/protocol?i=1"
 				icon="ui-icon-document">
 				<f:param name="i" value="1" />
 			</p:menuitem>
@@ -27,7 +28,8 @@
 		</sec:authorize>	
 			
 		</p:tabMenu>
-			
+		
+		
 		<ui:include src="/resources/views/common/sections/loginPanel.xhtml" />
 	
 		

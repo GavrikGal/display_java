@@ -1,0 +1,79 @@
+﻿/* ====================== main elements ==================================================  */
+/* ---------------------- Оболочки -------------------------------------------------------  */
+/* ______________________ Главная Шапка ________________________  */
+
+.header, .footer, .messages{
+	display: none;
+}
+
+
+#backContent {
+	background-color: #FFF;
+	border: 0px solid #EEE;
+	width: 210mm;
+	height: 280mm;
+		
+	z-index: 0;
+	display: block;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: -1.8cm;
+	left: -2.4cm;
+	right: 0;
+	overflow: hidden;
+	padding: 1cm;
+}
+
+
+/*-----------------------------------------*/
+
+/*---------------- Данные ---------*/ 
+#frontContent {
+	width: 19cm;
+	margin: auto;
+	z-index: 50;
+	display: block;
+	position: relative;
+	left: -5cm;
+	top: 0.2cm;
+}
+
+
+/*------------- Данные шапки ----------*/
+#protocolHeadTableContentBlock {
+	margin-left: 1.2cm;
+	width: 13.9cm;
+}
+
+.protocolHeadTableContent {
+	width: 100%;
+	margin: auto;
+}
+.protocolHeadTableContentModel{
+	width: 5.5cm;
+}
+
+.protocolHeadTableContentNumber {
+	width: 5.5cm;
+}
+
+/*---------------- Данные таблицы ---------*/ 
+#protocolResultsTableContentBlock {
+	margin-top: 6.1cm;
+	position: relative;
+}
+
+#protocolResultsTableContent td{
+	border: 0px;
+}
+
+/*--------------- Данные пользователя ------*/
+#protocolUserNameBlock {
+	position: absolute;
+	left: 11.3cm;
+	top: 21.5cm;
+	width: 5.5cm;
+}
+
+

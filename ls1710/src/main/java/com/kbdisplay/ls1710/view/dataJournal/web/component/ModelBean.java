@@ -17,6 +17,7 @@ import javax.faces.bean.SessionScoped;
 import org.primefaces.event.FileUploadEvent;
 
 import com.google.common.collect.Lists;
+import com.kbdisplay.ls1710.domain.Document;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.ModelType;
 import com.kbdisplay.ls1710.service.data.ModelTypeService;
@@ -49,6 +50,9 @@ public class ModelBean implements Serializable {
 
 	private List<ModelType> modelTypes;
 	private ModelType selectedModelType;
+
+	private List<Document> documents;
+	private Document selectedDocument;
 
 
 	public ModelBean() {
@@ -177,5 +181,27 @@ public class ModelBean implements Serializable {
 	public void setSelectedModelType(ModelType selectedModelType) {
 		this.selectedModelType = selectedModelType;
 	}
+
+
+	public List<Document> getDocuments() {
+		return documents;
+	}
+
+
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
+	}
+
+
+	public Document getSelectedDocument() {
+		return selectedDocument;
+	}
+
+
+	public void setSelectedDocument(Document selectedDocument) {
+		this.selectedDocument = selectedDocument;
+	}
+
+
 
 }

@@ -318,6 +318,8 @@ public class DataJournalController {
 		ModelBean modelBean = new ModelBean();
 		ModelOfEquipment newModel = new ModelOfEquipment();
 		Document document = documentService.findById(1l);
+		List<Document> documents = documentService.findAll();
+		modelBean.setDocuments(documents);
 		newModel.setDocument(document);
 		modelBean.setModel(newModel);
 		List<ModelType> modelTypes = modelTypeService.findAll();
@@ -328,8 +330,9 @@ public class DataJournalController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public void saveModel(ModelOfEquipment model, ModelType selectedModelType) {
+	public void saveModel(ModelOfEquipment model, ModelType selectedModelType, Document selectedDocument) {
 		model.setModelType(selectedModelType);
+		model.setDocument(selectedDocument);
 		model = modelService.save(model);
 	}
 }

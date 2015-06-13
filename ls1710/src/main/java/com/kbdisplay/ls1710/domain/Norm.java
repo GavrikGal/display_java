@@ -55,7 +55,7 @@ public class Norm implements Serializable {
 	@JoinColumn(name = "norm_handler_id")
 	private NormHandler normHandler;
 
-	@OneToMany(mappedBy = "norm", cascade = CascadeType.ALL,
+	@OneToMany(mappedBy = "norm", cascade = CascadeType.MERGE,
 			orphanRemoval = true)
 	@OrderBy("frequency")
 	@LazyCollection(LazyCollectionOption.FALSE)

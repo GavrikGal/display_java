@@ -127,7 +127,7 @@ public class DataJournalTable implements Serializable, DataTable {
 
 		Row rowWithMeasurement = null;
 		for (Row row : rows) {
-			if (row.getId().equals(rootMeasurement.getId())) {
+			if (row.getMeasurement().getId().equals(rootMeasurement.getId())) {
 				rowWithMeasurement = row;
 				break;
 			}
@@ -136,6 +136,7 @@ public class DataJournalTable implements Serializable, DataTable {
 			this.insertRow(rootMeasurement);
 		} else {
 			this.updateRow(rowWithMeasurement, measurement);
+			System.out.println("update row");
 		}
 	}
 

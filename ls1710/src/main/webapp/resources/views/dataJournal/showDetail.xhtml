@@ -67,7 +67,7 @@
 						</f:facet>
 					
 					<h:panelGrid columns="2" style="margin: auto;" rendered="#{spectrum.description != null}" >
-						<h:outputText value="Описание:"/>
+						<h:outputText value="Описание:" rendered="#{spectrum.description != null}"/>
 						<h:outputText value="#{spectrum.description}"  style="margin: auto;"/>	
 					</h:panelGrid>
 					<p:panelGrid columns="#{fn:length(spectrum.harmonics) + 1}" style="margin: auto;" >

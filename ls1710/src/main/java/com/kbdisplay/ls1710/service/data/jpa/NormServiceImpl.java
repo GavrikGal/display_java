@@ -43,6 +43,10 @@ public class NormServiceImpl implements NormService {
 	@PreAuthorize(value="hasAuthority('ROLE_ADMIN')")
 	public void delete(Norm norm) {
 		normRepository.delete(norm.getId());
+		System.out.println(norm + ", id- " + norm.getId());
+		Norm newNorm = normRepository.findOne(norm.getId());
+		System.out.println(newNorm );
+
 	}
 
 }

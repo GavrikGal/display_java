@@ -13,6 +13,10 @@
 		<flow-execution-listeners>
 			<listener ref="facesContextListener"/>
 		</flow-execution-listeners>
+		<!-- <flow-execution-attributes>
+        	without execution param
+        	<always-redirect-on-pause value="false"/>
+    	</flow-execution-attributes> -->
 	</flow-executor>
 
 	<!-- Реестр для определений исполняемых потоков -->

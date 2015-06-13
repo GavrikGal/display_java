@@ -137,7 +137,7 @@ public class SettingsController {
 							.getValue(elContext, null, "usersSetting");
 
 			usersSetting.getUsers().remove(selected);
-			// userService.delete(selected);
+			userService.delete(selected);
 		}
 	}
 

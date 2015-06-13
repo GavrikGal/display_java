@@ -36,6 +36,29 @@
 							<h:outputText value="#{selectedModelType.name}" />
 						</p:column>
 		
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Документ, устанавливающий требования" />
+					
+					<p:selectOneMenu id="document" 
+						value="#{modelBean.selectedDocument}"
+						var="selectedDocument"
+						converter="#{documentConverter}" 
+						effect="fade" 
+						style="width:300px"
+						filter="true"
+						filterMatchMode="contains"
+						editable="true">
+						
+						<f:selectItems value="#{modelBean.documents}"
+							var="document" 
+							itemLabel="#{document.name}" 
+							itemValue="#{document}" />
+		
+						<p:column>
+							<h:outputText value="#{selectedDocument.name}" />
+						</p:column>
+		
 					</p:selectOneMenu>	
 					
 					<p:outputLabel value="Модель изделия" />
@@ -51,33 +74,6 @@
 				</h:panelGrid>
 
 
-				<p:dataGrid value="#{modelBean.photoNames}" var="photoName"
-					id="addModelImages" emptyMessage="Добавте фотографии изделия"
-					styleClass="ui-dataGrid-addModel-photos" columns="#{modelBean.photoCount() > 5 ? 5 : modelBean.photoCount()}">
-
-					<p:panel styleClass="ui-panel-addPhoto-photo">
-						<div class="ui-div-addModel-photo">
-							<p:graphicImage value="#{photoBean.photo}"
-								width="#{modelBean.photoCount() > 5 ? 1080/5: 1080/modelBean.photoCount()}px"
-								styleClass="ui-image-addModel-photo">
-								<f:param name="photoName" value="#{photoName}" />
-							</p:graphicImage>
-						</div>
-						<p:commandButton icon="ui-icon-close"
-							action="#{modelBean.removePhoto(photoName)}"
-							update="addModelImages"
-							styleClass="ui-button-addModel-deletePhoto"
-							widgetVar="removeModelPhotoButton"
-							style="left: #{modelBean.photoCount() > 5 ? (1080/(5*2))-21 : (1080/(modelBean.photoCount()*2)-21)}px;" />
-					</p:panel>
-				</p:dataGrid>
-
-				<p:commandButton icon="ui-icon-image"
-					onclick="PF('addPhotoDialogWV').show()" value="Добавить фотографии"
-					styleClass="ui-button-addModel-addPhoto" />
-				<br/>
-
-
 				<p:toolbar>
 					<p:toolbarGroup id="left" align="left">
 						<p:commandButton value="Назад" action="back" />
@@ -87,23 +83,6 @@
 						<p:commandButton value="Добавить модель" action="next" />
 					</p:toolbarGroup>
 				</p:toolbar>
-
-				<p:dialog id="addPhotoDialog" visible="false" modal="true"
-					widgetVar="addPhotoDialogWV" width="900" position="top"
-					header="Выберите фотографии для добавления">
-					<p:fileUpload fileUploadListener="#{modelBean.fileUploadListener}"
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-						invalidFileMessage="Не тот формат файла" multiple="true"
-						cancelLabel="Отмена" uploadLabel="Загрузить" label="Добавить" />
-
-					<p:commandButton value="Нет"
-						onclick="PF('addPhotoDialogWV').hide()"
-						action="#{modelBean.clearNewPhoto}" />
-					<p:commandButton value="Да" onclick="PF('addPhotoDialogWV').hide()"
-						action="#{modelBean.addNewPhoto}" update="addModelImages" />
-
-				</p:dialog>
-
 
 			</h:form>
 		</p:panel>

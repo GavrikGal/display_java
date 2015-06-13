@@ -48,8 +48,7 @@ public class Standard implements Serializable {
 	@Column(name = "description")
 	private String description;
 
-	@OneToMany(mappedBy = "standard", cascade = CascadeType.ALL,
-			orphanRemoval = true)
+	@OneToMany(mappedBy = "standard", cascade = CascadeType.MERGE, orphanRemoval = false	)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Norm> norms;
 

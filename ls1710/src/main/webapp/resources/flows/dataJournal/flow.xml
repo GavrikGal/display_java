@@ -48,13 +48,18 @@
 		view="/resources/views/dataJournal/addModel-step-1.xhtml">
 		<transition on="back" to="start"/>
 		<transition on="next" to="start" >
-			<evaluate expression="dataJournalController.saveModel(modelBean.model, modelBean.selectedModelType)"></evaluate>
+			<evaluate expression="dataJournalController.saveModel(modelBean.model, modelBean.selectedModelType, modelBean.selectedDocument)"></evaluate>
 		</transition>
 	</view-state>
 	
-	<view-state id="showDetail" view="/resources/views/dataJournal/showDetail.xhtml" >
+	<view-state 
+		id="showDetail" 
+		view="/resources/views/dataJournal/showDetail.xhtml" >
+		
 		<on-entry>
-			<evaluate expression="dataJournalController.showDetail(flowRequestContext)" result="viewScope.measurements"/>
+			<evaluate 
+				expression="dataJournalController.showDetail(flowRequestContext)" 
+				result="viewScope.measurements"/>
 		</on-entry>
 	</view-state>
 

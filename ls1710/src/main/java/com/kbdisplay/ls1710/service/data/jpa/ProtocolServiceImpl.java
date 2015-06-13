@@ -44,6 +44,10 @@ public class ProtocolServiceImpl implements ProtocolService {
 		return protocolRepository.save(protocol);
 	}
 
+	public void delete(Protocol protocol) {
+		protocolRepository.delete(protocol.getId());
+	}
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Protocol> findByMeasurements(List<Measurement> measurements) {

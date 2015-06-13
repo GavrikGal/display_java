@@ -5,17 +5,36 @@
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 	<view-state id="protocolJournal"
-		view="/resources/views/protocol/protocol.xhtml">
+		view="/resources/views/protocol/protocolJournal.xhtml">
 
 		<on-entry>
 			<evaluate expression="protocolController.newProtocolJournal()"
 				result="viewScope.protocolJournal" />
 		</on-entry>
 		
+		<transition 
+			on="viewProtocol"
+			to="showProtocol">
+			<set 
+				name="requestScope.protocol" 
+				value="protocolJournal.selectedProtocol"></set>
+		</transition>
+		
 		
 	</view-state>
 	
 	<end-state id="finish" />
+	
+	<view-state id="showProtocol"
+		view="/resources/views/protocol/protocol.xhtml">
+		<on-entry>
+			<evaluate 
+				expression="protocolController.showProtocol(flowRequestContext)" 
+				result="viewScope.protocol"/>
+		</on-entry>
+		
+		
+	</view-state>
 	
 	<view-state 
 		id="logout" 

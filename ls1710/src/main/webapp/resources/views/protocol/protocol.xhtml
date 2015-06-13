@@ -10,67 +10,255 @@
 
 
 <ui:define name="content">
-	<p:panel>
-		<h:form id="form">	
-	 	
-	  		Журнал протоколов
-	  		<p:dataTable 
-	  			id="protocolTable"
-	  			value="#{protocolJournal}"
-	  			var="protocol"
-	  			rowKey="#{protocol.id}"
-	  			sortBy="#{protocol.id}"
-	  			emptyMessage="Нет протоколов"
-	  			styleClass="postAuthorizeUpdate">
-	  			
-	  			<p:ajax  event="rowDblselect" />
-	  			
-	  			<p:column 
-	  				headerText="Номер протокола"
-	  				width="70">
-	  				
-	  				<h:outputText value="#{protocol.number}"/>
-	  			</p:column>
-	  			
-	  			<p:column 
-	  				headerText="Дата протокола"
-	  				width="70">
-	  				
-	  				<h:outputText value="#{protocol.date}">
-						<f:converter converterId="jodaDataTimeConverter" />
-						<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
-					</h:outputText>
-	  			</p:column>
-	  			
-	  			<p:column headerText="Изделие">
-	  				<h:outputText value="#{protocol.measurements[fn:length(protocol.measurements)-1].equipment.model}"/>
-	  			</p:column>
-	  			
-	  			<p:column headerText="Серийный номер">
-	  				<h:outputText value="#{protocol.measurements[fn:length(protocol.measurements)-1].equipment.serialNumber}"/>
-	  			</p:column>
-	  			
-	  			<p:column 
-	  				headerText="Цель испытаний"
-	  				width="150">
-	  				
-	  				<ui:repeat 
-	  					var="measurement" 
-	  					value="#{protocol.measurements}"
-	  					varStatus="loop">
-	  					
-	  					<h:outputText value="#{measurement.purpose.name}"/>
-	  					<h:outputText 
-	  						value=" / " 
-	  						rendered="#{protocol.measurements[loop.index+1] != null}"/>
-	  				
-	  				</ui:repeat>
-	  			</p:column>
-	  		
-	  		</p:dataTable>
-	  	
-	  	</h:form>
+	<h:outputStylesheet library="styles/gavrik" name="print.css" target="body" media="print" />
+
+	<p:panel id="backContent">
+		
+	 	<div >
+	  		<div id="protocolName" style="text-align: center; z-index: -1">
+				<p>ПРОТОКОЛ ИЗМЕРЕНИЯ УРОВНЕЙ ИНФОРМАЦИОННЫХ СИГНАЛОВ ВИДЕОМОНИТОРА</p>
+			</div>
+			<div id="protocolHead">
+				<table id="protocolHeadTable">
+					<tr>
+						<td>
+							<p>Изделие ________________________</p>
+						</td>
+						<td>
+							<p>зав. №</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Дата проведения измерений</p>
+						</td>
+						<td>
+							<p>ОТК</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+						<td>
+							<p>ПЗ</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<table id="protocolResultsTable">
+				<thead>
+					<tr >
+						<th class="protocolResultsTableFrequency" style="text-align: center;">
+							<p>Частота сигнала, МГц</p>
+						</th>
+						<th class="protocolResultsTableNorm" style="text-align: center;">
+							<p>Допустимое значение</p>
+							<p>Ui по</p>
+							<p>НВИТ.467846.002 И2.1,</p>
+							<p>дБ, не более</p>
+						</th>
+						<th >
+							<table class="protocolResultsInnerTable">
+								<tr>
+									<td colspan="2" class="protocolResultsTableLevels" style="text-align: center;">
+										<p>Фактическое значение Ui, дБ</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="protocolResultsTableLevels1" style="text-align: center;">
+										<p>Данные ОТК</p>
+										<br/>
+										<br/>
+										<br/>
+									</td>
+									<td class="protocolResultsTableLevels2" style="text-align: center;">
+										<p>Данные ПЗ</p>
+										<br/>
+										<br/>
+										<br/>
+									</td>									
+								</tr>
+							</table>
+						</th>
+						<th class="protocolResultsTableNote" style="text-align: center;">
+							<p>Примечание</p>
+						</th>						
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="data">
+						<td class="protocolResultsTableFrequency">
+							
+						</td>
+						<td class="protocolResultsTableNorm">
+							
+						</td>
+						<td>
+							<table class="protocolResultsInnerTable">
+								<tr>
+									<td class="protocolResultsTableLevels1">
+										
+									</td>
+									<td class="protocolResultsTableLevels2">
+										
+									</td>									
+								</tr>
+							</table>
+						</td>
+						<td class="protocolResultsTableNote">
+							
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div id="protocolFinal">
+				<p>ЗАКЛЮЧЕНИЕ</p>
+				<p>Изделие _________________ зав. №____________________ соответствует 
+					требованиям НВИТ.467846.002 И2.1, принято и годно для использования
+					по назначению.</p>
+				<br/>
+				<p>Изделие _________________ зав. №____________________ не соответствует 
+					требованиям НВИТ.467846.002 И2.1, подлежит возврату ОТК.</p>
+			</div>
+			<table id="protocolFootTable">
+					<tr>
+						<td class="post">
+							<p>Представитель ЦМС</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+						<td>
+							<p>(подпись)</p>
+							<br/>
+						</td>
+						<td>
+							<p>(инициалы и фамилия)</p>
+							<br/>
+						</td>
+					</tr>
+					<tr>
+						<td class="post"> 
+							<p>Представитель ОТК</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+						<td>
+							<p>(подпись)</p>
+							<br/>
+						</td>
+						<td>
+							<p>(инициалы и фамилия)</p>
+							<br/>
+						</td>
+					</tr>
+					<tr>
+						<td class="post">
+							<p>Представитель 4296 ПЗ</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+						<td>
+							<p>(подпись)</p>
+							<br/>
+						</td>
+						<td>
+							<p>(инициалы и фамилия)</p>
+							<br/>
+						</td>
+					</tr>
+					
+				</table>
+		</div>
+		
+		
 	</p:panel>
+	<div id="frontContent">
+				<div id="protocolHeadTableContentBlock">
+					<table class="protocolHeadTableContent">
+						<tr>
+							<td class="protocolHeadTableContentModel" style="text-align: center;">
+								<p>#{protocol.measurements.get(0).equipment.model}</p>
+							</td>
+							<td>
+								<p></p>
+							</td>
+							<td class="protocolHeadTableContentNumber" style="text-align: center;">
+								<p>#{protocol.measurements.get(0).equipment.serialNumber}</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="protocolResultsTableContentBlock">
+					<table id="protocolResultsTableContent">
+						<ui:repeat 
+							var="harmonic" 
+							value="#{protocol.harmonics}">
+							<tr>
+									<td class="protocolResultsTableFrequency" style="text-align: center;">
+									  <p>#{harmonic.frequency}</p>
+									</td>
+									<td class="protocolResultsTableNorm" style="text-align: center;">
+									  <p>
+										  <h:outputText value="#{harmonic.amplitude + harmonic.reserve}" >
+										  	<f:convertNumber pattern="#0.00" locale="EN-en"/>
+										  </h:outputText>
+									  </p>
+									</td>
+									<td class="protocolResultsTableLevels1" style="text-align: center;">
+									  <p>#{harmonic.amplitude}</p>
+									</td>
+									<td class="protocolResultsTableLevels2" style="text-align: center;">
+									  <p></p>
+									</td>
+									<td class="protocolResultsTableNote" style="text-align: center;">
+									  <p></p>
+									</td>
+								</tr>
+						</ui:repeat>
+					    
+					</table>
+				</div>
+				<div id="protocolUserNameBlock" style="text-align: center;"> 
+					<p>#{protocol.measurements.get(0).user.lastName}</p>
+				</div>
+			</div>
 </ui:define>
 
 </ui:composition>

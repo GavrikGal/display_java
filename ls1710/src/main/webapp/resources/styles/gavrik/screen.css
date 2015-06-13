@@ -197,6 +197,9 @@ caption {background:#eee;}
 	z-index: 1010 !important;
 }
 
+#form\:confirmDialog {
+	top: 200px !important;
+}
 
 /* .ui-icon-addPhoto{
 	background-image: url(icons/addPhoto.png);
@@ -343,3 +346,209 @@ caption {background:#eee;}
 /* .measurementDetailColumn {
 	vertical-align: top;
 } */
+
+/* ---------------------------------------------------------------------------------------- */
+
+/* -------------------------- Протокол -----------------------------------------------------*/
+
+#backContent {
+	
+	width: 210mm;
+	height: 297mm;
+		
+	z-index: 0;
+	display: block;
+	position: absolute;
+	margin-top: 10px;
+	margin-bottom: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	padding: 1cm;
+}
+
+#backContent p {	
+	margin: 9px;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 1.2em;
+	font-weight: normal;
+	color: #333333;
+}
+
+/*---------------- название ---------------*/
+#protocolName {
+	width: 16cm;
+	margin: auto;
+}
+
+/*--------------- шапка -------------------*/
+
+#protocolHeadTable{
+	margin: auto 2cm;
+	border: 0px solid #EEE; 
+}
+
+#protocolHeadTable td{
+	border: 0px solid #E44; 
+}
+
+#protocolHeadTable p {
+	text-align: left;
+}
+
+/*----------------таблица протокола--------*/
+#protocolResultsTable{
+	margin: 1cm 0cm 0cm 2cm;
+	padding: 0px;
+	border: 1px solid #333; 
+	border-collapse: collapse;
+}
+
+#protocolResultsTable p {
+	margin: 0px 5px;;
+	font-size: 1.2em;
+}
+
+#protocolResultsTable th{
+	margin: auto;
+	padding: 0px;
+	color: #333;
+	background-color: #fff;
+	border: 1px solid #333; 
+}
+
+#protocolResultsTable td{
+	padding: 0px;
+}
+
+table.protocolResultsInnerTable {
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border: 0px solid #333;
+}
+
+.protocolResultsTableFrequency {
+	width: 3.7cm;
+	border-right: 1px solid #333;
+}
+
+.protocolResultsTableNorm {
+	width: 5.3cm;
+	border-right: 1px solid #333;
+}
+
+td.protocolResultsTableLevels {
+	border-bottom: 1px solid #333;
+}
+
+.protocolResultsTableLevels1 {
+	width: 3.3cm;
+	border-right: 1px solid #333;
+}
+
+tr.data td.protocolResultsTableLevels1 {
+	height: 8cm;
+}
+
+.protocolResultsTableLevels2 {
+	width: 3cm;
+}
+
+tr.data td.protocolResultsTableLevels2 {
+	height: 8cm;
+}
+.protocolResultsTableNote {
+	width: 3.5cm;
+	border-left: 1px solid #333;
+}
+/*------------------------------------------*/
+
+/*----------заключение протокола ------------*/
+#protocolFinal {
+	width: 18.8cm;
+	text-align: left;
+	margin-left: 2cm;
+	margin-top: 5mm;
+}
+
+/*--------- подвал протокола ---------------*/
+#protocolFootTable{
+	margin-top: 2cm;
+	margin-left: 2cm;
+	border: 0px solid #EEE; 
+}
+
+#protocolFootTable td{
+	border: 0px solid #0fE; 
+}
+
+#protocolFootTable p {
+	margin: 0px 10px;
+}
+
+td.post {
+	text-align: left;
+}
+/*-----------------------------------------*/
+
+/*---------------- Данные ---------*/ 
+#frontContent {
+	width: 19cm;
+	margin: auto;
+	z-index: 0;
+	display: block;
+	position: relative;
+	left: 1.3cm;
+	top: 3.4cm;
+}
+
+#frontContent p {
+	margin: 0px;
+	padding: 0px;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 1.4em;
+	font-weight: normal;
+	font-style: italic;
+	color: #333333;
+}
+
+/*------------- Данные шапки ----------*/
+#protocolHeadTableContentBlock {
+	margin-left: 1.2cm;
+	width: 13.9cm;
+}
+
+.protocolHeadTableContent {
+	width: 100%;
+	margin: auto;
+}
+.protocolHeadTableContentModel{
+	width: 5.5cm;
+}
+
+.protocolHeadTableContentNumber {
+	width: 5.5cm;
+}
+
+/*---------------- Данные таблицы ---------*/ 
+#protocolResultsTableContentBlock {
+	margin-top: 6.1cm;
+	position: relative;
+}
+
+#protocolResultsTableContent td{
+	border: 0px;
+}
+
+/*--------------- Данные пользователя ------*/
+#protocolUserNameBlock {
+	position: absolute;
+	left: 11.3cm;
+	top: 21.7cm;
+	width: 5.5cm;
+}

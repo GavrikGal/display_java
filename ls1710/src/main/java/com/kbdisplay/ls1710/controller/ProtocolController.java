@@ -5,17 +5,23 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.el.ELContext;
+import javax.faces.context.FacesContext;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.webflow.execution.RequestContext;
 
 import com.kbdisplay.ls1710.domain.Harmonic;
 import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.Protocol;
 import com.kbdisplay.ls1710.domain.Spectrum;
 import com.kbdisplay.ls1710.service.data.ProtocolService;
+import com.kbdisplay.ls1710.view.protocol.ProtocolJournal;
+import com.kbdisplay.ls1710.view.protocol.web.ProtocolJournalImpl;
 
 @Component("protocolController")
 public class ProtocolController {
@@ -29,12 +35,21 @@ public class ProtocolController {
 	@Autowired
 	private ProtocolService protocolService;
 
-	public List<Protocol> newProtocolJournal() {
+	public ProtocolJournal newProtocolJournal() {
 		List<Protocol> protocols = protocolService.findAll();
-		return protocols;
+		ProtocolJournal protocolJournal = new ProtocolJournalImpl();
+		protocolJournal.setProtocols(protocols);
+		return protocolJournal;
 	}
 
 	public void createProtocol(Measurement measurement) {
+
+		FacesContext fc = FacesContext.getCurrentInstance();
+		ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+		ProtocolJournal protocolJournal =
+				(ProtocolJournal) fc.getApplication().getELResolver()
+						.getValue(elContext, null, "protocolJournal");
+
 		List<Measurement> measurements = new ArrayList<Measurement>();
 		measurements.add(measurement);
 		while (measurement.getNextMeasurement() != null) {
@@ -103,10 +118,18 @@ public class ProtocolController {
 			// protocol.setNumber(23l);
 			protocol.setPostfix("Ц");
 			protocol = protocolService.save(protocol);
-
+			protocolJournal.setSelectedProtocol(protocol);
 		} else {
-			System.out.println("Протоколы найдены");
+			protocolJournal.setSelectedProtocol(protocols.get(protocols.size()-1));
 		}
+	}
+
+	public Protocol showProtocol(RequestContext context) {
+
+		Protocol protocol = (Protocol) context.getRequestScope().get("protocol");
+
+
+		return protocol;
 	}
 
 }
