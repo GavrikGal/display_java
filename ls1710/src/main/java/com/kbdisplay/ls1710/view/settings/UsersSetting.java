@@ -2,6 +2,7 @@ package com.kbdisplay.ls1710.view.settings;
 
 import java.util.List;
 
+import com.kbdisplay.ls1710.domain.Role;
 import com.kbdisplay.ls1710.domain.User;
 
 public interface UsersSetting {
@@ -23,5 +24,9 @@ public interface UsersSetting {
 	public void newUser();
 
 	public void checkSelectedUser();
+
+	public List<Role> getRoles();
+
+	public void setRoles(List<Role> roles);
 
 }

@@ -9,7 +9,7 @@
 
 		<on-entry>
 			<evaluate expression="dataJournalController.newDataJournalTable()"
-				result="viewScope.dataJournalTable" />
+				result="conversationScope.dataJournalTable" />
 			<evaluate expression="dataJournalController.newEditFormDataJournalView()"
 				result="viewScope.editFormDJView" />
 		</on-entry>

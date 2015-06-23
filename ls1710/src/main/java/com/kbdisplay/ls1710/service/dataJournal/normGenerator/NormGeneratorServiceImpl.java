@@ -48,8 +48,6 @@ public class NormGeneratorServiceImpl implements NormGeneratorService{
 						.getApplication().getELResolver()
 						.getValue(elContext, null, normHandlerName);
 
-				System.out.println("normGenerator - " + normGenerator);
-
 				normGenerator.setDocumentNormAndParameters(norm, parameters);
 				return normGenerator;
 				} catch (Exception e) {

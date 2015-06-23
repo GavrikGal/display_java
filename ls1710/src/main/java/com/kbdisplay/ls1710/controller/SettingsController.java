@@ -15,8 +15,10 @@ import org.springframework.stereotype.Component;
 
 import com.kbdisplay.ls1710.domain.Limit;
 import com.kbdisplay.ls1710.domain.Norm;
+import com.kbdisplay.ls1710.domain.Role;
 import com.kbdisplay.ls1710.domain.User;
 import com.kbdisplay.ls1710.service.data.NormService;
+import com.kbdisplay.ls1710.service.data.RoleService;
 import com.kbdisplay.ls1710.service.data.StandardService;
 import com.kbdisplay.ls1710.service.data.UserService;
 import com.kbdisplay.ls1710.service.data.jpa.CustomUserDetails.CustomUserDetails;
@@ -47,6 +49,9 @@ public class SettingsController {
 	@Autowired
 	private StandardService standardService;
 
+	@Autowired
+	private RoleService roleService;
+
 
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public Settings newSettings() {
@@ -62,6 +67,9 @@ public class SettingsController {
 		List<User> users = userService.findAll();
 
 		usersSetting.setUsers(users);
+
+		List<Role> roles = roleService.findAll();
+		usersSetting.setRoles(roles);
 
 		return usersSetting;
 	}
@@ -103,17 +111,6 @@ public class SettingsController {
 				(CustomUserDetails) SecurityContextHolder.getContext()
 						.getAuthentication().getPrincipal();
 		User user = userDetails.getUsersDetails();
-
-		if (selected.getId() == 1) {
-			fc.addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Гала не сломить!", "Пользователь: "
-									+ selected.getLastName() + " "
-									+ selected.getFirstName()
-									+ " скорее тебя удалит, чем ты его"));
-			return;
-		}
 
 		if (selected.getId().equals(user.getId())) {
 			fc.addMessage(
@@ -225,8 +222,9 @@ public class SettingsController {
 					}
 					norm = normService.save(norm);
 
-					fc.addMessage(null, new FacesMessage("Норма успешно изменена",
-							"Изменена норма: " + norm.getName()));
+					fc.addMessage(null,
+							new FacesMessage("Норма успешно изменена",
+									"Изменена норма: " + norm.getName()));
 				}
 			} catch (Exception e) {
 
@@ -260,10 +258,8 @@ public class SettingsController {
 								.getValue(elContext, null, "normsSetting");
 				normsSetting.getNorms().remove(selectedNorm);
 				normService.delete(selectedNorm);
-				fc.addMessage(
-						null,
-						new FacesMessage("Норма удалена",
-								"Норма успешно удалена"));
+				fc.addMessage(null, new FacesMessage("Норма удалена",
+						"Норма успешно удалена"));
 			}
 		}
 	}

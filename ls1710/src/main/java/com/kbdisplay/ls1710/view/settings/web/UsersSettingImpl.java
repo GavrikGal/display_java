@@ -2,7 +2,9 @@ package com.kbdisplay.ls1710.view.settings.web;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
@@ -25,8 +27,22 @@ public class UsersSettingImpl implements UsersSetting, Serializable {
 	private User selected;
 
 	private String newRole = "ROLE_USER";
+	private List<Role> roles;
 
 
+	@Override
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	@Override
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	@Override
 	public List<User> getUsers() {
@@ -44,11 +60,11 @@ public class UsersSettingImpl implements UsersSetting, Serializable {
 		if (user != null) {
 			if (user.getRoles() == null) {
 				FacesContext fc = FacesContext.getCurrentInstance();
-				ELContext elContext = FacesContext.getCurrentInstance()
-						.getELContext();
-				UserService userService = (UserService) fc
-						.getApplication().getELResolver()
-						.getValue(elContext, null, "userService");
+				ELContext elContext =
+						FacesContext.getCurrentInstance().getELContext();
+				UserService userService =
+						(UserService) fc.getApplication().getELResolver()
+								.getValue(elContext, null, "userService");
 
 				user = userService.findByFirstName(user.getFirstName());
 
@@ -70,16 +86,27 @@ public class UsersSettingImpl implements UsersSetting, Serializable {
 
 	@Override
 	public void setNewRole(String role) {
-		//TODO не забудь исправить!!
-		if (role.equals("ROLE_ADMIN")) {
-			selected.setRoles(users.get(0).getRoles());
-		}else {
-			selected.setRoles(users.get(1).getRoles());
+		// TODO не забудь исправить!!
+//		if (role.equals("ROLE_ADMIN")) {
+//			selected.setRoles(users.get(0).getRoles());
+//		} else {
+//			selected.setRoles(users.get(1).getRoles());
+//		}
+
+		Set<Role> roles = new HashSet<Role>();
+		switch (role) {
+		case "ROLE_ADMIN":
+			roles.add(this.roles.get(0));
+		case "ROLE_USER":
+			roles.add(this.roles.get(1));
+
+		default:
+			roles.add(this.roles.get(1));
 		}
 
+		selected.setRoles(roles);
+
 	}
-
-
 
 	@Override
 	public String getNewRole() {
@@ -115,7 +142,5 @@ public class UsersSettingImpl implements UsersSetting, Serializable {
 					"Выберите пользователя для изменения данных"));
 		}
 	}
-
-
 
 }

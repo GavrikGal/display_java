@@ -739,9 +739,9 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		// TODO какой-то костыль, проверить будет ли без него работать, если
 		// нет,то исправить
-		if (measurement.getSpectrums().isEmpty()) {
+//		if (measurement.getSpectrums().isEmpty()) {
 			measurement.getSpectrums().add(newSpectrum);
-		}
+//		}
 
 		// �������� � ������ �������� �� ��������. ������ �������� �� �������
 		// ��������, ���������� ����� �������� ��� ��������
