@@ -20,6 +20,7 @@ import com.kbdisplay.ls1710.domain.Measurement;
 import com.kbdisplay.ls1710.domain.ModelOfEquipment;
 import com.kbdisplay.ls1710.domain.ModelType;
 import com.kbdisplay.ls1710.domain.Parameter;
+import com.kbdisplay.ls1710.domain.Protocol;
 import com.kbdisplay.ls1710.domain.TypeOfParameter;
 import com.kbdisplay.ls1710.service.data.DocumentService;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
@@ -29,6 +30,7 @@ import com.kbdisplay.ls1710.service.data.ModelService;
 import com.kbdisplay.ls1710.service.data.ModelTypeService;
 import com.kbdisplay.ls1710.service.data.NormService;
 import com.kbdisplay.ls1710.service.data.ParameterService;
+import com.kbdisplay.ls1710.service.data.ProtocolService;
 import com.kbdisplay.ls1710.service.dataJournal.MeasurementsUpdaterService;
 import com.kbdisplay.ls1710.service.dataJournal.NormGenerator;
 import com.kbdisplay.ls1710.service.dataJournal.NormGeneratorService;
@@ -103,6 +105,9 @@ public class DataJournalController {
 
 	@Autowired
 	private DocumentService documentService;
+
+	@Autowired
+	private ProtocolService protocolService;
 
 
 	/**
@@ -255,12 +260,23 @@ public class DataJournalController {
 
 		Long equipId = selected.getEquipment().getId();
 
+		List<Protocol> protocols = selected.getProtocols();
+
+		if (protocols != null) {
+			for (Protocol protocol : protocols) {
+				protocolService.delete(protocol);
+			}
+
+		}
+
 		measurementService.delete(selected);
 		Equipment equipment = equipmentService.findById(equipId);
 
 		if (equipment.getMeasurements().size() < 1) {
 			equipmentService.delete(equipment);
 		}
+
+
 
 		dataTable.deleteSelected();
 

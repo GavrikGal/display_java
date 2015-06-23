@@ -126,6 +126,7 @@ public class Measurement implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "protocol_measurement", joinColumns = @JoinColumn(name = "measurement_id"), inverseJoinColumns = @JoinColumn(name = "protocol_id"))
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Protocol> protocols;
 
 	public DateOfMeasurement getDate() {
