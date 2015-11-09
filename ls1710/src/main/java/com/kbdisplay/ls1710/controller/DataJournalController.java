@@ -24,11 +24,9 @@ import com.kbdisplay.ls1710.domain.Protocol;
 import com.kbdisplay.ls1710.domain.TypeOfParameter;
 import com.kbdisplay.ls1710.service.data.DocumentService;
 import com.kbdisplay.ls1710.service.data.EquipmentService;
-import com.kbdisplay.ls1710.service.data.LimitService;
 import com.kbdisplay.ls1710.service.data.MeasurementService;
 import com.kbdisplay.ls1710.service.data.ModelService;
 import com.kbdisplay.ls1710.service.data.ModelTypeService;
-import com.kbdisplay.ls1710.service.data.NormService;
 import com.kbdisplay.ls1710.service.data.ParameterService;
 import com.kbdisplay.ls1710.service.data.ProtocolService;
 import com.kbdisplay.ls1710.service.dataJournal.MeasurementsUpdaterService;
@@ -88,11 +86,11 @@ public class DataJournalController {
 	@Autowired
 	private ParameterService parameterService;
 
-	@Autowired
-	private NormService normService;
+//	@Autowired
+//	private NormService normService;
 
-	@Autowired
-	private LimitService limitService;
+//	@Autowired
+//	private LimitService limitService;
 
 	@Autowired
 	private NormGeneratorService normGeneratorService;

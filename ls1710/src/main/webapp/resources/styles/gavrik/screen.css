@@ -85,6 +85,12 @@ caption {background:#eee;}
 	box-shadow: 0 0 6px 0 #C2D2EA;
 }
 
+.resultPanel {
+	margin-top: 10px;
+	margin-bottom: 50px;
+	
+}
+
 .footerContent {
 	width: 99%;
 	margin: 0 auto;
@@ -346,6 +352,57 @@ caption {background:#eee;}
 /* .measurementDetailColumn {
 	vertical-align: top;
 } */
+
+
+/* ---------------------------Плитки------------------------------------------------------- */
+
+.tile {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	box-shadow: 0 1px 3px 0 #869dc1;
+	
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	
+	padding-left: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	
+	/*height: 50px;*/
+	overflow: hidden;
+	
+}
+
+#dataTilesForm .ui-panel .ui-panel-content {
+	
+	width: 100%;
+	
+	padding-left: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+}
+
+#dataTilesForm .ui-panel .ui-panel-content td{
+	padding-left: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+}
+
+.tile-content-grid {
+	
+	
+	margin: 0px 0px 0px 0px;
+}
+
 
 /* ---------------------------------------------------------------------------------------- */
 

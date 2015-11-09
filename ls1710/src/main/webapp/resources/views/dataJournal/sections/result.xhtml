@@ -1,0 +1,37 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:component="http://java.sun.com/jsf/composite/views/dataJournal/components">
+
+
+	<div class="resultPanel">
+		
+			<h:form id="dataTilesForm">
+				<!-- контекстное меню. 
+				подключаем секцию с контекстным меню таблицы данных об измерениях, 
+				эта и подключаемая страница связаны через атрибуты 
+				update="measurementForViews", update="measurementForViews" 
+				контекстного меню и widgetVar="measurementDialog" диалогового 
+				окна и id="measurementForViews" таблицы данных  -->
+				
+
+
+				<!-- плитки с данными об измерениями. -->
+				<ui:include
+					src="/resources/views/dataJournal/sections/result/measurementDataTiles.xhtml" />
+
+
+				<!-- диалоговое окно детальной информации об измерении. 
+				подключаем секцию с диалоговым окном деталей цикла 
+				измерений, эта и подключаемая страница связаны через атрибут 
+				update="measurementDetail" контекстного меню и
+				widgetVar="measurementDialog" диалогового окна -->
+				
+			</h:form>
+		
+	</div>
+</ui:composition>
