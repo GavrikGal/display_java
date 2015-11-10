@@ -106,6 +106,7 @@ caption {background:#eee;}
 	color: inherit;
 	padding: 0px !important;
 	margin: 0px !important;
+	width: 100%;
 }
 
 .internalTable td {
@@ -378,6 +379,52 @@ caption {background:#eee;}
 	/*height: 50px;*/
 	overflow: hidden;
 	
+	transition: all 100ms linear;
+	
+	animation: moveBack 50ms ease-in-out;
+	
+}
+
+
+.tile:HOVER {
+	box-shadow: 0 2px 5px 0 #6986b1;
+	animation: moveUp 100ms ease-in-out;
+	margin-top: -2px;
+ 	margin-bottom: 17px;  
+}
+
+@keyframes moveUp {
+ from {
+	
+ transform: translateY(0%);
+ margin-top: 0px;
+ margin-bottom: 15px;
+ }
+ to {
+
+ transform: translateY(1%);
+ margin-top: -2px;
+ margin-bottom: 17px;
+ }
+}
+
+@keyframes moveBack {
+ from {
+	
+ 
+ margin-top: -2px;
+ margin-bottom: 17px;
+ }
+ to {
+
+ margin-top: 0px;
+ margin-bottom: 15px;
+
+ }
+}
+
+.tile div {
+	margin-left: 0px;
 }
 
 #dataTilesForm .ui-panel .ui-panel-content {
@@ -398,9 +445,51 @@ caption {background:#eee;}
 }
 
 .tile-content-grid {
-	
-	
 	margin: 0px 0px 0px 0px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px; 
+}
+
+.tile-content-firstcolumn-grid {
+	width: 100%;
+}
+
+.tile-content-firstcolumn-grid td{
+	margin: auto;
+	text-align: center;
+}
+
+.tile-content-modelName {
+	font-weight: bold;
+	color: #5a7aa9;
+}
+
+.tile-content-isRestrictedAccess-text {
+	text-align: center;
+	margin: auto;
+	color: #4F4F4F;
+}
+
+.tile-content-serialNumber {
+	font-weight: 900;
+	font-size: medium;
+	color: #3c5273;
+}
+
+.tile-content-grid .ui-widget-content {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px;
+}
+
+.tile-content-grid .ui-panelgrid-cell {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px;
 }
 
 

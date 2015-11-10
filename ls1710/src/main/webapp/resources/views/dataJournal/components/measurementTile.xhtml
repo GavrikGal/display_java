@@ -13,51 +13,54 @@
 	<!--  INTERFACE -->
   <composite:interface>
     <composite:attribute name="row" type="com.kbdisplay.ls1710.view.dataJournal.Row"/>
-    <composite:attribute name="widthFirstColumn" />        
+    <composite:attribute name="widthFirstColumn" />
+    <composite:attribute name="widthPhoto" />       
   </composite:interface>
 
   <!--  IMPLEMENTATION -->          
     <composite:implementation>
     
     	<p:panel styleClass="tile">
-       		<h:panelGrid columns="3" styleClass="tile-content-grid">
-       			<h:column width="#{cc.attrs.widthFirstColumn}">
-       			
-       				<p:graphicImage width="#{cc.attrs.widthFirstColumn}" name="photo/38.png"/>
-       			
-       			</h:column>
-       			<h:column width="#{cc.attrs.widthFirstColumn}" >
-	       			<h:panelGrid columns="1" style="width: #{cc.attrs.widthFirstColumn}">
-	       					<h:outputText value="#{cc.attrs.row.equipment.model.name}" />
-	       					<h:outputText value="#{cc.attrs.row.equipment.serialNumber}" />
-	       			</h:panelGrid>
-       			</h:column>
-       			
-       			<h:panelGrid columns="1">
-       					<sec:authorize access="isAnonymous()" >
-							<p:outputLabel value="#{msg['is_restricted_access']}" rendered="#{cc.attrs.row.measurement.restrictedAccess}"/>
-						
-							<p:dataGrid var="spectrum"
-								value="#{cc.attrs.row.spectrums}" columns="1" rows="2"
-								id="spectrums" paginator="false" styleClass="internalTable" rendered="#{not cc.attrs.row.measurement.restrictedAccess}">
-								<component:spectrumRow spectrum="#{spectrum}"
-									widthFirstColumn="140px" />
-							</p:dataGrid>
-						</sec:authorize>
-						
-						<sec:authorize access="hasRole('ROLE_USER')" >
-							<p:dataGrid var="spectrum"
-								value="#{cc.attrs.row.spectrums}" columns="1" rows="2"
-								id="spectrums" paginator="false" styleClass="internalTable"  style="border-color: red">
-								<component:spectrumRow spectrum="#{spectrum}"
-									widthFirstColumn="140px" />
+    		<p:panelGrid styleClass="tile-content-grid">
+    			<p:row>
+    				<p:column>
+		    			<p:graphicImage width="#{cc.attrs.widthPhoto}" name="photo/38.png"/>
+		    		</p:column>
+		    		<p:column style="width: #{cc.attrs.widthFirstColumn}" >
+		    			<h:panelGrid columns="1" styleClass="tile-content-firstcolumn-grid" >
+			       					<h:outputText value="#{cc.attrs.row.equipment.model.name}" styleClass="tile-content-modelName"/>
+			       					<h:outputText value="#{cc.attrs.row.equipment.serialNumber}" styleClass="tile-content-serialNumber"/>
+			       		</h:panelGrid>
+			       	</p:column>
+			       	<p:column>
+			       		<h:panelGrid columns="1">
+		       					<sec:authorize access="isAnonymous()" >
+									<h:outputText value="#{msg['is_restricted_access']}" rendered="#{cc.attrs.row.measurement.restrictedAccess}" styleClass="tile-content-isRestrictedAccess-text"/>
 								
-							</p:dataGrid>
-							<p:separator style="border-color: #CA8080; height:1px; line-height:2px; margin: 0px; padding: 0px;" rendered="#{cc.attrs.row.measurement.restrictedAccess}"/>
-						</sec:authorize>
-       			</h:panelGrid>
-       			       			
-       		</h:panelGrid>
+									<p:dataGrid var="spectrum"
+										value="#{cc.attrs.row.spectrums}" columns="1" rows="2"
+										id="spectrums" paginator="false" styleClass="internalTable" rendered="#{not cc.attrs.row.measurement.restrictedAccess}">
+										<component:spectrumRow spectrum="#{spectrum}"
+											widthFirstColumn="140px" />
+									</p:dataGrid>
+								</sec:authorize>
+								
+								<sec:authorize access="hasRole('ROLE_USER')" >
+									<p:dataGrid var="spectrum"
+										value="#{cc.attrs.row.spectrums}" columns="1" rows="2"
+										id="spectrums" paginator="false" styleClass="internalTable"  style="border-color: red">
+										<component:spectrumRow spectrum="#{spectrum}"
+											widthFirstColumn="140px" />
+										
+									</p:dataGrid>
+									<p:separator style="border-color: #CA8080; height:1px; line-height:2px; margin: 0px; padding: 0px;" rendered="#{cc.attrs.row.measurement.restrictedAccess}"/>
+								</sec:authorize>
+		       			</h:panelGrid>
+		       		</p:column>
+    			</p:row>
+    		</p:panelGrid>
+    	
+       		
        		
        	</p:panel>
     
