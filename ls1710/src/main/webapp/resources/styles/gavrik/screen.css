@@ -385,6 +385,10 @@ caption {background:#eee;}
 	
 }
 
+.tileHiddenContent {
+	overflow: hidden;
+}
+
 
 .tile:HOVER {
 	box-shadow: 0 2px 5px 0 #6986b1;

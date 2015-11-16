@@ -19,8 +19,9 @@
 
   <!--  IMPLEMENTATION -->          
     <composite:implementation>
+    <h:outputScript library="scripts" name="sliderTile.js" target="body"/>
     
-    	<p:panel styleClass="tile">
+    	<p:panel styleClass="tile" id="tileContainer">
     		<p:panelGrid styleClass="tile-content-grid">
     			<p:row>
     				<p:column>
@@ -59,8 +60,7 @@
 		       		</p:column>
     			</p:row>
     		</p:panelGrid>
-    	
-       		
+    		
        		
        	</p:panel>
     
