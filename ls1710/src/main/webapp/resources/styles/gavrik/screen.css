@@ -356,7 +356,94 @@ caption {background:#eee;}
 
 
 /* ---------------------------Плитки------------------------------------------------------- */
+div.ui-datascroller {
+	margin: 0px 0px 0px 0xp;
+	padding: 0px 0px 0px 0px;
+	background-color: inherit;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px;
+}
 
+div.ui-datascroller-content{
+	margin: 0px 0px 0px 0xp;
+	padding: 0px 0px 0px 0px !important;
+	background-color: inherit;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px;
+}
+/*-----date-----*/
+
+.date{
+	width: 100%;
+	background-color: inherit;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px; 
+	
+}
+
+.date-table .ui-panelgrid-cell{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.date-table label {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	color: #6986b1;
+	font-size: larger;
+}
+
+.date-table .ui-widget {
+	font-size: 1.2em;
+}
+
+.date-table hr {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px; 
+	height: 2px;
+	background-color: #acbcd5;
+}
+
+.no-border {
+	margin: 0px 0px 0px 0px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px; 
+}
+
+.no-border .ui-panelgrid-cell {
+	margin: 0px 0px 0px 0px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px; 
+}
+
+.no-border .ui-widget-content {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 0px;
+}
+
+.date tr{
+	background-color: inherit;
+}
+
+/*---------*/
 .tile {
 	margin-top: 15px;
 	margin-bottom: 15px;
@@ -383,6 +470,10 @@ caption {background:#eee;}
 	
 	animation: moveBack 50ms ease-in-out;
 	
+}
+
+a.tile {
+	text-decoration: none;
 }
 
 .tileHiddenContent {

@@ -9,16 +9,35 @@
 	xmlns:component="http://java.sun.com/jsf/composite/views/dataJournal/components"
 	xmlns:sec="http://www.springframework.org/security/tags">
 
-
-
-	<div id="slider">
+	<p:dataScroller 
+		id="measTiles" 
+		value="#{dataJournalTable.rows}" 
+		var="row" 
+		chunkSize="10" 
+		lazy="false">
+		
+		<component:measurementTile 
+			row="#{row}" 
+			widthFirstColumn="150px" 
+			widthPhoto="50px" 
+			widthPhotoColumn="100px"/>
+		
+	</p:dataScroller>
+	<!-- <p:contextMenu for="measTiles">
+		<p:menuitem value="Первый пункт"/>
+		<p:menuitem value="Второй пункт"/>
+	</p:contextMenu> -->
+	
+	<!-- <div id="slider">
     <ui:repeat var="row" value="#{dataJournalTable.rows}" >
     	
     	<component:measurementTile row="#{row}" widthFirstColumn="200px" widthPhoto="50px"/>
     
        	
     </ui:repeat>
-  	</div>
+  	</div> -->
+  	
+  
 
 	
 

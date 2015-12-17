@@ -3,6 +3,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:composite="http://java.sun.com/jsf/composite"
@@ -14,17 +15,40 @@
   <composite:interface>
     <composite:attribute name="row" type="com.kbdisplay.ls1710.view.dataJournal.Row"/>
     <composite:attribute name="widthFirstColumn" />
-    <composite:attribute name="widthPhoto" />       
+    <composite:attribute name="widthPhoto" />  
+    <composite:attribute name="widthPhotoColumn" />            
   </composite:interface>
 
   <!--  IMPLEMENTATION -->          
     <composite:implementation>
-    <h:outputScript library="scripts" name="sliderTile.js" target="body"/>
+    <h:outputScript library="scripts" name="tiles.js" target="body"/>
     
-    	<p:panel styleClass="tile" id="tileContainer">
+    <p:outputPanel styleClass="date" rendered="#{cc.attrs.row.enableFirstDate}">
+	    <p:panelGrid styleClass="date-table no-border" >
+	    	<p:row >
+		    	<p:column style="width: 5%">
+		    		<hr></hr>
+		    	</p:column>
+				<p:column  >
+					<p:outputLabel value="#{cc.attrs.row.firstDate.date}" >
+				    	
+					    		<f:converter converterId="jodaDataTimeConverter" />
+								<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
+					    
+				    </p:outputLabel>
+			    </p:column>
+				<p:column  style="width: 95%">
+			    	<hr></hr>
+				</p:column>
+			</p:row>
+	    </p:panelGrid>
+    </p:outputPanel>
+    
+    <p:commandLink onclick="expand(event)" styleClass="tile">
+    	<p:panel styleClass="tile" id="tile">
     		<p:panelGrid styleClass="tile-content-grid">
     			<p:row>
-    				<p:column>
+    				<p:column style="width: #{cc.attrs.widthPhotoColumn}">
 		    			<p:graphicImage width="#{cc.attrs.widthPhoto}" name="photo/38.png"/>
 		    		</p:column>
 		    		<p:column style="width: #{cc.attrs.widthFirstColumn}" >
@@ -63,7 +87,7 @@
     		
        		
        	</p:panel>
-    
+	</p:commandLink>
   </composite:implementation>
 
 
