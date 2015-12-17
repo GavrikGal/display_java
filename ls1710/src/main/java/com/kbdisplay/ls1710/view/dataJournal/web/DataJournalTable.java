@@ -2,19 +2,14 @@ package com.kbdisplay.ls1710.view.dataJournal.web;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import org.joda.time.DateTime;
 
-import com.kbdisplay.ls1710.domain.DateOfMeasurement;
 import com.kbdisplay.ls1710.domain.Measurement;
-import com.kbdisplay.ls1710.domain.Spectrum;
 import com.kbdisplay.ls1710.view.dataJournal.DataTable;
 import com.kbdisplay.ls1710.view.dataJournal.Row;
 import com.kbdisplay.ls1710.view.dataJournal.web.component.DataRow;
@@ -146,7 +141,6 @@ public class DataJournalTable implements Serializable, DataTable {
 	 *            - новое измерение.
 	 */
 	public final void insertRow(final Measurement measurement) {
-		// currentId++;
 		/*
 		 * проверка являются ли измерения начальными в серии испытаний например
 		 * если у измемения родительское измерение равно null,то измерение
@@ -155,33 +149,7 @@ public class DataJournalTable implements Serializable, DataTable {
 		if (measurement.getParentMeasurement() == null) {
 
 			Row row = new DataRow();
-
 			row.init(measurement.getId(), measurement);
-
-			/* установка актуальных спектров из цикла измерений */
-			List<Spectrum> lastSpectrums =
-					this.getActualSpectrums(row.getMeasurement());
-			row.setSpectrums(lastSpectrums);
-
-			// System.out.println("Norm:");
-			// Norm norm = lastSpectrums.get(lastSpectrums.size()-1).getNorm();
-			// System.out.println(norm.getName());
-			// List<Limit> limits = norm.getLimits();
-			// System.out.println("Limits:");
-			// for (Limit limit : limits) {
-			// System.out.println(limit.getFrequency() + " - " +
-			// limit.getAmplitude());
-			// }
-			row.setUser(lastSpectrums.get(lastSpectrums.size() - 1)
-					.getMeasurement().getUser());
-
-			/* установка даты последнего измерения из цикла */
-			DateOfMeasurement lastDate = this.getLastDate(row.getMeasurement());
-			row.setLastDate(lastDate);
-			/*
-			 * добавление подготовленного для отображения измерения к списку
-			 * всех подготовленных измерений.
-			 */
 			rows.add(row);
 		}
 	}
@@ -196,22 +164,10 @@ public class DataJournalTable implements Serializable, DataTable {
 	 */
 	public final void updateRow(final Row row, final Measurement measurement) {
 
+		// обновляем строку новыми данными.
+		row.update(measurement);
+
 		// TODO кастыль - исправить нахрен
-		Measurement rootMeasurement = measurement;
-		while (rootMeasurement.getParentMeasurement() != null) {
-			rootMeasurement = rootMeasurement.getParentMeasurement();
-		}
-		// кастыль
-
-		List<Spectrum> lastSpectrums = this.getActualSpectrums(rootMeasurement);
-
-		row.setSpectrums(lastSpectrums);
-		row.setUser(lastSpectrums.get(lastSpectrums.size() - 1)
-				.getMeasurement().getUser());
-
-		if (measurement.getParentMeasurement() != null) {
-			row.setLastDate(measurement.getDate());
-		}
 		int index = rows.indexOf(row);
 		rows.remove(row);
 		rows.add(index, row);
@@ -226,106 +182,6 @@ public class DataJournalTable implements Serializable, DataTable {
 		selected = null;
 	}
 
-	/**
-	 * выбор актуальных спектров из цикла измерений.
-	 *
-	 * в списке связанных одним циклом измерений выбираются спектры, чтобы
-	 * представить максимально большее число спектров с различными параметрами.
-	 * Из спектров с одинаковыми параметрами выбираются те, которые были
-	 * измерены позже, т.е. являются более актуальными.
-	 *
-	 * @param measurements
-	 *            список связанных одним циклом измерений
-	 * @return актуальные спектры из цикла измерений
-	 */
-	private List<Spectrum> getActualSpectrums(final Measurement measurement) {
-
-		Map<Long, Spectrum> actualSpectrumMap =
-				this.getActualSpectrumMap(new HashMap<Long, Spectrum>(),
-						measurement);
-		List<Spectrum> actualSpectrums = new ArrayList<Spectrum>();
-		for (Entry<Long, Spectrum> spectrum : actualSpectrumMap.entrySet()) {
-			actualSpectrums.add(spectrum.getValue());
-		}
-
-		return actualSpectrums;
-	}
-
-	private Map<Long, Spectrum> getActualSpectrumMap(
-			final Map<Long, Spectrum> prevActualMap,
-			final Measurement measurement) {
-		Map<Long, Spectrum> actualMap = new HashMap<Long, Spectrum>();
-		if (measurement != null) {
-
-			List<Spectrum> spectrums = measurement.getSpectrums();
-
-			if (!spectrums.isEmpty()) {
-				/*
-				 * поиск и замена более старых спектров на новые. в качестве
-				 * критерия используется версия спектра, т.е. спектр с большей
-				 * версией актуальнее.
-				 */
-				for (Spectrum spectrum : spectrums) {
-
-					Long parameterId =
-							spectrum.getParameters()
-									.get(spectrum.getParameters().size() - 1)
-									.getId();
-					if (!actualMap.containsKey(parameterId)) {
-						actualMap.put(parameterId, spectrum);
-					} else {
-						int actualVersion =
-								actualMap.get(parameterId).getVersion();
-						int currentVersion = spectrum.getVersion();
-						if (actualVersion < currentVersion) {
-							actualMap.put(parameterId, spectrum);
-						}
-
-					}
-				}
-
-				for (Entry<Long, Spectrum> actualSpectrum : actualMap
-						.entrySet()) {
-					prevActualMap.put(actualSpectrum.getKey(),
-							actualSpectrum.getValue());
-				}
-
-				actualMap = prevActualMap;
-
-			}
-			Measurement nextMeasurement = measurement.getNextMeasurement();
-			if (nextMeasurement != null) {
-				actualMap =
-						this.getActualSpectrumMap(prevActualMap,
-								nextMeasurement);
-			}
-		}
-
-		return actualMap;
-	}
-
-	/**
-	 * выбор даты последнего измерения из цикла измерений.
-	 *
-	 * если цикл состоит из одного измерения, то это значит, что последующие
-	 * измерения не проводились. в этом случае возвращается значение null.
-	 *
-	 * @param measurements
-	 *            цикл связанных измерений
-	 * @return дата последнего из цикла измерения
-	 */
-	private DateOfMeasurement getLastDate(final Measurement measurement) {
-		Measurement lastMeasurement = null;
-		if (measurement.getNextMeasurement() != null) {
-			lastMeasurement = measurement;
-			while (lastMeasurement.getNextMeasurement() != null) {
-				lastMeasurement = lastMeasurement.getNextMeasurement();
-			}
-
-			return lastMeasurement.getDate();
-		}
-		return null;
-	}
 
 	/**
 	 * делает неотображаемыми повторяющиеся элементы даты и модели.

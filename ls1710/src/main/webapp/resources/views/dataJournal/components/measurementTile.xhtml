@@ -21,71 +21,136 @@
 
   <!--  IMPLEMENTATION -->          
     <composite:implementation>
-    <h:outputScript library="scripts" name="tiles.js" target="body"/>
+    <h:outputScript 
+    	library="scripts" 
+    	name="tiles.js" 
+    	target="body"/>
     
-    <p:outputPanel styleClass="date" rendered="#{cc.attrs.row.enableFirstDate}">
-	    <p:panelGrid styleClass="date-table no-border" >
+    <p:outputPanel 
+    	styleClass="date" 
+    	rendered="#{cc.attrs.row.enableFirstDate}">
+    	
+	    <p:panelGrid 
+	    	styleClass="date-table no-border" >
+	    	
 	    	<p:row >
-		    	<p:column style="width: 5%">
-		    		<hr></hr>
+		    	<p:column 
+		    		style="width: 5%">
+		    		<hr/>
 		    	</p:column>
-				<p:column  >
-					<p:outputLabel value="#{cc.attrs.row.firstDate.date}" >
+				<p:column>
+					<p:outputLabel 
+						value="#{cc.attrs.row.firstDate.date}" >
 				    	
-					    		<f:converter converterId="jodaDataTimeConverter" />
-								<f:attribute name="pattern" value="#{msg['date_format_pattern']}" />
-					    
+			    		<f:converter 
+			    			converterId="jodaDataTimeConverter" />
+						
+						<f:attribute 
+							name="pattern" 
+							value="#{msg['date_format_pattern']}" />
 				    </p:outputLabel>
 			    </p:column>
-				<p:column  style="width: 95%">
-			    	<hr></hr>
+				<p:column 
+					style="width: 95%">
+			    	<hr/>
 				</p:column>
 			</p:row>
 	    </p:panelGrid>
     </p:outputPanel>
     
-    <p:commandLink onclick="expand(event)" styleClass="tile">
-    	<p:panel styleClass="tile" id="tile">
-    		<p:panelGrid styleClass="tile-content-grid">
+    <p:commandLink 
+    	onclick="expand(event)" 
+    	styleClass="tile" 
+    	action="#{cc.attrs.row.toggleMaxOrAllSpectrum()}" 
+    	update="@this:spectrums" >
+    	
+    	<p:panel 
+    		id="tile"
+    		styleClass="tile" >
+    		
+    		<p:panelGrid 
+    			styleClass="tile-content-grid">
+    			
     			<p:row>
-    				<p:column style="width: #{cc.attrs.widthPhotoColumn}">
-		    			<p:graphicImage width="#{cc.attrs.widthPhoto}" name="photo/38.png"/>
+    				<p:column 
+    					style="width: #{cc.attrs.widthPhotoColumn}">
+    					
+		    			<p:graphicImage
+		    				name="photo/38.png" 
+		    				width="#{cc.attrs.widthPhoto}"/>
 		    		</p:column>
-		    		<p:column style="width: #{cc.attrs.widthFirstColumn}" >
-		    			<h:panelGrid columns="1" styleClass="tile-content-firstcolumn-grid" >
-			       					<h:outputText value="#{cc.attrs.row.equipment.model.name}" styleClass="tile-content-modelName"/>
-			       					<h:outputText value="#{cc.attrs.row.equipment.serialNumber}" styleClass="tile-content-serialNumber"/>
+		    		
+		    		<p:column 
+		    			style="width: #{cc.attrs.widthFirstColumn}" >
+		    			
+		    			<h:panelGrid 
+		    				columns="1" 
+		    				styleClass="tile-content-firstcolumn-grid" >
+		    				
+	       					<h:outputText 
+	       						value="#{cc.attrs.row.equipment.model.name}" 
+	       						styleClass="tile-content-modelName"/>
+	       					
+	       					<h:outputText 
+	       						value="#{cc.attrs.row.equipment.serialNumber}" 
+	       						styleClass="tile-content-serialNumber"/>
 			       		</h:panelGrid>
 			       	</p:column>
+			       	
 			       	<p:column>
-			       		<h:panelGrid columns="1">
-		       					<sec:authorize access="isAnonymous()" >
-									<h:outputText value="#{msg['is_restricted_access']}" rendered="#{cc.attrs.row.measurement.restrictedAccess}" styleClass="tile-content-isRestrictedAccess-text"/>
+			       		<h:panelGrid 
+			       			columns="1">
+	       					
+	       					<sec:authorize 
+	       						access="isAnonymous()" >
 								
-									<p:dataGrid var="spectrum"
-										value="#{cc.attrs.row.spectrums}" columns="1" rows="2"
-										id="spectrums" paginator="false" styleClass="internalTable" rendered="#{not cc.attrs.row.measurement.restrictedAccess}">
-										<component:spectrumRow spectrum="#{spectrum}"
-											widthFirstColumn="140px" />
-									</p:dataGrid>
-								</sec:authorize>
+								<h:outputText 
+									value="#{msg['is_restricted_access']}" 
+									rendered="#{cc.attrs.row.measurement.restrictedAccess}" 
+									styleClass="tile-content-isRestrictedAccess-text"/>
+							
+								<p:dataGrid 
+									id="spectrums"
+									var="spectrum"
+									value="#{cc.attrs.row.spectrums}" 
+									columns="1" 
+									rows="#{cc.attrs.row.spectrums.size()}"
+									paginator="false" 
+									styleClass="internalTable" 
+									rendered="#{not cc.attrs.row.measurement.restrictedAccess}">
+									
+									<component:spectrumRow 
+										spectrum="#{spectrum}"
+										widthFirstColumn="140px" />
+								</p:dataGrid>
+							</sec:authorize>
+							
+							<sec:authorize 
+								access="hasRole('ROLE_USER')" >
 								
-								<sec:authorize access="hasRole('ROLE_USER')" >
-									<p:dataGrid var="spectrum"
-										value="#{cc.attrs.row.spectrums}" columns="1" rows="2"
-										id="spectrums" paginator="false" styleClass="internalTable"  style="border-color: red">
-										<component:spectrumRow spectrum="#{spectrum}"
-											widthFirstColumn="140px" />
-										
-									</p:dataGrid>
-									<p:separator style="border-color: #CA8080; height:1px; line-height:2px; margin: 0px; padding: 0px;" rendered="#{cc.attrs.row.measurement.restrictedAccess}"/>
-								</sec:authorize>
+								<p:dataGrid 
+									id="spectrums"
+									var="spectrum"
+									value="#{cc.attrs.row.spectrums}" 
+									columns="1" 
+									rows="#{cc.attrs.row.spectrums.size()}"
+									paginator="false" 
+									styleClass="internalTable" 
+									style="border-color: red">
+									
+									<component:spectrumRow 
+										spectrum="#{spectrum}"
+										widthFirstColumn="140px" />
+								</p:dataGrid>
+								
+								<p:separator 
+									style="border-color: #CA8080; height:1px; line-height:2px; margin: 0px; padding: 0px;" 
+									rendered="#{cc.attrs.row.measurement.restrictedAccess}"/>
+							</sec:authorize>
 		       			</h:panelGrid>
 		       		</p:column>
     			</p:row>
     		</p:panelGrid>
-    		
-       		
        	</p:panel>
 	</p:commandLink>
   </composite:implementation>

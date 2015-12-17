@@ -28,6 +28,20 @@ public interface Row {
 	void init(Long id, Measurement measurement);
 
 	/**
+	 * обновление строки таблицы данных новым измерением.
+	 *
+	 * @param newMeasurement
+	 *            - новое измерение.
+	 */
+	void update(Measurement newMeasurement);
+
+	/**
+	 * переключает отображение спектров максимального уровня и всех спектров
+	 * измерения.
+	 */
+	void toggleMaxOrAllSpectrum();
+
+	/**
 	 * получение id строки.
 	 *
 	 * @return - id строки
@@ -79,7 +93,8 @@ public interface Row {
 	/**
 	 * установка пользователя проводившего измерения.
 	 *
-	 * @param user - пользователь проводивший испытания
+	 * @param user
+	 *            - пользователь проводивший испытания
 	 */
 	void setUser(final User user);
 
@@ -125,13 +140,16 @@ public interface Row {
 	/**
 	 * установка видимости даты первого измерения.
 	 *
-	 * @param b - true -дата будет видимой.
+	 * @param b
+	 *            - true -дата будет видимой.
 	 */
 	void setEnableFirstDate(boolean b);
 
 	/**
 	 * установка видимости названия модели.
-	 * @param b - true - название будет видимым.
+	 *
+	 * @param b
+	 *            - true - название будет видимым.
 	 */
 	void setEnableModelName(boolean b);
 
