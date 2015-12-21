@@ -40,4 +40,6 @@ public interface DataTable {
 	 */
 	Row getSelected();
 
+	void loadMoreData();
+
 }

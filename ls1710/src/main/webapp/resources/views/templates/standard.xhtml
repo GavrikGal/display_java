@@ -1,58 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+  lang="ru">
 
 <f:view contentType="text/html">
 
-	<h:head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>ЛС-1710</title>
-	<!-- 	<link rel="stylesheet"
+  <h:head>
+    <meta
+      http-equiv="Content-Type"
+      content="text/html; charset=UTF-8" />
+    <title>ЛС-1710</title>
+    <!-- 	<link rel="stylesheet"
 			href="${request.contextPath}/styles/gavrik/screen.css"
 			type="text/css" media="screen, projection" /> -->
-	<!-- 	<link rel="stylesheet"
+    <!-- 	<link rel="stylesheet"
 			href="${request.contextPath}/styles/blueprint/screen.css"
 			type="text/css" media="screen, projection" />
 		<link rel="stylesheet"
 			href="${request.contextPath}/styles/blueprint/print.css"
 			type="text/css" media="print" /> -->
-		<!--[if lt IE 8]>
+    <!--[if lt IE 8]>
 		<link rel="stylesheet" href="${request.servletPath}/styles/blueprint/ie.css" type="text/css" media="screen, projection" />
 	<![endif]-->
-	</h:head>
 
-	<h:body onload="checkContentHeight()">
-		<h:outputStylesheet library="styles/gavrik" name="screen.css" target="body"/>
-		<!-- <h:outputScript library="scripts" name="utils.js" target="body" /> -->
-		<div class="container">
-			
+  </h:head>
 
-			<div class="header">
-				<ui:insert name="header">
-					<ui:include src="/resources/views/common/header.xhtml" />
-				</ui:insert>
-			</div>
-			
-			<h:form id="messages" >
-				<p:growl id="message" showDetail="true" sticky="false" life="5000" autoUpdate="true"/>
-			</h:form>
-			
-			<div class="content">
-				<ui:insert name="content" />
-			</div>
+  <h:body onload="checkContentHeight()">
+    <h:outputStylesheet
+      library="styles/gavrik"
+      name="screen.css"
+      target="body" />
+    <!-- <h:outputScript library="scripts" name="utils.js" target="body" /> -->
+    <h:outputScript
+      library="scripts"
+      name="jquery-ui.js"
+      target="head" />
+    <h:outputScript
+      library="scripts"
+      name="jquery.ui-contextmenu.js"
+      target="head" />
 
-			<div class="footer">
-				<ui:insert name="footer">
-					<ui:include src="/resources/views/common/footer.xhtml" />
-				</ui:insert>
-			</div>
+    <div class="container">
 
-		</div>
-	</h:body>
+      <div class="header">
+        <ui:insert name="header">
+          <ui:include src="/resources/views/common/header.xhtml" />
+        </ui:insert>
+      </div>
+
+      <h:form id="messages">
+        <p:growl
+          id="message"
+          showDetail="true"
+          sticky="false"
+          life="5000"
+          autoUpdate="true" />
+      </h:form>
+
+      <div class="content">
+        <ui:insert name="content" />
+      </div>
+
+      <div class="footer">
+        <ui:insert name="footer">
+          <ui:include src="/resources/views/common/footer.xhtml" />
+        </ui:insert>
+      </div>
+
+    </div>
+  </h:body>
 
 </f:view>
 </html>

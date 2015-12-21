@@ -1,795 +1,973 @@
+/*----------------------- reset.css -------------------------*/
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6,
+  p, blockquote, pre, a, abbr, acronym, address, code, del,
+  dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form,
+  label, legend, table, caption, tbody, tfoot, thead, tr, th,
+  td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
 
-/* reset.css */
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
-body {line-height:1.5;}
-table {border-collapse:separate;border-spacing:0;}
-caption, th, td {text-align:left;font-weight:normal;}
-table, td, th {vertical-align:middle;}
-blockquote:before, blockquote:after, q:before, q:after {content:"";}
-blockquote, q {quotes:"" "";}
-a img {border:none;}
+body {
+  line-height: 1.5;
+}
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
 
-/* typography.css */
-html {font-size:100.01%;}
-body {font-size:75%;color:#222;background:#EEF9FE;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
-h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
-h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
-h2 {font-size:2em;margin-bottom:0.75em;}
-h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}
-h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
-h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
-h6 {font-size:1em;font-weight:bold;}
-h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
-p {margin:0 0 1.5em;}
-p img.left {float:left;margin:1.5em 1.5em 1.5em 0;padding:0;}
-p img.right {float:right;margin:1.5em 0 1.5em 1.5em;}
-a:focus, a:hover {color:#000;}
-a {color:#009;text-decoration:underline;}
-blockquote {margin:1.5em;color:#666;font-style:italic;}
-strong {font-weight:bold;}
-em, dfn {font-style:italic;}
-dfn {font-weight:bold;}
-sup, sub {line-height:0;}
-abbr, acronym {border-bottom:1px dotted #666;}
-address {margin:0 0 1.5em;font-style:italic;}
-del {color:#666;}
-pre {margin:1.5em 0;white-space:pre;}
-pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
-li ul, li ol {margin:0 1.5em;}
-ul, ol {margin:0 1.5em 1.5em 1.5em;}
-ul {list-style-type:disc;}
-ol {list-style-type:decimal;}
-dl {margin:0 0 1.5em 0;}
-dl dt {font-weight:bold;}
-dd {margin-left:1.5em;}
-th {font-weight:bold;}
-thead th {background:#c3d9ff;}
-th, td, caption {padding:4px 10px 4px 5px;}
-tr.even td {background:#e5ecf9;}
-tfoot {font-style:italic;}
-caption {background:#eee;}
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+}
 
+table, td, th {
+  vertical-align: middle;
+}
 
+blockquote:before, blockquote:after, q:before, q:after {
+  content: "";
+}
+
+blockquote, q {
+  quotes: "" "";
+}
+
+a img {
+  border: none;
+}
+
+/*-------------------- typography.css -----------------------*/
+html {
+  font-size: 100.01%;
+}
+
+body {
+  font-size: 75%;
+  color: #222;
+  background: #EEF9FE;
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  color: #111;
+}
+
+h1 {
+  font-size: 3em;
+  line-height: 1;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 2em;
+  margin-bottom: 0.75em;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1;
+  margin-bottom: 1em;
+}
+
+h4 {
+  font-size: 1.2em;
+  line-height: 1.25;
+  margin-bottom: 1.25em;
+}
+
+h5 {
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 1.5em;
+}
+
+h6 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {
+  margin: 0;
+}
+
+p {
+  margin: 0 0 1.5em;
+}
+
+p img.left {
+  float: left;
+  margin: 1.5em 1.5em 1.5em 0;
+  padding: 0;
+}
+
+p img.right {
+  float: right;
+  margin: 1.5em 0 1.5em 1.5em;
+}
+
+a:focus, a:hover {
+  color: #000;
+}
+
+a {
+  color: #009;
+  text-decoration: underline;
+}
+
+blockquote {
+  margin: 1.5em;
+  color: #666;
+  font-style: italic;
+}
+
+strong {
+  font-weight: bold;
+}
+
+em, dfn {
+  font-style: italic;
+}
+
+dfn {
+  font-weight: bold;
+}
+
+sup, sub {
+  line-height: 0;
+}
+
+abbr, acronym {
+  border-bottom: 1px dotted #666;
+}
+
+address {
+  margin: 0 0 1.5em;
+  font-style: italic;
+}
+
+del {
+  color: #666;
+}
+
+pre {
+  margin: 1.5em 0;
+  white-space: pre;
+}
+
+pre, code, tt {
+  font: 1em 'andale mono', 'lucida console', monospace;
+  line-height: 1.5;
+}
+
+li ul, li ol {
+  margin: 0 1.5em;
+}
+
+ul, ol {
+  margin: 0 1.5em 1.5em 1.5em;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+dl {
+  margin: 0 0 1.5em 0;
+}
+
+dl dt {
+  font-weight: bold;
+}
+
+dd {
+  margin-left: 1.5em;
+}
+
+th {
+  font-weight: bold;
+}
+
+thead th {
+  background: #c3d9ff;
+}
+
+th, td, caption {
+  padding: 4px 10px 4px 5px;
+}
+
+tr.even td {
+  background: #e5ecf9;
+}
+
+tfoot {
+  font-style: italic;
+}
+
+caption {
+  background: #eee;
+}
+/*------------ end reset.css and typography.css -------------*/
+/*-----------------------------------------------------------*/
+
+/*-----------------------------------------------------------*/
 .header {
-	position: fixed;
-	width: 100%;
-	top: -5px;
+  position: fixed;
+  width: 100%;
+  top: -5px;
 }
 
 .footer {
-	position: fixed;
-	width: 100%;
-	bottom: -5px;
+  position: fixed;
+  width: 100%;
+  bottom: -5px;
 }
 
 .headerContent {
-	width: 99%;
-	margin: 0 auto;
-	box-shadow: 0 0 6px 0 #C2D2EA;
+  width: 99%;
+  margin: 0 auto;
+  box-shadow: 0 0 6px 0 #C2D2EA;
 }
 
 .content {
-	width: 1150px;
-	margin: 50 auto;
+  width: 1150px;
+  margin: 50 auto;
 }
 
 .editPanel {
-	margin-top: 50px;
-	box-shadow: 0 0 6px 0 #C2D2EA;
+  margin-top: 50px;
+  box-shadow: 0 0 6px 0 #C2D2EA;
 }
 
 .listPanel {
-	margin-top: 10px;
-	margin-bottom: 50px;
-	box-shadow: 0 0 6px 0 #C2D2EA;
+  margin-top: 10px;
+  margin-bottom: 50px;
+  box-shadow: 0 0 6px 0 #C2D2EA;
 }
 
 .resultPanel {
-	margin-top: 10px;
-	margin-bottom: 50px;
-	
+  margin-top: 10px;
+  margin-bottom: 50px;
 }
 
 .footerContent {
-	width: 99%;
-	margin: 0 auto;
-	box-shadow: 0 0 6px 0 #C2D2EA;
+  width: 99%;
+  margin: 0 auto;
+  box-shadow: 0 0 6px 0 #C2D2EA;
 }
 
 .measurement-table-rows {
-	height: 40px;
-	border-bottom: 0px solid #DDD !important;
+  height: 40px;
+  border-bottom: 0px solid #DDD !important;
 }
 
 .internalTable {
-	color: inherit;
-	padding: 0px !important;
-	margin: 0px !important;
-	width: 100%;
+  color: inherit;
+  padding: 0px !important;
+  margin: 0px !important;
+  width: 100%;
 }
 
 .internalTable td {
-	background-color: inherit;
-	border: 0px solid #E55 !important;
-	padding: 0px !important;
+  background-color: inherit;
+  border: 0px solid #E55 !important;
+  padding: 0px !important;
 }
 
 .internalTable tr {
-	background-color: inherit;
-	border: 0px solid #E55;
-	padding: 0px;
+  background-color: inherit;
+  border: 0px solid #E55;
+  padding: 0px;
 }
 
 .internalTable div {
-	color: inherit;
-	background-color: inherit;
-	border: 0px solid #E55;
-	
-	padding: 0px;
-	margin: 0px;
+  color: inherit;
+  background-color: inherit;
+  border: 0px solid #E55;
+  padding: 0px;
+  margin: 0px;
 }
 
 .expansionTable {
-	color: inherit;
-	padding: 0px !important;
-	margin: 0px !important;
+  color: inherit;
+  padding: 0px !important;
+  margin: 0px !important;
 }
 
 .expansionTable tr {
-	background-color: inherit;
-	padding: 0px;
+  background-color: inherit;
+  padding: 0px;
 }
 
 .expansionTable div {
-	color: inherit;
-	background-color: inherit;
-	border: 0px solid #E55;
-	padding: 0px !important;
-	margin: 0px !important;
+  color: inherit;
+  background-color: inherit;
+  border: 0px solid #E55;
+  padding: 0px !important;
+  margin: 0px !important;
 }
 
 .expansionTable>td {
-	background-color: inherit;
-	border: 0px solid #E55 !important;
-	padding: 0px !important;
+  background-color: inherit;
+  border: 0px solid #E55 !important;
+  padding: 0px !important;
 }
 
 .editMeasurementPanel {
-	z-index: 1000 !important;
-	
+  z-index: 1000 !important;
 }
 
 #form\:measurementDetailDialog {
-	margin-top: 100px;
-	z-index: 1010 !important;
+  margin-top: 100px;
+  z-index: 1010 !important;
 }
 
-#form\:measurementDetail{
-	max-width: 1200px;
-	width: auto !important;
-	vertical-align: top;
+#form\:measurementDetail {
+  max-width: 1200px;
+  width: auto !important;
+  vertical-align: top;
 }
 
 #form\:selectedMeasurementCommonInfo {
-	margin: auto;
+  margin: auto;
 }
 
-
-#form\:selectedMeasurements table td{
-	/*border: 10px solid #E55 !important;*/
-	vertical-align: top !important;
+#form\:selectedMeasurements table td {
+  /*border: 10px solid #E55 !important;*/
+  vertical-align: top !important;
 }
 
-#form\:selectedMeasurements table{
-	/*border: 10px solid #E55 !important;*/
-	width: auto !important;
+#form\:selectedMeasurements table {
+  /*border: 10px solid #E55 !important;*/
+  width: auto !important;
 }
 
-#form\:selectedMeasurements.ui-widget{
-	width: auto !important;
+#form\:selectedMeasurements.ui-widget {
+  width: auto !important;
 }
 
 #form\:selectedMeasurements .ui-datagrid-data {
-	border: 0px solid #EEE !important;
-	margin: auto;
+  border: 0px solid #EEE !important;
+  margin: auto;
 }
 
-#form\:selectedMeasurements .ui-datagrid-content{
-	border: 0px solid #EEE !important;
+#form\:selectedMeasurements .ui-datagrid-content {
+  border: 0px solid #EEE !important;
 }
 
 #editForm\:newModelDilog {
-	margin-top: 100px !important;
-	z-index: 1010 !important;
+  margin-top: 100px !important;
+  z-index: 1010 !important;
 }
 
 #form\:confirmDialog {
-	top: 200px !important;
+  top: 200px !important;
 }
 
-/* .ui-icon-addPhoto{
-	background-image: url(icons/addPhoto.png);
-   background-image: url("#{resource['styles/gavrik/icons/addPhoto.png']}") !important; 
-} */
-
-
-
-/* .ui-dataGrid-addModel-photos td {
-	margin: auto;
-	padding: 0px;
-} */
-
-.ui-dataGrid-addModel-photos td{
-	text-align: center;
-	vertical-align: bottom;
-	padding: 0px;
+.ui-dataGrid-addModel-photos td {
+  text-align: center;
+  vertical-align: bottom;
+  padding: 0px;
 }
 
 .ui-panel-addPhoto-photo {
-	display: inline-block;
-	border: 0px solid #E33 !important;
-	margin: auto;
+  display: inline-block;
+  border: 0px solid #E33 !important;
+  margin: auto;
 }
 
 .ui-panel-addPhoto-photo div {
-	padding: 0px !important;
+  padding: 0px !important;
 }
-
 
 .ui-div-addModel-photo {
-    position: relative;
+  position: relative;
 }
+
 .ui-div-addModel-photo:after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    content: '';
-    -moz-box-shadow:    inset 0px 0px 100px rgba(0,0,0,1);
-    -webkit-box-shadow: inset 0px 0px 100px rgba(0,0,0,1);
-    box-shadow:         inset 0px 0px 100px rgba(0,0,0,1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  content: '';
+  -moz-box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 1);
+  -webkit-box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 1);
+  box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 1);
 }
 
 .ui-image-addModel-photo {
-	display: block;
-	margin:auto;
+  display: block;
+  margin: auto;
 }
 
 .ui-button-addModel-deletePhoto {
-	display:inline;
-	position: relative	 !important;
-	bottom: 35px;
-	margin-bottom: -35px;
-	z-index: 100;
+  display: inline;
+  position: relative !important;
+  bottom: 35px;
+  margin-bottom: -35px;
+  z-index: 100;
 }
 
 .ui-button-addModel-addPhoto {
-	display: block;
-	margin: auto !important;
+  display: block;
+  margin: auto !important;
 }
 
 .ui-dialog-modal {
-	top: 200px !important;
-	
+  top: 200px !important;
 }
 
 .btnYes {
-	margin: 5px !important;
-	float: left;
+  margin: 5px !important;
+  float: left;
 }
 
 .btnNo {
-	margin: 5px !important;
-	float: right;
+  margin: 5px !important;
+  float: right;
 }
 
 .btnSave {
-	margin: 5px !important;
-	float: left;
+  margin: 5px !important;
+  float: left;
 }
 
 .btnLogin {
-	margin: 5px !important;
-	float: left;
+  margin: 5px !important;
+  float: left;
 }
 
 .btnCancel {
-	margin: 5px !important;
-	float: right;
+  margin: 5px !important;
+  float: right;
 }
 
-
-
 .ui-dialog-footer {
-	padding: 5px !important;
+  padding: 5px !important;
 }
 
 #editForm\:spectrumParameters td {
-	border: 0 px !important;
+  border: 0 px !important;
 }
 
 #editForm\:spectrumParameters tr {
-	border: 0 px !important;
+  border: 0 px !important;
 }
 
 #editForm\:spectrumParameters table {
-	border: 0 px !important;
-	
+  border: 0 px !important;
 }
 
-.postAuthorizeUpdate { 
-	
+.postAuthorizeUpdate {
+  
 }
 
-.spectrumLegend legend{
-	padding-top: 0px !important;
-	padding-bottom: 0px !important;
+.spectrumLegend legend {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }
 
-.measurementFieldset fieldset{
-	border-right-width: 0px !important;
-	border-bottom-width: 0px !important;
-	border-top-right-radius: 0px !important;
-	border-bottom-right-radius: 0px !important;
-	border-bottom-left-radius: 0px !important;
+.measurementFieldset fieldset {
+  border-right-width: 0px !important;
+  border-bottom-width: 0px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
 
 /** tabs **/
-.ui-tabs.ui-tabs-left > .ui-tabs-nav {
-   width: 15%;
+.ui-tabs.ui-tabs-left>.ui-tabs-nav {
+  width: 15%;
 }
 /** panels **/
-.ui-tabs.ui-tabs-left > .ui-tabs-panels {
-   width: 85%;
+.ui-tabs.ui-tabs-left>.ui-tabs-panels {
+  width: 85%;
 }
 
-/*.ui-confirmdialog-no {
-	display: none !important;
-	visibility: hidden !important;
-}*/
 
-/* .measurementDetailColumn {
-	vertical-align: top;
-} */
-
-
-/* ---------------------------Плитки------------------------------------------------------- */
+/* -----------------------Плитки---------------------------- */
 div.ui-datascroller {
-	margin: 0px 0px 0px 0xp;
-	padding: 0px 0px 0px 0px;
-	background-color: inherit;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px;
+  margin: 0px 0px 0px 0xp;
+  padding: 0px 0px 0px 0px;
+  background-color: inherit;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 
-div.ui-datascroller-content{
-	margin: 0px 0px 0px 0xp;
-	padding: 0px 0px 0px 0px !important;
-	background-color: inherit;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px;
+div.ui-datascroller-content {
+  margin: 0px 0px 0px 0xp;
+  padding: 0px 0px 0px 0px !important;
+  background-color: inherit;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 /*-----date-----*/
-
-.date{
-	width: 100%;
-	background-color: inherit;
-	margin-top: 15px;
-	margin-bottom: 15px;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px; 
-	
+.date {
+  width: 100%;
+  background-color: inherit;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 
-.date-table .ui-panelgrid-cell{
-	padding-left: 0px;
-	padding-right: 0px;
+.date-table .ui-panelgrid-cell {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .date-table label {
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-bottom: 0px;
-	margin-top: 0px;
-	color: #6986b1;
-	font-size: larger;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  color: #6986b1;
+  font-size: larger;
 }
 
 .date-table .ui-widget {
-	font-size: 1.2em;
+  font-size: 1.2em;
 }
 
 .date-table hr {
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px; 
-	height: 2px;
-	background-color: #acbcd5;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
+  height: 2px;
+  background-color: #acbcd5;
 }
 
 .no-border {
-	margin: 0px 0px 0px 0px;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px; 
+  margin: 0px 0px 0px 0px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 
 .no-border .ui-panelgrid-cell {
-	margin: 0px 0px 0px 0px;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px; 
+  margin: 0px 0px 0px 0px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 
 .no-border .ui-widget-content {
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 
-.date tr{
-	background-color: inherit;
+.date tr {
+  background-color: inherit;
 }
 
+/*-- expand button---*/
+.expand-button {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 0 0 0 #000;
+}
+
+.expand-button .ui-state-focus {
+  box-shadow: 0 0 0 0 #ffffff !important;
+}
+
+/*--------------context menu--------------------*/
+/* CSS3 */
+
+/* The whole thing */
+.custom-menu {
+  display: none;
+  z-index: 1000;
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid #CCC;
+  white-space: nowrap;
+  font-family: sans-serif;
+  background: #FFF;
+  color: #333;
+  border-radius: 5px;
+  padding: 0;
+}
+
+/* Each of the items in the list */
+.custom-menu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  list-style-type: none;
+}
+
+.custom-menu li:hover {
+  background-color: #DEF;
+}
 /*---------*/
 .tile {
-	margin-top: 15px;
-	margin-bottom: 15px;
-	box-shadow: 0 1px 3px 0 #869dc1;
-	
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px;
-	border-top-right-radius: 3px;
-	border-top-left-radius: 3px;
-	border-bottom-right-radius: 3px;
-	border-bottom-left-radius: 3px;
-	
-	padding-left: 0px;
-	padding-bottom: 0px;
-	padding-right: 0px;
-	padding-top: 0px;
-	
-	/*height: 50px;*/
-	overflow: hidden;
-	
-	transition: all 100ms linear;
-	
-	animation: moveBack 50ms ease-in-out;
-	
+  margin-top: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 3px 0 #869dc1;
+  background-color: #ffffff;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  padding-left: 0px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+  /*height: 50px;*/
+  overflow: hidden;
+  transition: all 100ms linear;
+  animation: moveBack 50ms ease-in-out;
 }
 
 a.tile {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 .tileHiddenContent {
-	overflow: hidden;
+  overflow: hidden;
 }
 
-
 .tile:HOVER {
-	box-shadow: 0 2px 5px 0 #6986b1;
-	animation: moveUp 100ms ease-in-out;
-	margin-top: -2px;
- 	margin-bottom: 17px;  
+  box-shadow: 0 2px 5px 0 #6986b1;
+  animation: moveUp 100ms ease-in-out;
+  margin-top: -2px;
+  margin-bottom: 17px;
+}
+
+.tile-selected {
+  background-color: #e1ffe1;
+  box-shadow: 0 1px 8px 1px #4774be;
+}
+
+.tile-selected:HOVER {
+  box-shadow: 0 3px 10px 1px #4774be;
 }
 
 @keyframes moveUp {
- from {
-	
- transform: translateY(0%);
- margin-top: 0px;
- margin-bottom: 15px;
- }
- to {
+  from { 
+    transform:translateY(0%);
+    margin-top: 0px;
+    margin-bottom: 15px;
+  }
 
- transform: translateY(1%);
- margin-top: -2px;
- margin-bottom: 17px;
- }
+  to {
+    transform: translateY(1%);
+    margin-top: -2px;
+    margin-bottom: 17px;
+  }
 }
 
 @keyframes moveBack {
- from {
-	
- 
- margin-top: -2px;
- margin-bottom: 17px;
- }
- to {
+  from {
+    margin-top:-2px;
+    margin-bottom: 17px;
+  }
 
- margin-top: 0px;
- margin-bottom: 15px;
-
- }
+  to {
+    margin-top: 0px;
+    margin-bottom: 15px;
+  }
 }
 
 .tile div {
-	margin-left: 0px;
+  margin-left: 0px;
 }
 
 #dataTilesForm .ui-panel .ui-panel-content {
-	
-	width: 100%;
-	
-	padding-left: 0px;
-	padding-bottom: 0px;
-	padding-right: 0px;
-	padding-top: 0px;
+  width: 100%;
+  padding-left: 0px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
 }
 
-#dataTilesForm .ui-panel .ui-panel-content td{
-	padding-left: 0px;
-	padding-bottom: 0px;
-	padding-right: 0px;
-	padding-top: 0px;
+#dataTilesForm .ui-panel .ui-panel-content td {
+  padding-left: 0px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
 }
 
 .tile-content-grid {
-	margin: 0px 0px 0px 0px;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px; 
+  margin: 0px 0px 0px 0px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 
 .tile-content-firstcolumn-grid {
-	width: 100%;
+  width: 100%;
 }
 
-.tile-content-firstcolumn-grid td{
-	margin: auto;
-	text-align: center;
+.tile-content-firstcolumn-grid td {
+  margin: auto;
+  text-align: center;
 }
 
 .tile-content-modelName {
-	font-weight: bold;
-	color: #5a7aa9;
+  font-weight: bold;
+  color: #5a7aa9;
 }
 
 .tile-content-isRestrictedAccess-text {
-	text-align: center;
-	margin: auto;
-	color: #4F4F4F;
+  text-align: center;
+  margin: auto;
+  color: #4F4F4F;
 }
 
 .tile-content-serialNumber {
-	font-weight: 900;
-	font-size: medium;
-	color: #3c5273;
+  font-weight: 900;
+  font-size: medium;
+  color: #3c5273;
 }
 
 .tile-content-grid .ui-widget-content {
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 
 .tile-content-grid .ui-panelgrid-cell {
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 0px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
 }
 
+tr.ui-widget-content {
+  background-color: inherit;
+}
 
-/* ---------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- */
 
-/* -------------------------- Протокол -----------------------------------------------------*/
-
+/* ------------------ Протокол -----------------------------*/
 #backContent {
-	
-	width: 210mm;
-	height: 297mm;
-		
-	z-index: 0;
-	display: block;
-	position: absolute;
-	margin-top: 10px;
-	margin-bottom: 30px;
-	margin-left: auto;
-	margin-right: auto;
-	left: 0;
-	right: 0;
-	overflow: hidden;
-	padding: 1cm;
+  width: 210mm;
+  height: 297mm;
+  z-index: 0;
+  display: block;
+  position: absolute;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  padding: 1cm;
 }
 
-#backContent p {	
-	margin: 9px;
-	font-family: "Times New Roman", Times, serif;
-	font-size: 1.2em;
-	font-weight: normal;
-	color: #333333;
+#backContent p {
+  margin: 9px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.2em;
+  font-weight: normal;
+  color: #333333;
 }
 
 /*---------------- название ---------------*/
 #protocolName {
-	width: 16cm;
-	margin: auto;
+  width: 16cm;
+  margin: auto;
 }
 
 /*--------------- шапка -------------------*/
-
-#protocolHeadTable{
-	margin: auto 2cm;
-	border: 0px solid #EEE; 
+#protocolHeadTable {
+  margin: auto 2cm;
+  border: 0px solid #EEE;
 }
 
-#protocolHeadTable td{
-	border: 0px solid #E44; 
+#protocolHeadTable td {
+  border: 0px solid #E44;
 }
 
 #protocolHeadTable p {
-	text-align: left;
+  text-align: left;
 }
 
 /*----------------таблица протокола--------*/
-#protocolResultsTable{
-	margin: 1cm 0cm 0cm 2cm;
-	padding: 0px;
-	border: 1px solid #333; 
-	border-collapse: collapse;
+#protocolResultsTable {
+  margin: 1cm 0cm 0cm 2cm;
+  padding: 0px;
+  border: 1px solid #333;
+  border-collapse: collapse;
 }
 
 #protocolResultsTable p {
-	margin: 0px 5px;;
-	font-size: 1.2em;
+  margin: 0px 5px;;
+  font-size: 1.2em;
 }
 
-#protocolResultsTable th{
-	margin: auto;
-	padding: 0px;
-	color: #333;
-	background-color: #fff;
-	border: 1px solid #333; 
+#protocolResultsTable th {
+  margin: auto;
+  padding: 0px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #333;
 }
 
-#protocolResultsTable td{
-	padding: 0px;
+#protocolResultsTable td {
+  padding: 0px;
 }
 
 table.protocolResultsInnerTable {
-	width: 100%;
-	margin: 0px;
-	padding: 0px;
-	border-collapse: collapse;
-	border-spacing: 0px;
-	border: 0px solid #333;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  border-collapse: collapse;
+  border-spacing: 0px;
+  border: 0px solid #333;
 }
 
 .protocolResultsTableFrequency {
-	width: 3.7cm;
-	border-right: 1px solid #333;
+  width: 3.7cm;
+  border-right: 1px solid #333;
 }
 
 .protocolResultsTableNorm {
-	width: 5.3cm;
-	border-right: 1px solid #333;
+  width: 5.3cm;
+  border-right: 1px solid #333;
 }
 
 td.protocolResultsTableLevels {
-	border-bottom: 1px solid #333;
+  border-bottom: 1px solid #333;
 }
 
 .protocolResultsTableLevels1 {
-	width: 3.3cm;
-	border-right: 1px solid #333;
+  width: 3.3cm;
+  border-right: 1px solid #333;
 }
 
 tr.data td.protocolResultsTableLevels1 {
-	height: 8cm;
+  height: 8cm;
 }
 
 .protocolResultsTableLevels2 {
-	width: 3cm;
+  width: 3cm;
 }
 
 tr.data td.protocolResultsTableLevels2 {
-	height: 8cm;
+  height: 8cm;
 }
+
 .protocolResultsTableNote {
-	width: 3.5cm;
-	border-left: 1px solid #333;
+  width: 3.5cm;
+  border-left: 1px solid #333;
 }
 /*------------------------------------------*/
 
 /*----------заключение протокола ------------*/
 #protocolFinal {
-	width: 18.8cm;
-	text-align: left;
-	margin-left: 2cm;
-	margin-top: 5mm;
+  width: 18.8cm;
+  text-align: left;
+  margin-left: 2cm;
+  margin-top: 5mm;
 }
 
 /*--------- подвал протокола ---------------*/
-#protocolFootTable{
-	margin-top: 2cm;
-	margin-left: 2cm;
-	border: 0px solid #EEE; 
+#protocolFootTable {
+  margin-top: 2cm;
+  margin-left: 2cm;
+  border: 0px solid #EEE;
 }
 
-#protocolFootTable td{
-	border: 0px solid #0fE; 
+#protocolFootTable td {
+  border: 0px solid #0fE;
 }
 
 #protocolFootTable p {
-	margin: 0px 10px;
+  margin: 0px 10px;
 }
 
 td.post {
-	text-align: left;
+  text-align: left;
 }
 /*-----------------------------------------*/
 
-/*---------------- Данные ---------*/ 
+/*---------------- Данные ---------*/
 #frontContent {
-	width: 19cm;
-	margin: auto;
-	z-index: 0;
-	display: block;
-	position: relative;
-	left: 1.3cm;
-	top: 3.4cm;
+  width: 19cm;
+  margin: auto;
+  z-index: 0;
+  display: block;
+  position: relative;
+  left: 1.3cm;
+  top: 3.4cm;
 }
 
 #frontContent p {
-	margin: 0px;
-	padding: 0px;
-	font-family: "Times New Roman", Times, serif;
-	font-size: 1.4em;
-	font-weight: normal;
-	font-style: italic;
-	color: #333333;
+  margin: 0px;
+  padding: 0px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.4em;
+  font-weight: normal;
+  font-style: italic;
+  color: #333333;
 }
 
 /*------------- Данные шапки ----------*/
 #protocolHeadTableContentBlock {
-	margin-left: 1.2cm;
-	width: 13.9cm;
+  margin-left: 1.2cm;
+  width: 13.9cm;
 }
 
 .protocolHeadTableContent {
-	width: 100%;
-	margin: auto;
+  width: 100%;
+  margin: auto;
 }
-.protocolHeadTableContentModel{
-	width: 5.5cm;
+
+.protocolHeadTableContentModel {
+  width: 5.5cm;
 }
 
 .protocolHeadTableContentNumber {
-	width: 5.5cm;
+  width: 5.5cm;
 }
 
-/*---------------- Данные таблицы ---------*/ 
+/*---------------- Данные таблицы ---------*/
 #protocolResultsTableContentBlock {
-	margin-top: 6.1cm;
-	position: relative;
+  margin-top: 6.1cm;
+  position: relative;
 }
 
-#protocolResultsTableContent td{
-	border: 0px;
+#protocolResultsTableContent td {
+  border: 0px;
 }
 
 /*--------------- Данные пользователя ------*/
 #protocolUserNameBlock {
-	position: absolute;
-	left: 11.3cm;
-	top: 21.7cm;
-	width: 5.5cm;
+  position: absolute;
+  left: 11.3cm;
+  top: 21.7cm;
+  width: 5.5cm;
 }

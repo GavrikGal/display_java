@@ -306,4 +306,9 @@ public class DataJournalTable implements Serializable, DataTable {
 		}
 		return isIncrease;
 	}
+
+	@Override
+	public void loadMoreData() {
+		selected.toggleMaxOrAllSpectrum();
+	}
 }

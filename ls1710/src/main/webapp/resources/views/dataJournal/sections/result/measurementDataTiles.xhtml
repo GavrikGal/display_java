@@ -9,36 +9,81 @@
 	xmlns:component="http://java.sun.com/jsf/composite/views/dataJournal/components"
 	xmlns:sec="http://www.springframework.org/security/tags">
 
+
+    
+    
+    <h:outputScript 
+    	library="scripts" 
+    	name="tiles.js" 
+    	target="body"/>
+
 	<p:dataScroller 
 		id="measTiles" 
 		value="#{dataJournalTable.rows}" 
 		var="row" 
-		chunkSize="10" 
+		chunkSize="10"
 		lazy="false">
 		
+		
+		
+		<p:outputPanel styleClass="date" 
+	    	rendered="#{row.enableFirstDate}">
+	    	
+		    <p:panelGrid 
+		    	styleClass="date-table no-border" >
+		    	
+		    	<p:row >
+			    	<p:column 
+			    		style="width: 5%">
+			    		<hr/>
+			    	</p:column>
+					<p:column>
+						<p:outputLabel 
+							value="#{row.firstDate.date}" >
+					    	
+				    		<f:converter 
+				    			converterId="jodaDataTimeConverter" />
+							
+							<f:attribute 
+								name="pattern" 
+								value="#{msg['date_format_pattern']}" />
+					    </p:outputLabel>
+				    </p:column>
+					<p:column 
+						style="width: 95%">
+				    	<hr/>
+					</p:column>
+				</p:row>
+		    </p:panelGrid>
+	    </p:outputPanel>
+    	
 		<component:measurementTile 
+			id="measTile"
 			row="#{row}" 
 			widthFirstColumn="150px" 
 			widthPhoto="50px" 
-			widthPhotoColumn="100px"/>
+			widthPhotoColumn="100px"
+			widthExpandButtonColumn="20px"/>
+		
+
 		
 	</p:dataScroller>
-	<!-- <p:contextMenu for="measTiles">
-		<p:menuitem value="Первый пункт"/>
-		<p:menuitem value="Второй пункт"/>
-	</p:contextMenu> -->
 	
-	<!-- <div id="slider">
-    <ui:repeat var="row" value="#{dataJournalTable.rows}" >
-    	
-    	<component:measurementTile row="#{row}" widthFirstColumn="200px" widthPhoto="50px"/>
-    
-       	
-    </ui:repeat>
-  	</div> -->
-  	
-  
-
 	
-
+	<ul class='custom-menu'>
+	  <li data-action="first">Развернуть</li>
+	  <li data-action="second">Подробно</li>
+	  <li data-action="third">Редактировать</li>
+	</ul>
+	
+<!-- 		<p:contextMenu 
+			for="measTiles:measTile:tile"
+			id="tileContextMenu"
+			widgetVar="tileContextMenuWV">
+			
+			<p:menuitem value="развернуть"/>
+			<p:menuitem value="Второй пункт"/>
+		</p:contextMenu>	
+	  -->
+	
 </ui:composition>
